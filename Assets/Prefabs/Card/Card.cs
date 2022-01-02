@@ -17,6 +17,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 {
     public const float SCALE_TIME = .2f;
     public const float MOVE_TIME = .2f;
+    public const float RETURN_TO_HAND_SCALE_TIME = 0.2f;
+    public const float RETURN_TO_HAND_MOVE_TIME = 0.2f;
 
     [SerializeField]
     string title = "", cost;
@@ -31,6 +33,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     Canvas canvas;
     GraphicRaycaster graphicRaycaster;
 
+    Transform origParent;
+
     public RectTransform RectTransform { get => rectTransform; }
 
     #region Input Events
@@ -40,6 +44,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         {
             case Zone.HAND:
                 {
+                    origParent = transform.parent;
                     transform.SetParent(Drag.Instance.transform);
                     Drag.Instance.card = this;
                     StartCoroutine(ChangeScale(Drag.Instance.templateCardRect.rect.size, SCALE_TIME));
@@ -63,6 +68,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        Drag.Instance.card = null;
         switch (zone)
         {
             case Zone.DRAG:
@@ -79,20 +85,34 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
                             {
                                 StopCoroutine(nameof(ChangeScale));
                                 Field.Instance.AddToField(this, cell);
-                                Drag.Instance.card = null;
-                                break;
+                                return;
                             }
                         }
-                        CardPlaceholder placeholder = hit.gameObject.GetComponent<CardPlaceholder>();
-                        if (placeholder)
-                        {
-
-                        }
-
                     }
+
+                    zone = Zone.HAND;
+                    StopCoroutine(nameof(ChangeScale));
+                    StartCoroutine(MoveToHand(Hands.Instance.PlayerHands.Find(x => x.player == controller)));
                 }
                 break;
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (Input.mousePosition.x > Screen.width / 2)
+        {
+            CardDetailPositioner.Instance.ShowCardDetailOnSide(this, CardDetailPositioner.ScreenSide.LEFT);
+        }
+        else
+        {
+            CardDetailPositioner.Instance.ShowCardDetailOnSide(this, CardDetailPositioner.ScreenSide.RIGHT);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        CardDetailPositioner.Instance.HideCardDetail();
     }
     #endregion
 
@@ -142,8 +162,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
             yield return null;
         }
         yield return null;
-    }
-    #endregion
+    } 
 
     public IEnumerator OnCombat()
     {
@@ -151,22 +170,24 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
                                                                                  controller == GameData.Players.PLAYER_2 ? -statBlock.stats.MV: 0, 0)));
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public IEnumerator MoveToHand(Hand hand)
     {
-        if (Input.mousePosition.x > Screen.width / 2)
-        {
-            CardDetail.Instance.ShowCardDetailOnSide(this, CardDetail.ScreenSide.LEFT);
-        }
-        else
-        {
-            CardDetail.Instance.ShowCardDetailOnSide(this, CardDetail.ScreenSide.RIGHT);
-        }
+        hand.cardReturning = true;
+
+        Coroutine scale = StartCoroutine(ChangeScale(hand.CardPlaceholder.CardPlaceholderRect.rect.size, RETURN_TO_HAND_SCALE_TIME));
+        Coroutine move = StartCoroutine(MoveTo(hand.CardPlaceholder.CardPlaceholderRect.position + 
+            new Vector3(hand.CardPlaceholder.CardPlaceholderRect.rect.size.x / 2, -(hand.CardPlaceholder.CardPlaceholderRect.rect.size.y / 2), 0), RETURN_TO_HAND_MOVE_TIME));
+
+        yield return scale;
+        yield return move;
+
+        hand.cardReturning = false;
+        hand.AddCardAtPlaceholder(this);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        CardDetail.Instance.HideCardDetail();
-    }
+    #endregion
+
+
 }
 
 

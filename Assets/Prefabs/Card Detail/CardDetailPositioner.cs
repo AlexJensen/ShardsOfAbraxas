@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardDetail : Singleton<CardDetail>
+public class CardDetailPositioner : Singleton<CardDetailPositioner>
 {
     public enum ScreenSide
     {
@@ -12,8 +12,8 @@ public class CardDetail : Singleton<CardDetail>
         RIGHT
     }
 
-    public RectTransform cardDetail;
-    public Text title, cost;
+    public CardDetail cardDetail;
+    RectTransform cardDetailRect;
 
 
     [Serializable]
@@ -25,13 +25,18 @@ public class CardDetail : Singleton<CardDetail>
 
     public List<Side> sides;
 
+    protected override void Awake()
+    {
+        cardDetailRect = cardDetail.GetComponent<RectTransform>();
+    }
+
     public void ShowCardDetailOnSide(Card card, ScreenSide side)
     {
         cardDetail.gameObject.SetActive(true);
         Side screenSide = sides.Find(x => x.side == side);
-        cardDetail.SetParent(screenSide.rectTranform.transform);
-        cardDetail.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, screenSide.rectTranform.rect.width);
-        cardDetail.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, screenSide.rectTranform.rect.height);
+        cardDetailRect.SetParent(screenSide.rectTranform.transform);
+        cardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, screenSide.rectTranform.rect.width);
+        cardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, screenSide.rectTranform.rect.height);
     }
 
     public void HideCardDetail()
