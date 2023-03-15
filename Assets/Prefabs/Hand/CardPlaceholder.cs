@@ -4,28 +4,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls the height of the placeholder card that appears while dragging a card out of the hand.
+/// </summary>
 [RequireComponent(typeof(LayoutElement))]
 [RequireComponent(typeof(RectTransform))]
 public class CardPlaceholder : MonoBehaviour
 {
+    #region Constants
+    const float PLACEHOLDER_SCALE_TIME = .2f;
+    #endregion
+
+    #region Fields
     LayoutElement cardPlaceholderLayout;
     RectTransform cardPlaceholderRect;
-    public LayoutElement CardPlaceholderLayout { get => cardPlaceholderLayout; }
-    public RectTransform CardPlaceholderRect { get => cardPlaceholderRect; }
+    public LayoutElement CardPlaceholderLayout => cardPlaceholderLayout = cardPlaceholderLayout != null ? cardPlaceholderLayout : cardPlaceholderLayout = GetComponent<LayoutElement>();
+    public RectTransform CardPlaceholderRect => cardPlaceholderRect = cardPlaceholderRect != null ? cardPlaceholderRect : cardPlaceholderRect = (RectTransform)transform;
 
     int currentIndex = 0, newIndex = 0;
     bool expanding = false, retracting = false;
-    float origHeight;
 
-    const float PLACEHOLDER_SCALE_TIME = .2f;
+    [SerializeField]
+    float maxHeight;
+    #endregion
 
-    private void Start()
-    {
-        cardPlaceholderLayout = GetComponent<LayoutElement>();
-        cardPlaceholderRect = GetComponent<RectTransform>();
-
-        origHeight = CardPlaceholderLayout.preferredHeight;
-    }
+    #region Unity Methods
 
     internal void Reset()
     {
@@ -35,17 +38,21 @@ public class CardPlaceholder : MonoBehaviour
         StopCoroutine(nameof(ScalePlaceholder));
         gameObject.SetActive(false);
     }
+    #endregion
 
-    internal void Initialize()
-    {
-        gameObject.SetActive(true);
-    }
-
+    #region Methods
+    /// <summary>
+    /// Updates the sibling index of the placeholder.
+    /// </summary>
+    /// <param name="index">New index to set.</param>
     internal void UpdateIndex(int index)
     {
         newIndex = index;
     }
 
+    /// <summary>
+    /// Checks the current index against the latest index to determine if the placeholder needs to start moving.
+    /// </summary>
     internal void CheckPosition()
     {
         if (newIndex != currentIndex)
@@ -57,7 +64,7 @@ public class CardPlaceholder : MonoBehaviour
                     expanding = true;
                     CardPlaceholderLayout.transform.SetSiblingIndex(newIndex);
                     currentIndex = newIndex;
-                    StartCoroutine(ScalePlaceholder(origHeight, PLACEHOLDER_SCALE_TIME));
+                    StartCoroutine(ScalePlaceholder(maxHeight, PLACEHOLDER_SCALE_TIME));
                 }
                 else if (!expanding)
                 {
@@ -68,6 +75,15 @@ public class CardPlaceholder : MonoBehaviour
         }
     }
 
+    internal void SnapToMaxHeight()
+    {
+        gameObject.SetActive(true);
+        CardPlaceholderLayout.preferredHeight = maxHeight;
+    }
+
+    /// <summary>
+    /// Starts hiding the placeholder.
+    /// </summary>
     internal void Hide()
     {
         if (CardPlaceholderLayout.preferredHeight == 0)
@@ -79,6 +95,11 @@ public class CardPlaceholder : MonoBehaviour
             retracting = true;
             StartCoroutine(ScalePlaceholder(0, PLACEHOLDER_SCALE_TIME));
         }
+    }
+
+    public IEnumerator ScaleToMaxSize()
+    {
+        yield return StartCoroutine(ScalePlaceholder(maxHeight, PLACEHOLDER_SCALE_TIME));
     }
 
     IEnumerator ScalePlaceholder(float height, float time)
@@ -97,6 +118,5 @@ public class CardPlaceholder : MonoBehaviour
         expanding = false;
         retracting = false;
     }
-
-
+    #endregion
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,59 +7,96 @@ using UnityEngine.UI;
 
 public class Hand : MonoBehaviour
 {
-    public GameData.Players player;
-
+    #region Fields
+    [SerializeField]
+    Transform cards_t;
     List<Card> cards;
     CardPlaceholder cardPlaceholder;
+    Deck deck;
+    Graveyard graveyard;
 
-    RectTransform rectTransform;
+    public Game.Player player;
     internal bool cardReturning;
+    #endregion
 
-    public CardPlaceholder CardPlaceholder { get => cardPlaceholder; }
+    #region Properties
+    public CardPlaceholder CardPlaceholder => cardPlaceholder = cardPlaceholder != null ? cardPlaceholder : cards_t.GetComponentInChildren<CardPlaceholder>();
+    public Deck Deck => deck = deck != null ? deck : deck = GetComponentInChildren<Deck>();
+    public List<Card> Cards => cards = (cards ??= cards_t.GetComponentsInChildren<Card>().ToList());
+    public Graveyard Graveyard => graveyard = graveyard != null ? graveyard : graveyard = GetComponentInChildren<Graveyard>();
+    #endregion
 
-    private void Start()
+    #region Unity Methods
+    private void Awake()
     {
-        cards = GetComponentsInChildren<Card>().ToList();
-        cardPlaceholder = GetComponentInChildren<CardPlaceholder>();
         CardPlaceholder.Reset();
     }
 
-    public void AddCardAtPlaceholder(Card card)
-    {
-        cards.Insert(CardPlaceholder.transform.GetSiblingIndex(), card);
-        card.transform.SetParent(CardPlaceholder.transform.parent);
-        card.transform.SetSiblingIndex(CardPlaceholder.transform.GetSiblingIndex());
-        CardPlaceholder.Reset();
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (Drag.Instance.card != null && Drag.Instance.card.controller == player)
         {
-            cards.Remove(Drag.Instance.card);
-            cardPlaceholder.Initialize();
+            Cards.Remove(Drag.Instance.card);
+            cardPlaceholder.gameObject.SetActive(true);
 
-            foreach (Card card in cards)
+            foreach (Card card in Cards)
             {
-                if (player == GameData.Players.PLAYER_1?
-                    Input.mousePosition.y > card.transform.position.y:
+                if (player == Game.Player.Player1 ?
+                    Input.mousePosition.y > card.transform.position.y :
                     Input.mousePosition.y < card.transform.position.y)
                 {
-                    CardPlaceholder.UpdateIndex(cards.IndexOf(card));
+                    CardPlaceholder.UpdateIndex(Cards.IndexOf(card));
                     break;
                 }
-                if (cards.IndexOf(card) == cards.Count - 1)
+                if (Cards.IndexOf(card) == Cards.Count - 1)
                 {
-                    CardPlaceholder.UpdateIndex(cards.IndexOf(card) + 1);
+                    CardPlaceholder.UpdateIndex(Cards.IndexOf(card) + 1);
                     break;
                 }
             }
             cardPlaceholder.CheckPosition();
         }
-        else if (!cardReturning)
+        else if (!cardReturning && cardPlaceholder.isActiveAndEnabled)
         {
-            cardPlaceholder.Hide();
-        }      
+            CardPlaceholder.Hide();
+        }
     }
+    #endregion
+
+    #region Methods
+    /// <summary>
+    /// Moves a card into the current position of the card placeholder and replaces it.
+    /// </summary>
+    /// <param name="card">Card to move.</param>
+    public void AddCardAtPlaceholder(Card card)
+    {
+        Cards.Insert(CardPlaceholder.transform.GetSiblingIndex(), card);
+        card.transform.SetParent(CardPlaceholder.transform.parent);
+        card.transform.SetSiblingIndex(CardPlaceholder.transform.GetSiblingIndex());
+        CardPlaceholder.Reset();
+    }
+
+    public void RemoveCard(Card card)
+    {
+        if (Cards.Contains(card))
+        {
+            CardPlaceholder.transform.SetSiblingIndex(Cards.IndexOf(card));
+            CardPlaceholder.SnapToMaxHeight();
+            Cards.Remove(card);
+        }
+    }
+
+    internal IEnumerator DrawCardFromLibrary(int amount = 1, int index = 0)
+    {
+        Card card = Deck.DrawCard(index);
+        cardReturning = true;
+        CardPlaceholder.transform.SetSiblingIndex(0);
+        CardPlaceholder.gameObject.SetActive(true);
+        yield return StartCoroutine(CardPlaceholder.ScaleToMaxSize());
+        CardPlaceholder.SnapToMaxHeight();
+        yield return null;
+        yield return StartCoroutine(card.MoveToHand(this));
+        if (amount > 1) yield return StartCoroutine(DrawCardFromLibrary(amount - 1, index));
+    }
+    #endregion
 }

@@ -5,27 +5,31 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
+/// <summary>
+/// Controller for a Cell square on the field and contains methods to store card positions and fit card frames into the cell.
+/// </summary>
 [RequireComponent(typeof(RectTransform))]
 public class Cell : MonoBehaviour
 {
+    #region Fields
     RectTransform rectTransform;
     List<Card> cards;
-
-    public GameData.Players player;
+    public Game.Player player;
     public Vector2Int fieldPos;
+    #endregion
 
+    #region Properties
     public List<Card> Cards { get => cards; }
     public RectTransform RectTransform { get => rectTransform; }
+    #endregion
 
     #region Unity Methods
     private void Awake()
     {
         cards = new List<Card>();
-        rectTransform = GetComponent<RectTransform>();
+        rectTransform = (RectTransform)transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         foreach(Card card in GetComponentsInChildren<Card>())
@@ -35,13 +39,21 @@ public class Cell : MonoBehaviour
     }
     #endregion
 
-    #region Card Methods
-    internal void FitCardInCell(Card card)
+    #region Methods
+    /// <summary>
+    /// Rescales and repositions a card to fit within this cell.
+    /// </summary>
+    /// <param name="card">Card to fit.</param>
+    void FitCardInCell(Card card)
     {
-        card.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, RectTransform.rect.width);
-        card.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, RectTransform.rect.height);
+        ((RectTransform)card.transform).SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, RectTransform.rect.width);
+        ((RectTransform)card.transform).SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, RectTransform.rect.height);
     }
 
+    /// <summary>
+    /// Accessor to add a card to this cell.
+    /// </summary>
+    /// <param name="card">Card to add.</param>
     internal void AddCard(Card card)
     {
         Cards.Add(card);
