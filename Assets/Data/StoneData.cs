@@ -11,14 +11,14 @@ using UnityEngine;
 public class StoneData : ScriptableObject
 {
     [Serializable]
-    public struct StoneColor
+    public struct StoneDetails
     {
         public string name;
         public StoneType type;
         public Color color;
     }
 
-    public List<StoneColor> stoneColors;
+    public List<StoneDetails> stones;
 
     public enum StoneType
     {

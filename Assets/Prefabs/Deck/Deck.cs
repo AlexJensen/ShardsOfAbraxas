@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Deck : MonoBehaviour
+public class Deck : NetworkBehaviour
 {
     [SerializeField]
     Transform t_cards;
@@ -27,11 +28,22 @@ public class Deck : MonoBehaviour
         return card;
     }
 
-    public void Shuffle()
+    [ServerRpc]
+    public void ShuffleServerRpc()
     {
         foreach (Transform card in t_cards)
         {
             card.SetSiblingIndex(Random.Range(0, t_cards.childCount));
+        }
+    }
+
+    [ClientRpc]
+    private void ShuffleClientRpc()
+    {
+        // On the clients, the shuffle method just re-parents the cards
+        for (int i = 0; i < t_cards.childCount; i++)
+        {
+            t_cards.GetChild(i).SetSiblingIndex(i);
         }
     }
 

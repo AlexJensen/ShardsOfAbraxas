@@ -116,7 +116,7 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
         foreach (KeyValuePair<StoneData.StoneType, int> pair in TotalCosts)
         {
             if (pair.Value != 0)
-                TotalCostText += "<#" + ColorUtility.ToHtmlStringRGB(Game.Instance.stoneData.stoneColors.Find(x => x.type == pair.Key).color) + ">" + pair.Value;
+                TotalCostText += "<#" + ColorUtility.ToHtmlStringRGB(Game.Instance.GetStoneDetails(pair.Key).color) + ">" + pair.Value;
         }
     }
     #endregion

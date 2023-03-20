@@ -40,7 +40,7 @@ public class CardDetail : MonoBehaviour
             {
                 stones[i].gameObject.SetActive(true);
                 stones[i].Cost.text = card.Stones[i].Cost.ToString();
-                stones[i].CostBack.color = Game.Instance.stoneData.stoneColors.Find(x => x.type == card.Stones[i].StoneType).color;
+                stones[i].CostBack.color = Game.Instance.GetStoneDetails(card.Stones[i].StoneType).color;
                 stones[i].Info.text = card.Stones[i].Info;
             }
             else

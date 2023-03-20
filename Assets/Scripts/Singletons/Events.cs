@@ -10,21 +10,27 @@ public class Events : Singleton<Events>
     internal event GameEvent OnCardMoved;
     internal event GameEvent OnCardDestroyed;
     internal event GameEvent OnCardEnteredField;
+    internal event GameEvent OnBeginningStateStarted;
 
 
 
     internal void CardMove(Card card)
     {
-        OnCardMoved(card);
+        if (OnCardMoved != null) OnCardMoved(card);
     }
 
     internal void CardDestroyed(Card card)
     {
-        OnCardDestroyed(card);
+        if (OnCardDestroyed != null) OnCardDestroyed(card);
     }
 
     internal void CardEnteredField(Card card)
     {
-        OnCardEnteredField(card);
+        if (OnCardEnteredField != null) OnCardEnteredField(card);
+    }
+
+    internal void BeginningStateStarted()
+    {
+        if (OnBeginningStateStarted != null) OnBeginningStateStarted();
     }
 }

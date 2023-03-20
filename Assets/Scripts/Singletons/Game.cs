@@ -5,9 +5,13 @@ using UnityEngine;
 using Unity.Netcode;
 
 
+/// <summary>
+/* The Game singleton handles all higher level logic for a match, including handling the state transitions between each phase of play. 
+ * Data should never be modified directly, it should always be encapsulated into developer friendly methods.*/
+/// </summary>
 public class Game : Singleton<Game>
 {
-    private State currentState;
+    State currentState;
 
     public event Action<State> GameStateChanged;
 
@@ -24,40 +28,37 @@ public class Game : Singleton<Game>
     }
 
     [SerializeField]
-    public List<Hand> hands;
+    List<Hand> hands;
     [SerializeField]
-    public List<Mana> mana;
-    public StoneData stoneData;
+    List<Mana> mana;
+    [SerializeField]
+    StoneData stoneData;
 
-    public Player CurrentPlayer { get; set; } = Player.Player1;
+    public Player CurrentPlayer { get; private set; } = Player.Player1;
 
-    protected void Initialize()
+    protected void Start()
     {
         currentState = new GameNotStartedState(this);
         StartCoroutine(currentState.OnEnterState());
     }
 
-    protected override void Awake()
-    {
-        NetworkManager.Singleton.OnClientConnectedCallback += (client) =>
-        {
-            if (NetworkManager.Singleton.IsServer)
-            {
-                Initialize();
-            }
-        };
-        NetworkManager.Singleton.OnServerStarted += () =>
-        {
-            Initialize();
-        };
-    }
-
-    public IEnumerator SwitchToState(State state)
+    private IEnumerator SwitchToState(State state)
     {
         yield return StartCoroutine(currentState.OnExitState());
         currentState = state;
         GameStateChanged?.Invoke(currentState);
         yield return StartCoroutine(currentState.OnEnterState());
+    }
+
+    public IEnumerator StartGame()
+    {
+        foreach (Hand hand in hands)
+        {
+            hand.Deck.ShuffleServerRpc();
+        }
+        yield return Utilities.WaitForCoroutines(this,
+                        hands[0].DrawCardFromLibrary(5),
+                        hands[1].DrawCardFromLibrary(5));
     }
 
     public void BeginNextGameState()
@@ -90,6 +91,11 @@ public class Game : Singleton<Game>
     public IEnumerator DrawCardsForCurrentPlayer(int amount)
     {
         Hand currentPlayerHand = GetCurrentPlayerHand();
-        yield return currentPlayerHand.DrawCardFromLibrary();
+        yield return currentPlayerHand.DrawCardFromLibrary(amount);
+    }
+
+    public StoneData.StoneDetails GetStoneDetails(StoneData.StoneType type)
+    {
+        return stoneData.stones.Find(x => x.type == type);
     }
 }

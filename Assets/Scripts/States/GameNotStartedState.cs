@@ -2,6 +2,9 @@
 using Unity.Netcode;
 using UnityEngine;
 
+/// <summary>
+/// State to wait in while players are connecting.
+/// </summary>
 public class GameNotStartedState : State
 {
     private NetworkManager networkManager;
@@ -22,20 +25,22 @@ public class GameNotStartedState : State
         }
         else
         {
-            while (!networkManager.IsServer) yield return null;
-            while (networkManager.ConnectedClients.Count != 2) yield return null;
+            while (!networkManager.IsServer)
+            {
+                Debug.Log(networkManager.IsServer);
+                yield return null;
+            }
+            while (networkManager.ConnectedClients.Count != 2)
+            {
+                Debug.Log(networkManager.ConnectedClients.Count);
+                yield return null;
+            }
         }
         game.BeginNextGameState();
     }
 
     public override IEnumerator OnExitState()
     {
-        foreach (Hand hand in game.hands)
-        {
-            hand.Deck.Shuffle();
-        }
-        yield return Utilities.WaitForCoroutines(game,
-                        game.hands[0].DrawCardFromLibrary(5),
-                        game.hands[1].DrawCardFromLibrary(5));
+        yield return game.StartGame();
     }
 }
