@@ -5,6 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[ExecuteInEditMode]
 public class Deck : NetworkBehaviour
 {
     [SerializeField]

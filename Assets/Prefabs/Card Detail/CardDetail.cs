@@ -36,8 +36,9 @@ public class CardDetail : MonoBehaviour
 
         for (int i = 0; i < stones.Count; i++)
         {
-            if (card.Stones.Count > i)
+            if (card.Stones.Count > i && card.Stones[i] is not StatBlock)
             {
+               
                 stones[i].gameObject.SetActive(true);
                 stones[i].Cost.text = card.Stones[i].Cost.ToString();
                 stones[i].CostBack.color = Game.Instance.GetStoneDetails(card.Stones[i].StoneType).color;

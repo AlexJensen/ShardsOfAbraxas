@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class StatBlock : MonoBehaviour
+public class StatBlock : Stone
 {
+    [SerializeField]
+    protected new int cost;
+    [SerializeField]
+    protected new StoneData.StoneType stoneType;
     public enum StatValues
     {
         ATK,
@@ -16,6 +20,12 @@ public class StatBlock : MonoBehaviour
     Vector3Int stats;
 
     public StatBlock(Vector3Int stats) => this.Stats = stats;
+
+    private void Awake()
+    {
+        base.cost = cost;
+        base.stoneType = stoneType;
+    }
 
     public string statsStr => this[StatValues.ATK].ToString() + "/" + this[StatValues.DEF].ToString() + "/" + this[StatValues.MV].ToString();
 

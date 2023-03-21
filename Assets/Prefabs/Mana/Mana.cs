@@ -18,6 +18,7 @@ public class Mana : MonoBehaviour
     int totalDeckCost = 0;
 
     public Game.Player Player { get => player; }
+    public List<ManaType> ManaTypes { get => manaTypes; }
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +32,9 @@ public class Mana : MonoBehaviour
                 ManaType manaType = Instantiate(p_manaType, transform).GetComponent<ManaType>();
                 manaType.Type = manaAmount.Key;
                 manaType.Amount = 0;
+                manaType.Player = player;
                 totalDeckCost += manaAmount.Value;
-                manaTypes.Add(manaType);
+                ManaTypes.Add(manaType);
             }
         }
     }
@@ -47,7 +49,7 @@ public class Mana : MonoBehaviour
                 num -= manaAmount.Value;
                 continue;
             }
-            ManaType manaType = manaTypes.Find(x => x.Type == manaAmount.Key);
+            ManaType manaType = ManaTypes.Find(x => x.Type == manaAmount.Key);
             manaType.Amount += 1;
             break;
         }

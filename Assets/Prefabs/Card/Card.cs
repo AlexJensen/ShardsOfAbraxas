@@ -35,7 +35,7 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
 
     #region Fields
     [SerializeField]
-    readonly string title = "";
+    private string title = "";
 
     Dictionary<StoneData.StoneType, int> totalCosts;
     string totalCostText;
@@ -171,9 +171,10 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
                         Cell cell = hit.gameObject.GetComponent<Cell>();
                         if (cell)
                         {
-                            if (cell.Cards.Count == 0 && cell.player == controller)
+                            if (cell.Cards.Count == 0 && cell.player == controller && Game.Instance.CanPurchaseCard(this))
                             {
                                 StopCoroutine(nameof(ChangeScale));
+                                Game.Instance.PurchaseCard(this);
                                 RequestMoveToCellServerRpc(cell.fieldPos);
                                 return;
                             }

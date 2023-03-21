@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
 
 
 /// <summary>
@@ -66,12 +65,12 @@ public class Game : Singleton<Game>
         StartCoroutine(SwitchToState(currentState.NextState()));
     }
 
-    public Mana GetCurrentPlayerMana()
+    public Mana GetPlayerMana(Game.Player player)
     {
         return mana.Find(x => x.Player == CurrentPlayer);
     }
 
-    public Hand GetCurrentPlayerHand()
+    public Hand GetPlayerHand(Game.Player player)
     {
         return hands.Find(x => x.player == CurrentPlayer);
     }
@@ -83,19 +82,44 @@ public class Game : Singleton<Game>
 
     public void GenerateManaForCurrentPlayer()
     {
-        Mana currentPlayerMana = GetCurrentPlayerMana();
+        Mana currentPlayerMana = GetPlayerMana(CurrentPlayer);
         manaGain = Math.Min(MAX_MANA_GAIN, manaGain + MANA_GAIN_PER_TURN);
         currentPlayerMana.GenerateRatioMana(manaGain);
     }
 
     public IEnumerator DrawCardsForCurrentPlayer(int amount)
     {
-        Hand currentPlayerHand = GetCurrentPlayerHand();
+        Hand currentPlayerHand = GetPlayerHand(CurrentPlayer);
         yield return currentPlayerHand.DrawCardFromLibrary(amount);
     }
 
     public StoneData.StoneDetails GetStoneDetails(StoneData.StoneType type)
     {
         return stoneData.stones.Find(x => x.type == type);
+    }
+
+    public bool CanPurchaseCard(Card card)
+    {
+        Mana currentPlayerMana = GetPlayerMana(card.controller);
+        foreach (KeyValuePair<StoneData.StoneType, int> cost in card.TotalCosts)
+        {
+            ManaType result = currentPlayerMana.ManaTypes.Find(x => x.Type == cost.Key);
+            if (!result || result.Amount < cost.Value)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void PurchaseCard(Card card)
+    {
+        Mana currentPlayerMana = GetPlayerMana(card.controller);
+        foreach (KeyValuePair<StoneData.StoneType, int> cost in card.TotalCosts)
+        {
+            ManaType result = currentPlayerMana.ManaTypes.Find(x => x.Type == cost.Key);
+            result.Amount -= cost.Value;
+        }
+
     }
 }
