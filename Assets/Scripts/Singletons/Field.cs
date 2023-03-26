@@ -68,21 +68,22 @@ public class Field : Singleton<Field>
     /// Initiate combat for all cards on the field.
     /// </summary>
     /// <returns>Execution will continue after combat is completed.</returns>
-    public IEnumerator Combat()
+    public IEnumerator StartCombat()
     {
-        foreach (Card card in cards.Where(s => s.controller == Game.Instance.CurrentPlayer))
+        foreach (Card card in cards.Where(s => s.Controller == Game.Instance.ActivePlayer))
         {
             yield return StartCoroutine(card.OnCombat());
         }
     }
 
     /// <summary>
-    /// Attempts to move a card a specified amount, stopping short if the card collides with another card or would move outside the board, and initiating combat with the colliding card if it is an enemy.
+    /// Attempts to move a card a specified number of cells on the field, stopping short if the card collides with another card or would move outside the board, and initiating combat with the colliding card if it 
+    /// is an enemy.
     /// </summary>
     /// <param name="card">Card to move.</param>
     /// <param name="movement">Movement vector to travel.</param>
     /// <returns>Execution will continue after movement and combat is complete.</returns>
-    public IEnumerator MoveCard(Card card, Vector2Int movement)
+    public IEnumerator MoveCardAndFight(Card card, Vector2Int movement)
     {
         Vector2Int destination = new(Math.Max(0, Math.Min(field[0].cells.Count - 1, card.fieldPos.x + movement.x)), Math.Max(0, Math.Min(field[0].cells.Count - 1, card.fieldPos.y + movement.y)));
         if (movement.x > 0)

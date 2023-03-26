@@ -19,7 +19,7 @@ public class EndState : State
 
     public override IEnumerator OnExitState()
     {
-        Game.Instance.SwitchCurrentPlayer();
+        Game.Instance.SwitchActivePlayer();
         yield break;
     }
 }

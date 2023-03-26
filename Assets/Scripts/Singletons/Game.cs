@@ -32,8 +32,10 @@ public class Game : Singleton<Game>
     List<Mana> mana;
     [SerializeField]
     StoneData stoneData;
+    [SerializeField]
+    PlayerData playerData;
 
-    public Player CurrentPlayer { get; private set; } = Player.Player1;
+    public Player ActivePlayer { get; private set; } = Player.Player1;
 
     protected void Start()
     {
@@ -56,8 +58,8 @@ public class Game : Singleton<Game>
             hand.Deck.ShuffleServerRpc();
         }
         yield return Utilities.WaitForCoroutines(this,
-                        hands[0].DrawCardFromLibrary(5),
-                        hands[1].DrawCardFromLibrary(5));
+                        hands[0].DrawCardsFromLibrary(5),
+                        hands[1].DrawCardsFromLibrary(5));
     }
 
     public void BeginNextGameState()
@@ -67,30 +69,30 @@ public class Game : Singleton<Game>
 
     public Mana GetPlayerMana(Game.Player player)
     {
-        return mana.Find(x => x.Player == CurrentPlayer);
+        return mana.Find(x => x.Player == ActivePlayer);
     }
 
     public Hand GetPlayerHand(Game.Player player)
     {
-        return hands.Find(x => x.player == CurrentPlayer);
+        return hands.Find(x => x.player == ActivePlayer);
     }
 
-    public void SwitchCurrentPlayer()
+    public void SwitchActivePlayer()
     {
-        CurrentPlayer = CurrentPlayer == Player.Player1 ? Player.Player2 : Player.Player1;
+        ActivePlayer = ActivePlayer == Player.Player1 ? Player.Player2 : Player.Player1;
     }
 
-    public void GenerateManaForCurrentPlayer()
+    public void GenerateManaForActivePlayer()
     {
-        Mana currentPlayerMana = GetPlayerMana(CurrentPlayer);
+        Mana currentPlayerMana = GetPlayerMana(ActivePlayer);
         manaGain = Math.Min(MAX_MANA_GAIN, manaGain + MANA_GAIN_PER_TURN);
         currentPlayerMana.GenerateRatioMana(manaGain);
     }
 
-    public IEnumerator DrawCardsForCurrentPlayer(int amount)
+    public IEnumerator DrawCardsForActivePlayer(int amount)
     {
-        Hand currentPlayerHand = GetPlayerHand(CurrentPlayer);
-        yield return currentPlayerHand.DrawCardFromLibrary(amount);
+        Hand currentPlayerHand = GetPlayerHand(ActivePlayer);
+        yield return currentPlayerHand.DrawCardsFromLibrary(amount);
     }
 
     public StoneData.StoneDetails GetStoneDetails(StoneData.StoneType type)
@@ -98,9 +100,14 @@ public class Game : Singleton<Game>
         return stoneData.stones.Find(x => x.type == type);
     }
 
+    public PlayerData.PlayerDetails GetPlayerDetails(Player player)
+    {
+        return playerData.players.Find(x => x.player == player);
+    }
+
     public bool CanPurchaseCard(Card card)
     {
-        Mana currentPlayerMana = GetPlayerMana(card.controller);
+        Mana currentPlayerMana = GetPlayerMana(card.Owner);
         foreach (KeyValuePair<StoneData.StoneType, int> cost in card.TotalCosts)
         {
             ManaType result = currentPlayerMana.ManaTypes.Find(x => x.Type == cost.Key);
@@ -114,7 +121,7 @@ public class Game : Singleton<Game>
 
     public void PurchaseCard(Card card)
     {
-        Mana currentPlayerMana = GetPlayerMana(card.controller);
+        Mana currentPlayerMana = GetPlayerMana(card.Owner);
         foreach (KeyValuePair<StoneData.StoneType, int> cost in card.TotalCosts)
         {
             ManaType result = currentPlayerMana.ManaTypes.Find(x => x.Type == cost.Key);

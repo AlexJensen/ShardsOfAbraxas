@@ -9,7 +9,7 @@ public class Garnet_Effect_BuffTriggeringATKHP : EffectStone
     protected void Awake()
     {
         cost = 4;
-        stoneType = StoneData.StoneType.PERIDOT;
+        stoneType = StoneData.StoneType.GARNET;
         info = "Give the triggering packet +1/+1/+0 until this packet is destroyed.";
         buffs = new List<StatBuff>();
     }

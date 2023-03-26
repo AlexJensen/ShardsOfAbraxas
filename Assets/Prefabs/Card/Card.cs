@@ -45,7 +45,9 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     [HideInInspector]
     public Vector2Int fieldPos;
 
-    public Game.Player controller, owner;
+    [SerializeField]
+    Game.Player controller, owner;
+    Color controllerColor;
 
     RectTransform rectTransform;
     [SerializeField]
@@ -79,9 +81,34 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
 
     public string TotalCostText { get => totalCostText; private set => totalCostText = value; }
     public Dictionary<StoneData.StoneType, int> TotalCosts { get => totalCosts ??= GenerateTotalCost(); }
+    public Game.Player Controller
+    {
+        get => controller;
+        set
+        {
+            controller = value;
+            image.transform.localScale = new Vector3(owner == Game.Player.Player1 ? 1 : -1, 1, 1);
+        }
+    }
+    public Game.Player Owner
+    {
+        get => owner; 
+        set
+        {
+            owner = value;
+            Color controllerColor = Game.Instance.GetPlayerDetails(controller).color;
+            titleText.color = controllerColor;
+        }
+    }
     #endregion
 
     #region Unity Methods
+
+    void Awake()
+    {
+        Controller = controller;
+        Owner = owner;
+    }
 
     private Dictionary<StoneData.StoneType, int> GenerateTotalCost()
     {
@@ -130,11 +157,11 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
             {
                 case Zone.HAND:
                     {
-                        if (controller == Game.Instance.CurrentPlayer)
+                        if (Controller == Game.Instance.ActivePlayer)
                         {
                             transform.SetParent(Drag.Instance.transform);
                             Drag.Instance.card = this;
-                            Hands.Instance.PlayerHands.Find(x => x.player == controller).RemoveCard(this);
+                            Hands.Instance.PlayerHands.Find(x => x.player == Controller).RemoveCard(this);
                             StartCoroutine(ChangeScale(Drag.Instance.templateCardRect.rect.size, MOVE_FROM_HAND_TO_DRAG_SCALE_TIME));
                             zone = Zone.DRAG;
                         }
@@ -171,10 +198,11 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
                         Cell cell = hit.gameObject.GetComponent<Cell>();
                         if (cell)
                         {
-                            if (cell.Cards.Count == 0 && cell.player == controller && Game.Instance.CanPurchaseCard(this))
+                            if (cell.Cards.Count == 0 && cell.player == Controller && Game.Instance.CanPurchaseCard(this))
                             {
                                 StopCoroutine(nameof(ChangeScale));
                                 Game.Instance.PurchaseCard(this);
+                                gameObject.AddComponent<LoadingDebuff>();
                                 RequestMoveToCellServerRpc(cell.fieldPos);
                                 return;
                             }
@@ -183,7 +211,7 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
 
                     zone = Zone.HAND;
                     StopCoroutine(nameof(ChangeScale));
-                    StartCoroutine(MoveToHand(Hands.Instance.PlayerHands.Find(x => x.player == controller)));
+                    StartCoroutine(MoveToHand(Hands.Instance.PlayerHands.Find(x => x.player == Controller)));
                 }
                 break;
         }
@@ -254,7 +282,7 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     public IEnumerator MoveToCell(Cell cell)
     {
         transform.SetParent(Drag.Instance.transform);
-        Hands.Instance.PlayerHands.Find(x => x.player == controller).RemoveCard(this);
+        Game.Instance.GetPlayerHand(Controller).RemoveCard(this);
         yield return StartCoroutine(Utilities.WaitForCoroutines(this,
            ChangeScale(cell.RectTransform.rect.size, MOVE_FROM_HAND_TO_CELL_SCALE_TIME),
            MoveTo(cell.RectTransform.position, MOVE_FROM_HAND_TO_CELL_MOVE_TIME)));
@@ -263,8 +291,11 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
 
     public IEnumerator OnCombat()
     {
-        yield return StartCoroutine(Field.Instance.MoveCard(this, new Vector2Int(controller == Game.Player.Player1 ? statBlock[StatBlock.StatValues.MV] :
-                                                                                 controller == Game.Player.Player2 ? -statBlock[StatBlock.StatValues.MV] : 0, 0)));
+        if (gameObject.GetComponent<LoadingDebuff>() == null)
+        {
+            yield return StartCoroutine(Field.Instance.MoveCardAndFight(this, new Vector2Int(Controller == Game.Player.Player1 ? statBlock[StatBlock.StatValues.MV] :
+                                                                                     Controller == Game.Player.Player2 ? -statBlock[StatBlock.StatValues.MV] : 0, 0)));
+        }
     }
     #endregion
 

@@ -34,27 +34,11 @@ public class Hand : MonoBehaviour
 
     void Update()
     {
-        if (Drag.Instance.card != null && Drag.Instance.card.controller == player)
+        if (Drag.Instance.card != null && Drag.Instance.card.Controller == player)
         {
             Cards.Remove(Drag.Instance.card);
             cardPlaceholder.gameObject.SetActive(true);
-
-            foreach (Card card in Cards)
-            {
-                if (player == Game.Player.Player1 ?
-                    Input.mousePosition.y > card.transform.position.y :
-                    Input.mousePosition.y < card.transform.position.y)
-                {
-                    CardPlaceholder.UpdateIndex(Cards.IndexOf(card));
-                    break;
-                }
-                if (Cards.IndexOf(card) == Cards.Count - 1)
-                {
-                    CardPlaceholder.UpdateIndex(Cards.IndexOf(card) + 1);
-                    break;
-                }
-            }
-            cardPlaceholder.CheckPosition();
+            UpdateCardPlaceholderPosition();
         }
         else if (!cardReturning && cardPlaceholder.isActiveAndEnabled)
         {
@@ -76,6 +60,26 @@ public class Hand : MonoBehaviour
         CardPlaceholder.Reset();
     }
 
+    private void UpdateCardPlaceholderPosition()
+    {
+        foreach (Card card in Cards)
+        {
+            if (player == Game.Player.Player1 ?
+                Input.mousePosition.y > card.transform.position.y :
+                Input.mousePosition.y < card.transform.position.y)
+            {
+                CardPlaceholder.UpdateIndex(Cards.IndexOf(card));
+                break;
+            }
+            if (Cards.IndexOf(card) == Cards.Count - 1)
+            {
+                CardPlaceholder.UpdateIndex(Cards.IndexOf(card) + 1);
+                break;
+            }
+        }
+        cardPlaceholder.CheckPosition();
+    }
+
     public void RemoveCard(Card card)
     {
         if (Cards.Contains(card))
@@ -86,7 +90,7 @@ public class Hand : MonoBehaviour
         }
     }
 
-    internal IEnumerator DrawCardFromLibrary(int amount = 1, int index = 0)
+    internal IEnumerator DrawCardsFromLibrary(int amount = 1, int index = 0)
     {
         Card card = Deck.DrawCard(index);
         cardReturning = true;
@@ -96,7 +100,9 @@ public class Hand : MonoBehaviour
         CardPlaceholder.SnapToMaxHeight();
         yield return null;
         yield return StartCoroutine(card.MoveToHand(this));
-        if (amount > 1) yield return StartCoroutine(DrawCardFromLibrary(amount - 1, index));
+        if (amount > 1) yield return StartCoroutine(DrawCardsFromLibrary(amount - 1, index));
     }
+
+
     #endregion
 }

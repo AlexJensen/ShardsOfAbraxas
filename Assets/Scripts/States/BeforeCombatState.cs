@@ -13,6 +13,7 @@ public class BeforeCombatState : State
 
     public override IEnumerator OnEnterState()
     {
+        Events.Instance.BeforeCombatStarted();
         yield break;
     }
 

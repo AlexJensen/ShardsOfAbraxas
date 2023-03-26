@@ -49,7 +49,7 @@ public class Garnet_Trigger_FriendlyAdjacent : TriggerStone
         Card triggeringCard = (Card)vals[0];
         foreach (Vector2Int adjacent in adjacents)
         {
-            if (card.fieldPos + adjacent == triggeringCard.fieldPos && card.controller == triggeringCard.controller)
+            if (card.fieldPos + adjacent == triggeringCard.fieldPos && card.Controller == triggeringCard.Controller)
             {
                 InvokeTrigger(triggeringCard);
             }

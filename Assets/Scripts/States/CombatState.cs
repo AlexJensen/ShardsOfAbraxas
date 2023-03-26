@@ -13,7 +13,7 @@ public class CombatState : State
 
     public override IEnumerator OnEnterState()
     {
-        yield return Field.Instance.Combat();
+        yield return Field.Instance.StartCombat();
         game.BeginNextGameState();
     }
 

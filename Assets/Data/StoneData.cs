@@ -1,13 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 /// <summary>
-/// GameData.cs stores top level game data and enums for commonly used terms
+/// StoneData.cs stores top level stone information
 /// </summary>
-[CreateAssetMenu(fileName = "StoneColors", menuName = "CardData/StoneColors", order = 1)]
+[CreateAssetMenu(fileName = "StoneData", menuName = "CardData/StoneData", order = 1)]
 public class StoneData : ScriptableObject
 {
     [Serializable]
