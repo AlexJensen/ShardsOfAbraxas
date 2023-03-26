@@ -9,11 +9,13 @@ using Random = UnityEngine.Random;
 public class Deck : NetworkBehaviour
 {
     [SerializeField]
-    Transform t_cards;
+    Transform cards;
+
+    public Transform Cards { get => cards;}
 
     private void Update()
     {
-        foreach (Transform card in t_cards)
+        foreach (Transform card in Cards)
         {
             card.localScale = Vector3.zero;
         }
@@ -21,7 +23,7 @@ public class Deck : NetworkBehaviour
 
     internal Card DrawCard(int index = 0)
     {
-        Card card = t_cards.GetChild(index).GetComponent<Card>();
+        Card card = Cards.GetChild(index).GetComponent<Card>();
         card.transform.localScale = Vector3.one;
         card.transform.position = transform.position;
         card.transform.SetParent(Drag.Instance.transform);
@@ -32,9 +34,9 @@ public class Deck : NetworkBehaviour
     [ServerRpc]
     public void ShuffleServerRpc()
     {
-        foreach (Transform card in t_cards)
+        foreach (Transform card in Cards)
         {
-            card.SetSiblingIndex(Random.Range(0, t_cards.childCount));
+            card.SetSiblingIndex(Random.Range(0, Cards.childCount));
         }
     }
 
@@ -42,9 +44,9 @@ public class Deck : NetworkBehaviour
     private void ShuffleClientRpc()
     {
         // On the clients, the shuffle method just re-parents the cards
-        for (int i = 0; i < t_cards.childCount; i++)
+        for (int i = 0; i < Cards.childCount; i++)
         {
-            t_cards.GetChild(i).SetSiblingIndex(i);
+            Cards.GetChild(i).SetSiblingIndex(i);
         }
     }
 

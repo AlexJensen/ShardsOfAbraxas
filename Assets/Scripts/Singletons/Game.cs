@@ -5,8 +5,7 @@ using UnityEngine;
 
 
 /// <summary>
-/* The Game singleton handles all higher level logic for a match, including handling the state transitions between each phase of play. 
- * Data should never be modified directly, it should always be encapsulated into developer friendly methods.*/
+/* The Game singleton handles all higher level logic for a match, including handling the state transitions between each phase of play. */
 /// </summary>
 public class Game : Singleton<Game>
 {
@@ -30,10 +29,7 @@ public class Game : Singleton<Game>
     List<Hand> hands;
     [SerializeField]
     List<Mana> mana;
-    [SerializeField]
-    StoneData stoneData;
-    [SerializeField]
-    PlayerData playerData;
+
 
     public Player ActivePlayer { get; private set; } = Player.Player1;
 
@@ -67,14 +63,14 @@ public class Game : Singleton<Game>
         StartCoroutine(SwitchToState(currentState.NextState()));
     }
 
-    public Mana GetPlayerMana(Game.Player player)
+    public Mana GetPlayerMana(Player player)
     {
-        return mana.Find(x => x.Player == ActivePlayer);
+        return mana.Find(x => x.Player == player);
     }
 
-    public Hand GetPlayerHand(Game.Player player)
+    public Hand GetPlayerHand(Player player)
     {
-        return hands.Find(x => x.player == ActivePlayer);
+        return hands.Find(x => x.player == player);
     }
 
     public void SwitchActivePlayer()
@@ -93,16 +89,6 @@ public class Game : Singleton<Game>
     {
         Hand currentPlayerHand = GetPlayerHand(ActivePlayer);
         yield return currentPlayerHand.DrawCardsFromLibrary(amount);
-    }
-
-    public StoneData.StoneDetails GetStoneDetails(StoneData.StoneType type)
-    {
-        return stoneData.stones.Find(x => x.type == type);
-    }
-
-    public PlayerData.PlayerDetails GetPlayerDetails(Player player)
-    {
-        return playerData.players.Find(x => x.player == player);
     }
 
     public bool CanPurchaseCard(Card card)

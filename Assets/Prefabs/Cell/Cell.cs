@@ -57,9 +57,16 @@ public class Cell : MonoBehaviour
     internal void AddCard(Card card)
     {
         Cards.Add(card);
+        card.Cell = this;
         card.transform.SetParent(transform);
         card.fieldPos = fieldPos;
         FitCardInCell(card);
+    }
+
+    internal void RemoveCard(Card card)
+    {
+        Cards.Remove(card);
+        card.Cell = null;
     }
     #endregion
 }

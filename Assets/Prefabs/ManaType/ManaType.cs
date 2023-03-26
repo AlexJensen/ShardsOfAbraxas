@@ -71,7 +71,7 @@ public class ManaType : MonoBehaviour
 
     public void Refresh()
     {
-        StoneData.StoneDetails colorData = Game.Instance.GetStoneDetails(Type);
+        StoneData.StoneDetails colorData = Data.Instance.GetStoneDetails(Type);
         image.color = colorData.color;
         name = colorData.name;
         amountStr.text = amount.ToString();

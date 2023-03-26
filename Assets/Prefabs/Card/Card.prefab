@@ -512,7 +512,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 27ce9815100618245a27e77039e1eaf6, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -521,7 +521,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.8
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &9211214414908797190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,6 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d507de2d4d70f418e01314c8ac7dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  title: 
   zone: 2
   fieldPos: {x: 0, y: 0}
   controller: 0
@@ -576,6 +577,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b011fb44ee7e6154e8cdd1e0d0d53d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  card: {fileID: 0}
+  cost: 0
+  stoneType: 0
   stats: {x: 0, y: 0, z: 0}
 --- !u!114 &-85551077654799062
 MonoBehaviour:

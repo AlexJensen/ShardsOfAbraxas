@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class Graveyard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    Transform cards;
+
+    private void Update()
     {
-        
+        foreach (Transform card in cards)
+        {
+            card.localScale = Vector3.zero;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    internal void AddCard(Card card, int index = 0)
     {
-        
+        card.transform.localScale = Vector3.zero;
+        card.transform.position = transform.position;
+        card.transform.SetParent(cards);
+        card.zone = Card.Zone.DEAD;
     }
 }

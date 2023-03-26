@@ -20,7 +20,6 @@ public class Mana : MonoBehaviour
     public Game.Player Player { get => player; }
     public List<ManaType> ManaTypes { get => manaTypes; }
 
-    // Start is called before the first frame update
     void Start()
     {
         deckCosts = deck.GetTotalDeckCosts();
@@ -37,25 +36,37 @@ public class Mana : MonoBehaviour
                 ManaTypes.Add(manaType);
             }
         }
+        // Sort the mana types by their stone type
+        manaTypes.Sort((a, b) => a.Type.CompareTo(b.Type));
+
+        // Update the sibling indexes of the mana type game objects
+        for (int i = 0; i < manaTypes.Count; i++)
+        {
+            manaTypes[i].transform.SetSiblingIndex(i);
+        }
     }
 
+    /// <summary>
+    /// Produce mana randomly based on the starting mana values present in the deck at the start of the game.
+    /// The type of mana selected depends on how common that type is present in the deck.
+    /// </summary>
+    /// <param name="amount">Amount of mana to generate.</param>
     public void GenerateRatioMana(int amount)
     {
-        int num = Random.Range(0, totalDeckCost);
-        foreach (KeyValuePair<StoneData.StoneType, int> manaAmount in deckCosts)
+        for (int i = 0; i < amount; i++)
         {
-            if (manaAmount.Value < num)
+            int num = Random.Range(0, totalDeckCost);
+            foreach (KeyValuePair<StoneData.StoneType, int> manaAmount in deckCosts)
             {
-                num -= manaAmount.Value;
-                continue;
+                if (manaAmount.Value < num)
+                {
+                    num -= manaAmount.Value;
+                    continue;
+                }
+                ManaType manaType = ManaTypes.Find(x => x.Type == manaAmount.Key);
+                manaType.Amount += 1;
+                break;
             }
-            ManaType manaType = ManaTypes.Find(x => x.Type == manaAmount.Key);
-            manaType.Amount += 1;
-            break;
-        }
-        if (amount > 1)
-        {
-            GenerateRatioMana(amount - 1);
         }
     }
 }

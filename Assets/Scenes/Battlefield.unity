@@ -228,7 +228,7 @@ RectTransform:
   - {fileID: 113527020}
   - {fileID: 221095671}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -261,7 +261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 6
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -1780,6 +1780,10 @@ PrefabInstance:
       propertyPath: stats.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+      propertyPath: stoneType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
       value: 0
@@ -1997,7 +2001,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &150961608
 PrefabInstance:
@@ -3130,6 +3134,10 @@ PrefabInstance:
       propertyPath: stats.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+      propertyPath: stoneType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
       value: 0
@@ -3392,6 +3400,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stats.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+      propertyPath: stoneType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
@@ -3932,7 +3944,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -5408,7 +5420,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &597784367
 MonoBehaviour:
@@ -5503,7 +5515,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -6321,7 +6333,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -7259,7 +7271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -8284,7 +8296,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &778662053 stripped
 RectTransform:
@@ -8725,6 +8737,10 @@ PrefabInstance:
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stats.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+      propertyPath: stoneType
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -9290,7 +9306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -10152,7 +10168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -10405,7 +10421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -11299,6 +11315,10 @@ PrefabInstance:
       propertyPath: stats.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+      propertyPath: stoneType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
       value: 0
@@ -11646,6 +11666,69 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6750648729959934836, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
   m_PrefabInstance: {fileID: 1042092824}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1307159254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1307159257}
+  - component: {fileID: 1307159255}
+  - component: {fileID: 1307159258}
+  m_Layer: 0
+  m_Name: DataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1307159255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307159254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 4199782763
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!4 &1307159257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307159254}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1307159258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307159254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 580f7b6e557dc084a8123f2183840655, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stoneData: {fileID: 11400000, guid: 9482905efc29b194780d6ac656962ada, type: 2}
+  playerData: {fileID: 11400000, guid: 11bc63f3724c5a44394a454df2c04d27, type: 2}
 --- !u!1001 &1309947331
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12497,6 +12580,10 @@ PrefabInstance:
       propertyPath: stats.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+      propertyPath: stoneType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
       value: 0
@@ -12839,7 +12926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -13913,7 +14000,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 6
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -14585,6 +14672,10 @@ PrefabInstance:
       propertyPath: stats.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+      propertyPath: stoneType
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
       value: 0
@@ -15077,7 +15168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -15262,7 +15353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 6
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -15561,7 +15652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -16621,7 +16712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stoneType
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -16963,7 +17054,6 @@ MonoBehaviour:
   mana:
   - {fileID: 2051342433}
   - {fileID: 1622375259}
-  stoneData: {fileID: 11400000, guid: 9482905efc29b194780d6ac656962ada, type: 2}
 --- !u!114 &1866085274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17721,6 +17811,10 @@ PrefabInstance:
     - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: stats.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8972399931271291979, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+      propertyPath: stoneType
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -8881554692825692823, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
       propertyPath: owner
@@ -19772,7 +19866,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4894976274807664013, guid: 581ed37207031604f89505fea54a0e23, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -8.4079
+      value: -8.407959
       objectReference: {fileID: 0}
     - target: {fileID: 4894976274807664013, guid: 581ed37207031604f89505fea54a0e23, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -20017,7 +20111,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6673881646194593017, guid: 42ca2fcf7df703a4db5b44f51d215946, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6673881646194593017, guid: 42ca2fcf7df703a4db5b44f51d215946, type: 3}
       propertyPath: m_LocalPosition.x

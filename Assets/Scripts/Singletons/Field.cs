@@ -64,6 +64,12 @@ public class Field : Singleton<Field>
         AddToField(card, field[fieldPos.y].cells[fieldPos.x]);
     }
 
+    public void RemoveFromField(Card card)
+    {
+        cards.Remove(card);
+        card.Cell.RemoveCard(card);
+    }
+
     /// <summary>
     /// Initiate combat for all cards on the field.
     /// </summary>
@@ -86,6 +92,7 @@ public class Field : Singleton<Field>
     public IEnumerator MoveCardAndFight(Card card, Vector2Int movement)
     {
         Vector2Int destination = new(Math.Max(0, Math.Min(field[0].cells.Count - 1, card.fieldPos.x + movement.x)), Math.Max(0, Math.Min(field[0].cells.Count - 1, card.fieldPos.y + movement.y)));
+        Card collided = null;
         if (movement.x > 0)
         {
             for (int i = card.fieldPos.x + 1; i <= destination.x; i++)
@@ -93,6 +100,7 @@ public class Field : Singleton<Field>
                 if (field[card.fieldPos.y].cells[i].Cards.Count > 0)
                 {
                     destination.x = i - 1;
+                    collided = field[card.fieldPos.y].cells[i].Cards[0];
                     break;
                 }
             }
@@ -101,9 +109,11 @@ public class Field : Singleton<Field>
         {
             for (int i = card.fieldPos.x - 1; i >= destination.x; i--)
             {
-                if (field[card.fieldPos.y].cells[i].Cards.Count > 0)
+                IEnumerable<Card> activeCards = field[card.fieldPos.y].cells[i].Cards.Where(x => x.isActiveAndEnabled);
+                if (activeCards.Count() > 0)
                 {
                     destination.x = i + 1;
+                    collided = field[card.fieldPos.y].cells[i].Cards[0];
                     break;
                 }
             }
@@ -116,6 +126,10 @@ public class Field : Singleton<Field>
             yield return StartCoroutine(card.MoveTo(field[destination.y].cells[destination.x].RectTransform.position, Card.MOVEMENT_ON_FIELD_TIME));
             field[destination.y].cells[destination.x].AddCard(card);
             Events.Instance.CardMove(card);
+        }
+        if (collided != null)
+        {
+            yield return StartCoroutine(card.Fight(collided));
         }
     }
 

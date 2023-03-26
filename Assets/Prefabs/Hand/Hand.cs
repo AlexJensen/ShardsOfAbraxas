@@ -85,6 +85,7 @@ public class Hand : MonoBehaviour
         if (Cards.Contains(card))
         {
             CardPlaceholder.transform.SetSiblingIndex(Cards.IndexOf(card));
+            CardPlaceholder.gameObject.SetActive(true);
             CardPlaceholder.SnapToMaxHeight();
             Cards.Remove(card);
         }
@@ -92,15 +93,16 @@ public class Hand : MonoBehaviour
 
     internal IEnumerator DrawCardsFromLibrary(int amount = 1, int index = 0)
     {
-        Card card = Deck.DrawCard(index);
-        cardReturning = true;
-        CardPlaceholder.transform.SetSiblingIndex(0);
-        CardPlaceholder.gameObject.SetActive(true);
-        yield return StartCoroutine(CardPlaceholder.ScaleToMaxSize());
-        CardPlaceholder.SnapToMaxHeight();
-        yield return null;
-        yield return StartCoroutine(card.MoveToHand(this));
-        if (amount > 1) yield return StartCoroutine(DrawCardsFromLibrary(amount - 1, index));
+        for (int i = 0; i < amount; i++)
+        {
+            Card card = Deck.DrawCard(index);
+            cardReturning = true;
+            CardPlaceholder.transform.SetSiblingIndex(0);
+            CardPlaceholder.gameObject.SetActive(true);
+            yield return StartCoroutine(CardPlaceholder.ScaleToMaxSize());
+            CardPlaceholder.SnapToMaxHeight();
+            yield return StartCoroutine(card.MoveToHand(this));
+        }
     }
 
 

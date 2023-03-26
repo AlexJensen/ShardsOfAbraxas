@@ -77,7 +77,6 @@ public class CardPlaceholder : MonoBehaviour
 
     internal void SnapToMaxHeight()
     {
-        gameObject.SetActive(true);
         CardPlaceholderLayout.preferredHeight = maxHeight;
     }
 

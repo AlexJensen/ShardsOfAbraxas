@@ -33,6 +33,7 @@ public class CardDetail : MonoBehaviour
         health.text = card.StatBlock[StatBlock.StatValues.DEF].ToString();
         speed.text = card.StatBlock[StatBlock.StatValues.MV].ToString();
         image.sprite = card.Image.sprite;
+        image.transform.localScale = card.Image.transform.localScale;
 
         for (int i = 0; i < stones.Count; i++)
         {
@@ -41,7 +42,7 @@ public class CardDetail : MonoBehaviour
                
                 stones[i].gameObject.SetActive(true);
                 stones[i].Cost.text = card.Stones[i].Cost.ToString();
-                stones[i].CostBack.color = Game.Instance.GetStoneDetails(card.Stones[i].StoneType).color;
+                stones[i].CostBack.color = Data.Instance.GetStoneDetails(card.Stones[i].StoneType).color;
                 stones[i].Info.text = card.Stones[i].Info;
             }
             else

@@ -27,8 +27,8 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
 
     public const float MOVE_FROM_HAND_TO_DRAG_SCALE_TIME = .2f;
     public const float MOVEMENT_ON_FIELD_TIME = .2f;
-    public const float MOVE_TO_HAND_SCALE_TIME = .2f;
-    public const float MOVE_TO_HAND_MOVE_TIME = .2f;
+    public const float MOVE_TO_ZONE_SCALE_TIME = .2f;
+    public const float MOVE_TO_ZONE_MOVE_TIME = .2f;
     public const float MOVE_FROM_HAND_TO_CELL_SCALE_TIME = 0.2f;
     public const float MOVE_FROM_HAND_TO_CELL_MOVE_TIME = 0.2f;
     #endregion
@@ -96,10 +96,12 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
         set
         {
             owner = value;
-            Color controllerColor = Game.Instance.GetPlayerDetails(controller).color;
+            Color controllerColor = Data.Instance.GetPlayerDetails(controller).color;
             titleText.color = controllerColor;
         }
     }
+
+    public Cell Cell { get; internal set; }
     #endregion
 
     #region Unity Methods
@@ -132,9 +134,35 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     {
         if (titleText.text != Title) titleText.text = Title;
         if (statsText.text != StatBlock.statsStr) statsText.text = StatBlock.statsStr;
+        Color statBlockColor = Data.Instance.GetStoneDetails(statBlock.StoneType).color;
+        if (statsText.color != statBlockColor) statsText.color = statBlockColor;
         FormatCost();
         if (costText.text != TotalCostText) costText.text = TotalCostText;
         if (hidden != cover.activeInHierarchy) cover.SetActive(hidden);
+    }
+
+    public IEnumerator Fight(Card collided)
+    {
+        StatBlock collidedStats = collided.GetComponent<StatBlock>();
+        collidedStats[StatBlock.StatValues.DEF] -= StatBlock[StatBlock.StatValues.ATK];
+        StatBlock[StatBlock.StatValues.DEF] -= collidedStats[StatBlock.StatValues.ATK];
+
+
+        yield return Utilities.WaitForCoroutines(this,
+            collided.CheckDeath(), 
+            CheckDeath());
+    }
+
+    private IEnumerator CheckDeath()
+    {
+        if (statBlock[StatBlock.StatValues.DEF] <= 0)
+        {
+            Graveyard graveyard = Game.Instance.GetPlayerHand(Controller).Graveyard;
+            yield return MoveToFitRectangle(graveyard.GetComponent<RectTransform>());
+
+            Field.Instance.RemoveFromField(this);
+            graveyard.AddCard(this);
+        }
     }
 
     private void FormatCost()
@@ -143,7 +171,7 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
         foreach (KeyValuePair<StoneData.StoneType, int> pair in TotalCosts)
         {
             if (pair.Value != 0)
-                TotalCostText += "<#" + ColorUtility.ToHtmlStringRGB(Game.Instance.GetStoneDetails(pair.Key).color) + ">" + pair.Value;
+                TotalCostText += "<#" + ColorUtility.ToHtmlStringRGB(Data.Instance.GetStoneDetails(pair.Key).color) + ">" + pair.Value;
         }
     }
     #endregion
@@ -270,13 +298,16 @@ public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     public IEnumerator MoveToHand(Hand hand)
     {
         hand.cardReturning = true;
-
-        yield return StartCoroutine(Utilities.WaitForCoroutines(this,
-            ChangeScale(hand.CardPlaceholder.CardPlaceholderRect.rect.size, MOVE_TO_HAND_SCALE_TIME),
-            MoveTo(hand.CardPlaceholder.CardPlaceholderRect.position, MOVE_TO_HAND_MOVE_TIME)));
-
+        yield return MoveToFitRectangle(hand.CardPlaceholder.CardPlaceholderRect);
         hand.cardReturning = false;
         hand.AddCardAtPlaceholder(this);
+    }
+
+    public IEnumerator MoveToFitRectangle(RectTransform rectTransform)
+    {
+        yield return StartCoroutine(Utilities.WaitForCoroutines(this,
+            ChangeScale(rectTransform.rect.size, MOVE_TO_ZONE_SCALE_TIME),
+            MoveTo(rectTransform.position, MOVE_TO_ZONE_MOVE_TIME)));
     }
 
     public IEnumerator MoveToCell(Cell cell)
