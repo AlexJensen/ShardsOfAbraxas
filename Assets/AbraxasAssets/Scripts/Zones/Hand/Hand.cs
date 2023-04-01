@@ -19,8 +19,8 @@ namespace Abraxas.Behaviours.Zones.Hands
         CardPlaceholder cardPlaceholder;
         Deck deck;
         Graveyard graveyard;
-
-        public GameManager.Player player;
+        [SerializeField]
+        GameManager.Player player;
         internal bool cardReturning;
         #endregion
 
@@ -29,6 +29,8 @@ namespace Abraxas.Behaviours.Zones.Hands
         public Deck Deck => deck = deck != null ? deck : deck = GetComponentInChildren<Deck>();
         public List<Card> Cards => cards = (cards ??= cards_t.GetComponentsInChildren<Card>().ToList());
         public Graveyard Graveyard => graveyard = graveyard != null ? graveyard : graveyard = GetComponentInChildren<Graveyard>();
+
+        public GameManager.Player Player { get => player; set => player = value; }
         #endregion
 
         #region Unity Methods
@@ -39,7 +41,7 @@ namespace Abraxas.Behaviours.Zones.Hands
 
         void Update()
         {
-            if (DragManager.Instance.card != null && DragManager.Instance.card.Controller == player)
+            if (DragManager.Instance.card != null && DragManager.Instance.card.Controller == Player)
             {
                 Cards.Remove(DragManager.Instance.card);
                 cardPlaceholder.gameObject.SetActive(true);
@@ -69,7 +71,7 @@ namespace Abraxas.Behaviours.Zones.Hands
         {
             foreach (Card card in Cards)
             {
-                if (player == GameManager.Player.Player1 ?
+                if (Player == GameManager.Player.Player1 ?
                     Input.mousePosition.y > card.transform.position.y :
                     Input.mousePosition.y < card.transform.position.y)
                 {

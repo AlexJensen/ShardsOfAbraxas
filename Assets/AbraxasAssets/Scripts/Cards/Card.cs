@@ -1,3 +1,14 @@
+using Abraxas.Core;
+using Abraxas.Behaviours.Stones;
+using Abraxas.Behaviours.Data;
+using Abraxas.Behaviours.Game;
+using Abraxas.Behaviours.Zones;
+using Abraxas.Behaviours.Zones.Fields;
+using Abraxas.Behaviours.Zones.Hands;
+using Abraxas.Behaviours.Zones.Drags;
+using Abraxas.Behaviours.Zones.Graveyards;
+using Abraxas.Behaviours.Status;
+using Abraxas.Behaviours.CardViewer;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +17,8 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Abraxas.Core;
-using Abraxas.Behaviours.Stones;
-using Abraxas.Behaviours.Data;
-using Abraxas.Behaviours.Game;
-using Abraxas.Behaviours.Zones.Fields;
-using Abraxas.Behaviours.Zones.Hands;
-using Abraxas.Behaviours.Zones.Drags;
-using Abraxas.Behaviours.Zones.Graveyards;
-using Abraxas.Behaviours.Status;
-using Abraxas.Behaviours.CardViewer;
+using System;
+using Abraxas.Behaviours.Zones.Decks;
 
 namespace Abraxas.Behaviours.Cards
 {
@@ -31,10 +34,6 @@ namespace Abraxas.Behaviours.Cards
         /// <summary>
         /// All locations the card can be in.
         /// </summary>
-        public enum Zones
-        {
-            DECK, DRAG, HAND, PLAY, DEAD, BANISHED
-        }
 
         public const float MOVE_FROM_HAND_TO_DRAG_SCALE_TIME = .2f;
         public const float MOVEMENT_ON_FIELD_TIME = .2f;
@@ -67,7 +66,7 @@ namespace Abraxas.Behaviours.Cards
         Vector2Int fieldPosition;
         Dictionary<StoneData.StoneType, int> totalCosts;
         string totalCostText;
-        Zones zone;
+        ZoneManager.Zones zone;
         Color controllerColor;
         RectTransform rectTransform;
         List<Stone> stones;
@@ -80,7 +79,19 @@ namespace Abraxas.Behaviours.Cards
         public RectTransform RectTransform => rectTransform = rectTransform != null ? rectTransform : (RectTransform)transform;
         public List<Stone> Stones => stones ??= GetComponents<Stone>().ToList();
         public StatBlock StatBlock => statBlock = statBlock != null ? statBlock : GetComponent<StatBlock>();
-        public string Title => title;
+        public string Title
+        {
+            get
+            {
+                return title;
+            }
+            set
+            {
+                title = value;
+                titleText.text = title;
+            }
+        }
+
         public Image Image => image;
         public Canvas Canvas => canvas = canvas != null ? canvas : GetComponentInParent<Canvas>();
         public GraphicRaycaster GraphicRaycaster => graphicRaycaster = graphicRaycaster != null ? graphicRaycaster : Canvas.GetComponent<GraphicRaycaster>();
@@ -108,7 +119,7 @@ namespace Abraxas.Behaviours.Cards
 
         public Cell Cell { get; internal set; }
         public Vector2Int FieldPosition { get => fieldPosition; set => fieldPosition = value; }
-        public Zones Zone { get => zone; set => zone = value; }
+        public ZoneManager.Zones Zone { get => zone; set => zone = value; }
         #endregion
 
         #region Unity Methods
@@ -139,13 +150,23 @@ namespace Abraxas.Behaviours.Cards
 
         void Update()
         {
-            if (titleText.text != Title) titleText.text = Title;
-            if (statsText.text != StatBlock.statsStr) statsText.text = StatBlock.statsStr;
+            if (statsText.text != StatBlock.StatsStr) statsText.text = StatBlock.StatsStr;
             Color statBlockColor = DataManager.Instance.GetStoneDetails(statBlock.StoneType).color;
             if (statsText.color != statBlockColor) statsText.color = statBlockColor;
             FormatCost();
             if (costText.text != TotalCostText) costText.text = TotalCostText;
             if (hidden != cover.activeInHierarchy) cover.SetActive(hidden);
+        }
+
+        internal IEnumerator PassHomeRow()
+        {
+            GameManager.Instance.GetPlayerHP(Controller ==
+                GameManager.Player.Player1 ? GameManager.Player.Player2 : GameManager.Player.Player1).HPValue -=
+                StatBlock[StatBlock.StatValues.ATK];
+            Deck deck = GameManager.Instance.GetPlayerHand(Controller).Deck;
+            yield return MoveToFitRectangle(deck.GetComponent<RectTransform>());
+            FieldManager.Instance.RemoveFromField(this);
+            deck.AddCard(this);
         }
 
         public IEnumerator Fight(Card collided)
@@ -177,14 +198,15 @@ namespace Abraxas.Behaviours.Cards
 
         private void FormatCost()
         {
-            TotalCostText = "";
+            string TotalCost = "";
             foreach (KeyValuePair<StoneData.StoneType, int> pair in TotalCosts)
             {
                 if (pair.Value != 0)
                 {
-                    TotalCostText += "<#" + ColorUtility.ToHtmlStringRGB(DataManager.Instance.GetStoneDetails(pair.Key).color) + ">" + pair.Value;
+                    TotalCost += "<#" + ColorUtility.ToHtmlStringRGB(DataManager.Instance.GetStoneDetails(pair.Key).color) + ">" + pair.Value;
                 }
             }
+            TotalCostText = TotalCost;
         }
         #endregion
 
@@ -195,7 +217,7 @@ namespace Abraxas.Behaviours.Cards
             {
                 switch (Zone)
                 {
-                    case Zones.HAND:
+                    case ZoneManager.Zones.HAND:
                         {
                             if (Controller == GameManager.Instance.ActivePlayer)
                             {
@@ -203,7 +225,7 @@ namespace Abraxas.Behaviours.Cards
                                 DragManager.Instance.card = this;
                                 GameManager.Instance.GetPlayerHand(Controller).RemoveCard(this);
                                 StartCoroutine(ChangeScale(DragManager.Instance.templateCardRect.rect.size, MOVE_FROM_HAND_TO_DRAG_SCALE_TIME));
-                                Zone = Zones.DRAG;
+                                Zone = ZoneManager.Zones.DRAG;
                             }
                         }
                         break;
@@ -215,7 +237,7 @@ namespace Abraxas.Behaviours.Cards
         {
             switch (Zone)
             {
-                case Zones.DRAG:
+                case ZoneManager.Zones.DRAG:
                     {
                         RectTransform.position = Input.mousePosition;
                     }
@@ -228,11 +250,11 @@ namespace Abraxas.Behaviours.Cards
             DragManager.Instance.card = null;
             switch (Zone)
             {
-                case Zones.DRAG:
+                case ZoneManager.Zones.DRAG:
                     {
                         List<RaycastResult> results = new();
                         GraphicRaycaster.Raycast(eventData, results);
-
+                        StopCoroutine(nameof(ChangeScale));
                         foreach (var hit in results)
                         {
                             Cell cell = hit.gameObject.GetComponent<Cell>();
@@ -240,7 +262,7 @@ namespace Abraxas.Behaviours.Cards
                             {
                                 if (cell.Cards.Count == 0 && cell.player == Controller && GameManager.Instance.CanPurchaseCard(this))
                                 {
-                                    StopCoroutine(nameof(ChangeScale));
+                                    
                                     GameManager.Instance.PurchaseCard(this);
                                     gameObject.AddComponent<LoadingDebuff>();
                                     RequestMoveToCellServerRpc(cell.fieldPos);
@@ -249,8 +271,7 @@ namespace Abraxas.Behaviours.Cards
                             }
                         }
 
-                        Zone = Zones.HAND;
-                        StopCoroutine(nameof(ChangeScale));
+                        Zone = ZoneManager.Zones.HAND;
                         StartCoroutine(MoveToHand(GameManager.Instance.GetPlayerHand(Controller)));
                     }
                     break;
@@ -357,7 +378,6 @@ namespace Abraxas.Behaviours.Cards
             if (!IsClient) return;
             StartCoroutine(FieldManager.Instance.MoveToFieldPosition(this, fieldPos));
         }
-
         #endregion
     }
 }

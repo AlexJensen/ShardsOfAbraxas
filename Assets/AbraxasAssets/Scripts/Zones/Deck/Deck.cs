@@ -9,12 +9,14 @@ using Random = UnityEngine.Random;
 namespace Abraxas.Behaviours.Zones.Decks
 {
     [ExecuteInEditMode]
-    public class Deck : NetworkBehaviour
+    public class Deck : Zone
     {
         [SerializeField]
         Transform cards;
 
         public Transform Cards { get => cards; }
+
+        public override ZoneManager.Zones ZoneType => ZoneManager.Zones.DECK;
 
         private void Update()
         {
@@ -30,7 +32,7 @@ namespace Abraxas.Behaviours.Zones.Decks
             card.transform.localScale = Vector3.one;
             card.transform.position = transform.position;
             card.transform.SetParent(DragManager.Instance.transform);
-            card.Zone = Card.Zones.HAND;
+            card.Zone = ZoneManager.Zones.HAND;
             return card;
         }
 
@@ -72,6 +74,15 @@ namespace Abraxas.Behaviours.Zones.Decks
                 }
             }
             return totalCost;
+        }
+
+        internal override void AddCard(Card card, int index = -1)
+        {
+            base.AddCard(card, index);
+            if (index == -1)
+            {
+                ShuffleServerRpc();
+            }
         }
     }
 }

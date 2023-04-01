@@ -20,7 +20,7 @@ namespace Abraxas.Behaviours.Stones
         Vector3Int stats;
 
         public Vector3Int Stats { get => stats; set => stats = value; }
-        public string statsStr => this[StatValues.ATK].ToString() + "/" + this[StatValues.DEF].ToString() + "/" + this[StatValues.MV].ToString();
+        public string StatsStr => this[StatValues.ATK].ToString() + "/" + this[StatValues.DEF].ToString() + "/" + this[StatValues.MV].ToString();
 
         public override int Cost { get => cost; set => cost = value; }
         public override StoneData.StoneType StoneType { get => stoneType; set => stoneType = value; }

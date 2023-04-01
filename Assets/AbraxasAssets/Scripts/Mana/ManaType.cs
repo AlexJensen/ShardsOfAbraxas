@@ -61,8 +61,8 @@ namespace Abraxas.Behaviours.Manas
             {
                 int change = amount - previousAmount;
                 addStr.text = change >= 0 ? "+" + change.ToString() : change.ToString();
-                if (Player == GameManager.Player.Player1) TriggerAddManaDown();
-                if (Player == GameManager.Player.Player2) TriggerAddManaUp();
+                if (Player == GameManager.Player.Player1) SetAnimationTrigger("AddManaDown");
+                if (Player == GameManager.Player.Player2) SetAnimationTrigger("AddManaUp");
                 previousAmount = amount;
             }
         }
@@ -75,14 +75,9 @@ namespace Abraxas.Behaviours.Manas
             amountStr.text = amount.ToString();
         }
 
-        public void TriggerAddManaUp()
+        public void SetAnimationTrigger(string trigger)
         {
-            animator.SetTrigger("AddManaUp");
-        }
-
-        public void TriggerAddManaDown()
-        {
-            animator.SetTrigger("AddManaDown");
+            animator.SetTrigger(trigger);
         }
     }
 }

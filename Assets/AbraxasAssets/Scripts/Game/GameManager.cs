@@ -7,6 +7,7 @@ using Abraxas.Scripts.States;
 using Abraxas.Behaviours.Zones.Hands;
 using Abraxas.Behaviours.Manas;
 using Abraxas.Behaviours.Cards;
+using Abraxas.Behaviours.Player;
 
 namespace Abraxas.Behaviours.Game
 {
@@ -36,6 +37,8 @@ namespace Abraxas.Behaviours.Game
         List<Hand> hands;
         [SerializeField]
         List<Mana> mana;
+        [SerializeField]
+        List<HP> HP;
 
 
         public Player ActivePlayer { get; set; } = Player.Player1;
@@ -78,7 +81,12 @@ namespace Abraxas.Behaviours.Game
 
         public Hand GetPlayerHand(Player player)
         {
-            return hands.Find(x => x.player == player);
+            return hands.Find(x => x.Player == player);
+        }
+
+        public HP GetPlayerHP(Player player)
+        {
+            return HP.Find(x => x.Player == player);
         }
 
         public void SwitchActivePlayer()

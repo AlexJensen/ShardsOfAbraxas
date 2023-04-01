@@ -28,24 +28,27 @@ namespace Abraxas.Behaviours.Zones.Fields
         List<Card> cards;
         List<Row> field;
 
+        public List<Card> Cards { get => cards; set => cards = value; }
+        public List<Row> Field { get => field; set => field = value; }
+
         #endregion
 
         #region Unity Methods
         protected override void Awake()
         {
             base.Awake();
-            cards = new List<Card>();
-            field = new List<Row>();
+            Cards = new List<Card>();
+            Field = new List<Row>();
 
             foreach (Transform rowT in transform)
             {
                 Row row = new();
-                field.Add(row);
+                Field.Add(row);
                 foreach (Transform cellT in rowT.transform)
                 {
                     Cell cell = cellT.GetComponent<Cell>();
                     row.cells.Add(cell);
-                    cell.fieldPos = new Vector2Int(row.cells.IndexOf(cell), field.IndexOf(row));
+                    cell.fieldPos = new Vector2Int(row.cells.IndexOf(cell), Field.IndexOf(row));
                 }
             }
         }
@@ -59,20 +62,20 @@ namespace Abraxas.Behaviours.Zones.Fields
         /// <param name="cell">Cell to insert card.</param>
         public void AddToField(Card card, Cell cell)
         {
-            cards.Add(card);
-            card.Zone = Card.Zones.PLAY;
+            Cards.Add(card);
+            card.Zone = ZoneManager.Zones.PLAY;
             cell.AddCard(card);
             EventManager.Instance.CardEnteredField(card);
         }
 
         public void AddToField(Card card, Vector2Int fieldPos)
         {
-            AddToField(card, field[fieldPos.y].cells[fieldPos.x]);
+            AddToField(card, Field[fieldPos.y].cells[fieldPos.x]);
         }
 
         public void RemoveFromField(Card card)
         {
-            cards.Remove(card);
+            Cards.Remove(card);
             card.Cell.RemoveCard(card);
         }
 
@@ -82,7 +85,7 @@ namespace Abraxas.Behaviours.Zones.Fields
         /// <returns>Execution will continue after combat is completed.</returns>
         public IEnumerator StartCombat()
         {
-            Card[] activeCards = cards.Where(s => s.Controller == GameManager.Instance.ActivePlayer).Reverse().ToArray();
+            Card[] activeCards = Cards.Where(s => s.Controller == GameManager.Instance.ActivePlayer).Reverse().ToArray();
             for (int i = activeCards.Length - 1; i >= 0; i--)
             {
 
@@ -99,16 +102,20 @@ namespace Abraxas.Behaviours.Zones.Fields
         /// <returns>Execution will continue after movement and combat is complete.</returns>
         public IEnumerator MoveCardAndFight(Card card, Vector2Int movement)
         {
-            Vector2Int destination = new(Math.Max(0, Math.Min(field[0].cells.Count - 1, card.FieldPosition.x + movement.x)), Math.Max(0, Math.Min(field[0].cells.Count - 1, card.FieldPosition.y + movement.y)));
+            // first clamp the destination to inside the board.
+            Vector2Int destination = new Vector2Int(
+                Mathf.Clamp(card.FieldPosition.x + movement.x, 0, Field[0].cells.Count - 1),
+                Mathf.Clamp(card.FieldPosition.y + movement.y, 0, Field.Count - 1)
+    );
             Card collided = null;
             if (movement.x > 0)
             {
                 for (int i = card.FieldPosition.x + 1; i <= destination.x; i++)
                 {
-                    if (field[card.FieldPosition.y].cells[i].Cards.Count > 0)
+                    if (Field[card.FieldPosition.y].cells[i].Cards.Count > 0)
                     {
                         destination.x = i - 1;
-                        collided = field[card.FieldPosition.y].cells[i].Cards[0];
+                        collided = Field[card.FieldPosition.y].cells[i].Cards[0];
                         break;
                     }
                 }
@@ -117,11 +124,11 @@ namespace Abraxas.Behaviours.Zones.Fields
             {
                 for (int i = card.FieldPosition.x - 1; i >= destination.x; i--)
                 {
-                    IEnumerable<Card> activeCards = field[card.FieldPosition.y].cells[i].Cards.Where(x => x.isActiveAndEnabled);
+                    IEnumerable<Card> activeCards = Field[card.FieldPosition.y].cells[i].Cards.Where(x => x.isActiveAndEnabled);
                     if (activeCards.Count() > 0)
                     {
                         destination.x = i + 1;
-                        collided = field[card.FieldPosition.y].cells[i].Cards[0];
+                        collided = Field[card.FieldPosition.y].cells[i].Cards[0];
                         break;
                     }
                 }
@@ -129,11 +136,15 @@ namespace Abraxas.Behaviours.Zones.Fields
 
             if (destination != card.FieldPosition)
             {
-                field[card.FieldPosition.y].cells[card.FieldPosition.x].Cards.Remove(card);
+                Field[card.FieldPosition.y].cells[card.FieldPosition.x].Cards.Remove(card);
                 card.transform.SetParent(DragManager.Instance.transform);
-                yield return StartCoroutine(card.MoveTo(field[destination.y].cells[destination.x].RectTransform.position, Card.MOVEMENT_ON_FIELD_TIME));
-                field[destination.y].cells[destination.x].AddCard(card);
+                yield return StartCoroutine(card.MoveTo(Field[destination.y].cells[destination.x].RectTransform.position, Card.MOVEMENT_ON_FIELD_TIME));
+                Field[destination.y].cells[destination.x].AddCard(card);
                 EventManager.Instance.CardMove(card);
+                if (Field[destination.y].cells[destination.x].player != card.Controller && Field[destination.y].cells[destination.x].player != GameManager.Player.Neutral)
+                {
+                    yield return StartCoroutine(card.PassHomeRow());
+                }
             }
             if (collided != null)
             {
@@ -143,7 +154,7 @@ namespace Abraxas.Behaviours.Zones.Fields
 
         public IEnumerator MoveToFieldPosition(Card card, Vector2Int fieldPos)
         {
-            yield return card.MoveToCell(field[fieldPos.y].cells[fieldPos.x]);
+            yield return card.MoveToCell(Field[fieldPos.y].cells[fieldPos.x]);
         }
         #endregion
     }
