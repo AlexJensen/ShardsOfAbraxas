@@ -253,8 +253,8 @@ MonoBehaviour:
   addHPStr: {fileID: 4107279137807360079}
   addHPMaxStr: {fileID: 4886184575527259654}
   player: 0
-  hPValue: 100
-  hPMaxValue: 100
+  hPValue: 50
+  hPMaxValue: 50
 --- !u!1 &6316746043253379785
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100/100
+  m_text: 50/50
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7f9ab7bf1d44a704ea26cb1c5c5e89ab, type: 2}
   m_sharedMaterial: {fileID: 4823891975483663017, guid: 7f9ab7bf1d44a704ea26cb1c5c5e89ab, type: 2}
@@ -348,7 +348,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.05
+  m_fontSize: 51.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -21,9 +21,9 @@ namespace Abraxas.Behaviours.Game
 
         public event Action<State> GameStateChanged;
 
-        const int STARTING_MANA = 0;
+        const int STARTING_MANA = 4;
         const int MANA_GAIN_PER_TURN = 2;
-        const int MAX_MANA_GAIN = 20;
+        const int MAX_MANA_GAIN = 100;
         int manaGain = STARTING_MANA;
 
         public enum Player

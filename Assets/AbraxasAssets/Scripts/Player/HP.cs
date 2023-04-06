@@ -52,6 +52,8 @@ namespace Abraxas.Behaviours.Player
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            previousHPMaxValue = HPMaxValue;
+            previousHPValue = HPValue;
         }
 
         private void LateUpdate()

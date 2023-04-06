@@ -7,6 +7,7 @@ using Abraxas.Behaviours.Zones.Fields;
 using Abraxas.Behaviours.Zones.Hands;
 using Abraxas.Behaviours.Zones.Drags;
 using Abraxas.Behaviours.Zones.Graveyards;
+using Abraxas.Behaviours.Zones.Decks;
 using Abraxas.Behaviours.Status;
 using Abraxas.Behaviours.CardViewer;
 using System.Collections;
@@ -17,8 +18,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System;
-using Abraxas.Behaviours.Zones.Decks;
+
 
 namespace Abraxas.Behaviours.Cards
 {
@@ -338,6 +338,7 @@ namespace Abraxas.Behaviours.Cards
 
         public IEnumerator MoveToFitRectangle(RectTransform rectTransform)
         {
+            transform.SetParent(DragManager.Instance.transform);
             yield return StartCoroutine(Utilities.WaitForCoroutines(this,
                 ChangeScale(rectTransform.rect.size, MOVE_TO_ZONE_SCALE_TIME),
                 MoveTo(rectTransform.position, MOVE_TO_ZONE_MOVE_TIME)));
