@@ -477,7 +477,7 @@ RectTransform:
   - {fileID: 2257488883162256986}
   - {fileID: 4844717074843926475}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -555,15 +555,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
-  zone: 2
-  fieldPos: {x: 0, y: 0}
   controller: 0
   owner: 0
   cover: {fileID: 6398438861453359915}
   hidden: 0
   titleText: {fileID: 7259762031145244380}
   costText: {fileID: 6266378685714880545}
-  statsText: {fileID: 6696371828357479150}
   image: {fileID: 933676109856729092}
 --- !u!114 &-8972399931271291979
 MonoBehaviour:
@@ -581,6 +578,7 @@ MonoBehaviour:
   cost: 0
   stoneType: 0
   stats: {x: 0, y: 0, z: 0}
+  statsText: {fileID: 6696371828357479150}
 --- !u!114 &-85551077654799062
 MonoBehaviour:
   m_ObjectHideFlags: 0

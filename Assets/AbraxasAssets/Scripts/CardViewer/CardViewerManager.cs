@@ -40,7 +40,7 @@ namespace Abraxas.Behaviours.CardViewer
         #endregion
 
         #region Unity Methods
-        protected override void Awake()
+        protected void Awake()
         {
             cardDetailRect = (RectTransform)cardDetail.transform;
         }

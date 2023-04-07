@@ -131,5 +131,10 @@ namespace Abraxas.Behaviours.Game
             }
 
         }
+
+        internal void DamagePlayer(Player player, int amount)
+        {
+            GetPlayerHP(player).HPValue -= amount;
+        }
     }
 }

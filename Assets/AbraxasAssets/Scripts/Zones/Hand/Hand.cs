@@ -2,6 +2,7 @@ using Abraxas.Behaviours.Cards;
 using Abraxas.Behaviours.Game;
 using Abraxas.Behaviours.Zones.Decks;
 using Abraxas.Behaviours.Zones.Drags;
+using Abraxas.Behaviours.Zones.Fields;
 using Abraxas.Behaviours.Zones.Graveyards;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using UnityEngine;
 
 namespace Abraxas.Behaviours.Zones.Hands
 {
-    public class Hand : MonoBehaviour
+    public class Hand : Zone
     {
         #region Fields
         [SerializeField]
@@ -31,6 +32,8 @@ namespace Abraxas.Behaviours.Zones.Hands
         public Graveyard Graveyard => graveyard = graveyard != null ? graveyard : graveyard = GetComponentInChildren<Graveyard>();
 
         public GameManager.Player Player { get => player; set => player = value; }
+
+        public override ZoneManager.Zones ZoneType => ZoneManager.Zones.HAND;
         #endregion
 
         #region Unity Methods
@@ -108,11 +111,19 @@ namespace Abraxas.Behaviours.Zones.Hands
                 CardPlaceholder.gameObject.SetActive(true);
                 yield return StartCoroutine(CardPlaceholder.ScaleToMaxSize());
                 CardPlaceholder.SnapToMaxHeight();
-                yield return StartCoroutine(card.MoveToHand(this));
+                yield return StartCoroutine(MoveCardToZone(card));
             }
         }
 
-
+        public override IEnumerator MoveCardToZone(Card card)
+        {
+            card.Zone = ZoneManager.Zones.HAND;
+            cardReturning = true;
+            FieldManager.Instance.RemoveFromField(card);
+            yield return card.MoveToFitRectangle(CardPlaceholder.CardPlaceholderRect);
+            cardReturning = false;
+            AddCardAtPlaceholder(card);
+        }
         #endregion
     }
 }

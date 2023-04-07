@@ -34,9 +34,8 @@ namespace Abraxas.Behaviours.Zones.Fields
         #endregion
 
         #region Unity Methods
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             Cards = new List<Card>();
             Field = new List<Row>();
 
@@ -105,32 +104,18 @@ namespace Abraxas.Behaviours.Zones.Fields
             // first clamp the destination to inside the board.
             Vector2Int destination = new Vector2Int(
                 Mathf.Clamp(card.FieldPosition.x + movement.x, 0, Field[0].cells.Count - 1),
-                Mathf.Clamp(card.FieldPosition.y + movement.y, 0, Field.Count - 1)
-    );
+                Mathf.Clamp(card.FieldPosition.y + movement.y, 0, Field.Count - 1));
+
             Card collided = null;
-            if (movement.x > 0)
+            IEnumerable<Card> activeCards = Enumerable.Empty<Card>();
+            for (int i = card.FieldPosition.x + Math.Sign(movement.x); i != destination.x + Math.Sign(movement.x); i += Math.Sign(movement.x))
             {
-                for (int i = card.FieldPosition.x + 1; i <= destination.x; i++)
+                activeCards = Field[card.FieldPosition.y].cells[i].Cards.Where(x => x.isActiveAndEnabled);
+                if (activeCards.Count() > 0)
                 {
-                    if (Field[card.FieldPosition.y].cells[i].Cards.Count > 0)
-                    {
-                        destination.x = i - 1;
-                        collided = Field[card.FieldPosition.y].cells[i].Cards[0];
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                for (int i = card.FieldPosition.x - 1; i >= destination.x; i--)
-                {
-                    IEnumerable<Card> activeCards = Field[card.FieldPosition.y].cells[i].Cards.Where(x => x.isActiveAndEnabled);
-                    if (activeCards.Count() > 0)
-                    {
-                        destination.x = i + 1;
-                        collided = Field[card.FieldPosition.y].cells[i].Cards[0];
-                        break;
-                    }
+                    destination.x = i - Math.Sign(movement.x);
+                    collided = Field[card.FieldPosition.y].cells[i].Cards[0];
+                    break;
                 }
             }
 

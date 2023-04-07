@@ -4,10 +4,7 @@ using Abraxas.Behaviours.Data;
 using Abraxas.Behaviours.Game;
 using Abraxas.Behaviours.Zones;
 using Abraxas.Behaviours.Zones.Fields;
-using Abraxas.Behaviours.Zones.Hands;
 using Abraxas.Behaviours.Zones.Drags;
-using Abraxas.Behaviours.Zones.Graveyards;
-using Abraxas.Behaviours.Zones.Decks;
 using Abraxas.Behaviours.Status;
 using Abraxas.Behaviours.CardViewer;
 using System.Collections;
@@ -16,9 +13,8 @@ using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
+using UnityEngine.EventSystems;
 
 namespace Abraxas.Behaviours.Cards
 {
@@ -28,24 +24,20 @@ namespace Abraxas.Behaviours.Cards
     [RequireComponent(typeof(RectTransform))]
     [RequireComponent(typeof(Image))]
     [RequireComponent(typeof(StatBlock))]
-    public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
+    public class Card : NetworkBehaviour, ICardInputHandler
     {
         #region Constants
-        /// <summary>
-        /// All locations the card can be in.
-        /// </summary>
-
         public const float MOVE_FROM_HAND_TO_DRAG_SCALE_TIME = .2f;
-        public const float MOVEMENT_ON_FIELD_TIME = .2f;
-        public const float MOVE_TO_ZONE_SCALE_TIME = .2f;
-        public const float MOVE_TO_ZONE_MOVE_TIME = .2f;
+        public const float MOVEMENT_ON_FIELD_TIME = .3f;
+        public const float MOVE_TO_ZONE_SCALE_TIME = .3f;
+        public const float MOVE_TO_ZONE_MOVE_TIME = .3f;
         public const float MOVE_FROM_HAND_TO_CELL_SCALE_TIME = 0.2f;
         public const float MOVE_FROM_HAND_TO_CELL_MOVE_TIME = 0.2f;
         #endregion
 
         #region Fields
         [SerializeField]
-        private string title = "";
+        string title = "";
 
         [SerializeField]
         GameManager.Player controller, owner;
@@ -57,17 +49,15 @@ namespace Abraxas.Behaviours.Cards
         bool hidden = false;
 
         [SerializeField]
-        TMP_Text titleText, costText, statsText;
+        TMP_Text titleText, costText;
 
         [SerializeField]
         Image image;
-
 
         Vector2Int fieldPosition;
         Dictionary<StoneData.StoneType, int> totalCosts;
         string totalCostText;
         ZoneManager.Zones zone;
-        Color controllerColor;
         RectTransform rectTransform;
         List<Stone> stones;
         StatBlock statBlock;
@@ -76,27 +66,15 @@ namespace Abraxas.Behaviours.Cards
         #endregion
 
         #region Properties
-        public RectTransform RectTransform => rectTransform = rectTransform != null ? rectTransform : (RectTransform)transform;
-        public List<Stone> Stones => stones ??= GetComponents<Stone>().ToList();
-        public StatBlock StatBlock => statBlock = statBlock != null ? statBlock : GetComponent<StatBlock>();
         public string Title
         {
-            get
-            {
-                return title;
-            }
+            get => title;
             set
             {
                 title = value;
                 titleText.text = title;
             }
         }
-
-        public Image Image => image;
-        public Canvas Canvas => canvas = canvas != null ? canvas : GetComponentInParent<Canvas>();
-        public GraphicRaycaster GraphicRaycaster => graphicRaycaster = graphicRaycaster != null ? graphicRaycaster : Canvas.GetComponent<GraphicRaycaster>();
-        public string TotalCostText { get => totalCostText; private set => totalCostText = value; }
-        public Dictionary<StoneData.StoneType, int> TotalCosts { get => totalCosts ??= GenerateTotalCost(); }
         public GameManager.Player Controller
         {
             get => controller;
@@ -117,17 +95,38 @@ namespace Abraxas.Behaviours.Cards
             }
         }
 
+        public string TotalCostText
+        {
+            get => totalCostText; private set
+            {
+                totalCostText = value;
+                costText.text = totalCostText;
+            }
+        }
+
+        public RectTransform RectTransform => rectTransform = rectTransform != null ? rectTransform : (RectTransform)transform;
+        public List<Stone> Stones => stones ??= GetComponents<Stone>().ToList();
+        public StatBlock StatBlock => statBlock ??= GetComponent<StatBlock>();
+        public Image Image => image;
+        public Canvas Canvas => canvas ??= GetComponentInParent<Canvas>();
+        public GraphicRaycaster GraphicRaycaster => graphicRaycaster ??= Canvas.GetComponent<GraphicRaycaster>();
+        
+        public Dictionary<StoneData.StoneType, int> TotalCosts { get => totalCosts ??= GenerateTotalCost(); }
         public Cell Cell { get; internal set; }
         public Vector2Int FieldPosition { get => fieldPosition; set => fieldPosition = value; }
         public ZoneManager.Zones Zone { get => zone; set => zone = value; }
         #endregion
 
         #region Unity Methods
-
         void Awake()
         {
             Controller = controller;
             Owner = owner;
+        }
+
+        void Update()
+        {
+            if (hidden != cover.activeInHierarchy) cover.SetActive(hidden);
         }
 
         private Dictionary<StoneData.StoneType, int> GenerateTotalCost()
@@ -145,28 +144,18 @@ namespace Abraxas.Behaviours.Cards
                     TotalCosts[stone.StoneType] += stone.Cost;
                 }
             }
+            FormatCost();
             return totalCosts;
         }
 
-        void Update()
-        {
-            if (statsText.text != StatBlock.StatsStr) statsText.text = StatBlock.StatsStr;
-            Color statBlockColor = DataManager.Instance.GetStoneDetails(statBlock.StoneType).color;
-            if (statsText.color != statBlockColor) statsText.color = statBlockColor;
-            FormatCost();
-            if (costText.text != TotalCostText) costText.text = TotalCostText;
-            if (hidden != cover.activeInHierarchy) cover.SetActive(hidden);
-        }
+
 
         internal IEnumerator PassHomeRow()
         {
-            GameManager.Instance.GetPlayerHP(Controller ==
-                GameManager.Player.Player1 ? GameManager.Player.Player2 : GameManager.Player.Player1).HPValue -=
-                StatBlock[StatBlock.StatValues.ATK];
-            Deck deck = GameManager.Instance.GetPlayerHand(Controller).Deck;
-            yield return MoveToFitRectangle(deck.GetComponent<RectTransform>());
-            FieldManager.Instance.RemoveFromField(this);
-            deck.AddCard(this);
+            GameManager.Instance.DamagePlayer(Controller ==
+                GameManager.Player.Player1 ? GameManager.Player.Player2 : GameManager.Player.Player1,
+                StatBlock[StatBlock.StatValues.ATK]);
+            yield return GameManager.Instance.GetPlayerHand(Controller).Deck.MoveCardToZone(this);
         }
 
         public IEnumerator Fight(Card collided)
@@ -188,11 +177,7 @@ namespace Abraxas.Behaviours.Cards
         {
             if (statBlock[StatBlock.StatValues.DEF] <= 0)
             {
-                Graveyard graveyard = GameManager.Instance.GetPlayerHand(Controller).Graveyard;
-                yield return MoveToFitRectangle(graveyard.GetComponent<RectTransform>());
-
-                FieldManager.Instance.RemoveFromField(this);
-                graveyard.AddCard(this);
+                yield return GameManager.Instance.GetPlayerHand(Controller).Graveyard.MoveCardToZone(this);
             }
         }
 
@@ -254,7 +239,6 @@ namespace Abraxas.Behaviours.Cards
                     {
                         List<RaycastResult> results = new();
                         GraphicRaycaster.Raycast(eventData, results);
-                        StopCoroutine(nameof(ChangeScale));
                         foreach (var hit in results)
                         {
                             Cell cell = hit.gameObject.GetComponent<Cell>();
@@ -270,9 +254,7 @@ namespace Abraxas.Behaviours.Cards
                                 }
                             }
                         }
-
-                        Zone = ZoneManager.Zones.HAND;
-                        StartCoroutine(MoveToHand(GameManager.Instance.GetPlayerHand(Controller)));
+                        StartCoroutine(GameManager.Instance.GetPlayerHand(Controller).MoveCardToZone(this));
                     }
                     break;
             }
@@ -297,7 +279,7 @@ namespace Abraxas.Behaviours.Cards
         #endregion
 
         #region Animation Lerps
-        public IEnumerator ChangeScale(Vector2 size, float time)
+        private IEnumerator ChangeScale(Vector2 size, float time)
         {
             Vector2 origSize = RectTransform.rect.size;
             float lerpIncrement = 1 / time, lerpProgress = 0;
@@ -307,7 +289,7 @@ namespace Abraxas.Behaviours.Cards
                 RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, lerpUpdate.x);
                 RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, lerpUpdate.y);
 
-                lerpProgress += lerpIncrement * Time.deltaTime;
+                lerpProgress += lerpIncrement * Time.fixedDeltaTime;
                 yield return null;
             }
             yield return null;
@@ -322,18 +304,10 @@ namespace Abraxas.Behaviours.Cards
                 Vector2 lerpUpdate = Vector2.Lerp(origLoc, location, lerpProgress);
                 RectTransform.position = lerpUpdate;
 
-                lerpProgress += lerpIncrement * Time.deltaTime;
+                lerpProgress += lerpIncrement * Time.fixedDeltaTime;
                 yield return null;
             }
             yield return null;
-        }
-
-        public IEnumerator MoveToHand(Hand hand)
-        {
-            hand.cardReturning = true;
-            yield return MoveToFitRectangle(hand.CardPlaceholder.CardPlaceholderRect);
-            hand.cardReturning = false;
-            hand.AddCardAtPlaceholder(this);
         }
 
         public IEnumerator MoveToFitRectangle(RectTransform rectTransform)
@@ -358,9 +332,9 @@ namespace Abraxas.Behaviours.Cards
         {
             if (gameObject.GetComponent<LoadingDebuff>() == null)
             {
-                yield return StartCoroutine(FieldManager.Instance.MoveCardAndFight(this, new Vector2Int(Controller == GameManager.Player.Player1 ? statBlock[StatBlock.StatValues.MV] :
+                yield return StartCoroutine(FieldManager.Instance.MoveCardAndFight(this, new Vector2Int(
+                  Controller == GameManager.Player.Player1 ? statBlock[StatBlock.StatValues.MV] :
                   Controller == GameManager.Player.Player2 ? -statBlock[StatBlock.StatValues.MV] : 0, 0)));
-
             }
         }
         #endregion
