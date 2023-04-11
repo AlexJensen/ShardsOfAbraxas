@@ -1,5 +1,6 @@
 using Abraxas.Behaviours.Cards;
 using Abraxas.Behaviours.Game;
+using Abraxas.Behaviours.Players;
 using Abraxas.Behaviours.Zones.Decks;
 using Abraxas.Behaviours.Zones.Drags;
 using Abraxas.Behaviours.Zones.Fields;
@@ -8,30 +9,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 namespace Abraxas.Behaviours.Zones.Hands
 {
     public class Hand : Zone
     {
+        #region Dependency Injections
+        [Inject] readonly FieldManager _fieldManager;
+        #endregion
+
         #region Fields
+
         [SerializeField]
-        Transform cards_t;
-        List<Card> cards;
-        CardPlaceholder cardPlaceholder;
-        Deck deck;
-        Graveyard graveyard;
-        [SerializeField]
-        GameManager.Player player;
-        internal bool cardReturning;
+        Player player;
+        List<Card> _cardList;
+        CardPlaceholder _cardPlaceholder;
+        Deck _deck;
+        Graveyard _graveyard;
+
+        bool cardReturning;
         #endregion
 
         #region Properties
-        public CardPlaceholder CardPlaceholder => cardPlaceholder = cardPlaceholder != null ? cardPlaceholder : cards_t.GetComponentInChildren<CardPlaceholder>();
-        public Deck Deck => deck = deck != null ? deck : deck = GetComponentInChildren<Deck>();
-        public List<Card> Cards => cards = (cards ??= cards_t.GetComponentsInChildren<Card>().ToList());
-        public Graveyard Graveyard => graveyard = graveyard != null ? graveyard : graveyard = GetComponentInChildren<Graveyard>();
+        public CardPlaceholder CardPlaceholder => _cardPlaceholder = _cardPlaceholder != null ? _cardPlaceholder : Cards.GetComponentInChildren<CardPlaceholder>();
+        public Deck Deck => _deck = _deck != null ? _deck : _deck = GetComponentInChildren<Deck>();
+        public List<Card> CardList => _cardList = (_cardList ??= Cards.GetComponentsInChildren<Card>().ToList());
+        public Graveyard Graveyard => _graveyard = _graveyard != null ? _graveyard : _graveyard = GetComponentInChildren<Graveyard>();
 
-        public GameManager.Player Player { get => player; set => player = value; }
+        public Player Player { get => player; set => player = value; }
 
         public override ZoneManager.Zones ZoneType => ZoneManager.Zones.HAND;
         #endregion
@@ -46,11 +52,11 @@ namespace Abraxas.Behaviours.Zones.Hands
         {
             if (DragManager.Instance.card != null && DragManager.Instance.card.Controller == Player)
             {
-                Cards.Remove(DragManager.Instance.card);
-                cardPlaceholder.gameObject.SetActive(true);
+                CardList.Remove(DragManager.Instance.card);
+                CardPlaceholder.gameObject.SetActive(true);
                 UpdateCardPlaceholderPosition();
             }
-            else if (!cardReturning && cardPlaceholder.isActiveAndEnabled)
+            else if (!cardReturning && CardPlaceholder.isActiveAndEnabled)
             {
                 CardPlaceholder.Hide();
             }
@@ -64,7 +70,7 @@ namespace Abraxas.Behaviours.Zones.Hands
         /// <param name="card">Card to move.</param>
         public void AddCardAtPlaceholder(Card card)
         {
-            Cards.Insert(CardPlaceholder.transform.GetSiblingIndex(), card);
+            CardList.Insert(CardPlaceholder.transform.GetSiblingIndex(), card);
             card.transform.SetParent(CardPlaceholder.transform.parent);
             card.transform.SetSiblingIndex(CardPlaceholder.transform.GetSiblingIndex());
             CardPlaceholder.Reset();
@@ -72,32 +78,32 @@ namespace Abraxas.Behaviours.Zones.Hands
 
         private void UpdateCardPlaceholderPosition()
         {
-            foreach (Card card in Cards)
+            foreach (Card card in CardList)
             {
-                if (Player == GameManager.Player.Player1 ?
+                if (Player == Player.Player1 ?
                     Input.mousePosition.y > card.transform.position.y :
                     Input.mousePosition.y < card.transform.position.y)
                 {
-                    CardPlaceholder.UpdateIndex(Cards.IndexOf(card));
+                    CardPlaceholder.UpdateIndex(CardList.IndexOf(card));
                     break;
                 }
-                if (Cards.IndexOf(card) == Cards.Count - 1)
+                if (CardList.IndexOf(card) == CardList.Count - 1)
                 {
-                    CardPlaceholder.UpdateIndex(Cards.IndexOf(card) + 1);
+                    CardPlaceholder.UpdateIndex(CardList.IndexOf(card) + 1);
                     break;
                 }
             }
-            cardPlaceholder.CheckPosition();
+            CardPlaceholder.CheckPosition();
         }
 
         public void RemoveCard(Card card)
         {
-            if (Cards.Contains(card))
+            if (CardList.Contains(card))
             {
-                CardPlaceholder.transform.SetSiblingIndex(Cards.IndexOf(card));
+                CardPlaceholder.transform.SetSiblingIndex(CardList.IndexOf(card));
                 CardPlaceholder.gameObject.SetActive(true);
                 CardPlaceholder.SnapToMaxHeight();
-                Cards.Remove(card);
+                CardList.Remove(card);
             }
         }
 
@@ -119,7 +125,7 @@ namespace Abraxas.Behaviours.Zones.Hands
         {
             card.Zone = ZoneManager.Zones.HAND;
             cardReturning = true;
-            FieldManager.Instance.RemoveFromField(card);
+            _fieldManager.RemoveFromField(card);
             yield return card.MoveToFitRectangle(CardPlaceholder.CardPlaceholderRect);
             cardReturning = false;
             AddCardAtPlaceholder(card);

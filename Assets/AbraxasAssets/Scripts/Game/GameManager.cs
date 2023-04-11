@@ -7,31 +7,27 @@ using Abraxas.Scripts.States;
 using Abraxas.Behaviours.Zones.Hands;
 using Abraxas.Behaviours.Manas;
 using Abraxas.Behaviours.Cards;
-using Abraxas.Behaviours.Player;
+using Abraxas.Behaviours.Players;
+using Zenject;
 
 namespace Abraxas.Behaviours.Game
 {
-
-    /// <summary>
-    /* The Game singleton handles all higher level logic for a match, including handling the state transitions between each phase of play. */
-    /// </summary>
-    public class GameManager : Singleton<GameManager>
+    public class GameManager : MonoBehaviour 
     {
-        public State currentState;
-
-        public event Action<State> GameStateChanged;
-
+        #region Constants
         const int STARTING_MANA = 4;
         const int MANA_GAIN_PER_TURN = 2;
         const int MAX_MANA_GAIN = 100;
-        int manaGain = STARTING_MANA;
+        #endregion
 
-        public enum Player
-        {
-            Player1,
-            Player2,
-            Neutral
-        }
+        public event Action<GameState> GameStateChanged;
+
+
+        GameState _state;
+        [Inject]
+        readonly GameStateFactory _stateFactory;
+
+        int _manaGain = STARTING_MANA;
 
         [SerializeField]
         List<Hand> hands;
@@ -44,18 +40,22 @@ namespace Abraxas.Behaviours.Game
         public Player ActivePlayer { get; set; } = Player.Player1;
         public List<Mana> Mana { get => mana; set => mana = value; }
 
-        protected void Start()
+            
+
+        public void Start()
         {
-            currentState = new GameNotStartedState(this);
-            StartCoroutine(currentState.OnEnterState());
+            StartCoroutine(SwitchToState(GameStates.GameNotStarted));
         }
 
-        private IEnumerator SwitchToState(State state)
+        private IEnumerator SwitchToState(GameStates state)
         {
-            yield return StartCoroutine(currentState.OnExitState());
-            currentState = state;
-            GameStateChanged?.Invoke(currentState);
-            yield return StartCoroutine(currentState.OnEnterState());
+            if (_state != null)
+            {
+                yield return StartCoroutine(_state.OnExitState());
+            }
+            _state = _stateFactory.CreateState(state);
+            GameStateChanged?.Invoke(_state);
+            yield return StartCoroutine(_state.OnEnterState());
         }
 
         public IEnumerator StartGame()
@@ -71,7 +71,7 @@ namespace Abraxas.Behaviours.Game
 
         public void BeginNextGameState()
         {
-            StartCoroutine(SwitchToState(currentState.NextState()));
+            StartCoroutine(SwitchToState(_state.NextState()));
         }
 
         public Mana GetPlayerMana(Player player)
@@ -97,8 +97,8 @@ namespace Abraxas.Behaviours.Game
         public void GenerateManaForActivePlayer()
         {
             Mana currentPlayerMana = GetPlayerMana(ActivePlayer);
-            manaGain = Math.Min(MAX_MANA_GAIN, manaGain + MANA_GAIN_PER_TURN);
-            currentPlayerMana.GenerateRatioMana(manaGain);
+            _manaGain = Math.Min(MAX_MANA_GAIN, _manaGain + MANA_GAIN_PER_TURN);
+            currentPlayerMana.GenerateRatioMana(_manaGain);
         }
 
         public IEnumerator DrawCardsForActivePlayer(int amount)
@@ -131,10 +131,11 @@ namespace Abraxas.Behaviours.Game
             }
 
         }
-
         internal void DamagePlayer(Player player, int amount)
         {
             GetPlayerHP(player).HPValue -= amount;
         }
+
+
     }
 }

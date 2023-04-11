@@ -8,14 +8,9 @@ using Random = UnityEngine.Random;
 
 namespace Abraxas.Behaviours.Zones.Decks
 {
-    [ExecuteInEditMode]
+    //[ExecuteInEditMode]
     public class Deck : Zone
     {
-        [SerializeField]
-        Transform cards;
-
-        public Transform Cards { get => cards; }
-
         public override ZoneManager.Zones ZoneType => ZoneManager.Zones.DECK;
 
         private void Update()

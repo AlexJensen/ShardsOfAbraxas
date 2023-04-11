@@ -249,12 +249,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875bbaf7ed717d14eb63c9429687ab6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HPStr: {fileID: 4136605670139482842}
-  addHPStr: {fileID: 4107279137807360079}
-  addHPMaxStr: {fileID: 4886184575527259654}
-  player: 0
-  hPValue: 50
-  hPMaxValue: 50
+  _HP: {fileID: 4136605670139482842}
+  _addHP: {fileID: 4107279137807360079}
+  _addHPMax: {fileID: 4886184575527259654}
+  _player: 0
+  _hPValue: 0
+  _hPMaxValue: 0
 --- !u!1 &6316746043253379785
 GameObject:
   m_ObjectHideFlags: 0

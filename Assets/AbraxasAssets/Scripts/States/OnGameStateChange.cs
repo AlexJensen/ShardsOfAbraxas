@@ -2,6 +2,6 @@ namespace Abraxas.Scripts.States
 {
     public interface OnGameStateChange
     {
-        void GameStateChanged(State state);
+        void GameStateChanged(GameState state);
     }
 }

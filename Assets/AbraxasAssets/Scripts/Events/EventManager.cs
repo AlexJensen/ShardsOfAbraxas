@@ -5,31 +5,31 @@ namespace Abraxas.Behaviours.Events
 {
     public class EventManager : Singleton<EventManager>
     {
-        internal delegate void GameEvent(params object[] vals);
+        public delegate void GameEvent(params object[] vals);
 
-        internal event GameEvent OnCardMoved;
-        internal event GameEvent OnCardDestroyed;
-        internal event GameEvent OnCardEnteredField;
-        internal event GameEvent OnBeginningStateStarted;
-        internal event GameEvent OnBeforeCombatStarted;
+        public event GameEvent OnCardMoved;
+        public event GameEvent OnCardDestroyed;
+        public event GameEvent OnCardEnteredField;
+        public event GameEvent OnBeginningStateStarted;
+        public event GameEvent OnBeforeCombatStarted;
 
-        internal void CardMove(Card card)
+        public void CardMove(Card card)
         {
             if (OnCardMoved != null) OnCardMoved(card);
         }
-        internal void CardDestroyed(Card card)
+        public void CardDestroyed(Card card)
         {
             if (OnCardDestroyed != null) OnCardDestroyed(card);
         }
-        internal void CardEnteredField(Card card)
+        public void CardEnteredField(Card card)
         {
             if (OnCardEnteredField != null) OnCardEnteredField(card);
         }
-        internal void BeginningStateStarted()
+        public void BeginningStateStarted()
         {
             if (OnBeginningStateStarted != null) OnBeginningStateStarted();
         }
-        internal void BeforeCombatStarted()
+        public void BeforeCombatStarted()
         {
             if (OnBeforeCombatStarted != null) OnBeforeCombatStarted();
         }

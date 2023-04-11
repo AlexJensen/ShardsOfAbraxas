@@ -10,14 +10,18 @@ namespace Abraxas.Behaviours.Stones
 {
     public class Garnet_Effect_BuffTriggeringATKHP : EffectStone
     {
-        List<StatBuff> buffs;
+        List<StatBuff> _buffs;
+
+        public override int Cost { get; set; }
+        public override string Info { get; set; }
+        public override StoneData.StoneType StoneType { get; set; }
 
         protected void Awake()
         {
             Cost = 4;
             StoneType = StoneData.StoneType.GARNET;
             Info = "Give the triggering packet +1/+1/+0 until this packet is destroyed.";
-            buffs = new List<StatBuff>();
+            _buffs = new List<StatBuff>();
         }
 
         private void OnEnable()
@@ -38,16 +42,16 @@ namespace Abraxas.Behaviours.Stones
 
             Card triggeringCard = (Card)vals[0];
 
-            buffs.Add(new StatBuff(triggeringCard.GetComponent<StatBlock>(), new Vector3Int(1, 1, 0)));
+            _buffs.Add(new StatBuff(triggeringCard.GetComponent<StatBlock>(), new Vector3Int(1, 1, 0)));
         }
 
         public void ClearEffect(object[] vals)
         {
-            foreach (StatBuff buff in buffs)
+            foreach (StatBuff buff in _buffs)
             {
                 buff.Clear(vals);
             }
-            buffs.Clear();
+            _buffs.Clear();
         }
     }
 }

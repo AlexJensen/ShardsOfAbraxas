@@ -1,30 +1,33 @@
 using Abraxas.Behaviours.Cards;
 using Abraxas.Behaviours.Zones.Fields;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using Zenject;
 
 namespace Abraxas.Behaviours.Zones
 {
     public abstract class Zone : NetworkBehaviour
     {
+        #region Dependency Injections
+        [Inject] readonly FieldManager _fieldManager;
+        #endregion
+
         #region Fields
         [SerializeField]
-        Transform cards;
-
-        RectTransform rectTransform;
+        Transform _cards;
         #endregion
 
         #region Properties
-        RectTransform RectTransform => rectTransform != null ? rectTransform : (RectTransform) transform;
-            #endregion
+        RectTransform RectTransform => (RectTransform)transform;
+        #endregion
 
         public abstract ZoneManager.Zones ZoneType { get; }
+        public Transform Cards { get => _cards; set => _cards = value; }
 
         private void Update()
         {
-            foreach (Transform card in cards)
+            foreach (Transform card in Cards)
             {
                 card.localScale = Vector3.zero;
             }
@@ -34,14 +37,14 @@ namespace Abraxas.Behaviours.Zones
         {
             card.transform.localScale = Vector3.zero;
             card.transform.position = transform.position;
-            card.transform.SetParent(cards);
+            card.transform.SetParent(Cards);
             card.Zone = ZoneType;
         }
 
         public virtual IEnumerator MoveCardToZone(Card card)
         {
             yield return card.MoveToFitRectangle(RectTransform);
-            FieldManager.Instance.RemoveFromField(card);
+            _fieldManager.RemoveFromField(card);
             AddCard(card);
         }
     }

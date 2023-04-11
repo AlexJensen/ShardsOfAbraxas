@@ -1,16 +1,9 @@
-using Unity.Netcode;
-using UnityEngine;
-
-namespace Abraxas.Behaviours.Player
+namespace Abraxas.Behaviours.Players
 {
-    public class Player : NetworkBehaviour
+    public enum Player
     {
-        [SerializeField]
-        int maxHP;
-        int HP;
-
-        [SerializeField]
-        HP hp;
-
+        Player1,
+        Player2,
+        Neutral
     }
 }

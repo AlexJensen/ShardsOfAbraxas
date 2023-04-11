@@ -378,7 +378,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4844717074843926475
 RectTransform:
   m_ObjectHideFlags: 0
@@ -452,6 +452,7 @@ GameObject:
   - component: {fileID: -8881554692825692823}
   - component: {fileID: -8972399931271291979}
   - component: {fileID: -85551077654799062}
+  - component: {fileID: 3220397734144906016}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -554,14 +555,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d507de2d4d70f418e01314c8ac7dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  controller: 0
-  owner: 0
-  cover: {fileID: 6398438861453359915}
-  hidden: 0
-  titleText: {fileID: 7259762031145244380}
-  costText: {fileID: 6266378685714880545}
-  image: {fileID: 933676109856729092}
+  _title: 
+  _controller: 0
+  _owner: 0
+  _cover: {fileID: 6398438861453359915}
+  _hidden: 0
+  _titleText: {fileID: 7259762031145244380}
+  _costText: {fileID: 6266378685714880545}
+  _image: {fileID: 933676109856729092}
 --- !u!114 &-8972399931271291979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -575,10 +576,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 0}
-  cost: 0
-  stoneType: 0
-  stats: {x: 0, y: 0, z: 0}
-  statsText: {fileID: 6696371828357479150}
+  _cost: 0
+  _stoneType: 0
+  _stats: {x: 0, y: 0, z: 0}
+  _statsText: {fileID: 6696371828357479150}
 --- !u!114 &-85551077654799062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,6 +596,24 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 0
+--- !u!114 &3220397734144906016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6750648729959934835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: -8881554692825692823}
+  _identifier: 
+  _useSceneContext: 0
+  _context: {fileID: 0}
+  _bindType: 0
 --- !u!1 &7292453832869556420
 GameObject:
   m_ObjectHideFlags: 0

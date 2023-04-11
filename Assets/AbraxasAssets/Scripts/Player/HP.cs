@@ -1,90 +1,88 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Abraxas.Behaviours.Game;
 
-namespace Abraxas.Behaviours.Player
+namespace Abraxas.Behaviours.Players
 {
     public class HP : MonoBehaviour
     {
         [SerializeField]
-        TMP_Text HPStr, addHPStr, addHPMaxStr;
+        TMP_Text _HP, _addHP, _addHPMax;
 
         [SerializeField]
-        GameManager.Player player;
+        Player _player;
 
-        Animator animator;
+        Animator _animator;
 
         [SerializeField]
-        int hPValue, hPMaxValue;
-        int previousHPValue, previousHPMaxValue;
+        int _hPValue, _hPMaxValue;
+        int _previousHPValue, _previousHPMaxValue;
 
-        public GameManager.Player Player { get => player; set => player = value; }
+        public Player Player { get => _player; set => _player = value; }
 
         public int HPValue
         {
-            get => hPValue; 
+            get => _hPValue; 
             set
             {
-                if (previousHPValue == hPValue)
+                if (_previousHPValue == _hPValue)
                 {
-                    previousHPValue = hPValue;
+                    _previousHPValue = _hPValue;
                 }
-                hPValue = value;
+                _hPValue = value;
                 Refresh();
             }
         }
         public int HPMaxValue
         {
-            get => hPMaxValue;
+            get => _hPMaxValue;
             set
             {
-                if (previousHPValue == hPValue)
+                if (_previousHPValue == _hPValue)
                 {
-                    previousHPMaxValue = hPMaxValue;
+                    _previousHPMaxValue = _hPMaxValue;
                 }
-                hPMaxValue = value;
+                _hPMaxValue = value;
                 Refresh();
             }
         }
 
         private void Awake()
         {
-            animator = GetComponent<Animator>();
-            previousHPMaxValue = HPMaxValue;
-            previousHPValue = HPValue;
+            _animator = GetComponent<Animator>();
+            _previousHPMaxValue = HPMaxValue;
+            _previousHPValue = HPValue;
         }
 
         private void LateUpdate()
         {
-            if (previousHPValue != hPValue)
+            if (_previousHPValue != _hPValue)
             {
-                int hPChange = hPValue - previousHPValue;
-                addHPStr.text = hPChange >= 0 ? "+" + hPChange.ToString() : hPChange.ToString();
-                if (Player == GameManager.Player.Player1) SetAnimationTrigger("AddHPDown");
-                if (Player == GameManager.Player.Player2) SetAnimationTrigger("AddHPUp");
-                previousHPValue = hPValue;
+                int hPChange = _hPValue - _previousHPValue;
+                _addHP.text = hPChange >= 0 ? "+" + hPChange.ToString() : hPChange.ToString();
+                if (Player == Player.Player1) SetAnimationTrigger("AddHPDown");
+                if (Player == Player.Player2) SetAnimationTrigger("AddHPUp");
+                _previousHPValue = _hPValue;
             }
 
-            if (previousHPMaxValue != hPMaxValue)
+            if (_previousHPMaxValue != _hPMaxValue)
             {
-                int hPMaxChange = hPMaxValue - previousHPMaxValue;
-                addHPMaxStr.text = hPMaxChange >= 0 ? "+" + hPMaxChange.ToString() : hPMaxChange.ToString();
-                if (Player == GameManager.Player.Player1) SetAnimationTrigger("AddMaxHPDown");
-                if (Player == GameManager.Player.Player2) SetAnimationTrigger("AddMaxHPUp");
-                previousHPMaxValue = hPMaxValue;
+                int hPMaxChange = _hPMaxValue - _previousHPMaxValue;
+                _addHPMax.text = hPMaxChange >= 0 ? "+" + hPMaxChange.ToString() : hPMaxChange.ToString();
+                if (Player == Player.Player1) SetAnimationTrigger("AddMaxHPDown");
+                if (Player == Player.Player2) SetAnimationTrigger("AddMaxHPUp");
+                _previousHPMaxValue = _hPMaxValue;
             }
         }
 
         public void Refresh()
         {
-            HPStr.text = hPValue.ToString() + "/" + hPMaxValue.ToString();
+            _HP.text = _hPValue.ToString() + "/" + _hPMaxValue.ToString();
         }
 
         public void SetAnimationTrigger(string trigger)
         {
-            animator.SetTrigger(trigger);
+            _animator.SetTrigger(trigger);
         }
     }
 }

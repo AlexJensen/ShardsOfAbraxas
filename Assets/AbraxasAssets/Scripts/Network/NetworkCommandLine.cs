@@ -6,11 +6,11 @@ namespace Abraxas.Behaviours.Network
 {
     public class NetworkCommandLine : MonoBehaviour
     {
-        private NetworkManager netManager;
+        NetworkManager _netManager;
 
         void Start()
         {
-            netManager = GetComponentInParent<NetworkManager>();
+            _netManager = GetComponentInParent<NetworkManager>();
 
             if (Application.isEditor) return;
 
@@ -21,13 +21,13 @@ namespace Abraxas.Behaviours.Network
                 switch (mlapiValue)
                 {
                     case "server":
-                        netManager.StartServer();
+                        _netManager.StartServer();
                         break;
                     case "host":
-                        netManager.StartHost();
+                        _netManager.StartHost();
                         break;
                     case "client":
-                        netManager.StartClient();
+                        _netManager.StartClient();
                         break;
                 }
             }

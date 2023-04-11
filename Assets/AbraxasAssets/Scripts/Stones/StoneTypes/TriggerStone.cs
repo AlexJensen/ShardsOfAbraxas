@@ -6,11 +6,11 @@ namespace Abraxas.Behaviours.Stones
     public abstract class TriggerStone : Stone
     {
         [SerializeField]
-        List<EffectStone> effects;
+        List<EffectStone> _effects;
 
         public void InvokeTrigger(params object[] vals)
         {
-            foreach (EffectStone effect in effects)
+            foreach (EffectStone effect in _effects)
             {
                 effect.TriggerEffect(vals);
             }

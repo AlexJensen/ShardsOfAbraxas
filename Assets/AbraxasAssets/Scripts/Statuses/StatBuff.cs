@@ -6,8 +6,8 @@ namespace Abraxas.Behaviours.Status
 {
     public class StatBuff : Status
     {
-        StatBlock statBlock;
-        Vector3Int buff;
+        StatBlock _statBlock;
+        Vector3Int _buff;
 
         public StatBuff(StatBlock statBlock, Vector3Int buff)
         {
@@ -16,7 +16,7 @@ namespace Abraxas.Behaviours.Status
 
         ~StatBuff()
         {
-            Clear(statBlock, buff);
+            Clear(_statBlock, _buff);
         }
 
         public override void Set(params object[] vals)
@@ -31,9 +31,9 @@ namespace Abraxas.Behaviours.Status
                 Debug.LogWarning(GetType() + ": " + System.Reflection.MethodBase.GetCurrentMethod().Name + " Exception! " + vals[1].GetType() + " was not a Vector3Int!");
                 return;
             }
-            statBlock = (StatBlock)vals[0];
-            buff = (Vector3Int)vals[1];
-            statBlock.Stats += buff;
+            _statBlock = (StatBlock)vals[0];
+            _buff = (Vector3Int)vals[1];
+            _statBlock.Stats += _buff;
         }
         public override void Clear(params object[] vals)
         {
@@ -47,9 +47,9 @@ namespace Abraxas.Behaviours.Status
                 Debug.LogWarning(GetType() + ": " + System.Reflection.MethodBase.GetCurrentMethod().Name + " Exception! " + vals[1].GetType() + " was not a Vector3Int!");
                 return;
             }
-            statBlock = (StatBlock)vals[0];
-            buff = (Vector3Int)vals[1];
-            statBlock.Stats -= buff;
+            _statBlock = (StatBlock)vals[0];
+            _buff = (Vector3Int)vals[1];
+            _statBlock.Stats -= _buff;
         }
     }
 }

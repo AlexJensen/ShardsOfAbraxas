@@ -34,15 +34,15 @@ namespace Abraxas.Behaviours.CardViewer
         #endregion
 
         #region Fields
-        public CardViewer cardDetail;
-        RectTransform cardDetailRect;
-        public List<Side> sides;
+        public CardViewer _cardDetail;
+        RectTransform _cardDetailRect;
+        public List<Side> _sides;
         #endregion
 
         #region Unity Methods
         protected void Awake()
         {
-            cardDetailRect = (RectTransform)cardDetail.transform;
+            _cardDetailRect = (RectTransform)_cardDetail.transform;
         }
         #endregion
 
@@ -54,12 +54,12 @@ namespace Abraxas.Behaviours.CardViewer
         /// <param name="side">Side of screen to display on.</param>
         public void ShowCardDetailOnSide(Card card, ScreenSide side)
         {
-            cardDetail.gameObject.SetActive(true);
-            Side screenSide = sides.Find(x => x.side == side);
-            cardDetailRect.SetParent(screenSide.rectTranform.transform);
-            cardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, screenSide.rectTranform.rect.width);
-            cardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, screenSide.rectTranform.rect.height);
-            cardDetail.ShowCardDetails(card);
+            _cardDetail.gameObject.SetActive(true);
+            Side screenSide = _sides.Find(x => x.side == side);
+            _cardDetailRect.SetParent(screenSide.rectTranform.transform);
+            _cardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, screenSide.rectTranform.rect.width);
+            _cardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, screenSide.rectTranform.rect.height);
+            _cardDetail.ShowCardDetails(card);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Abraxas.Behaviours.CardViewer
         /// </summary>
         public void HideCardDetail()
         {
-            cardDetail.gameObject.SetActive(false);
+            _cardDetail.gameObject.SetActive(false);
         }
         #endregion
     }

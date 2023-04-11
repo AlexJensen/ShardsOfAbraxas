@@ -1,23 +1,24 @@
 using Abraxas.Behaviours.Game;
+using Abraxas.Behaviours.Players;
 using Abraxas.Core;
 using UnityEngine;
 
 namespace Abraxas.Behaviours.Data
 {
-    public class DataManager : Singleton<DataManager>
+    public class DataManager : MonoBehaviour
     {
         [SerializeField]
-        StoneData stoneData;
+        StoneData _stoneData;
         [SerializeField]
-        PlayerData playerData;
+        PlayerData _playerData;
         public StoneData.StoneDetails GetStoneDetails(StoneData.StoneType type)
         {
-            return stoneData.stones.Find(x => x.type == type);
+            return _stoneData.stones.Find(x => x.type == type);
         }
 
-        public PlayerData.PlayerDetails GetPlayerDetails(GameManager.Player player)
+        public PlayerData.PlayerDetails GetPlayerDetails(Player player)
         {
-            return playerData.players.Find(x => x.player == player);
+            return _playerData.players.Find(x => x.player == player);
         }
     }
 }

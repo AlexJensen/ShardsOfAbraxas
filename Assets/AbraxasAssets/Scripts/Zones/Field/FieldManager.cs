@@ -1,18 +1,23 @@
 using Abraxas.Behaviours.Cards;
 using Abraxas.Behaviours.Events;
 using Abraxas.Behaviours.Game;
+using Abraxas.Behaviours.Players;
 using Abraxas.Behaviours.Zones.Drags;
-using Abraxas.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 namespace Abraxas.Behaviours.Zones.Fields
 {
-    public class FieldManager : Singleton<FieldManager>
+    public class FieldManager : MonoBehaviour
     {
+        #region Dependency Injections
+        [Inject] readonly GameManager _gameManager;
+        #endregion
+
         #region Constants
         public class Row
         {
@@ -47,7 +52,7 @@ namespace Abraxas.Behaviours.Zones.Fields
                 {
                     Cell cell = cellT.GetComponent<Cell>();
                     row.cells.Add(cell);
-                    cell.fieldPos = new Vector2Int(row.cells.IndexOf(cell), Field.IndexOf(row));
+                    cell.FieldPosition = new Vector2Int(row.cells.IndexOf(cell), Field.IndexOf(row));
                 }
             }
         }
@@ -75,7 +80,7 @@ namespace Abraxas.Behaviours.Zones.Fields
         public void RemoveFromField(Card card)
         {
             Cards.Remove(card);
-            card.Cell.RemoveCard(card);
+            card.Cell?.RemoveCard(card);
         }
 
         /// <summary>
@@ -84,7 +89,7 @@ namespace Abraxas.Behaviours.Zones.Fields
         /// <returns>Execution will continue after combat is completed.</returns>
         public IEnumerator StartCombat()
         {
-            Card[] activeCards = Cards.Where(s => s.Controller == GameManager.Instance.ActivePlayer).Reverse().ToArray();
+            Card[] activeCards = Cards.Where(s => s.Controller == _gameManager.ActivePlayer).Reverse().ToArray();
             for (int i = activeCards.Length - 1; i >= 0; i--)
             {
 
@@ -126,7 +131,7 @@ namespace Abraxas.Behaviours.Zones.Fields
                 yield return StartCoroutine(card.MoveTo(Field[destination.y].cells[destination.x].RectTransform.position, Card.MOVEMENT_ON_FIELD_TIME));
                 Field[destination.y].cells[destination.x].AddCard(card);
                 EventManager.Instance.CardMove(card);
-                if (Field[destination.y].cells[destination.x].player != card.Controller && Field[destination.y].cells[destination.x].player != GameManager.Player.Neutral)
+                if (Field[destination.y].cells[destination.x].Player != card.Controller && Field[destination.y].cells[destination.x].Player != Player.Neutral)
                 {
                     yield return StartCoroutine(card.PassHomeRow());
                 }

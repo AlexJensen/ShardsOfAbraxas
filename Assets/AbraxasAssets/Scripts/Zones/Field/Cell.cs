@@ -1,5 +1,5 @@
 using Abraxas.Behaviours.Cards;
-using Abraxas.Behaviours.Game;
+using Abraxas.Behaviours.Players;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,30 +12,25 @@ namespace Abraxas.Behaviours.Zones.Fields
     public class Cell : MonoBehaviour
     {
         #region Fields
-        RectTransform rectTransform;
-        List<Card> cards;
-        public GameManager.Player player;
-        public Vector2Int fieldPos;
+        RectTransform _rectTransform;
+        List<Card> _cards;
+        [SerializeField]
+        Player _player;
+        Vector2Int _fieldPosition;
         #endregion
 
         #region Properties
-        public List<Card> Cards { get => cards; }
-        public RectTransform RectTransform { get => rectTransform; }
+        public List<Card> Cards { get => _cards; }
+        public RectTransform RectTransform { get => _rectTransform; }
+        public Player Player { get => _player; }
+        public Vector2Int FieldPosition { get => _fieldPosition; set => _fieldPosition = value; }
         #endregion
 
         #region Unity Methods
         private void Awake()
         {
-            cards = new List<Card>();
-            rectTransform = (RectTransform)transform;
-        }
-
-        void Update()
-        {
-            foreach (Card card in GetComponentsInChildren<Card>())
-            {
-                FitCardInCell(card);
-            }
+            _cards = new List<Card>();
+            _rectTransform = (RectTransform)transform;
         }
         #endregion
 
@@ -59,7 +54,7 @@ namespace Abraxas.Behaviours.Zones.Fields
             Cards.Add(card);
             card.Cell = this;
             card.transform.SetParent(transform);
-            card.FieldPosition = fieldPos;
+            card.FieldPosition = FieldPosition;
             FitCardInCell(card);
         }
 

@@ -17,16 +17,20 @@ namespace Abraxas.Behaviours.Zones.Hands
         #endregion
 
         #region Fields
-        LayoutElement cardPlaceholderLayout;
-        RectTransform cardPlaceholderRect;
-        public LayoutElement CardPlaceholderLayout => cardPlaceholderLayout = cardPlaceholderLayout != null ? cardPlaceholderLayout : cardPlaceholderLayout = GetComponent<LayoutElement>();
-        public RectTransform CardPlaceholderRect => cardPlaceholderRect = cardPlaceholderRect != null ? cardPlaceholderRect : cardPlaceholderRect = (RectTransform)transform;
-
-        int currentIndex = 0, newIndex = 0;
-        bool expanding = false, retracting = false;
-
         [SerializeField]
-        float maxHeight;
+        float _maxHeight;
+
+        LayoutElement _cardPlaceholderLayout;
+        RectTransform _cardPlaceholderRect;
+        int _currentIndex = 0, _newIndex = 0;
+        bool _expanding = false, _retracting = false;
+        #endregion
+
+        #region Properties
+        public LayoutElement CardPlaceholderLayout => _cardPlaceholderLayout ??=  GetComponent<LayoutElement>();
+        public RectTransform CardPlaceholderRect => _cardPlaceholderRect ??=(RectTransform)transform;
+
+
         #endregion
 
         #region Unity Methods
@@ -34,8 +38,8 @@ namespace Abraxas.Behaviours.Zones.Hands
         internal void Reset()
         {
             CardPlaceholderLayout.preferredHeight = 0;
-            retracting = false;
-            expanding = false;
+            _retracting = false;
+            _expanding = false;
             StopCoroutine(nameof(ScalePlaceholder));
             gameObject.SetActive(false);
         }
@@ -48,7 +52,7 @@ namespace Abraxas.Behaviours.Zones.Hands
         /// <param name="index">New index to set.</param>
         internal void UpdateIndex(int index)
         {
-            newIndex = index;
+            _newIndex = index;
         }
 
         /// <summary>
@@ -56,20 +60,20 @@ namespace Abraxas.Behaviours.Zones.Hands
         /// </summary>
         internal void CheckPosition()
         {
-            if (newIndex != currentIndex)
+            if (_newIndex != _currentIndex)
             {
-                if (!retracting)
+                if (!_retracting)
                 {
                     if (CardPlaceholderLayout.preferredHeight == 0)
                     {
-                        expanding = true;
-                        CardPlaceholderLayout.transform.SetSiblingIndex(newIndex);
-                        currentIndex = newIndex;
-                        StartCoroutine(ScalePlaceholder(maxHeight, PLACEHOLDER_SCALE_TIME));
+                        _expanding = true;
+                        CardPlaceholderLayout.transform.SetSiblingIndex(_newIndex);
+                        _currentIndex = _newIndex;
+                        StartCoroutine(ScalePlaceholder(_maxHeight, PLACEHOLDER_SCALE_TIME));
                     }
-                    else if (!expanding)
+                    else if (!_expanding)
                     {
-                        retracting = true;
+                        _retracting = true;
                         StartCoroutine(ScalePlaceholder(0, PLACEHOLDER_SCALE_TIME));
                     }
                 }
@@ -78,7 +82,7 @@ namespace Abraxas.Behaviours.Zones.Hands
 
         internal void SnapToMaxHeight()
         {
-            CardPlaceholderLayout.preferredHeight = maxHeight;
+            CardPlaceholderLayout.preferredHeight = _maxHeight;
         }
 
         /// <summary>
@@ -90,16 +94,16 @@ namespace Abraxas.Behaviours.Zones.Hands
             {
                 Reset();
             }
-            else if (!expanding && !retracting)
+            else if (!_expanding && !_retracting)
             {
-                retracting = true;
+                _retracting = true;
                 StartCoroutine(ScalePlaceholder(0, PLACEHOLDER_SCALE_TIME));
             }
         }
 
         public IEnumerator ScaleToMaxSize()
         {
-            yield return StartCoroutine(ScalePlaceholder(maxHeight, PLACEHOLDER_SCALE_TIME));
+            yield return StartCoroutine(ScalePlaceholder(_maxHeight, PLACEHOLDER_SCALE_TIME));
         }
 
         IEnumerator ScalePlaceholder(float height, float time)
@@ -115,8 +119,8 @@ namespace Abraxas.Behaviours.Zones.Hands
                 CardPlaceholderLayout.preferredHeight = lerpUpdate;
                 yield return null;
             }
-            expanding = false;
-            retracting = false;
+            _expanding = false;
+            _retracting = false;
         }
         #endregion
     }

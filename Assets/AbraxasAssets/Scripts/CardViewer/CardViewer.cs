@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Abraxas.Behaviours.CardViewer
 {
@@ -13,15 +14,19 @@ namespace Abraxas.Behaviours.CardViewer
     /// </summary>
     public class CardViewer : MonoBehaviour
     {
+        #region Dependency Injections
+        [Inject] readonly DataManager _dataManager;
+        #endregion
+
         #region Fields
         [SerializeField]
-        TMP_Text title, cost, attack, health, speed;
+        TMP_Text _title, _cost, _attack, _health, _speed;
 
         [SerializeField]
-        Image image;
+        Image _image;
 
         [SerializeField]
-        List<StoneViewer> stones;
+        List<StoneViewer> _stones;
         #endregion
 
         #region methods
@@ -31,27 +36,27 @@ namespace Abraxas.Behaviours.CardViewer
         /// <param name="card">Card to display.</param>
         public void ShowCardDetails(Card card)
         {
-            title.text = card.Title;
-            cost.text = card.TotalCostText;
-            attack.text = card.StatBlock[StatBlock.StatValues.ATK].ToString();
-            health.text = card.StatBlock[StatBlock.StatValues.DEF].ToString();
-            speed.text = card.StatBlock[StatBlock.StatValues.MV].ToString();
-            image.sprite = card.Image.sprite;
-            image.transform.localScale = card.Image.transform.localScale;
+            _title.text = card.Title;
+            _cost.text = card.TotalCostText;
+            _attack.text = card.StatBlock[StatBlock.StatValues.ATK].ToString();
+            _health.text = card.StatBlock[StatBlock.StatValues.DEF].ToString();
+            _speed.text = card.StatBlock[StatBlock.StatValues.MV].ToString();
+            _image.sprite = card.Image.sprite;
+            _image.transform.localScale = card.Image.transform.localScale;
 
-            for (int i = 0; i < stones.Count; i++)
+            for (int i = 0; i < _stones.Count; i++)
             {
                 if (card.Stones.Count > i && card.Stones[i] is not StatBlock)
                 {
 
-                    stones[i].gameObject.SetActive(true);
-                    stones[i].Cost.text = card.Stones[i].Cost.ToString();
-                    stones[i].CostBack.color = DataManager.Instance.GetStoneDetails(card.Stones[i].StoneType).color;
-                    stones[i].Info.text = card.Stones[i].Info;
+                    _stones[i].gameObject.SetActive(true);
+                    _stones[i].Cost.text = card.Stones[i].Cost.ToString();
+                    _stones[i].CostBack.color = _dataManager.GetStoneDetails(card.Stones[i].StoneType).color;
+                    _stones[i].Info.text = card.Stones[i].Info;
                 }
                 else
                 {
-                    stones[i].gameObject.SetActive(false);
+                    _stones[i].gameObject.SetActive(false);
                 }
             }
         }

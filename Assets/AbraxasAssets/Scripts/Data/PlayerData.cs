@@ -1,6 +1,6 @@
-using Abraxas.Behaviours.Game;
 using System;
 using System.Collections.Generic;
+using Abraxas.Behaviours.Players;
 using UnityEngine;
 
 namespace Abraxas.Behaviours.Data
@@ -12,7 +12,7 @@ namespace Abraxas.Behaviours.Data
         public struct PlayerDetails
         {
             public string name;
-            public GameManager.Player player;
+            public Player player;
             public Color color;
         }
 

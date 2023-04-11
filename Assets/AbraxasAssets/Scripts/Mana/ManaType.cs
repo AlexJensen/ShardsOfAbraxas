@@ -1,9 +1,9 @@
 using Abraxas.Behaviours.Data;
-using Abraxas.Behaviours.Game;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using Abraxas.Behaviours.Players;
+using Zenject;
 
 namespace Abraxas.Behaviours.Manas
 {
@@ -11,73 +11,87 @@ namespace Abraxas.Behaviours.Manas
     [RequireComponent(typeof(Image))]
     public class ManaType : MonoBehaviour
     {
-        StoneData.StoneType type;
+        #region Dependency Injections
+        DataManager _dataManager;
 
-        GameManager.Player player;
+        [Inject]
+        public void Construct(DataManager dataManager)
+        {
+            _dataManager = dataManager;
+        }
 
+        public class Factory : PlaceholderFactory<ManaType>
+        {
+        }
+        #endregion
+
+        #region Fields
         [SerializeField]
-        TMP_Text amountStr, addStr;
+        TMP_Text _amountStr, _addStr;
+        StoneData.StoneType _type;
+        Player _player;
+        Animator _animator;
+        Image _image;
+        int _amount = 0, _previousAmount = 0;
+        #endregion
 
-        Animator animator;
-
-        Image image;
-        int amount = 0, previousAmount = 0;
-
+        #region Properties
         public StoneData.StoneType Type
         {
-            get => type;
+            get => _type;
             set
             {
-                type = value;
+                _type = value;
                 Refresh();
             }
         }
 
         public int Amount
         {
-            get => amount;
+            get => _amount;
             set
             {
-                if (previousAmount == amount)
+                if (_previousAmount == _amount)
                 {
-                    previousAmount = amount;
+                    _previousAmount = _amount;
                 }
-                amount = value;
+                _amount = value;
                 Refresh();
             }
         }
 
-        public GameManager.Player Player { get => player; set => player = value; }
+        public Player Player { get => _player; set => _player = value; }
+        #endregion
 
         private void Awake()
         {
-            image = GetComponent<Image>();
-            animator = GetComponent<Animator>();
+            _image = GetComponent<Image>();
+            _animator = GetComponent<Animator>();
         }
 
         private void LateUpdate()
         {
-            if (previousAmount != amount)
+            if (_previousAmount != _amount)
             {
-                int change = amount - previousAmount;
-                addStr.text = change >= 0 ? "+" + change.ToString() : change.ToString();
-                if (Player == GameManager.Player.Player1) SetAnimationTrigger("AddManaDown");
-                if (Player == GameManager.Player.Player2) SetAnimationTrigger("AddManaUp");
-                previousAmount = amount;
+                int change = _amount - _previousAmount;
+                _addStr.text = change >= 0 ? "+" + change.ToString() : change.ToString();
+                if (Player == Player.Player1) SetAnimationTrigger("AddManaDown");
+                if (Player == Player.Player2) SetAnimationTrigger("AddManaUp");
+                _previousAmount = _amount;
             }
         }
 
         public void Refresh()
         {
-            StoneData.StoneDetails colorData = DataManager.Instance.GetStoneDetails(Type);
-            image.color = colorData.color;
+            StoneData.StoneDetails colorData = _dataManager.GetStoneDetails(Type);
+            _image.color = colorData.color;
             name = colorData.name;
-            amountStr.text = amount.ToString();
+            _amountStr.text = _amount.ToString();
         }
 
         public void SetAnimationTrigger(string trigger)
         {
-            animator.SetTrigger(trigger);
+            _animator.SetTrigger(trigger);
         }
     }
 }

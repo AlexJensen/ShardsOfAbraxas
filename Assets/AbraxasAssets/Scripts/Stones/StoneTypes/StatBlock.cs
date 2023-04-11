@@ -1,35 +1,40 @@
 using Abraxas.Behaviours.Data;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace Abraxas.Behaviours.Stones
 {
     public class StatBlock : Stone
     {
+        #region Enums
         public enum StatValues
         {
             ATK,
             DEF,
             MV
         }
+        #endregion
+
+        #region Dependency Injections
+        [Inject] readonly DataManager _dataManager;
+        #endregion
 
         [SerializeField]
-        int cost;
+        int _cost;
         [SerializeField]
-        StoneData.StoneType stoneType;
+        StoneData.StoneType _stoneType;
         [SerializeField]
-        Vector3Int stats;
+        Vector3Int _stats;
+        [SerializeField]
+        TMP_Text _statsText;
 
-        [SerializeField]
-        TMP_Text statsText;
-
-        public Vector3Int Stats { get => stats; set => stats = value; }
+        public Vector3Int Stats { get => _stats; set => _stats = value; }
         public string StatsStr => this[StatValues.ATK].ToString() + "/" + this[StatValues.DEF].ToString() + "/" + this[StatValues.MV].ToString();
 
-        public override int Cost { get => cost; set => cost = value; }
-        public override StoneData.StoneType StoneType { get => stoneType; set => stoneType = value; }
-
-        public StatBlock(Vector3Int stats) => Stats = stats;
+        public override int Cost { get => _cost; set => _cost = value; }
+        public override StoneData.StoneType StoneType { get => _stoneType; set => _stoneType = value; }
+        public override string Info { get => null; set => throw new System.NotImplementedException(); }
 
         public void Awake()
         {
@@ -38,18 +43,18 @@ namespace Abraxas.Behaviours.Stones
 
         public int this[StatValues index]
         {
-            get => stats[(int)index];
+            get => _stats[(int)index];
             set
             {
-                stats[(int)index] = value;
+                _stats[(int)index] = value;
                 RefreshVisuals();
             }
         }
 
         private void RefreshVisuals()
         {
-            statsText.text = StatsStr;
-            statsText.color = DataManager.Instance.GetStoneDetails(StoneType).color;
+            _statsText.text = StatsStr;
+            _statsText.color = _dataManager.GetStoneDetails(StoneType).color;
         }
     }
 }
