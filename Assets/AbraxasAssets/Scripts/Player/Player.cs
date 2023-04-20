@@ -1,9 +1,37 @@
-namespace Abraxas.Behaviours.Players
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Abraxas.Players
 {
-    public enum Player
+    public enum Players
     {
         Player1,
         Player2,
         Neutral
+    }
+
+    public class Player
+    {
+        #region Settings
+        [Serializable]
+        public class Settings
+        {
+            [Serializable]
+            public struct PlayerDetails
+            {
+                public string name;
+                public Players player;
+                public Color color;
+            }
+
+            public List<PlayerDetails> players;
+
+            public PlayerDetails GetPlayerDetails(Players player)
+            {
+                return players.Find(x => x.player == player);
+            }
+        }
+         #endregion
     }
 }

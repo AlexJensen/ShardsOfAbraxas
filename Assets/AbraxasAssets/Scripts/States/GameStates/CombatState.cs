@@ -1,28 +1,18 @@
-﻿using Abraxas.Behaviours.Game;
-using Abraxas.Behaviours.Zones.Fields;
+﻿using Abraxas.Events;
+using Abraxas.Game;
 using System.Collections;
 using Zenject;
 
-namespace Abraxas.Scripts.States
+namespace Abraxas.GameStates
 {
     public class CombatState : GameState
     {
         #region Dependency Injections
-        readonly FieldManager _fieldManager;
-        public class Factory : PlaceholderFactory<CombatState>
-        {
-        }
-
+        public CombatState(IGameManager gameManager, IEventManager eventManager) : base(gameManager, eventManager){}
+        public class Factory : PlaceholderFactory<CombatState>{}
         #endregion
 
-        public CombatState(GameManager gameManager, FieldManager fieldManager)
-        {
-            this.gameManager = gameManager;
-            _fieldManager = fieldManager;
-        }
-
-
-
+        #region Methods
         public override GameStates NextState()
         {
             return GameStates.AfterCombat;
@@ -30,13 +20,14 @@ namespace Abraxas.Scripts.States
 
         public override IEnumerator OnEnterState()
         {
-            yield return _fieldManager.StartCombat();
-            gameManager.BeginNextGameState();
+            yield return base.OnEnterState();
+            yield return gameManager.BeginNextGameState();
         }
 
         public override IEnumerator OnExitState()
         {
-            yield break;
+            yield return base.OnExitState();
         }
+        #endregion
     }
 }

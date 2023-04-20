@@ -1,43 +1,58 @@
-using Abraxas.Behaviours.Cards;
-using Abraxas.Behaviours.CardViewer;
-using Abraxas.Behaviours.Data;
-using Abraxas.Behaviours.Game;
-using Abraxas.Behaviours.Manas;
-using Abraxas.Behaviours.Network;
-using Abraxas.Behaviours.Zones.Drags;
-using Abraxas.Behaviours.Zones.Fields;
-using Abraxas.Scripts.States;
+using Abraxas.Game;
+using Abraxas.Manas;
+using Abraxas.GameStates;
 using System;
 using UnityEngine;
 using Zenject;
+using Abraxas.Zones.Overlays;
+using Abraxas.Players;
+using Abraxas.CardViewers;
+using Abraxas.Zones.Hands;
+using Abraxas.Zones.Decks;
+using Abraxas.Zones.Graveyards;
+using Abraxas.Zones.Fields;
+using Abraxas.Events;
+using Abraxas.Network;
 
 namespace Abraxas.Core.Installers
 {
     public class AbraxasInstaller : MonoInstaller
     {
-        [Inject]
-        Settings _settings = null;
-
+        [Inject] readonly Mana.Settings _manaSettings;
         public override void InstallBindings()
         {
             InstallManagers();
-            InstallGameStates();
-            InstallManaTypes();
+            InstallGameStateFactories();
+            InstallManaFactories();
+        }
+
+        private void InstallManaFactories()
+        {
+            Container.BindFactory<ManaType, ManaType.Factory>().FromComponentInNewPrefab(_manaSettings.ManaTypePrefab);
         }
 
         private void InstallManagers()
         {
-            Container.Bind<GameManager>().FromComponentInHierarchy().AsSingle();
-            Container.Bind<DragManager>().FromComponentInHierarchy().AsSingle();
-            Container.Bind<DataManager>().FromComponentInHierarchy().AsSingle();
-            Container.Bind<CardViewerManager>().FromComponentInHierarchy().AsSingle();
-            Container.Bind<FieldManager>().FromComponentInHierarchy().AsSingle();
-            Container.Bind<DebugNetworkManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<DebugNetworkManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<CardViewerManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<ManaManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<HandManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<DeckManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<GraveyardManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<FieldManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<EventManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<OverlayManager>().FromComponentInHierarchy().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<GameStateManager>().FromNew().AsSingle();
+
+
         }
 
-        private void InstallGameStates()
+        private void InstallGameStateFactories()
         {
-            Container.Bind<GameStateFactory>().AsSingle();
+            Container.Bind<IGameStateFactory>().To<GameStateFactory>().AsSingle();
 
             Container.BindFactory<GameNotStartedState, GameNotStartedState.Factory>().WhenInjectedInto<GameStateFactory>();
             Container.BindFactory<BeginningState, BeginningState.Factory>().WhenInjectedInto<GameStateFactory>();
@@ -45,19 +60,6 @@ namespace Abraxas.Core.Installers
             Container.BindFactory<CombatState, CombatState.Factory>().WhenInjectedInto<GameStateFactory>();
             Container.BindFactory<AfterCombatState, AfterCombatState.Factory>().WhenInjectedInto<GameStateFactory>();
             Container.BindFactory<EndState, EndState.Factory>().WhenInjectedInto<GameStateFactory>();
-        }
-
-        private void InstallManaTypes()
-        {
-            Container.BindFactory<ManaType, ManaType.Factory>()
-                .FromComponentInNewPrefab(_settings.ManaTypePrefab)
-                .WithGameObjectName("ManaType");
-        }
-
-        [Serializable]
-        public class Settings
-        {
-            public GameObject ManaTypePrefab;
         }
     }
 }

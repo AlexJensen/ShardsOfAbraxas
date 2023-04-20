@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace Abraxas.Behaviours.CardViewer
+namespace Abraxas.CardViewers
 {
     public class StoneViewer : MonoBehaviour
     {

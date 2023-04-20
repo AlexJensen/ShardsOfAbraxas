@@ -1,12 +1,14 @@
-using Abraxas.Core;
+﻿using Abraxas.Zones.Decks;
+using Abraxas.Zones.Fields;
+using Abraxas.Zones.Graveyards;
+using Abraxas.Zones.Hands;
 
-namespace Abraxas.Behaviours.Zones
+namespace Abraxas.Zones
 {
-    public class ZoneManager : Singleton<ZoneManager>
+    class ZoneManager: IZoneManager
     {
-        public enum Zones
-        {
-            DECK, DRAG, HAND, PLAY, DEAD, BANISHED
-        }
+        #region Dependencies
+
+        #endregion
     }
 }

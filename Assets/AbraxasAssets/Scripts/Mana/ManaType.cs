@@ -1,23 +1,23 @@
-using Abraxas.Behaviours.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Abraxas.Behaviours.Players;
 using Zenject;
+using Abraxas.Stones;
 
-namespace Abraxas.Behaviours.Manas
+using Player = Abraxas.Players.Players;
+
+namespace Abraxas.Manas
 {
     [ExecuteInEditMode]
     [RequireComponent(typeof(Image))]
     public class ManaType : MonoBehaviour
     {
-        #region Dependency Injections
-        DataManager _dataManager;
-
+        #region Dependencies
+        Stone.Settings _stoneSettings;
         [Inject]
-        public void Construct(DataManager dataManager)
+        public void Construct(Stone.Settings stoneSettings)
         {
-            _dataManager = dataManager;
+            _stoneSettings = stoneSettings;
         }
 
         public class Factory : PlaceholderFactory<ManaType>
@@ -28,7 +28,7 @@ namespace Abraxas.Behaviours.Manas
         #region Fields
         [SerializeField]
         TMP_Text _amountStr, _addStr;
-        StoneData.StoneType _type;
+        StoneType _type;
         Player _player;
         Animator _animator;
         Image _image;
@@ -36,7 +36,7 @@ namespace Abraxas.Behaviours.Manas
         #endregion
 
         #region Properties
-        public StoneData.StoneType Type
+        public StoneType Type
         {
             get => _type;
             set
@@ -83,7 +83,7 @@ namespace Abraxas.Behaviours.Manas
 
         public void Refresh()
         {
-            StoneData.StoneDetails colorData = _dataManager.GetStoneDetails(Type);
+            Stone.Settings.StoneDetails colorData = _stoneSettings.GetStoneDetails(Type);
             _image.color = colorData.color;
             name = colorData.name;
             _amountStr.text = _amount.ToString();

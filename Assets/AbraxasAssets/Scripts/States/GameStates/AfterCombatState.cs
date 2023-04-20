@@ -1,34 +1,33 @@
-﻿using Abraxas.Behaviours.Game;
+﻿using Abraxas.Events;
+using Abraxas.Game;
 using System.Collections;
 using Zenject;
 
-namespace Abraxas.Scripts.States
+namespace Abraxas.GameStates
 {
     public class AfterCombatState : GameState
     {
+        #region Dependencies
+        [Inject]
+        public AfterCombatState(IGameManager gameManager, IEventManager eventManager) : base(gameManager, eventManager){}
+        public class Factory : PlaceholderFactory<AfterCombatState>{}
+        #endregion
+
+        #region Methods
         public override GameStates NextState()
         {
             return GameStates.End;
         }
 
-        public AfterCombatState(GameManager gameManager)
-        {
-            this.gameManager = gameManager;
-        }
-
-        public class Factory : PlaceholderFactory<AfterCombatState>
-        {
-
-        }
-
         public override IEnumerator OnEnterState()
         {
-            yield break;
+            yield return base.OnEnterState();
         }
 
         public override IEnumerator OnExitState()
         {
-            yield break;
+            yield return base.OnExitState();
         }
+        #endregion
     }
 }

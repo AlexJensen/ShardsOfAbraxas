@@ -1,37 +1,48 @@
-using Abraxas.Core;
-using Abraxas.Behaviours.Cards;
+using Abraxas.Cards;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-namespace Abraxas.Behaviours.Events
+namespace Abraxas.Events
 {
-    public class EventManager : Singleton<EventManager>
+    public class EventManager : MonoBehaviour, IEventManager
     {
-        public delegate void GameEvent(params object[] vals);
+        #region Fields
+        readonly Dictionary<Type, List<object>> _eventListeners = new();
+        #endregion
 
-        public event GameEvent OnCardMoved;
-        public event GameEvent OnCardDestroyed;
-        public event GameEvent OnCardEnteredField;
-        public event GameEvent OnBeginningStateStarted;
-        public event GameEvent OnBeforeCombatStarted;
+        #region Methods
+        public void AddListener<T>(Type eventType, IGameEventListener<T> listener)
+        {
+            if (!_eventListeners.ContainsKey(eventType))
+            {
+                _eventListeners[eventType] = new List<object>();
+            }
+            _eventListeners[eventType].Add(listener);
+        }
 
-        public void CardMove(Card card)
+        public void RemoveListener<T>(Type eventType, IGameEventListener<T> listener)
         {
-            if (OnCardMoved != null) OnCardMoved(card);
+            if (_eventListeners.ContainsKey(eventType))
+            {
+                _eventListeners[eventType].Remove(listener);
+            }
         }
-        public void CardDestroyed(Card card)
+
+        public IEnumerator RaiseEvent<T>(Type eventType, T eventData)
         {
-            if (OnCardDestroyed != null) OnCardDestroyed(card);
+            if (_eventListeners.TryGetValue(eventType, out var listeners))
+            {
+                foreach (var listener in listeners)
+                {
+                    if (listener is IGameEventListener<T> gameEventListener)
+                    {
+                        yield return gameEventListener.OnEventRaised(eventData);
+                    }
+                }
+            }
         }
-        public void CardEnteredField(Card card)
-        {
-            if (OnCardEnteredField != null) OnCardEnteredField(card);
-        }
-        public void BeginningStateStarted()
-        {
-            if (OnBeginningStateStarted != null) OnBeginningStateStarted();
-        }
-        public void BeforeCombatStarted()
-        {
-            if (OnBeforeCombatStarted != null) OnBeforeCombatStarted();
-        }
+        #endregion
     }
 }

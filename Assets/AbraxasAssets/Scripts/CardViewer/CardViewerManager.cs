@@ -1,32 +1,22 @@
-using Abraxas.Behaviours.Cards;
-using Abraxas.Core;
+using Abraxas.Cards;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Abraxas.Behaviours.CardViewer
+namespace Abraxas.CardViewers
 {
-
-    /// <summary>
-    /// Positions the Card Detail pane based on the mouse position and controls displaying and hiding it.
-    /// </summary>
-    public class CardViewerManager : Singleton<CardViewerManager>
+    public class CardViewerManager : MonoBehaviour, ICardViewerManager
     {
         #region Constants
-        /// <summary>
-        /// Side of screen to display on.
-        /// </summary>
-        public enum ScreenSide
+        enum ScreenSide
         {
             LEFT,
             RIGHT
         }
 
-        /// <summary>
-        /// Joiner to connect enum value to location on canvas.
-        /// </summary>
         [Serializable]
-        public struct Side
+        struct Side
         {
             public ScreenSide side;
             public RectTransform rectTranform;
@@ -34,40 +24,46 @@ namespace Abraxas.Behaviours.CardViewer
         #endregion
 
         #region Fields
-        public CardViewer _cardDetail;
+        [SerializeField]
+        CardViewer _cardDetail;
+        [SerializeField]
+        List<Side> _sides;
+
         RectTransform _cardDetailRect;
-        public List<Side> _sides;
         #endregion
 
-        #region Unity Methods
-        protected void Awake()
-        {
-            _cardDetailRect = (RectTransform)_cardDetail.transform;
-        }
+        #region Properties
+        RectTransform CardDetailRect { get => _cardDetailRect != null? _cardDetailRect: (RectTransform)_cardDetail.transform; }
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Displays the card detail pane on the specified side of the screen.
-        /// </summary>
-        /// <param name="card">Card info to display.</param>
-        /// <param name="side">Side of screen to display on.</param>
-        public void ShowCardDetailOnSide(Card card, ScreenSide side)
+        private void ShowCardViewerOnSide(Card card, ScreenSide side)
         {
             _cardDetail.gameObject.SetActive(true);
             Side screenSide = _sides.Find(x => x.side == side);
-            _cardDetailRect.SetParent(screenSide.rectTranform.transform);
-            _cardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, screenSide.rectTranform.rect.width);
-            _cardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, screenSide.rectTranform.rect.height);
+            CardDetailRect.SetParent(screenSide.rectTranform.transform);
+            CardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, screenSide.rectTranform.rect.width);
+            CardDetailRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, screenSide.rectTranform.rect.height);
             _cardDetail.ShowCardDetails(card);
         }
 
-        /// <summary>
-        /// Hides the card detail pane.
-        /// </summary>
-        public void HideCardDetail()
+        public IEnumerator HideCardDetail()
         {
             _cardDetail.gameObject.SetActive(false);
+            yield break;
+        }
+
+        public IEnumerator ShowCardDetail(Card card)
+        {
+            if (Input.mousePosition.x > Screen.width / 2)
+            {
+                ShowCardViewerOnSide(card, ScreenSide.LEFT);
+            }
+            else
+            {
+                ShowCardViewerOnSide(card, ScreenSide.RIGHT);
+            }
+            yield break;
         }
         #endregion
     }

@@ -1,13 +1,4 @@
-using Abraxas.Core;
-using Abraxas.Behaviours.Stones;
-using Abraxas.Behaviours.Data;
-using Abraxas.Behaviours.Game;
-using Abraxas.Behaviours.Players;
-using Abraxas.Behaviours.Zones;
-using Abraxas.Behaviours.Zones.Fields;
-using Abraxas.Behaviours.Zones.Drags;
-using Abraxas.Behaviours.Status;
-using Abraxas.Behaviours.CardViewer;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,41 +6,49 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using Zenject;
 
-namespace Abraxas.Behaviours.Cards
+using Abraxas.Core;
+using Abraxas.Game;
+using Abraxas.Stones;
+using Abraxas.Zones.Fields;
+
+using Zone = Abraxas.Zones.Zones;
+using Player = Abraxas.Players.Players;
+using UnityEngine.EventSystems;
+
+namespace Abraxas.Cards
 {
     [RequireComponent(typeof(RectTransform))]
     [RequireComponent(typeof(Image))]
     [RequireComponent(typeof(StatBlock))]
-    public class Card : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
+    [RequireComponent(typeof(RectTransformMover))]
+    [RequireComponent(typeof(CardDragHandler))]
+    [RequireComponent(typeof(CardMouseOverHandler))]
+    public class Card : NetworkBehaviour
     {
-        #region Dependency Injections
-        GameManager _gameManager;
-        DragManager _dragManager;
-        DataManager _dataManager;
-        CardViewerManager _cardViewerManager;
-        FieldManager _fieldManager;
-
-        [Inject]
-        public void Construct(GameManager gameManager, DragManager dragManager, DataManager dataManager, CardViewerManager cardViewerManager, FieldManager fieldManager)
+        #region Settings
+        Settings _settings;
+        [Serializable]
+        public class Settings
         {
-            _gameManager = gameManager;
-            _dragManager = dragManager;
-            _dataManager = dataManager;
-            _cardViewerManager = cardViewerManager;
-            _fieldManager = fieldManager;
+            public float MovementOnFieldTime;
         }
         #endregion
 
-        #region Constants
-        public const float MOVE_FROM_HAND_TO_DRAG_SCALE_TIME = .3f;
-        public const float MOVEMENT_ON_FIELD_TIME = .3f;
-        public const float MOVE_TO_ZONE_SCALE_TIME = .3f;
-        public const float MOVE_TO_ZONE_MOVE_TIME = .3f;
-        public const float MOVE_FROM_HAND_TO_CELL_SCALE_TIME = 0.3f;
-        public const float MOVE_FROM_HAND_TO_CELL_MOVE_TIME = 0.3f;
+        #region Dependencies
+        Stone.Settings _stoneSettings;
+        Players.Player.Settings _playerSettings;
+        IGameManager _gameManager;
+
+        [Inject]
+        public void Construct(Settings settings, Stone.Settings stoneSettings, Players.Player.Settings playerSettings, IGameManager gameManager)
+        {
+            _settings = settings;
+            _stoneSettings = stoneSettings;
+            _gameManager = gameManager;
+            _playerSettings = playerSettings;
+        }
         #endregion
 
         #region Fields
@@ -72,13 +71,12 @@ namespace Abraxas.Behaviours.Cards
         Image _image;
 
         Vector2Int _fieldPosition;
-        Dictionary<StoneData.StoneType, int> _totalCosts;
+        Dictionary<StoneType, int> _totalCosts;
         string _totalCostText;
-        ZoneManager.Zones _zone;
+        Zone _zone;
         List<Stone> _stones;
         StatBlock _statBlock;
-        Canvas _canvas;
-        GraphicRaycaster _graphicRaycaster;
+        RectTransformMover _rectTransformMover;
         #endregion
 
         #region Properties
@@ -106,7 +104,7 @@ namespace Abraxas.Behaviours.Cards
             private set
             {
                 _owner = value;
-                Color controllerColor = _dataManager.GetPlayerDetails(Controller).color;
+                Color controllerColor = _playerSettings.GetPlayerDetails(Controller).color;
                 _titleText.color = controllerColor;
             }
         }
@@ -120,15 +118,13 @@ namespace Abraxas.Behaviours.Cards
                 _costText.text = _totalCostText;
             }
         }
-
-        public RectTransform RectTransform => (RectTransform)transform;
         public List<Stone> Stones => _stones ??= GetComponents<Stone>().ToList();
         public StatBlock StatBlock => _statBlock = _statBlock != null ? _statBlock : GetComponent<StatBlock>();
         public Image Image => _image;
-        public Canvas Canvas => _canvas = _canvas != null ? _canvas : GetComponentInParent<Canvas>();
-        public GraphicRaycaster GraphicRaycaster => _graphicRaycaster = _graphicRaycaster != null ? _graphicRaycaster : Canvas.GetComponent<GraphicRaycaster>();
         
-        public Dictionary<StoneData.StoneType, int> TotalCosts
+        
+        
+        public Dictionary<StoneType, int> TotalCosts
         {
             get => _totalCosts ??= GenerateTotalCost(); 
             private set => _totalCosts = value; 
@@ -136,22 +132,21 @@ namespace Abraxas.Behaviours.Cards
 
         public Cell Cell { get; set; }
         public Vector2Int FieldPosition { get => _fieldPosition; set => _fieldPosition = value; }
-        public ZoneManager.Zones Zone { get => _zone; set => _zone = value; }
+        public Zone Zone { get => _zone; set => _zone = value; }
         public bool Hidden { get => _hidden; set => _hidden = value; }
+        public RectTransformMover RectTransformMover => _rectTransformMover != null ? _rectTransformMover : _rectTransformMover = GetComponent<RectTransformMover>();
         #endregion
 
-        #region Unity Methods
+        #region Methods
         void Awake()
         {
             Controller = _controller;
             Owner = _owner;
         }
-        #endregion
 
-        #region Methods
-        private Dictionary<StoneData.StoneType, int> GenerateTotalCost()
+        private Dictionary<StoneType, int> GenerateTotalCost()
         {
-            _totalCosts = new Dictionary<StoneData.StoneType, int>();
+            _totalCosts = new Dictionary<StoneType, int>();
             foreach (Stone stone in Stones)
             {
                 stone.card = this;
@@ -171,11 +166,11 @@ namespace Abraxas.Behaviours.Cards
         private void FormatCost()
         {
             string TotalCost = "";
-            foreach (KeyValuePair<StoneData.StoneType, int> pair in TotalCosts)
+            foreach (KeyValuePair<StoneType, int> pair in TotalCosts)
             {
                 if (pair.Value != 0)
                 {
-                    TotalCost += "<#" + ColorUtility.ToHtmlStringRGB(_dataManager.GetStoneDetails(pair.Key).color) + ">" + pair.Value;
+                    TotalCost += "<#" + ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneDetails(pair.Key).color) + ">" + pair.Value;
                 }
             }
             TotalCostText = TotalCost;
@@ -183,25 +178,21 @@ namespace Abraxas.Behaviours.Cards
 
         public IEnumerator PassHomeRow()
         {
-            _gameManager.DamagePlayer(Controller ==
+            _gameManager.ModifyPlayerHealth(Controller ==
                 Player.Player1 ? Player.Player2 : Player.Player1,
                 StatBlock[StatBlock.StatValues.ATK]);
-            yield return _gameManager.GetPlayerHand(Controller).Deck.MoveCardToZone(this);
+            yield return _gameManager.MoveCardFromFieldToDeck(this);
         }
 
-        public IEnumerator Fight(Card collided)
+        public IEnumerator Fight(Card opponent)
         {
-            if (collided.Controller == Controller)
-            {
-                yield return null;
-            }
-            StatBlock collidedStats = collided.GetComponent<StatBlock>();
+            StatBlock collidedStats = opponent.GetComponent<StatBlock>();
             collidedStats[StatBlock.StatValues.DEF] -= StatBlock[StatBlock.StatValues.ATK];
             StatBlock[StatBlock.StatValues.DEF] -= collidedStats[StatBlock.StatValues.ATK];
 
 
             yield return Utilities.WaitForCoroutines(this,
-                collided.CheckDeath(),
+                opponent.CheckDeath(),
                 CheckDeath());
         }
 
@@ -209,168 +200,38 @@ namespace Abraxas.Behaviours.Cards
         {
             if (StatBlock[StatBlock.StatValues.DEF] <= 0)
             {
-                yield return _gameManager.GetPlayerHand(Controller).Graveyard.MoveCardToZone(this);
+                yield return _gameManager.MoveCardFromFieldToGraveyard(this);
             }
-        }
-        #endregion
-
-        #region Input Events
-        public void OnBeginDrag(PointerEventData eventData)
-        {
-            if (!Hidden)
-            {
-                switch (Zone)
-                {
-                    case ZoneManager.Zones.HAND:
-                        {
-                            if (Controller == _gameManager.ActivePlayer)
-                            {
-                                transform.SetParent(_dragManager.transform);
-                                _dragManager.card = this;
-                                _gameManager.GetPlayerHand(Controller).RemoveCard(this);
-                                StartCoroutine(ChangeScale(_dragManager.templateCardRect.rect.size, MOVE_FROM_HAND_TO_DRAG_SCALE_TIME));
-                                Zone = ZoneManager.Zones.DRAG;
-                            }
-                        }
-                        break;
-                }
-            }
-        }
-
-        public void OnDrag(PointerEventData eventData)
-        {
-            switch (Zone)
-            {
-                case ZoneManager.Zones.DRAG:
-                    {
-                        RectTransform.position = Input.mousePosition;
-                    }
-                    break;
-            }
-        }
-
-        public void OnEndDrag(PointerEventData eventData)
-        {
-            _dragManager.card = null;
-            switch (Zone)
-            {
-                case ZoneManager.Zones.DRAG:
-                    {
-                        List<RaycastResult> results = new();
-                        GraphicRaycaster.Raycast(eventData, results);
-                        foreach (var hit in results)
-                        {
-                            Cell cell = hit.gameObject.GetComponent<Cell>();
-                            if (cell)
-                            {
-                                if (cell.Cards.Count == 0 && cell.Player == Controller && _gameManager.CanPurchaseCard(this))
-                                {
-
-                                    _gameManager.PurchaseCard(this);
-                                    gameObject.AddComponent<LoadingDebuff>();
-                                    RequestMoveToCellServerRpc(cell.FieldPosition);
-                                    return;
-                                }
-                            }
-                        }
-                        StartCoroutine(_gameManager.GetPlayerHand(Controller).MoveCardToZone(this));
-                    }
-                    break;
-            }
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            if (Input.mousePosition.x > Screen.width / 2)
-            {
-                _cardViewerManager.ShowCardDetailOnSide(this, CardViewerManager.ScreenSide.LEFT);
-            }
-            else
-            {
-                _cardViewerManager.ShowCardDetailOnSide(this, CardViewerManager.ScreenSide.RIGHT);
-            }
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            _cardViewerManager.HideCardDetail();
         }
         #endregion
 
         #region Animation Lerps
-        private IEnumerator ChangeScale(Vector2 size, float time)
+        public IEnumerator MoveCardOnField(RectTransform rectTransform)
         {
-            Vector2 origSize = RectTransform.rect.size;
-            float lerpIncrement = 1 / time, lerpProgress = 0;
-            while (lerpProgress <= 1)
-            {
-                Vector2 lerpUpdate = Vector2.Lerp(origSize, size, lerpProgress);
-                RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, lerpUpdate.x);
-                RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, lerpUpdate.y);
-
-                lerpProgress += lerpIncrement * Time.deltaTime;
-                yield return null;
-            }
-            yield return null;
+            yield return RectTransformMover.MoveToFitRectangle(rectTransform, _settings.MovementOnFieldTime);
         }
 
-        public IEnumerator MoveTo(Vector2 location, float time)
+        public IEnumerator Combat()
         {
-            Vector2 origLoc = RectTransform.position;
-            float lerpIncrement = 1 / time, lerpProgress = 0;
-            while (lerpProgress <= 1)
-            {
-                Vector2 lerpUpdate = Vector2.Lerp(origLoc, location, lerpProgress);
-                RectTransform.position = lerpUpdate;
-
-                lerpProgress += lerpIncrement * Time.deltaTime;
-                yield return null;
-            }
-            yield return null;
-        }
-
-        public IEnumerator MoveToFitRectangle(RectTransform rectTransform)
-        {
-            transform.SetParent(_dragManager.transform);
-            yield return StartCoroutine(Utilities.WaitForCoroutines(this,
-                ChangeScale(rectTransform.rect.size, MOVE_TO_ZONE_SCALE_TIME),
-                MoveTo(rectTransform.position, MOVE_TO_ZONE_MOVE_TIME)));
-        }
-
-        public IEnumerator MoveToCell(Cell cell)
-        {
-            transform.SetParent(_dragManager.transform);
-            _gameManager.GetPlayerHand(Controller).RemoveCard(this);
-            yield return StartCoroutine(Utilities.WaitForCoroutines(this,
-               ChangeScale(cell.RectTransform.rect.size, MOVE_FROM_HAND_TO_CELL_SCALE_TIME),
-               MoveTo(cell.RectTransform.position, MOVE_FROM_HAND_TO_CELL_MOVE_TIME)));
-            _fieldManager.AddToField(this, cell);
-        }
-
-        public IEnumerator OnCombat()
-        {
-            if (gameObject.GetComponent<LoadingDebuff>() == null)
-            {
-                yield return StartCoroutine(_fieldManager.MoveCardAndFight(this, new Vector2Int(
-                  Controller == Player.Player1 ? StatBlock[StatBlock.StatValues.MV] :
-                  Controller == Player.Player2 ? -StatBlock[StatBlock.StatValues.MV] : 0, 0)));
-            }
+            yield return _gameManager.MoveCardAndFight(this, new Vector2Int(
+                Controller == Player.Player1 ? StatBlock[StatBlock.StatValues.MV] :
+                Controller == Player.Player2 ? -StatBlock[StatBlock.StatValues.MV] : 0, 0));
         }
         #endregion
 
         #region Server Methods
         [ServerRpc(RequireOwnership = false)]
-        void RequestMoveToCellServerRpc(Vector2Int fieldPos)
+        public void RequestMoveToCellServerRpc(Vector2Int cell)
         {
             if (!IsServer) return;
-            MoveToCellClientRpc(fieldPos);
+            MoveToCellClientRpc(cell);
         }
 
         [ClientRpc]
-        void MoveToCellClientRpc(Vector2Int fieldPos)
+        void MoveToCellClientRpc(Vector2Int cell)
         {
             if (!IsClient) return;
-            StartCoroutine(_fieldManager.MoveToFieldPosition(this, fieldPos));
+            StartCoroutine(_gameManager.MoveCardFromHandToCell(this, cell));
         }
         #endregion
     }

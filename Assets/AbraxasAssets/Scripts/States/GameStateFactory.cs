@@ -1,18 +1,8 @@
 using ModestTree;
 
-namespace Abraxas.Scripts.States
+namespace Abraxas.GameStates
 {
-    public enum GameStates
-    {
-        GameNotStarted,
-        Beginning,
-        BeforeCombat,
-        Combat,
-        AfterCombat, 
-        End,   
-    }
-
-    public class GameStateFactory
+    public class GameStateFactory : IGameStateFactory
     {
         readonly GameNotStartedState.Factory _gameNotStartedFactory;
         readonly BeginningState.Factory _beginningFactory;

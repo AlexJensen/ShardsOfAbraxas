@@ -1,30 +1,31 @@
-﻿using Abraxas.Behaviours.Game;
-using Abraxas.Behaviours.Network;
+﻿using Abraxas.Network;
+using Abraxas.Game;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using Zenject;
+using Abraxas.Events;
 
-namespace Abraxas.Scripts.States
+namespace Abraxas.GameStates
 {
-    /// <summary>
-    /// State to wait in while players are connecting.
-    /// </summary>
     public class GameNotStartedState : GameState
     {
-        private readonly NetworkManager _networkManager;
-        private readonly DebugNetworkManager _debugNetworkManager;
-        public GameNotStartedState(GameManager gameManager, DebugNetworkManager debugNetworkManager)
+        #region Dependencies
+        readonly NetworkManager _networkManager;
+        readonly DebugNetworkManager _debugNetworkManager;
+        [Inject]
+        public GameNotStartedState(IGameManager gameManager, IEventManager eventManager, DebugNetworkManager debugNetworkManager) :base(gameManager, eventManager)
         {
             _networkManager = NetworkManager.Singleton;
             _debugNetworkManager = debugNetworkManager;
-            this.gameManager = gameManager;
         }
 
         public class Factory : PlaceholderFactory<GameNotStartedState>
         {
         }
+        #endregion
 
+        #region Methods
         public override GameStates NextState()
         {
             return GameStates.Beginning;
@@ -32,6 +33,7 @@ namespace Abraxas.Scripts.States
 
         public override IEnumerator OnEnterState()
         {
+            yield return base.OnEnterState();
             if (_debugNetworkManager.isDebugMode)
             {
                 yield return new WaitForSeconds(1.0f);
@@ -49,12 +51,14 @@ namespace Abraxas.Scripts.States
                     yield return null;
                 }
             }
-            gameManager.BeginNextGameState();
+            yield return gameManager.BeginNextGameState();
         }
 
         public override IEnumerator OnExitState()
         {
+            yield return base.OnExitState();
             yield return gameManager.StartGame();
         }
+        #endregion
     }
 }

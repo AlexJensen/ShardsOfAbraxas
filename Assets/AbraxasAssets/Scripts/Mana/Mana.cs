@@ -1,15 +1,29 @@
-using Abraxas.Behaviours.Data;
-using Abraxas.Behaviours.Players;
-using Abraxas.Behaviours.Zones.Decks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using Abraxas.Stones;
+using Abraxas.Zones.Decks;
 
-namespace Abraxas.Behaviours.Manas
+using Player = Abraxas.Players.Players;
+using Random = UnityEngine.Random;
+using System.Collections;
+
+namespace Abraxas.Manas
 {
     public class Mana : MonoBehaviour
     {
-        #region Dependency Injections
+        #region Settings
+        [Serializable]
+        public class Settings
+        {
+            public GameObject ManaTypePrefab;
+            public int StartingMana;
+            public int ManaPerTurnIncrement;
+        }
+        #endregion
+
+        #region Dependencies
         ManaType.Factory _typeFactory;
         [Inject]
         void Construct(ManaType.Factory typeFactory)
@@ -22,17 +36,14 @@ namespace Abraxas.Behaviours.Manas
         [SerializeField]
         Deck _deck;
 
-        [SerializeField]
-        Player _player;
-
-        Dictionary<StoneData.StoneType, int> _deckCosts;
+        Dictionary<StoneType, int> _deckCosts;
         List<ManaType> _manaTypes;
         int _totalDeckCost = 0;
         #endregion
 
 
         #region Properties
-        public Player Player { get => _player; }
+        public Player Player { get => _deck.Player; }
         public List<ManaType> ManaTypes { get => _manaTypes; }
         #endregion
 
@@ -41,7 +52,7 @@ namespace Abraxas.Behaviours.Manas
         {
             _deckCosts = _deck.GetTotalDeckCosts();
             _manaTypes = new List<ManaType>();
-            foreach (KeyValuePair<StoneData.StoneType, int> manaAmount in _deckCosts)
+            foreach (KeyValuePair<StoneType, int> manaAmount in _deckCosts)
             {
                 if (manaAmount.Value > 0)
                 {
@@ -49,7 +60,7 @@ namespace Abraxas.Behaviours.Manas
                     manaType.transform.SetParent(transform);
                     manaType.Type = manaAmount.Key;
                     manaType.Amount = 0;
-                    manaType.Player = _player;
+                    manaType.Player = Player;
                     _totalDeckCost += manaAmount.Value;
                     ManaTypes.Add(manaType);
                 }
@@ -64,12 +75,12 @@ namespace Abraxas.Behaviours.Manas
         #endregion
 
         #region Methods
-        public void GenerateRatioMana(int amount)
+        public IEnumerator GenerateRatioMana(int amount)
         {
             for (int i = 0; i < amount; i++)
             {
                 int num = Random.Range(0, _totalDeckCost);
-                foreach (KeyValuePair<StoneData.StoneType, int> manaAmount in _deckCosts)
+                foreach (KeyValuePair<StoneType, int> manaAmount in _deckCosts)
                 {
                     if (manaAmount.Value < num)
                     {
@@ -81,6 +92,7 @@ namespace Abraxas.Behaviours.Manas
                     break;
                 }
             }
+            yield break;
         }
         #endregion
     }

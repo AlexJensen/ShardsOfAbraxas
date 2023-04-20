@@ -1,150 +1,50 @@
-using Abraxas.Behaviours.Cards;
-using Abraxas.Behaviours.Events;
-using Abraxas.Behaviours.Game;
-using Abraxas.Behaviours.Players;
-using Abraxas.Behaviours.Zones.Drags;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using Zenject;
+using Abraxas.Cards;
 
-namespace Abraxas.Behaviours.Zones.Fields
+namespace Abraxas.Zones.Fields
 {
-    public class FieldManager : MonoBehaviour
+    public class FieldManager : MonoBehaviour, IFieldManager
     {
-        #region Dependency Injections
-        [Inject] readonly GameManager _gameManager;
-        #endregion
-
-        #region Constants
-        public class Row
-        {
-            public List<Cell> cells;
-            public Row()
-            {
-                cells = new List<Cell>();
-            }
-        }
-        #endregion
-
         #region Fields
-        List<Card> cards;
-        List<Row> field;
-
-        public List<Card> Cards { get => cards; set => cards = value; }
-        public List<Row> Field { get => field; set => field = value; }
-
-        #endregion
-
-        #region Unity Methods
-        protected void Awake()
-        {
-            Cards = new List<Card>();
-            Field = new List<Row>();
-
-            foreach (Transform rowT in transform)
-            {
-                Row row = new();
-                Field.Add(row);
-                foreach (Transform cellT in rowT.transform)
-                {
-                    Cell cell = cellT.GetComponent<Cell>();
-                    row.cells.Add(cell);
-                    cell.FieldPosition = new Vector2Int(row.cells.IndexOf(cell), Field.IndexOf(row));
-                }
-            }
-        }
+        [SerializeField]
+        Field _field;
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Adds a card to a cell on the field.
-        /// </summary>
-        /// <param name="card">Card to add.</param>
-        /// <param name="cell">Cell to insert card.</param>
-        public void AddToField(Card card, Cell cell)
+        public void AddCard(Card card, Cell cell)
         {
-            Cards.Add(card);
-            card.Zone = ZoneManager.Zones.PLAY;
-            cell.AddCard(card);
-            EventManager.Instance.CardEnteredField(card);
+            _field.AddToField(card, cell);
         }
 
-        public void AddToField(Card card, Vector2Int fieldPos)
+        public void AddCard(Card card, Vector2Int fieldPos)
         {
-            AddToField(card, Field[fieldPos.y].cells[fieldPos.x]);
+            _field.AddToField(card, fieldPos);
         }
 
-        public void RemoveFromField(Card card)
+        public void RemoveCard(Card card)
         {
-            Cards.Remove(card);
-            card.Cell?.RemoveCard(card);
+            _field.RemoveCard(card);
         }
 
-        /// <summary>
-        /// Initiate combat for all cards on the field.
-        /// </summary>
-        /// <returns>Execution will continue after combat is completed.</returns>
         public IEnumerator StartCombat()
         {
-            Card[] activeCards = Cards.Where(s => s.Controller == _gameManager.ActivePlayer).Reverse().ToArray();
-            for (int i = activeCards.Length - 1; i >= 0; i--)
-            {
-
-                yield return StartCoroutine(activeCards[i].OnCombat());
-            }
+            yield return _field.StartCombat();
         }
 
-        /// <summary>
-        /// Attempts to move a card a specified number of cells on the field, stopping short if the card collides with another card or would move outside the board, and initiating combat with the colliding card if it 
-        /// is an enemy.
-        /// </summary>
-        /// <param name="card">Card to move.</param>
-        /// <param name="movement">Movement vector to travel.</param>
-        /// <returns>Execution will continue after movement and combat is complete.</returns>
         public IEnumerator MoveCardAndFight(Card card, Vector2Int movement)
         {
-            // first clamp the destination to inside the board.
-            Vector2Int destination = new Vector2Int(
-                Mathf.Clamp(card.FieldPosition.x + movement.x, 0, Field[0].cells.Count - 1),
-                Mathf.Clamp(card.FieldPosition.y + movement.y, 0, Field.Count - 1));
-
-            Card collided = null;
-            IEnumerable<Card> activeCards = Enumerable.Empty<Card>();
-            for (int i = card.FieldPosition.x + Math.Sign(movement.x); i != destination.x + Math.Sign(movement.x); i += Math.Sign(movement.x))
-            {
-                activeCards = Field[card.FieldPosition.y].cells[i].Cards.Where(x => x.isActiveAndEnabled);
-                if (activeCards.Count() > 0)
-                {
-                    destination.x = i - Math.Sign(movement.x);
-                    collided = Field[card.FieldPosition.y].cells[i].Cards[0];
-                    break;
-                }
-            }
-
-            if (destination != card.FieldPosition)
-            {
-                Field[card.FieldPosition.y].cells[card.FieldPosition.x].Cards.Remove(card);
-                card.transform.SetParent(DragManager.Instance.transform);
-                yield return StartCoroutine(card.MoveTo(Field[destination.y].cells[destination.x].RectTransform.position, Card.MOVEMENT_ON_FIELD_TIME));
-                Field[destination.y].cells[destination.x].AddCard(card);
-                EventManager.Instance.CardMove(card);
-                if (Field[destination.y].cells[destination.x].Player != card.Controller && Field[destination.y].cells[destination.x].Player != Player.Neutral)
-                {
-                    yield return StartCoroutine(card.PassHomeRow());
-                }
-            }
-            if (collided != null)
-            {
-                yield return StartCoroutine(card.Fight(collided));
-            }
+            yield return _field.MoveCardAndFight(card, movement);
         }
 
-        public IEnumerator MoveToFieldPosition(Card card, Vector2Int fieldPos)
+        public IEnumerator MoveCardToCell(Card card, Cell cell)
         {
-            yield return card.MoveToCell(Field[fieldPos.y].cells[fieldPos.x]);
+            yield return _field.MoveCardToCell(card, cell);
+        }
+
+        public IEnumerator MoveCardToCell(Card card, Vector2Int fieldPos)
+        {
+            yield return _field.MoveCardToCell(card, fieldPos);
         }
         #endregion
     }

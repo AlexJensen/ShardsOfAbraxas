@@ -1,141 +1,225 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Abraxas.Core;
-using Abraxas.Scripts.States;
-using Abraxas.Behaviours.Zones.Hands;
-using Abraxas.Behaviours.Manas;
-using Abraxas.Behaviours.Cards;
-using Abraxas.Behaviours.Players;
 using Zenject;
+using Abraxas.Core;
+using Abraxas.Zones.Hands;
+using Abraxas.Manas;
+using Abraxas.GameStates;
+using Abraxas.Players;
+using Abraxas.Zones.Fields;
+using Abraxas.Zones.Graveyards;
+using Abraxas.Zones.Decks;
+using Abraxas.UI;
+using Abraxas.CardViewers;
+using Abraxas.Cards;
 
-namespace Abraxas.Behaviours.Game
+using States = Abraxas.GameStates.GameStates;
+using Player = Abraxas.Players.Players;
+using Abraxas.Events;
+
+namespace Abraxas.Game
 {
-    public class GameManager : MonoBehaviour 
+    public class GameManager : MonoBehaviour, IGameManager
     {
-        #region Constants
-        const int STARTING_MANA = 4;
-        const int MANA_GAIN_PER_TURN = 2;
-        const int MAX_MANA_GAIN = 100;
+        #region Settings
+        Settings _settings;
+        [Serializable]
+        public class Settings
+        {
+            public int Player1CardsToDrawAtStartOfGame;
+            public int Player2CardsToDrawAtStartOfGame;
+            public int CardsToDrawAtStartOfTurn;
+        }
         #endregion
 
-        public event Action<GameState> GameStateChanged;
+        #region Dependencies
+        IGameStateManager _gameStateManager;
+        IEventManager _eventManager;
+        IPlayerManager _playerManager;
+        ICardViewerManager _cardViewerManager;
+        IManaManager _manaManager;
+        //IMenuManager _menuManager;
 
+        // Zones
+        IHandManager _handManager;
+        IDeckManager _deckManager;
+        IGraveyardManager _graveyardManager;
+        IFieldManager _fieldManager;
 
-        GameState _state;
         [Inject]
-        readonly GameStateFactory _stateFactory;
+        void Construct(Settings settings,
+                       IGameStateManager gameStateManager, 
+                       IEventManager eventManager,
+                       IPlayerManager playerManager,
+                       ICardViewerManager cardViewerManager,
+                       IManaManager manaManager,
+                       //IMenuManager menuManager,
+                       IHandManager handManager,
+                       IDeckManager deckManager,
+                       IGraveyardManager graveyardManager,
+                       IFieldManager fieldManager)
+        {
+            _settings = settings;
+            _gameStateManager = gameStateManager;
+            _eventManager = eventManager;
+            _playerManager = playerManager;
+            _cardViewerManager = cardViewerManager;
+            _manaManager = manaManager;
+            //_menuManager = menuManager;
+            _handManager = handManager;
+            _deckManager = deckManager;
+            _graveyardManager = graveyardManager;
+            _fieldManager = fieldManager;
+        }
+        #endregion
 
-        int _manaGain = STARTING_MANA;
+        #region Properties
+        public Player ActivePlayer => _playerManager.ActivePlayer;
+        #endregion
 
-        [SerializeField]
-        List<Hand> hands;
-        [SerializeField]
-        List<Mana> mana;
-        [SerializeField]
-        List<HP> HP;
-
-
-        public Player ActivePlayer { get; set; } = Player.Player1;
-        public List<Mana> Mana { get => mana; set => mana = value; }
-
-            
-
+        #region Methods
         public void Start()
         {
-            StartCoroutine(SwitchToState(GameStates.GameNotStarted));
-        }
-
-        private IEnumerator SwitchToState(GameStates state)
-        {
-            if (_state != null)
-            {
-                yield return StartCoroutine(_state.OnExitState());
-            }
-            _state = _stateFactory.CreateState(state);
-            GameStateChanged?.Invoke(_state);
-            yield return StartCoroutine(_state.OnEnterState());
+            StartCoroutine(_gameStateManager.SwitchToState(States.GameNotStarted));
         }
 
         public IEnumerator StartGame()
         {
-            foreach (Hand hand in hands)
-            {
-                hand.Deck.ShuffleServerRpc();
-            }
             yield return Utilities.WaitForCoroutines(this,
-                            hands[0].DrawCardsFromLibrary(5),
-                            hands[1].DrawCardsFromLibrary(5));
+                            _deckManager.ShuffleDeck(Player.Player1),
+                            _deckManager.ShuffleDeck(Player.Player2));
+            yield return Utilities.WaitForCoroutines(this,
+                            MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
+                            MoveCardsFromDeckToHand(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
         }
 
-        public void BeginNextGameState()
+        public IEnumerator BeginNextGameState()
         {
-            StartCoroutine(SwitchToState(_state.NextState()));
+            yield return _gameStateManager.BeginNextGameState();
         }
 
-        public Mana GetPlayerMana(Player player)
+        public IEnumerator DrawStartOfTurnCardsForActivePlayer()
         {
-            return Mana.Find(x => x.Player == player);
+            yield return MoveCardsFromDeckToHand(_playerManager.ActivePlayer, _settings.CardsToDrawAtStartOfTurn);
         }
 
-        public Hand GetPlayerHand(Player player)
+        public IEnumerator GenerateStartOfTurnManaForActivePlayer()
         {
-            return hands.Find(x => x.Player == player);
+            yield return _manaManager.GenerateManaFromDeckRatio(_playerManager.ActivePlayer, _manaManager.StartOfTurnManaAmount);
+            _manaManager.IncrementStartOfTurnManaAmount();
         }
 
-        public HP GetPlayerHP(Player player)
+        public IEnumerator MoveCardsFromDeckToHand(Player player, int amount, int index = 0)
         {
-            return HP.Find(x => x.Player == player);
-        }
-
-        public void SwitchActivePlayer()
-        {
-            ActivePlayer = ActivePlayer == Player.Player1 ? Player.Player2 : Player.Player1;
-        }
-
-        public void GenerateManaForActivePlayer()
-        {
-            Mana currentPlayerMana = GetPlayerMana(ActivePlayer);
-            _manaGain = Math.Min(MAX_MANA_GAIN, _manaGain + MANA_GAIN_PER_TURN);
-            currentPlayerMana.GenerateRatioMana(_manaGain);
-        }
-
-        public IEnumerator DrawCardsForActivePlayer(int amount)
-        {
-            Hand currentPlayerHand = GetPlayerHand(ActivePlayer);
-            yield return currentPlayerHand.DrawCardsFromLibrary(amount);
-        }
-
-        public bool CanPurchaseCard(Card card)
-        {
-            Mana currentPlayerMana = GetPlayerMana(card.Owner);
-            foreach (var cost in card.TotalCosts)
+            for (int i = 0; i < amount; i++)
             {
-                ManaType result = currentPlayerMana.ManaTypes.Find(x => x.Type == cost.Key);
-                if (!result || result.Amount < cost.Value)
-                {
-                    return false;
-                }
+                Card card = _deckManager.RemoveCard(player, index);
+                yield return _handManager.MoveCardToHand(player, card);
             }
-            return true;
+        }
+
+        public IEnumerator MoveCardsFromDeckToGraveyard(Player player, int amount, int index = 0)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                Card card = _deckManager.RemoveCard(player, index);
+                yield return _graveyardManager.MoveCardToGraveyard(player, card);
+            }
+        }
+
+        public IEnumerator MoveCardFromHandToCell(Card card, Vector2Int fieldPosition)
+        {
+            _handManager.RemoveCard(card.Owner, card);
+            yield return _fieldManager.MoveCardToCell(card, fieldPosition);
+        }
+
+        public IEnumerator MoveCardFromFieldToDeck(Card card)
+        {
+            _fieldManager.RemoveCard(card);
+            yield return _deckManager.MoveCardToDeck(card.Owner, card);
+            _deckManager.ShuffleDeck(card.Owner);
+        }
+
+        public IEnumerator MoveCardFromFieldToGraveyard(Card card)
+        {
+            _fieldManager.RemoveCard(card);
+            yield return _graveyardManager.MoveCardToGraveyard(card.Owner, card);
+        }
+
+        public void ToggleActivePlayer()
+        {
+            _playerManager.ToggleActivePlayer();
+        }
+
+        public void ModifyPlayerHealth(Player player, int amount)
+        {
+            _playerManager.ModifyPlayerHealth(player, amount);
+        }
+
+        public IEnumerator ShowCardDetail(Card card)
+        {
+            yield return _cardViewerManager.ShowCardDetail(card); 
+        }
+
+        public IEnumerator HideCardDetail()
+        {
+           yield return _cardViewerManager.HideCardDetail();
+        }
+
+        public IEnumerator MoveCardAndFight(Card card, Vector2Int vector2Int)
+        {
+            throw new NotImplementedException();
         }
 
         public void PurchaseCard(Card card)
         {
-            Mana currentPlayerMana = GetPlayerMana(card.Owner);
-            foreach (var cost in card.TotalCosts)
-            {
-                ManaType result = currentPlayerMana.ManaTypes.Find(x => x.Type == cost.Key);
-                result.Amount -= cost.Value;
-            }
-
+            _manaManager.CanPurchaseCard(card);
         }
-        internal void DamagePlayer(Player player, int amount)
+
+        public bool CanPurchaseCard(Card card)
         {
-            GetPlayerHP(player).HPValue -= amount;
+            return _manaManager.CanPurchaseCard(card);
+        }
+
+        public IEnumerator MoveCardToHand(Card card)
+        {
+            yield return _handManager.MoveCardToHand(card.Owner, card);
+        }
+
+        public object MoveCardFromCellToCell(Cell source, Cell destination)
+        {
+            throw new NotImplementedException();
         }
 
 
+
+
+        //Everything below here is old and will be refactored or removed
+
+
+        //public bool CanPurchaseCard(Card card)
+        //{
+        //    Mana currentPlayerMana = GetPlayerMana(card.Owner);
+        //    foreach (var cost in card.TotalCosts)
+        //    {
+        //        ManaType result = currentPlayerMana.ManaTypes.Find(x => x.Type == cost.Key);
+        //        if (!result || result.Amount < cost.Value)
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    return true;
+        //}
+
+        //public void PurchaseCard(Card card)
+        //{
+        //    Mana currentPlayerMana = GetPlayerMana(card.Owner);
+        //    foreach (var cost in card.TotalCosts)
+        //    {
+        //        ManaType result = currentPlayerMana.ManaTypes.Find(x => x.Type == cost.Key);
+        //        result.Amount -= cost.Value;
+        //    }
+        #endregion
     }
 }

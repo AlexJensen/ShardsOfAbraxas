@@ -12,5 +12,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120eb324965c5804090da03359958525, type: 3}
   m_Name: AbraxasSettingsInstaller
   m_EditorClassIdentifier: 
-  GameInstaller:
+  GameSettings:
+    Player1CardsToDrawAtStartOfGame: 5
+    Player2CardsToDrawAtStartOfGame: 5
+    CardsToDrawAtStartOfTurn: 1
+  CardSettings:
+    MovementOnFieldTime: 0.2
+  CardPlaceholderSettings:
+    scaleToMaxSizeTime: 0.2
+    minScale: 0
+    maxScale: 70
+  StoneSettings:
+    stones:
+    - name: Garnet
+      type: 0
+      color: {r: 0.49803922, g: 0, b: 0, a: 1}
+    - name: Amethyst
+      type: 1
+      color: {r: 0.49803922, g: 0, b: 0.49803922, a: 1}
+    - name: Aquamarine
+      type: 2
+      color: {r: 0.49803922, g: 1, b: 1, a: 1}
+    - name: Diamond
+      type: 3
+      color: {r: 1, g: 1, b: 1, a: 1}
+    - name: 
+      type: 4
+      color: {r: 0, g: 0.49803922, b: 0, a: 1}
+    - name: Moonstone
+      type: 5
+      color: {r: 1, g: 0.49803922, b: 1, a: 1}
+    - name: Ruby
+      type: 6
+      color: {r: 1, g: 0, b: 0, a: 1}
+    - name: Peridot
+      type: 7
+      color: {r: 0.49803922, g: 1, b: 0.49803922, a: 1}
+    - name: Sapphire
+      type: 8
+      color: {r: 0, g: 0, b: 1, a: 1}
+    - name: 
+      type: 9
+      color: {r: 1, g: 0, b: 0.49803922, a: 1}
+    - name: 
+      type: 10
+      color: {r: 1, g: 0.49803922, b: 0, a: 1}
+    - name: 
+      type: 11
+      color: {r: 0, g: 0.49803922, b: 0.49803922, a: 1}
+  PlayerSettings:
+    players:
+    - name: Player 1
+      player: 0
+      color: {r: 0.6862745, g: 0.6862745, b: 1, a: 1}
+    - name: Player 2
+      player: 1
+      color: {r: 1, g: 0.6862745, b: 0.6862745, a: 1}
+  ManaSettings:
     ManaTypePrefab: {fileID: 5328795667250569614, guid: 8aff0008d6cddae4e8d382c0b547ef3f, type: 3}
+    StartingMana: 2
+    ManaPerTurnIncrement: 2
+  HandSettings:
+    MoveCardToHandTime: 0.2
+  DeckSettings:
+    MoveCardToDeckTime: 0.2

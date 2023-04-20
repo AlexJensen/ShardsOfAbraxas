@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿using Abraxas.Cards;
+using Abraxas.Game;
+using Abraxas.Manas;
+using Abraxas.Players;
+using Abraxas.Stones;
+using Abraxas.Zones.Decks;
+using Abraxas.Zones.Fields;
+using Abraxas.Zones.Hands;
+using UnityEngine;
 using Zenject;
 
 namespace Abraxas.Core.Installers
@@ -6,11 +14,27 @@ namespace Abraxas.Core.Installers
     [CreateAssetMenu(menuName = "Abraxas/Game Settings")]
     class AbraxasSettingsInstaller : ScriptableObjectInstaller<AbraxasSettingsInstaller>
     {
-        public AbraxasInstaller.Settings GameInstaller;
+        public GameManager.Settings GameSettings;
+        public Card.Settings CardSettings;
+        public CardPlaceholder.Settings CardPlaceholderSettings;
+        public Stone.Settings StoneSettings;
+        public Player.Settings PlayerSettings;
+        public Mana.Settings ManaSettings;
+        public Hand.Settings HandSettings;
+        public Field.Settings FieldSettings;
+        public Deck.Settings DeckSettings;
 
         public override void InstallBindings()
         {
-            Container.BindInstance(GameInstaller);
+            Container.BindInstance(GameSettings).AsSingle();
+            Container.BindInstance(CardSettings).AsSingle();
+            Container.BindInstance(CardPlaceholderSettings).AsSingle();
+            Container.BindInstance(StoneSettings).AsSingle();
+            Container.BindInstance(PlayerSettings).AsSingle();
+            Container.BindInstance(ManaSettings).AsSingle();
+            Container.BindInstance(HandSettings).AsSingle();
+            Container.BindInstance(FieldSettings).AsSingle();
+            Container.BindInstance(DeckSettings).AsSingle();
         }
     }
 }

@@ -1,7 +1,7 @@
 using Abraxas.Core;
 using Unity.Netcode;
 
-namespace Abraxas.Behaviours.Network
+namespace Abraxas.Network
 {
     public class DebugNetworkManager : Singleton<DebugNetworkManager>
     {

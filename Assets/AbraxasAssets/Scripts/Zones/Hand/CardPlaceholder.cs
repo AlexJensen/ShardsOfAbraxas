@@ -1,25 +1,35 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
-namespace Abraxas.Behaviours.Zones.Hands
+namespace Abraxas.Zones.Hands
 {
-
-    /// <summary>
-    /// Controls the height of the placeholder card that appears while dragging a card out of the hand.
-    /// </summary>
     [RequireComponent(typeof(LayoutElement))]
     [RequireComponent(typeof(RectTransform))]
     public class CardPlaceholder : MonoBehaviour
     {
-        #region Constants
-        const float PLACEHOLDER_SCALE_TIME = .2f;
+        #region Dependencies
+        Settings _settings;
+        [Inject]
+        public void Construct(Settings settings)
+        {
+            _settings = settings;
+        }
+        #endregion
+
+        #region Settings
+        [Serializable]
+        public class Settings
+        {
+            public float scaleToMaxSizeTime;
+            public float minScale;
+            public float maxScale;
+        }
         #endregion
 
         #region Fields
-        [SerializeField]
-        float _maxHeight;
-
         LayoutElement _cardPlaceholderLayout;
         RectTransform _cardPlaceholderRect;
         int _currentIndex = 0, _newIndex = 0;
@@ -27,14 +37,13 @@ namespace Abraxas.Behaviours.Zones.Hands
         #endregion
 
         #region Properties
-        public LayoutElement CardPlaceholderLayout => _cardPlaceholderLayout ??=  GetComponent<LayoutElement>();
-        public RectTransform CardPlaceholderRect => _cardPlaceholderRect ??=(RectTransform)transform;
-
-
+        public LayoutElement CardPlaceholderLayout => _cardPlaceholderLayout = _cardPlaceholderLayout != null ?
+            _cardPlaceholderLayout : GetComponent<LayoutElement>();
+        public RectTransform CardPlaceholderRect => _cardPlaceholderRect = _cardPlaceholderRect != null ?
+            _cardPlaceholderRect : (RectTransform)transform;
         #endregion
 
-        #region Unity Methods
-
+        #region Methods
         internal void Reset()
         {
             CardPlaceholderLayout.preferredHeight = 0;
@@ -43,22 +52,13 @@ namespace Abraxas.Behaviours.Zones.Hands
             StopCoroutine(nameof(ScalePlaceholder));
             gameObject.SetActive(false);
         }
-        #endregion
 
-        #region Methods
-        /// <summary>
-        /// Updates the sibling index of the placeholder.
-        /// </summary>
-        /// <param name="index">New index to set.</param>
         internal void UpdateIndex(int index)
         {
             _newIndex = index;
         }
 
-        /// <summary>
-        /// Checks the current index against the latest index to determine if the placeholder needs to start moving.
-        /// </summary>
-        internal void CheckPosition()
+        internal void UpdatePosition()
         {
             if (_newIndex != _currentIndex)
             {
@@ -69,12 +69,12 @@ namespace Abraxas.Behaviours.Zones.Hands
                         _expanding = true;
                         CardPlaceholderLayout.transform.SetSiblingIndex(_newIndex);
                         _currentIndex = _newIndex;
-                        StartCoroutine(ScalePlaceholder(_maxHeight, PLACEHOLDER_SCALE_TIME));
+                        StartCoroutine(ScalePlaceholder(_settings.maxScale, _settings.scaleToMaxSizeTime));
                     }
                     else if (!_expanding)
                     {
                         _retracting = true;
-                        StartCoroutine(ScalePlaceholder(0, PLACEHOLDER_SCALE_TIME));
+                        StartCoroutine(ScalePlaceholder(_settings.minScale, _settings.scaleToMaxSizeTime));
                     }
                 }
             }
@@ -82,12 +82,9 @@ namespace Abraxas.Behaviours.Zones.Hands
 
         internal void SnapToMaxHeight()
         {
-            CardPlaceholderLayout.preferredHeight = _maxHeight;
+            CardPlaceholderLayout.preferredHeight = _settings.maxScale;
         }
 
-        /// <summary>
-        /// Starts hiding the placeholder.
-        /// </summary>
         internal void Hide()
         {
             if (CardPlaceholderLayout.preferredHeight == 0)
@@ -97,13 +94,13 @@ namespace Abraxas.Behaviours.Zones.Hands
             else if (!_expanding && !_retracting)
             {
                 _retracting = true;
-                StartCoroutine(ScalePlaceholder(0, PLACEHOLDER_SCALE_TIME));
+                StartCoroutine(ScalePlaceholder(_settings.minScale, _settings.scaleToMaxSizeTime));
             }
         }
 
         public IEnumerator ScaleToMaxSize()
         {
-            yield return StartCoroutine(ScalePlaceholder(_maxHeight, PLACEHOLDER_SCALE_TIME));
+            yield return ScalePlaceholder(_settings.maxScale, _settings.scaleToMaxSizeTime);
         }
 
         IEnumerator ScalePlaceholder(float height, float time)

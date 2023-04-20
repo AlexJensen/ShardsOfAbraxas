@@ -1,21 +1,26 @@
-using Abraxas.Behaviours.Cards;
-using Abraxas.Behaviours.Data;
-using Abraxas.Behaviours.Stones;
+using Abraxas.Cards;
+using Abraxas.Stones;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Abraxas.Behaviours.CardViewer
+namespace Abraxas.CardViewers
 {
     /// <summary>
     /// Displays detailed information about the card currently under the mouse.
     /// </summary>
     public class CardViewer : MonoBehaviour
     {
-        #region Dependency Injections
-        [Inject] readonly DataManager _dataManager;
+        #region Dependencies
+        Stone.Settings _stoneSettings;
+
+        [Inject]
+        public void Construct(Stone.Settings stoneSettings)
+        {
+            _stoneSettings = stoneSettings;
+        }
         #endregion
 
         #region Fields
@@ -51,7 +56,7 @@ namespace Abraxas.Behaviours.CardViewer
 
                     _stones[i].gameObject.SetActive(true);
                     _stones[i].Cost.text = card.Stones[i].Cost.ToString();
-                    _stones[i].CostBack.color = _dataManager.GetStoneDetails(card.Stones[i].StoneType).color;
+                    _stones[i].CostBack.color = _stoneSettings.GetStoneDetails(card.Stones[i].StoneType).color;
                     _stones[i].Info.text = card.Stones[i].Info;
                 }
                 else

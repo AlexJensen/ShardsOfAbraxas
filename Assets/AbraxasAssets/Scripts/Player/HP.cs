@@ -1,8 +1,7 @@
 using UnityEngine;
 using TMPro;
-using Abraxas.Behaviours.Game;
 
-namespace Abraxas.Behaviours.Players
+namespace Abraxas.Players
 {
     public class HP : MonoBehaviour
     {
@@ -10,7 +9,7 @@ namespace Abraxas.Behaviours.Players
         TMP_Text _HP, _addHP, _addHPMax;
 
         [SerializeField]
-        Player _player;
+        Players _player;
 
         Animator _animator;
 
@@ -18,7 +17,7 @@ namespace Abraxas.Behaviours.Players
         int _hPValue, _hPMaxValue;
         int _previousHPValue, _previousHPMaxValue;
 
-        public Player Player { get => _player; set => _player = value; }
+        public Players Player { get => _player; set => _player = value; }
 
         public int HPValue
         {
@@ -60,8 +59,8 @@ namespace Abraxas.Behaviours.Players
             {
                 int hPChange = _hPValue - _previousHPValue;
                 _addHP.text = hPChange >= 0 ? "+" + hPChange.ToString() : hPChange.ToString();
-                if (Player == Player.Player1) SetAnimationTrigger("AddHPDown");
-                if (Player == Player.Player2) SetAnimationTrigger("AddHPUp");
+                if (Player == Players.Player1) SetAnimationTrigger("AddHPDown");
+                if (Player == Players.Player2) SetAnimationTrigger("AddHPUp");
                 _previousHPValue = _hPValue;
             }
 
@@ -69,8 +68,8 @@ namespace Abraxas.Behaviours.Players
             {
                 int hPMaxChange = _hPMaxValue - _previousHPMaxValue;
                 _addHPMax.text = hPMaxChange >= 0 ? "+" + hPMaxChange.ToString() : hPMaxChange.ToString();
-                if (Player == Player.Player1) SetAnimationTrigger("AddMaxHPDown");
-                if (Player == Player.Player2) SetAnimationTrigger("AddMaxHPUp");
+                if (Player == Players.Player1) SetAnimationTrigger("AddMaxHPDown");
+                if (Player == Players.Player2) SetAnimationTrigger("AddMaxHPUp");
                 _previousHPMaxValue = _hPMaxValue;
             }
         }

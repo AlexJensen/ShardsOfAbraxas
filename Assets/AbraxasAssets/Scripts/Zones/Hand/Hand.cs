@@ -1,48 +1,58 @@
-using Abraxas.Behaviours.Cards;
-using Abraxas.Behaviours.Game;
-using Abraxas.Behaviours.Players;
-using Abraxas.Behaviours.Zones.Decks;
-using Abraxas.Behaviours.Zones.Drags;
-using Abraxas.Behaviours.Zones.Fields;
-using Abraxas.Behaviours.Zones.Graveyards;
+using Abraxas.Cards;
+using Abraxas.Zones.Overlays;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
 
-namespace Abraxas.Behaviours.Zones.Hands
+using Player = Abraxas.Players.Players;
+
+namespace Abraxas.Zones.Hands
 {
     public class Hand : Zone
     {
-        #region Dependency Injections
-        [Inject] readonly FieldManager _fieldManager;
+        #region Settings
+        Settings _settings;
+        [Serializable]
+        public class Settings
+        {
+            public float MoveCardToHandTime;
+        }
+        #endregion
+
+        #region Dependencies
+        IOverlayManager _overlayManager;
+
+        [Inject]
+        void Construct(Settings settings, IOverlayManager dragManager)
+        {
+            _settings = settings;
+            _overlayManager = dragManager;
+        }
         #endregion
 
         #region Fields
-
         [SerializeField]
         Player player;
         List<Card> _cardList;
         CardPlaceholder _cardPlaceholder;
-        Deck _deck;
-        Graveyard _graveyard;
-
         bool cardReturning;
         #endregion
 
         #region Properties
         public CardPlaceholder CardPlaceholder => _cardPlaceholder = _cardPlaceholder != null ? _cardPlaceholder : Cards.GetComponentInChildren<CardPlaceholder>();
-        public Deck Deck => _deck = _deck != null ? _deck : _deck = GetComponentInChildren<Deck>();
         public List<Card> CardList => _cardList = (_cardList ??= Cards.GetComponentsInChildren<Card>().ToList());
-        public Graveyard Graveyard => _graveyard = _graveyard != null ? _graveyard : _graveyard = GetComponentInChildren<Graveyard>();
 
-        public Player Player { get => player; set => player = value; }
+        public Player Player { get => player;}
 
-        public override ZoneManager.Zones ZoneType => ZoneManager.Zones.HAND;
+        public override Zones ZoneType => Zones.HAND;
+
+        public override float MoveCardTime { get => _settings.MoveCardToHandTime; }
         #endregion
 
-        #region Unity Methods
+        #region Methods
         private void Awake()
         {
             CardPlaceholder.Reset();
@@ -50,10 +60,8 @@ namespace Abraxas.Behaviours.Zones.Hands
 
         void Update()
         {
-            if (DragManager.Instance.card != null && DragManager.Instance.card.Controller == Player)
+            if (_overlayManager.Card != null && _overlayManager.Card.Controller == Player && _overlayManager.Card.Zone == Zones.HAND)
             {
-                CardList.Remove(DragManager.Instance.card);
-                CardPlaceholder.gameObject.SetActive(true);
                 UpdateCardPlaceholderPosition();
             }
             else if (!cardReturning && CardPlaceholder.isActiveAndEnabled)
@@ -61,15 +69,34 @@ namespace Abraxas.Behaviours.Zones.Hands
                 CardPlaceholder.Hide();
             }
         }
-        #endregion
 
-        #region Methods
-        /// <summary>
-        /// Moves a card into the current position of the card placeholder and replaces it.
-        /// </summary>
-        /// <param name="card">Card to move.</param>
+        public void RemoveCard(Card card)
+        {
+            if (CardList.Contains(card))
+            {
+                CardPlaceholder.transform.SetSiblingIndex(CardList.IndexOf(card));
+                CardPlaceholder.gameObject.SetActive(true);
+                CardPlaceholder.SnapToMaxHeight();
+                CardList.Remove(card);
+            }
+        }
+
+        public override IEnumerator MoveCardToZone(Card card, int index = 0)
+        {
+            _overlayManager.AddCard(card);
+            CardPlaceholder.gameObject.SetActive(true);
+            CardPlaceholder.transform.SetSiblingIndex(index);
+            cardReturning = true;
+            yield return CardPlaceholder.ScaleToMaxSize();
+            yield return card.RectTransformMover.MoveToFitRectangle(CardPlaceholder.CardPlaceholderRect, MoveCardTime);
+            cardReturning = false;
+            AddCardAtPlaceholder(card);
+        }
+
         public void AddCardAtPlaceholder(Card card)
         {
+            card.Zone = Zones.HAND;
+            _overlayManager.RemoveCard(card);
             CardList.Insert(CardPlaceholder.transform.GetSiblingIndex(), card);
             card.transform.SetParent(CardPlaceholder.transform.parent);
             card.transform.SetSiblingIndex(CardPlaceholder.transform.GetSiblingIndex());
@@ -93,42 +120,7 @@ namespace Abraxas.Behaviours.Zones.Hands
                     break;
                 }
             }
-            CardPlaceholder.CheckPosition();
-        }
-
-        public void RemoveCard(Card card)
-        {
-            if (CardList.Contains(card))
-            {
-                CardPlaceholder.transform.SetSiblingIndex(CardList.IndexOf(card));
-                CardPlaceholder.gameObject.SetActive(true);
-                CardPlaceholder.SnapToMaxHeight();
-                CardList.Remove(card);
-            }
-        }
-
-        public IEnumerator DrawCardsFromLibrary(int amount = 1, int index = 0)
-        {
-            for (int i = 0; i < amount; i++)
-            {
-                Card card = Deck.DrawCard(index);
-                cardReturning = true;
-                CardPlaceholder.transform.SetSiblingIndex(0);
-                CardPlaceholder.gameObject.SetActive(true);
-                yield return StartCoroutine(CardPlaceholder.ScaleToMaxSize());
-                CardPlaceholder.SnapToMaxHeight();
-                yield return StartCoroutine(MoveCardToZone(card));
-            }
-        }
-
-        public override IEnumerator MoveCardToZone(Card card)
-        {
-            card.Zone = ZoneManager.Zones.HAND;
-            cardReturning = true;
-            _fieldManager.RemoveFromField(card);
-            yield return card.MoveToFitRectangle(CardPlaceholder.CardPlaceholderRect);
-            cardReturning = false;
-            AddCardAtPlaceholder(card);
+            CardPlaceholder.UpdatePosition();
         }
         #endregion
     }

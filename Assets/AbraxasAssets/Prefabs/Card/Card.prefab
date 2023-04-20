@@ -196,7 +196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -452,7 +452,9 @@ GameObject:
   - component: {fileID: -8881554692825692823}
   - component: {fileID: -8972399931271291979}
   - component: {fileID: -85551077654799062}
-  - component: {fileID: 3220397734144906016}
+  - component: {fileID: 7929139538098473339}
+  - component: {fileID: 863860183196246628}
+  - component: {fileID: 8562167584312568464}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -596,7 +598,7 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 0
---- !u!114 &3220397734144906016
+--- !u!114 &7929139538098473339
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -605,15 +607,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 6750648729959934835}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d1a3f3522948754eada3e86abd2f414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _components:
-  - {fileID: -8881554692825692823}
-  _identifier: 
-  _useSceneContext: 0
-  _context: {fileID: 0}
-  _bindType: 0
+--- !u!114 &863860183196246628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6750648729959934835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b704fa454e55394eb85ab918b487281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8562167584312568464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6750648729959934835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44cf1841f70df5147ade3994882a8374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7292453832869556420
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,7 +731,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

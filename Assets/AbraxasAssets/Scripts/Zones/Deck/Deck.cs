@@ -1,36 +1,86 @@
-using Abraxas.Behaviours.Cards;
-using Abraxas.Behaviours.Data;
-using Abraxas.Behaviours.Zones.Drags;
+using Abraxas.Cards;
+using Abraxas.Stones;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-namespace Abraxas.Behaviours.Zones.Decks
+using Random = UnityEngine.Random;
+using Player = Abraxas.Players.Players;
+using Zenject;
+using System;
+
+namespace Abraxas.Zones.Decks
 {
     //[ExecuteInEditMode]
     public class Deck : Zone
     {
-        public override ZoneManager.Zones ZoneType => ZoneManager.Zones.DECK;
-
-        private void Update()
+        #region Settings
+        Settings _settings;
+        [Serializable]
+        public class Settings
         {
-            foreach (Transform card in Cards)
-            {
-                card.localScale = Vector3.zero;
-            }
+            public float MoveCardToDeckTime;
         }
+        #endregion
 
-        internal Card DrawCard(int index = 0)
+        #region Dependencies
+        [Inject]
+        public void Construct(Settings settings)
+        {
+            _settings = settings;
+        }
+        #endregion
+
+        #region Fields
+        [SerializeField]
+        Player player;
+        public override Zones ZoneType => Zones.DECK;
+        #endregion
+
+        #region Properties
+        public Player Player { get => player; }
+        public override float MoveCardTime { get => _settings.MoveCardToDeckTime; }
+        #endregion
+
+        #region Methods
+        public void AddCard(Card card, int index = 0)
+        {
+            card.transform.localScale = Vector3.zero;
+            card.transform.position = transform.position;
+            card.Zone = Zones.DECK;
+            card.transform.parent = Cards.transform;
+            card.transform.SetSiblingIndex(index);
+        }
+        public Card RemoveCard(int index = 0)
         {
             Card card = Cards.GetChild(index).GetComponent<Card>();
             card.transform.localScale = Vector3.one;
             card.transform.position = transform.position;
-            card.transform.SetParent(DragManager.Instance.transform);
-            card.Zone = ZoneManager.Zones.HAND;
             return card;
         }
+        public Dictionary<StoneType, int> GetTotalDeckCosts()
+        {
+            Dictionary<StoneType, int> totalCost = new();
+            Card[] cards = GetComponentsInChildren<Card>();
+            foreach (Card card in cards)
+            {
+                foreach (var manaAmount in card.TotalCosts)
+                {
+                    if (!totalCost.ContainsKey(manaAmount.Key))
+                    {
+                        totalCost.Add(manaAmount.Key, manaAmount.Value);
+                    }
+                    else
+                    {
+                        totalCost[manaAmount.Key] += manaAmount.Value;
+                    }
+                }
+            }
+            return totalCost;
+        }
+        #endregion
 
+        #region Server Methods
         [ServerRpc]
         public void ShuffleServerRpc()
         {
@@ -49,35 +99,6 @@ namespace Abraxas.Behaviours.Zones.Decks
                 Cards.GetChild(i).SetSiblingIndex(i);
             }
         }
-
-        public Dictionary<StoneData.StoneType, int> GetTotalDeckCosts()
-        {
-            Dictionary<StoneData.StoneType, int> totalCost = new();
-            Card[] cards = GetComponentsInChildren<Card>();
-            foreach (Card card in cards)
-            {
-                foreach (KeyValuePair<StoneData.StoneType, int> manaAmount in card.TotalCosts)
-                {
-                    if (!totalCost.ContainsKey(manaAmount.Key))
-                    {
-                        totalCost.Add(manaAmount.Key, manaAmount.Value);
-                    }
-                    else
-                    {
-                        totalCost[manaAmount.Key] += manaAmount.Value;
-                    }
-                }
-            }
-            return totalCost;
-        }
-
-        internal override void AddCard(Card card, int index = -1)
-        {
-            base.AddCard(card, index);
-            if (index == -1)
-            {
-                ShuffleServerRpc();
-            }
-        }
+        #endregion
     }
 }

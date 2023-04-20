@@ -1,17 +1,28 @@
-using Abraxas.Behaviours.Game;
-using Abraxas.Scripts.States;
+using Abraxas.Events;
+using Abraxas.Game;
+using Abraxas.GameStates;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Abraxas.Behaviours.Interactables
+namespace Abraxas.UI
 {
     [RequireComponent(typeof(Button))]
-    public class NextButton : MonoBehaviour, OnGameStateChange
+    public class NextButton : MonoBehaviour, IGameEventListener<GameStateChangedEvent>
     {
-        #region Dependency Injections
-        [Inject] readonly GameManager _gameManager;
+        #region Dependencies
+        IGameManager _gameManager;
+        IEventManager _eventManager;
+        [Inject]
+        public void Construct(IGameManager gameManager, IEventManager eventManager)
+        {
+            _gameManager = gameManager;
+            _eventManager = eventManager;
+
+            _eventManager.AddListener(typeof(GameStateChangedEvent), this);
+        }
         #endregion
 
         public const string BEGINNING_BUTTON_TEXT = "Start of Turn";
@@ -25,13 +36,23 @@ namespace Abraxas.Behaviours.Interactables
 
         void Start()
         {
-            _gameManager.GameStateChanged += GameStateChanged;
             _button = GetComponent<Button>();
             _buttonStr = _button.GetComponentInChildren<TMP_Text>();
         }
 
-        public void GameStateChanged(GameState state)
+        private void OnDestroy()
         {
+            _eventManager.RemoveListener(typeof(GameStateChangedEvent), this);
+        }
+
+        public void NextButtonPressed()
+        {
+            StartCoroutine(_gameManager.BeginNextGameState());
+        }
+
+        public IEnumerator OnEventRaised(GameStateChangedEvent eventData)
+        {
+            GameState state = eventData.State;
             if (state is BeginningState)
             {
                 _button.interactable = false;
@@ -57,6 +78,7 @@ namespace Abraxas.Behaviours.Interactables
                 _button.interactable = false;
                 _buttonStr.text = END_OF_TURN_TEXT;
             }
+            yield break;
         }
     }
 }
