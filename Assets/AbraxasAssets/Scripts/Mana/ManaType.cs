@@ -8,10 +8,15 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Manas
 {
-    [ExecuteInEditMode]
     [RequireComponent(typeof(Image))]
     public class ManaType : MonoBehaviour
     {
+        public enum ManaChangeAnimationTriggers
+        {
+            AddManaDown,
+            AddManaUp,
+        }
+
         #region Dependencies
         Stone.Settings _stoneSettings;
         [Inject]
@@ -63,6 +68,7 @@ namespace Abraxas.Manas
         public Player Player { get => _player; set => _player = value; }
         #endregion
 
+        #region Methods
         private void Awake()
         {
             _image = GetComponent<Image>();
@@ -75,8 +81,8 @@ namespace Abraxas.Manas
             {
                 int change = _amount - _previousAmount;
                 _addStr.text = change >= 0 ? "+" + change.ToString() : change.ToString();
-                if (Player == Player.Player1) SetAnimationTrigger("AddManaDown");
-                if (Player == Player.Player2) SetAnimationTrigger("AddManaUp");
+                if (Player == Player.Player1) SetAnimationTrigger(ManaChangeAnimationTriggers.AddManaDown);
+                if (Player == Player.Player2) SetAnimationTrigger(ManaChangeAnimationTriggers.AddManaUp);
                 _previousAmount = _amount;
             }
         }
@@ -89,9 +95,10 @@ namespace Abraxas.Manas
             _amountStr.text = _amount.ToString();
         }
 
-        public void SetAnimationTrigger(string trigger)
+        public void SetAnimationTrigger(ManaChangeAnimationTriggers trigger)
         {
-            _animator.SetTrigger(trigger);
+            _animator.SetTrigger(trigger.ToString());
         }
+        #endregion
     }
 }

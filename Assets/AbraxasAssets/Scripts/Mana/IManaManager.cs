@@ -7,11 +7,11 @@ namespace Abraxas.Manas
 {
     public interface IManaManager
     {
-        int StartOfTurnManaAmount { get; }
+        int StartOfTurnMana { get; }
 
-        Mana GetPlayerMana(Player player);
-        IEnumerator GenerateManaFromDeckRatio(Player player, int startOfTurnManaAmount);
+        IEnumerator GenerateManaFromDeckRatio(Player player, int startOfTurnMana);
         bool CanPurchaseCard(Card card);
         void IncrementStartOfTurnManaAmount();
+        void PurchaseCard(Card card);
     }
 }

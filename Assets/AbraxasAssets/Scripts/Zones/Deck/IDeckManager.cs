@@ -10,9 +10,9 @@ namespace Abraxas.Zones.Decks
     public interface IDeckManager
     {
         Card RemoveCard(Player player, int index);
-        Dictionary<StoneType, int> GetDeckManaRatio(Player player);
         IEnumerator ShuffleDeck(Player player);
         IEnumerator MoveCardToDeck(Player player, Card card);
         void AddCard(Card card);
+        Dictionary<StoneType, int> GetDeckCost(Player player);
     }
 }

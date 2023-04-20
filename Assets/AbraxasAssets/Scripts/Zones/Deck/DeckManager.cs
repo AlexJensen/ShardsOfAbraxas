@@ -15,17 +15,17 @@ namespace Abraxas.Zones.Decks
         #region Fields
         [SerializeField]
         List<Deck> _decks;
+        #endregion
 
+        #region Methods
         public void AddCard(Card card)
         {
             GetPlayerDeck(card.Owner).AddCard(card);
         }
-        #endregion
 
-        #region Methods
-        public Dictionary<StoneType, int> GetDeckManaRatio(Player player)
+        public Dictionary<StoneType, int> GetDeckCost(Player player)
         {
-            return GetPlayerDeck(player).GetTotalDeckCosts();
+            return GetPlayerDeck(player).GetDeckCost();
         }
 
         public IEnumerator MoveCardToDeck(Player player, Card card)

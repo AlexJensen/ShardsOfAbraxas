@@ -1,3 +1,4 @@
+using Abraxas.CardViewers;
 using Abraxas.Game;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,11 +10,12 @@ namespace Abraxas.Cards
     public class CardMouseOverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         #region Dependencies
-        IGameManager _gameManager;
+
+        ICardViewerManager _cardViewerManager;
         [Inject]
-        public void Construct(IGameManager gameManager)
+        public void Construct(ICardViewerManager cardViewerManager)
         {
-            _gameManager = gameManager;
+            _cardViewerManager = cardViewerManager;
         }
         #endregion
 
@@ -28,12 +30,12 @@ namespace Abraxas.Cards
         #region Methods
         public void OnPointerEnter(PointerEventData eventData)
         {
-            StartCoroutine(_gameManager.ShowCardDetail(Card));
+            StartCoroutine(_cardViewerManager.ShowCardDetail(Card));
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            StartCoroutine(_gameManager.HideCardDetail());
+            StartCoroutine(_cardViewerManager.HideCardDetail());
         }
         #endregion
     }

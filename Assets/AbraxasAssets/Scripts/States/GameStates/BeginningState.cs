@@ -8,8 +8,12 @@ namespace Abraxas.GameStates
     public class BeginningState : GameState
     {
         #region Dependencies
+        readonly IGameStateManager _gameStateManager;
         [Inject]
-        public BeginningState(IGameManager gameManager, IEventManager eventManager) : base(gameManager, eventManager){}
+        public BeginningState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager) : base(gameManager, eventManager)
+        {
+            _gameStateManager = gameStateManager;
+        }
         public class Factory : PlaceholderFactory<BeginningState>{}
         #endregion
 
@@ -23,7 +27,7 @@ namespace Abraxas.GameStates
             yield return base.OnEnterState();
             yield return gameManager.DrawStartOfTurnCardsForActivePlayer();
             yield return gameManager.GenerateStartOfTurnManaForActivePlayer();
-            yield return gameManager.BeginNextGameState();
+            yield return _gameStateManager.BeginNextGameState();
         }
         public override IEnumerator OnExitState()
         {

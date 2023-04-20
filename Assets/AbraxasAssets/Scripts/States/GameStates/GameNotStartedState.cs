@@ -13,9 +13,11 @@ namespace Abraxas.GameStates
         #region Dependencies
         readonly NetworkManager _networkManager;
         readonly DebugNetworkManager _debugNetworkManager;
+        readonly IGameStateManager _gameStateManager;
         [Inject]
-        public GameNotStartedState(IGameManager gameManager, IEventManager eventManager, DebugNetworkManager debugNetworkManager) :base(gameManager, eventManager)
+        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, DebugNetworkManager debugNetworkManager) :base(gameManager, eventManager)
         {
+            _gameStateManager = gameStateManager;
             _networkManager = NetworkManager.Singleton;
             _debugNetworkManager = debugNetworkManager;
         }
@@ -51,7 +53,7 @@ namespace Abraxas.GameStates
                     yield return null;
                 }
             }
-            yield return gameManager.BeginNextGameState();
+            yield return _gameStateManager.BeginNextGameState();
         }
 
         public override IEnumerator OnExitState()

@@ -21,19 +21,16 @@ namespace Abraxas.GameStates
         #endregion
 
         #region Methods
-        public IEnumerator SwitchToState(GameStates state)
+        public IEnumerator SwitchGameStateTo(GameStates state)
         {
-            if (_state != null)
-            {
-                yield return _state.OnExitState();
-            }
+            yield return _state?.OnExitState();
             _state = _stateFactory.CreateState(state);
-            yield return _state.OnEnterState();
+            yield return _state?.OnEnterState();
         }
 
         public IEnumerator BeginNextGameState()
         {
-            yield return SwitchToState(_state.NextState());
+            yield return SwitchGameStateTo(_state.NextState());
         }
         #endregion
     }

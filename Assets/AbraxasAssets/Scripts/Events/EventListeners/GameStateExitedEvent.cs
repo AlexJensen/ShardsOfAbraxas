@@ -2,7 +2,7 @@
 
 namespace Abraxas.Events
 {
-    public class GameStateChangedEvent
+    public class GameStateExitedEvent
     {
         #region Fields
         readonly GameState _state;
@@ -13,7 +13,7 @@ namespace Abraxas.Events
         #endregion
 
         #region Methods
-        public GameStateChangedEvent(GameState state)
+        public GameStateExitedEvent(GameState state)
         {
             _state = state;
         }

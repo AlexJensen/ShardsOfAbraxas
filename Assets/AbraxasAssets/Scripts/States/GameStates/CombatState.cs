@@ -1,5 +1,6 @@
 ﻿using Abraxas.Events;
 using Abraxas.Game;
+using Abraxas.Zones.Fields;
 using System.Collections;
 using Zenject;
 
@@ -8,7 +9,14 @@ namespace Abraxas.GameStates
     public class CombatState : GameState
     {
         #region Dependency Injections
-        public CombatState(IGameManager gameManager, IEventManager eventManager) : base(gameManager, eventManager){}
+        readonly IGameStateManager _gameStateManager;
+        readonly IFieldManager _fieldManager;
+        [Inject]
+        public CombatState(IGameManager gameManager, IGameStateManager gameStateManager, IFieldManager fieldManager, IEventManager eventManager) : base(gameManager, eventManager)
+        {
+            _gameStateManager = gameStateManager;
+            _fieldManager = fieldManager;
+        }
         public class Factory : PlaceholderFactory<CombatState>{}
         #endregion
 
@@ -21,7 +29,8 @@ namespace Abraxas.GameStates
         public override IEnumerator OnEnterState()
         {
             yield return base.OnEnterState();
-            yield return gameManager.BeginNextGameState();
+            yield return _fieldManager.StartCombat();
+            yield return _gameStateManager.BeginNextGameState();
         }
 
         public override IEnumerator OnExitState()

@@ -27,6 +27,12 @@ namespace Abraxas.Zones.Hands
         {
             return _hands.Find(x => x.Player == player);
         }
+
+        public IEnumerator ReturnCardToHand(Card card)
+        {
+            Hand playerHand = GetPlayerHand(card.Owner);
+            yield return playerHand.MoveCardToZone(card, playerHand.CardPlaceholder.transform.GetSiblingIndex());
+        }
         #endregion
     }
 }

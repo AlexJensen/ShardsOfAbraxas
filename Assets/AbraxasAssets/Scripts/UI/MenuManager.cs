@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Abraxas
+namespace Abraxas.UI
 {
-    public class MenuManager : MonoBehaviour
+    public class MenuManager : MonoBehaviour, IMenuManager
     {
 
     }

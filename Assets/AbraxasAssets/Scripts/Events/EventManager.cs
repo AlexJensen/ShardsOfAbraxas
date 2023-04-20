@@ -1,4 +1,3 @@
-using Abraxas.Cards;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,17 +8,18 @@ namespace Abraxas.Events
     public class EventManager : MonoBehaviour, IEventManager
     {
         #region Fields
-        readonly Dictionary<Type, List<object>> _eventListeners = new();
+        readonly Dictionary<Type, HashSet<object>> _eventListeners = new();
         #endregion
 
         #region Methods
         public void AddListener<T>(Type eventType, IGameEventListener<T> listener)
         {
-            if (!_eventListeners.ContainsKey(eventType))
+            if (!_eventListeners.TryGetValue(eventType, out var listeners))
             {
-                _eventListeners[eventType] = new List<object>();
+                listeners = new HashSet<object>();
+                _eventListeners[eventType] = listeners;
             }
-            _eventListeners[eventType].Add(listener);
+            listeners.Add(listener);
         }
 
         public void RemoveListener<T>(Type eventType, IGameEventListener<T> listener)
@@ -41,6 +41,10 @@ namespace Abraxas.Events
                         yield return gameEventListener.OnEventRaised(eventData);
                     }
                 }
+            }
+            else
+            {
+                Debug.LogWarning($"No listeners for event type {eventType}");
             }
         }
         #endregion

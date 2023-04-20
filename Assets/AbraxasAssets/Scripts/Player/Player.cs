@@ -17,6 +17,7 @@ namespace Abraxas.Players
         [Serializable]
         public class Settings
         {
+            public int StartingHealth;
             [Serializable]
             public struct PlayerDetails
             {

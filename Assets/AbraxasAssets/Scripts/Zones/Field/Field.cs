@@ -1,5 +1,6 @@
 using Abraxas.Cards;
 using Abraxas.Game;
+using Abraxas.Players;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace Abraxas.Zones.Fields
     {
         #region Settings
         Settings _settings;
+        [Serializable]
         public class Settings
         {
             public float MoveCardToFieldTime;
@@ -24,21 +26,23 @@ namespace Abraxas.Zones.Fields
 
         #region Dependencies
         IGameManager _gameManager;
+        IPlayerManager _playerManager;
         [Inject]
-        public void Construct(Settings settings, IGameManager gameManager)
+        public void Construct(Settings settings, IGameManager gameManager, IPlayerManager playerManager)
         {
             _settings = settings;
             _gameManager = gameManager;
+            _playerManager = playerManager;
         }
         #endregion
 
         #region Fields
-        List<Card> _cards;
+        List<Card> _cardList;
         List<Row> _fieldGrid;
         #endregion
 
         #region Properties
-        public List<Card> CardList { get => _cards; set => _cards = value; }
+        public List<Card> CardList { get => _cardList; set => _cardList = value; }
         public List<Row> FieldGrid { get => _fieldGrid; set => _fieldGrid = value; }
         #endregion
         public override Zones ZoneType => Zones.PLAY;
@@ -64,6 +68,11 @@ namespace Abraxas.Zones.Fields
             }
         }
 
+        internal Vector2 GetCellDimensions()
+        {
+            return FieldGrid[0].cells[0].RectTransform.rect.size;
+        }
+
         public void AddToField(Card card, Cell cell)
         {
             CardList.Add(card);
@@ -87,10 +96,9 @@ namespace Abraxas.Zones.Fields
 
         public IEnumerator StartCombat()
         {
-            Card[] activeCards = CardList.Where(s => s.Controller == _gameManager.ActivePlayer).Reverse().ToArray();
+            Card[] activeCards = CardList.Where(s => s.Controller == _playerManager.ActivePlayer).Reverse().ToArray();
             for (int i = activeCards.Length - 1; i >= 0; i--)
             {
-
                 yield return activeCards[i].Combat();
             }
         }
@@ -131,7 +139,7 @@ namespace Abraxas.Zones.Fields
 
         public IEnumerator MoveCardToCell(Card card, Cell cell)
         {
-            yield return card.RectTransformMover.MoveToFitRectangle(cell.RectTransform, 0.2f);
+            yield return card.RectTransformMover.MoveToFitRectangle(cell.RectTransform, MoveCardTime);
         }
 
         public IEnumerator MoveCardToCell(Card card, Vector2Int fieldPos)

@@ -9,5 +9,7 @@ namespace Abraxas.Zones.Fields
         void RemoveCard(Card card);
         IEnumerator MoveCardToCell(Card card, Vector2Int fieldPosition);
         void AddCard(Card card, Vector2Int fieldPosition);
+        Vector2 GetCellDimensions();
+        IEnumerator StartCombat();
     }
 }

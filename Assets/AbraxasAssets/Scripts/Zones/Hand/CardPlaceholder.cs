@@ -69,6 +69,7 @@ namespace Abraxas.Zones.Hands
                         _expanding = true;
                         CardPlaceholderLayout.transform.SetSiblingIndex(_newIndex);
                         _currentIndex = _newIndex;
+                        gameObject.SetActive(true);
                         StartCoroutine(ScalePlaceholder(_settings.maxScale, _settings.scaleToMaxSizeTime));
                     }
                     else if (!_expanding)

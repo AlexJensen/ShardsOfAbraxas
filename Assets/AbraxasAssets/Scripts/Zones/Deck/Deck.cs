@@ -11,7 +11,6 @@ using System;
 
 namespace Abraxas.Zones.Decks
 {
-    //[ExecuteInEditMode]
     public class Deck : Zone
     {
         #region Settings
@@ -58,7 +57,7 @@ namespace Abraxas.Zones.Decks
             card.transform.position = transform.position;
             return card;
         }
-        public Dictionary<StoneType, int> GetTotalDeckCosts()
+        public Dictionary<StoneType, int> GetDeckCost()
         {
             Dictionary<StoneType, int> totalCost = new();
             Card[] cards = GetComponentsInChildren<Card>();

@@ -1,8 +1,6 @@
 using Abraxas.Game;
 using Abraxas.Manas;
 using Abraxas.GameStates;
-using System;
-using UnityEngine;
 using Zenject;
 using Abraxas.Zones.Overlays;
 using Abraxas.Players;
@@ -13,6 +11,7 @@ using Abraxas.Zones.Graveyards;
 using Abraxas.Zones.Fields;
 using Abraxas.Events;
 using Abraxas.Network;
+using Abraxas.UI;
 
 namespace Abraxas.Core.Installers
 {
@@ -44,10 +43,9 @@ namespace Abraxas.Core.Installers
             Container.BindInterfacesAndSelfTo<EventManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<OverlayManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<MenuManager>().FromComponentInHierarchy().AsSingle();
 
             Container.BindInterfacesAndSelfTo<GameStateManager>().FromNew().AsSingle();
-
-
         }
 
         private void InstallGameStateFactories()

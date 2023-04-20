@@ -1,6 +1,6 @@
 using Abraxas.Events;
-using Abraxas.Game;
 using Abraxas.GameStates;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -10,30 +10,41 @@ using Zenject;
 namespace Abraxas.UI
 {
     [RequireComponent(typeof(Button))]
-    public class NextButton : MonoBehaviour, IGameEventListener<GameStateChangedEvent>
+    public class NextButton : MonoBehaviour, IGameEventListener<GameStateEnteredEvent>
     {
-        #region Dependencies
-        IGameManager _gameManager;
-        IEventManager _eventManager;
-        [Inject]
-        public void Construct(IGameManager gameManager, IEventManager eventManager)
+        #region Settings
+        Settings _buttonSettings;
+        [Serializable]
+        public class Settings
         {
-            _gameManager = gameManager;
-            _eventManager = eventManager;
-
-            _eventManager.AddListener(typeof(GameStateChangedEvent), this);
+            public string BeginningText;
+            public string BeforeCombatText;
+            public string CombatText;
+            public string AfterCombatText;
+            public string EndOfTurnText;
         }
         #endregion
 
-        public const string BEGINNING_BUTTON_TEXT = "Start of Turn";
-        public const string BEFORE_COMBAT_BUTTON_TEXT = "To Combat";
-        public const string COMBAT_BUTTON_TEXT = "Combat";
-        public const string AFTER_COMBAT_BUTTON_TEXT = "End Turn";
-        public const string END_OF_TURN_TEXT = "Turn Ending";
+        #region Dependencies
+        IGameStateManager _gameStateManager;
+        IEventManager _eventManager;
+        [Inject]
+        public void Construct(Settings buttonSettings, IGameStateManager gameStateManager, IEventManager eventManager)
+        {
+            _buttonSettings = buttonSettings;
+            _gameStateManager = gameStateManager;
+            _eventManager = eventManager;
 
+            _eventManager.AddListener(typeof(GameStateEnteredEvent), this);
+        }
+        #endregion
+
+        #region Fields
         Button _button;
         TMP_Text _buttonStr;
+        #endregion
 
+        #region Methods
         void Start()
         {
             _button = GetComponent<Button>();
@@ -42,43 +53,44 @@ namespace Abraxas.UI
 
         private void OnDestroy()
         {
-            _eventManager.RemoveListener(typeof(GameStateChangedEvent), this);
+            _eventManager.RemoveListener(typeof(GameStateEnteredEvent), this);
         }
 
         public void NextButtonPressed()
         {
-            StartCoroutine(_gameManager.BeginNextGameState());
+            StartCoroutine(_gameStateManager.BeginNextGameState());
         }
 
-        public IEnumerator OnEventRaised(GameStateChangedEvent eventData)
+        public IEnumerator OnEventRaised(GameStateEnteredEvent eventData)
         {
             GameState state = eventData.State;
             if (state is BeginningState)
             {
                 _button.interactable = false;
-                _buttonStr.text = BEGINNING_BUTTON_TEXT;
+                _buttonStr.text = _buttonSettings.BeginningText;
             }
             else if (state is BeforeCombatState)
             {
                 _button.interactable = true;
-                _buttonStr.text = BEFORE_COMBAT_BUTTON_TEXT;
+                _buttonStr.text = _buttonSettings.BeforeCombatText;
             }
             else if (state is CombatState)
             {
                 _button.interactable = false;
-                _buttonStr.text = COMBAT_BUTTON_TEXT;
+                _buttonStr.text = _buttonSettings.CombatText;
             }
             else if (state is AfterCombatState)
             {
                 _button.interactable = true;
-                _buttonStr.text = AFTER_COMBAT_BUTTON_TEXT;
+                _buttonStr.text = _buttonSettings.AfterCombatText;
             }
             else if (state is EndState)
             {
                 _button.interactable = false;
-                _buttonStr.text = END_OF_TURN_TEXT;
+                _buttonStr.text = _buttonSettings.EndOfTurnText;
             }
             yield break;
         }
+        #endregion
     }
 }

@@ -3,6 +3,7 @@ using Abraxas.Game;
 using Abraxas.Manas;
 using Abraxas.Players;
 using Abraxas.Stones;
+using Abraxas.UI;
 using Abraxas.Zones.Decks;
 using Abraxas.Zones.Fields;
 using Abraxas.Zones.Hands;
@@ -23,6 +24,7 @@ namespace Abraxas.Core.Installers
         public Hand.Settings HandSettings;
         public Field.Settings FieldSettings;
         public Deck.Settings DeckSettings;
+        public NextButton.Settings NextButtonSettings;
 
         public override void InstallBindings()
         {
@@ -35,6 +37,7 @@ namespace Abraxas.Core.Installers
             Container.BindInstance(HandSettings).AsSingle();
             Container.BindInstance(FieldSettings).AsSingle();
             Container.BindInstance(DeckSettings).AsSingle();
+            Container.BindInstance(NextButtonSettings).AsSingle();
         }
     }
 }

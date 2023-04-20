@@ -1,13 +1,15 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using Abraxas.Stones;
-using Abraxas.Zones.Decks;
+using Abraxas.Cards;
+using Abraxas.Game;
+using System.Linq;
 
 using Player = Abraxas.Players.Players;
 using Random = UnityEngine.Random;
-using System.Collections;
 
 namespace Abraxas.Manas
 {
@@ -25,36 +27,40 @@ namespace Abraxas.Manas
 
         #region Dependencies
         ManaType.Factory _typeFactory;
+        IGameManager _gameManager;
         [Inject]
-        void Construct(ManaType.Factory typeFactory)
+        void Construct(ManaType.Factory typeFactory, IGameManager gameManager)
         {
             _typeFactory = typeFactory;
+            _gameManager = gameManager;
         }
         #endregion
 
         #region Fields
         [SerializeField]
-        Deck _deck;
-
+        Player _player;
         Dictionary<StoneType, int> _deckCosts;
         List<ManaType> _manaTypes;
         int _totalDeckCost = 0;
         #endregion
 
-
         #region Properties
-        public Player Player { get => _deck.Player; }
+        public Player Player { get => _player; }
         public List<ManaType> ManaTypes { get => _manaTypes; }
         #endregion
 
-        #region Unity Methods
+        #region Methods
         void Start()
         {
-            _deckCosts = _deck.GetTotalDeckCosts();
-            _manaTypes = new List<ManaType>();
-            foreach (KeyValuePair<StoneType, int> manaAmount in _deckCosts)
-            {
-                if (manaAmount.Value > 0)
+            CreateManaTypes();
+        }
+
+        private void CreateManaTypes()
+        {
+            _deckCosts = _gameManager.GetDeckCost(Player);
+            _manaTypes = _deckCosts
+                .Where(manaAmount => manaAmount.Value > 0)
+                .Select(manaAmount =>
                 {
                     ManaType manaType = _typeFactory.Create().GetComponent<ManaType>();
                     manaType.transform.SetParent(transform);
@@ -62,19 +68,26 @@ namespace Abraxas.Manas
                     manaType.Amount = 0;
                     manaType.Player = Player;
                     _totalDeckCost += manaAmount.Value;
-                    ManaTypes.Add(manaType);
-                }
-            }
+                    return manaType;
+                })
+                .OrderBy(manaType => manaType.Type)
+                .ToList();
 
-            _manaTypes.Sort((a, b) => a.Type.CompareTo(b.Type));
             for (int i = 0; i < _manaTypes.Count; i++)
             {
                 _manaTypes[i].transform.SetSiblingIndex(i);
             }
         }
-        #endregion
 
-        #region Methods
+        public void PurchaseCard(Card card)
+        {
+            foreach (var cost in card.TotalCosts)
+            {
+                ManaType result = ManaTypes.Find(x => x.Type == cost.Key);
+                result.Amount -= cost.Value;
+            }
+        }
+
         public IEnumerator GenerateRatioMana(int amount)
         {
             for (int i = 0; i < amount; i++)
@@ -93,6 +106,19 @@ namespace Abraxas.Manas
                 }
             }
             yield break;
+        }
+
+        public bool CanPurchaseCard(Card card)
+        {
+            foreach (var _ in from cost in card.TotalCosts
+                              let result = ManaTypes.Find(x => x.Type == cost.Key)
+                              where !result || result.Amount < cost.Value
+                              select new { })
+            {
+                return false;
+            }
+
+            return true;
         }
         #endregion
     }

@@ -7,7 +7,8 @@ namespace Abraxas.Zones.Hands
 {
     public interface IHandManager
     {
-        public IEnumerator MoveCardToHand(Player player, Card card);
-        public void RemoveCard(Player player, Card card);
+        IEnumerator MoveCardToHand(Player player, Card card);
+        void RemoveCard(Player player, Card card);
+        IEnumerator ReturnCardToHand(Card card);
     }
 }

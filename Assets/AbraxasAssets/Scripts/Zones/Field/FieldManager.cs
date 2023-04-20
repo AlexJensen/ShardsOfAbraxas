@@ -46,6 +46,11 @@ namespace Abraxas.Zones.Fields
         {
             yield return _field.MoveCardToCell(card, fieldPos);
         }
+
+        public Vector2 GetCellDimensions()
+        {
+            return _field.GetCellDimensions();
+        }
         #endregion
     }
 }

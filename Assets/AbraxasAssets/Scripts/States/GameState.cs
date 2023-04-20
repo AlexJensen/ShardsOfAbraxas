@@ -17,11 +17,11 @@ namespace Abraxas.GameStates
 
         public virtual IEnumerator OnEnterState()
         {
-            yield return eventManager.RaiseEvent(typeof(GameStateChangedEvent), new GameStateChangedEvent(this));
+            yield return eventManager.RaiseEvent(typeof(GameStateEnteredEvent), new GameStateEnteredEvent(this));
         }
         public virtual IEnumerator OnExitState()
         {
-            yield break;
+            yield return eventManager.RaiseEvent(typeof(GameStateExitedEvent), new GameStateExitedEvent(this));
         }
         public abstract GameStates NextState();
     }

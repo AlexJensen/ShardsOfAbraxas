@@ -16,6 +16,7 @@ using Abraxas.Zones.Fields;
 using Zone = Abraxas.Zones.Zones;
 using Player = Abraxas.Players.Players;
 using UnityEngine.EventSystems;
+using Abraxas.Players;
 
 namespace Abraxas.Cards
 {
@@ -33,6 +34,7 @@ namespace Abraxas.Cards
         public class Settings
         {
             public float MovementOnFieldTime;
+            public float ScaleToFieldCellTime;
         }
         #endregion
 
@@ -40,14 +42,16 @@ namespace Abraxas.Cards
         Stone.Settings _stoneSettings;
         Players.Player.Settings _playerSettings;
         IGameManager _gameManager;
+        IPlayerManager _playerManager;
 
         [Inject]
-        public void Construct(Settings settings, Stone.Settings stoneSettings, Players.Player.Settings playerSettings, IGameManager gameManager)
+        public void Construct(Settings settings, Stone.Settings stoneSettings, Players.Player.Settings playerSettings, IGameManager gameManager, IPlayerManager playerManager)
         {
             _settings = settings;
             _stoneSettings = stoneSettings;
-            _gameManager = gameManager;
             _playerSettings = playerSettings;
+            _gameManager = gameManager;
+            _playerManager = playerManager;
         }
         #endregion
 
@@ -178,7 +182,7 @@ namespace Abraxas.Cards
 
         public IEnumerator PassHomeRow()
         {
-            _gameManager.ModifyPlayerHealth(Controller ==
+            _playerManager.ModifyPlayerHealth(Controller ==
                 Player.Player1 ? Player.Player2 : Player.Player1,
                 StatBlock[StatBlock.StatValues.ATK]);
             yield return _gameManager.MoveCardFromFieldToDeck(this);

@@ -1,24 +1,37 @@
-using Abraxas.Game;
-using Abraxas.Zones.Fields;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
+using Abraxas.Players;
+using Abraxas.Manas;
+using Abraxas.Zones.Fields;
+using Abraxas.Zones.Overlays;
+
 using Zone = Abraxas.Zones.Zones;
-using Unity.Netcode;
+using Abraxas.Zones.Hands;
 
 namespace Abraxas.Cards
 {
     [RequireComponent(typeof(Card))]
-    public class CardDragHandler : NetworkBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+    public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         #region Dependencies
-        IGameManager _gameManager;
+        Card.Settings _cardSettings;
+        IPlayerManager _playerManager;
+        IManaManager _manaManager;
+        IOverlayManager _overlayManager;
+        IFieldManager _fieldManager;
+        IHandManager _handManager;
         [Inject]
-        public void Construct(IGameManager gameManager)
+        public void Construct(Card.Settings cardSettings, IPlayerManager playerManager, IManaManager manaManager, IOverlayManager overlayManager, IFieldManager fieldManager, IHandManager handManager)
         {
-            _gameManager = gameManager;
+            _cardSettings = cardSettings;
+            _playerManager = playerManager;
+            _manaManager = manaManager;
+            _overlayManager = overlayManager;
+            _fieldManager = fieldManager;
+            _handManager = handManager;
         }
         #endregion
 
@@ -38,56 +51,44 @@ namespace Abraxas.Cards
         #region Methods
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (!Card.Hidden)
+            if (!Card.Hidden && Card.Owner == _playerManager.ActivePlayer && Card.Zone == Zone.HAND)
             {
-                switch (Card.Zone)
-                {
-                    case Zone.HAND:
-                        {
-                            
-                        }
-                        break;
-                }
+                _overlayManager.AddCard(Card);
+                StartCoroutine(Card.RectTransformMover.ChangeScaleEnumerator(_fieldManager.GetCellDimensions(), _cardSettings.ScaleToFieldCellTime));
             }
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            switch (Card.Zone)
+            if (_overlayManager.Card == Card)
             {
-                case Zone.DRAG:
-                    {
-                        RectTransform.position = Input.mousePosition;
-                    }
-                    break;
+                RectTransform.position = Input.mousePosition;
             }
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            switch (Card.Zone)
+            if (_overlayManager.Card == Card)
             {
-                case Zone.DRAG:
+                
+                List<RaycastResult> results = new();
+                GraphicRaycaster.Raycast(eventData, results);
+                foreach (var hit in results)
+                {
+                    Cell cell = hit.gameObject.GetComponent<Cell>();
+                    if (cell)
                     {
-                        List<RaycastResult> results = new();
-                        GraphicRaycaster.Raycast(eventData, results);
-                        foreach (var hit in results)
+                        if (cell.Cards.Count == 0 && cell.Player == Card.Controller && _manaManager.CanPurchaseCard(Card))
                         {
-                            Cell cell = hit.gameObject.GetComponent<Cell>();
-                            if (cell)
-                            {
-                                if (cell.Cards.Count == 0 && cell.Player == Card.Controller && _gameManager.CanPurchaseCard(Card))
-                                {
-
-                                    _gameManager.PurchaseCard(Card);
-                                    Card.RequestMoveToCellServerRpc(cell.FieldPosition);
-                                    return;
-                                }
-                            }
+                            _overlayManager.RemoveCard(Card);
+                            _manaManager.PurchaseCard(Card);
+                            Card.RequestMoveToCellServerRpc(cell.FieldPosition);
+                            return;
                         }
-                        StartCoroutine(_gameManager.MoveCardToHand(Card));
                     }
-                    break;
+                }
+                StartCoroutine(_handManager.ReturnCardToHand(Card));
+                _overlayManager.RemoveCard(Card);
             }
         }
         #endregion

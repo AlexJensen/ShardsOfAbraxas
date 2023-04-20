@@ -31,11 +31,11 @@ namespace Abraxas
 
         public IEnumerator MoveToEnumerator(Vector2 location, float time)
         {
-            Vector2 origLoc = RectTransform.position;
+            Vector2 originalLocation = RectTransform.position;
             float lerpIncrement = 1 / time, lerpProgress = 0;
             while (lerpProgress <= 1)
             {
-                Vector2 lerpUpdate = Vector2.Lerp(origLoc, location, lerpProgress);
+                Vector2 lerpUpdate = Vector2.Lerp(originalLocation, location, lerpProgress);
                 RectTransform.position = lerpUpdate;
 
                 lerpProgress += lerpIncrement * Time.deltaTime;

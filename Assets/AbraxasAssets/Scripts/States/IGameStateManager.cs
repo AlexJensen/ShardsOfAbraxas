@@ -5,7 +5,7 @@ namespace Abraxas.GameStates
 {
     public interface IGameStateManager
     {
-        IEnumerator SwitchToState(GameStates state);
+        IEnumerator SwitchGameStateTo(GameStates state);
         IEnumerator BeginNextGameState();
     }
 }

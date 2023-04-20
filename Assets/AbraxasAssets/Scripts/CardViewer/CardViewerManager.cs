@@ -33,12 +33,16 @@ namespace Abraxas.CardViewers
         #endregion
 
         #region Properties
-        RectTransform CardDetailRect { get => _cardDetailRect != null? _cardDetailRect: (RectTransform)_cardDetail.transform; }
+        RectTransform CardDetailRect { get =>  _cardDetailRect != null ? _cardDetailRect : _cardDetailRect = (RectTransform)_cardDetail.transform; }
         #endregion
 
         #region Methods
         private void ShowCardViewerOnSide(Card card, ScreenSide side)
         {
+            if (_cardDetail == null)
+            {
+                throw new ArgumentException("Card detail not found on Card Viewer.");
+            }
             _cardDetail.gameObject.SetActive(true);
             Side screenSide = _sides.Find(x => x.side == side);
             CardDetailRect.SetParent(screenSide.rectTranform.transform);
@@ -55,7 +59,7 @@ namespace Abraxas.CardViewers
 
         public IEnumerator ShowCardDetail(Card card)
         {
-            if (Input.mousePosition.x > Screen.width / 2)
+            if (Input.mousePosition.x > Screen.width * .5f)
             {
                 ShowCardViewerOnSide(card, ScreenSide.LEFT);
             }

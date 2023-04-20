@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 120eb324965c5804090da03359958525, type: 3}
-  m_Name: AbraxasSettingsInstaller
+  m_Name: AbraxasSettings
   m_EditorClassIdentifier: 
   GameSettings:
     Player1CardsToDrawAtStartOfGame: 5
@@ -18,6 +18,7 @@ MonoBehaviour:
     CardsToDrawAtStartOfTurn: 1
   CardSettings:
     MovementOnFieldTime: 0.2
+    ScaleToFieldCellTime: 0.2
   CardPlaceholderSettings:
     scaleToMaxSizeTime: 0.2
     minScale: 0
@@ -51,13 +52,13 @@ MonoBehaviour:
     - name: Sapphire
       type: 8
       color: {r: 0, g: 0, b: 1, a: 1}
-    - name: 
+    - name: Tourmaline
       type: 9
       color: {r: 1, g: 0, b: 0.49803922, a: 1}
-    - name: 
+    - name: Citrine
       type: 10
       color: {r: 1, g: 0.49803922, b: 0, a: 1}
-    - name: 
+    - name: Tourquoise
       type: 11
       color: {r: 0, g: 0.49803922, b: 0.49803922, a: 1}
   PlayerSettings:
@@ -74,5 +75,14 @@ MonoBehaviour:
     ManaPerTurnIncrement: 2
   HandSettings:
     MoveCardToHandTime: 0.2
+  FieldSettings:
+    MoveCardToFieldTime: 0.2
+    MoveCardOnFieldTime: 0.2
   DeckSettings:
     MoveCardToDeckTime: 0.2
+  NextButtonSettings:
+    BeginningText: Start of Turn
+    BeforeCombatText: To Combat
+    CombatText: Combat
+    AfterCombatText: End Turn
+    EndOfTurnText: Turn Ending

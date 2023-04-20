@@ -24,27 +24,21 @@ namespace Abraxas.Manas
         [SerializeField]
         List<Mana> _manas;
 
-        int _startOfTurnManaAmount;
+        int _startOfTurnMana;
         #endregion
 
         #region Properties
-        public int StartOfTurnManaAmount
+        public int StartOfTurnMana
         {
-            get
-            {
-                return _startOfTurnManaAmount;
-            }
-            set
-            {
-                _startOfTurnManaAmount = value;
-            }
+            get => _startOfTurnMana;
+            set => _startOfTurnMana = value;
         }
         #endregion
 
         #region Methods
         void Start()
         {
-            StartOfTurnManaAmount = _settings.StartingMana;
+            StartOfTurnMana = _settings.StartingMana;
         }
 
         public IEnumerator GenerateManaFromDeckRatio(Player player, int amount)
@@ -52,19 +46,35 @@ namespace Abraxas.Manas
             yield return GetPlayerMana(player).GenerateRatioMana(amount);
         }
 
-        public Mana GetPlayerMana(Player player)
-        {
-            return _manas.Find(x => x.Player == player);
-        }
-
         public bool CanPurchaseCard(Card card)
         {
-            throw new NotImplementedException();
+            return GetPlayerMana(card.Owner).CanPurchaseCard(card);            
+        }
+
+        public void PurchaseCard(Card card)
+        {
+            GetPlayerMana(card.Owner).PurchaseCard(card);
         }
 
         public void IncrementStartOfTurnManaAmount()
         {
-            StartOfTurnManaAmount += _settings.ManaPerTurnIncrement;
+            StartOfTurnMana += _settings.ManaPerTurnIncrement;
+        }
+
+        private Mana GetPlayerMana(Player player)
+        {
+            if (player == Player.Neutral)
+            {
+                throw new ArgumentException("Cannot get mana for neutral player.");
+            }
+
+            Mana playerMana = _manas.Find(x => x.Player == player);
+            if (playerMana == null)
+            {
+                throw new ArgumentException($"No mana value found for player {player}.");
+            }
+
+            return playerMana;
         }
         #endregion
     }
