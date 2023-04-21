@@ -21,17 +21,6 @@ namespace Abraxas.Stones
             _buffs = new List<StatBuff>();
         }
 
-        private void OnEnable()
-        {
-
-        }
-
-        private void OnDisable()
-        {
-
-        }
-
-
         public override void TriggerEffect(object[] vals)
         {
             if (!Utilities.ValidateParam<Card>(this, vals[0]))

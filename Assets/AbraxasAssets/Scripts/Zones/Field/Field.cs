@@ -1,6 +1,6 @@
 using Abraxas.Cards;
-using Abraxas.Game;
 using Abraxas.Players;
+using Abraxas.Zones.Overlays;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,13 +25,13 @@ namespace Abraxas.Zones.Fields
         #endregion
 
         #region Dependencies
-        IGameManager _gameManager;
+        IOverlayManager _overlayManager;
         IPlayerManager _playerManager;
         [Inject]
-        public void Construct(Settings settings, IGameManager gameManager, IPlayerManager playerManager)
+        public void Construct(Settings settings, IOverlayManager gameManager, IPlayerManager playerManager)
         {
             _settings = settings;
-            _gameManager = gameManager;
+            _overlayManager = gameManager;
             _playerManager = playerManager;
         }
         #endregion
@@ -77,7 +77,6 @@ namespace Abraxas.Zones.Fields
         {
             CardList.Add(card);
             card.Zone = Zones.PLAY;
-            cell.AddCard(card);
         }
 
         public void AddToField(Card card, Vector2Int fieldPos)
@@ -88,10 +87,7 @@ namespace Abraxas.Zones.Fields
         public void RemoveCard(Card card)
         {
             CardList.Remove(card);
-            if (card.Cell != null)
-            {
-                card.Cell.RemoveCard(card);
-            }
+            card.Cell?.RemoveCard(card);
         }
 
         public IEnumerator StartCombat()
@@ -124,8 +120,7 @@ namespace Abraxas.Zones.Fields
 
             if (destination != card.FieldPosition)
             {
-                yield return _gameManager.MoveCardFromCellToCell(FieldGrid[card.FieldPosition.y].cells[card.FieldPosition.x],
-                                                                  FieldGrid[destination.y].cells[destination.x]);
+                yield return MoveCardToCell(card, FieldGrid[destination.y].cells[destination.x]);
                 if (FieldGrid[destination.y].cells[destination.x].Player != card.Controller && FieldGrid[destination.y].cells[destination.x].Player != Player.Neutral)
                 {
                     yield return card.PassHomeRow();
@@ -139,7 +134,10 @@ namespace Abraxas.Zones.Fields
 
         public IEnumerator MoveCardToCell(Card card, Cell cell)
         {
+            card.Cell?.RemoveCard(card);
+            _overlayManager.AddCard(card);
             yield return card.RectTransformMover.MoveToFitRectangle(cell.RectTransform, MoveCardTime);
+            cell.AddCard(card);
         }
 
         public IEnumerator MoveCardToCell(Card card, Vector2Int fieldPos)

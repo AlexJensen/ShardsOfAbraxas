@@ -50,7 +50,7 @@ namespace Abraxas.Players
                 {
                     _previousHP = _currentHP;
                 }
-                _currentHP = Mathf.Min(MaxHP,value);
+                _currentHP = Mathf.Min(MaxHP, value);
                 Refresh();
             }
         }

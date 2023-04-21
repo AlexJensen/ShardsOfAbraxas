@@ -84,6 +84,7 @@ namespace Abraxas.Zones.Hands
         internal void SnapToMaxHeight()
         {
             CardPlaceholderLayout.preferredHeight = _settings.maxScale;
+            _currentIndex = transform.GetSiblingIndex();
         }
 
         internal void Hide()

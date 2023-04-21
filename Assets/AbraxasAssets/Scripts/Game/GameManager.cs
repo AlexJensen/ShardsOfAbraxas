@@ -119,6 +119,7 @@ namespace Abraxas.Game
         {
             _handManager.RemoveCard(card.Owner, card);
             yield return _fieldManager.MoveCardToCell(card, fieldPosition);
+            _fieldManager.AddCard(card, fieldPosition);
         }
         public IEnumerator MoveCardFromFieldToDeck(Card card)
         {
@@ -130,18 +131,6 @@ namespace Abraxas.Game
         {
             _fieldManager.RemoveCard(card);
             yield return _graveyardManager.MoveCardToGraveyard(card.Owner, card);
-        }
-        public IEnumerator MoveCardAndFight(Card card, Vector2Int vector2Int)
-        {
-            throw new NotImplementedException();
-        }
-        public object MoveCardFromCellToCell(Cell source, Cell destination)
-        {
-            throw new NotImplementedException();
-        }
-        public Dictionary<StoneType, int> GetDeckCost(Player player)
-        {
-            return _deckManager.GetDeckCost(player);
         }
         #endregion
     }

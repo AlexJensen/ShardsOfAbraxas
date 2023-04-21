@@ -39,6 +39,24 @@ namespace Abraxas.Zones
         {
             _overlayManager.AddCard(card);
             yield return card.RectTransformMover.MoveToFitRectangle(_cards, MoveCardTime);
+            AddCard(card, index);
+        }
+
+        public void AddCard(Card card, int index = 0)
+        {
+            card.transform.localScale = Vector3.zero;
+            card.transform.position = transform.position;
+            card.Zone = ZoneType;
+            card.transform.SetParent(Cards.transform);
+            card.transform.SetSiblingIndex(index);
+        }
+
+        public Card RemoveCard(int index = 0)
+        {
+            Card card = Cards.GetChild(index).GetComponent<Card>();
+            card.transform.localScale = Vector3.one;
+            card.transform.position = transform.position;
+            return card;
         }
         #endregion
     }

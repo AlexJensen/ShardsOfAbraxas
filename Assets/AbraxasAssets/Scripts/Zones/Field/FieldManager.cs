@@ -12,11 +12,6 @@ namespace Abraxas.Zones.Fields
         #endregion
 
         #region Methods
-        public void AddCard(Card card, Cell cell)
-        {
-            _field.AddToField(card, cell);
-        }
-
         public void AddCard(Card card, Vector2Int fieldPos)
         {
             _field.AddToField(card, fieldPos);
@@ -35,11 +30,6 @@ namespace Abraxas.Zones.Fields
         public IEnumerator MoveCardAndFight(Card card, Vector2Int movement)
         {
             yield return _field.MoveCardAndFight(card, movement);
-        }
-
-        public IEnumerator MoveCardToCell(Card card, Cell cell)
-        {
-            yield return _field.MoveCardToCell(card, cell);
         }
 
         public IEnumerator MoveCardToCell(Card card, Vector2Int fieldPos)

@@ -5,11 +5,11 @@ using UnityEngine;
 using Zenject;
 using Abraxas.Stones;
 using Abraxas.Cards;
-using Abraxas.Game;
 using System.Linq;
 
 using Player = Abraxas.Players.Players;
 using Random = UnityEngine.Random;
+using Abraxas.Zones.Decks;
 
 namespace Abraxas.Manas
 {
@@ -27,12 +27,12 @@ namespace Abraxas.Manas
 
         #region Dependencies
         ManaType.Factory _typeFactory;
-        IGameManager _gameManager;
+        IDeckManager _deckManager;
         [Inject]
-        void Construct(ManaType.Factory typeFactory, IGameManager gameManager)
+        void Construct(ManaType.Factory typeFactory, IDeckManager deckManager)
         {
             _typeFactory = typeFactory;
-            _gameManager = gameManager;
+            _deckManager = deckManager;
         }
         #endregion
 
@@ -57,7 +57,7 @@ namespace Abraxas.Manas
 
         private void CreateManaTypes()
         {
-            _deckCosts = _gameManager.GetDeckCost(Player);
+            _deckCosts = _deckManager.GetDeckCost(Player);
             _manaTypes = _deckCosts
                 .Where(manaAmount => manaAmount.Value > 0)
                 .Select(manaAmount =>

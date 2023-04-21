@@ -6,6 +6,7 @@ using Abraxas.Stones;
 using Abraxas.UI;
 using Abraxas.Zones.Decks;
 using Abraxas.Zones.Fields;
+using Abraxas.Zones.Graveyards;
 using Abraxas.Zones.Hands;
 using UnityEngine;
 using Zenject;
@@ -25,6 +26,7 @@ namespace Abraxas.Core.Installers
         public Field.Settings FieldSettings;
         public Deck.Settings DeckSettings;
         public NextButton.Settings NextButtonSettings;
+        public Graveyard.Settings GraveyardSettings;
 
         public override void InstallBindings()
         {
@@ -38,6 +40,7 @@ namespace Abraxas.Core.Installers
             Container.BindInstance(FieldSettings).AsSingle();
             Container.BindInstance(DeckSettings).AsSingle();
             Container.BindInstance(NextButtonSettings).AsSingle();
+            Container.BindInstance(GraveyardSettings).AsSingle();
         }
     }
 }

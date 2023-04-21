@@ -14,7 +14,7 @@ namespace Abraxas.Zones.Decks
     public class Deck : Zone
     {
         #region Settings
-        Settings _settings;
+        Settings _deckSettings;
         [Serializable]
         public class Settings
         {
@@ -24,39 +24,25 @@ namespace Abraxas.Zones.Decks
 
         #region Dependencies
         [Inject]
-        public void Construct(Settings settings)
+        public void Construct(Settings deckSettings)
         {
-            _settings = settings;
+            _deckSettings = deckSettings;
         }
         #endregion
 
         #region Fields
         [SerializeField]
         Player player;
-        public override Zones ZoneType => Zones.DECK;
+        
         #endregion
 
         #region Properties
         public Player Player { get => player; }
-        public override float MoveCardTime { get => _settings.MoveCardToDeckTime; }
+        public override float MoveCardTime { get => _deckSettings.MoveCardToDeckTime; }
+        public override Zones ZoneType => Zones.DECK;
         #endregion
 
         #region Methods
-        public void AddCard(Card card, int index = 0)
-        {
-            card.transform.localScale = Vector3.zero;
-            card.transform.position = transform.position;
-            card.Zone = Zones.DECK;
-            card.transform.parent = Cards.transform;
-            card.transform.SetSiblingIndex(index);
-        }
-        public Card RemoveCard(int index = 0)
-        {
-            Card card = Cards.GetChild(index).GetComponent<Card>();
-            card.transform.localScale = Vector3.one;
-            card.transform.position = transform.position;
-            return card;
-        }
         public Dictionary<StoneType, int> GetDeckCost()
         {
             Dictionary<StoneType, int> totalCost = new();

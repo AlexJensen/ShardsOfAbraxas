@@ -15,7 +15,7 @@ using Abraxas.Zones.Fields;
 
 using Zone = Abraxas.Zones.Zones;
 using Player = Abraxas.Players.Players;
-using UnityEngine.EventSystems;
+
 using Abraxas.Players;
 
 namespace Abraxas.Cards
@@ -43,15 +43,17 @@ namespace Abraxas.Cards
         Players.Player.Settings _playerSettings;
         IGameManager _gameManager;
         IPlayerManager _playerManager;
+        IFieldManager _fieldManager;
 
         [Inject]
-        public void Construct(Settings settings, Stone.Settings stoneSettings, Players.Player.Settings playerSettings, IGameManager gameManager, IPlayerManager playerManager)
+        public void Construct(Settings settings, Stone.Settings stoneSettings, Players.Player.Settings playerSettings, IGameManager gameManager, IPlayerManager playerManager, IFieldManager fieldManager)
         {
             _settings = settings;
             _stoneSettings = stoneSettings;
             _playerSettings = playerSettings;
             _gameManager = gameManager;
             _playerManager = playerManager;
+            _fieldManager = fieldManager;
         }
         #endregion
 
@@ -184,7 +186,7 @@ namespace Abraxas.Cards
         {
             _playerManager.ModifyPlayerHealth(Controller ==
                 Player.Player1 ? Player.Player2 : Player.Player1,
-                StatBlock[StatBlock.StatValues.ATK]);
+                -StatBlock[StatBlock.StatValues.ATK]);
             yield return _gameManager.MoveCardFromFieldToDeck(this);
         }
 
@@ -210,14 +212,9 @@ namespace Abraxas.Cards
         #endregion
 
         #region Animation Lerps
-        public IEnumerator MoveCardOnField(RectTransform rectTransform)
-        {
-            yield return RectTransformMover.MoveToFitRectangle(rectTransform, _settings.MovementOnFieldTime);
-        }
-
         public IEnumerator Combat()
         {
-            yield return _gameManager.MoveCardAndFight(this, new Vector2Int(
+            yield return _fieldManager.MoveCardAndFight(this, new Vector2Int(
                 Controller == Player.Player1 ? StatBlock[StatBlock.StatValues.MV] :
                 Controller == Player.Player2 ? -StatBlock[StatBlock.StatValues.MV] : 0, 0));
         }

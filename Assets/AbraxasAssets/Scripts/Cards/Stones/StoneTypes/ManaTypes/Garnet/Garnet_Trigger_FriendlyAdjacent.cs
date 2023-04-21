@@ -20,22 +20,12 @@ namespace Abraxas.Stones
             Info = "Whenever a friendly packet moves into an adjacent square:";
 
             _adjacents = new List<Vector2Int>
-        {
-            new Vector2Int(1,0),
-            new Vector2Int(-1,0),
-            new Vector2Int(0,1),
-            new Vector2Int(0,-1)
-        };
-        }
-
-        private void OnEnable()
-        {
-
-        }
-
-        private void OnDisable()
-        {
-
+            {
+                new Vector2Int(1,0),
+                new Vector2Int(-1,0),
+                new Vector2Int(0,1),
+                new Vector2Int(0,-1)
+            };
         }
 
         private void OnCardEnteredField(params object[] vals)

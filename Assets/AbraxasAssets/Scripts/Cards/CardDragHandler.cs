@@ -53,6 +53,7 @@ namespace Abraxas.Cards
         {
             if (!Card.Hidden && Card.Owner == _playerManager.ActivePlayer && Card.Zone == Zone.HAND)
             {
+                _handManager.RemoveCard(Card.Owner, Card);
                 _overlayManager.AddCard(Card);
                 StartCoroutine(Card.RectTransformMover.ChangeScaleEnumerator(_fieldManager.GetCellDimensions(), _cardSettings.ScaleToFieldCellTime));
             }

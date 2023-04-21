@@ -11,5 +11,6 @@ namespace Abraxas.Zones.Fields
         void AddCard(Card card, Vector2Int fieldPosition);
         Vector2 GetCellDimensions();
         IEnumerator StartCombat();
+        IEnumerator MoveCardAndFight(Card card, Vector2Int movement);
     }
 }
