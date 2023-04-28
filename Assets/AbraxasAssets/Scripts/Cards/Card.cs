@@ -26,7 +26,7 @@ namespace Abraxas.Cards
     [RequireComponent(typeof(RectTransformMover))]
     [RequireComponent(typeof(CardDragHandler))]
     [RequireComponent(typeof(CardMouseOverHandler))]
-    public class Card : NetworkBehaviour
+    public class Card : NetworkBehaviour, ICard
     {
         #region Settings
         Settings _settings;
@@ -209,9 +209,7 @@ namespace Abraxas.Cards
                 yield return _gameManager.MoveCardFromFieldToGraveyard(this);
             }
         }
-        #endregion
 
-        #region Animation Lerps
         public IEnumerator Combat()
         {
             yield return _fieldManager.MoveCardAndFight(this, new Vector2Int(

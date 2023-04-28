@@ -13,6 +13,10 @@ namespace Abraxas.GameStates
         public class Factory : PlaceholderFactory<AfterCombatState>{}
         #endregion
 
+        #region Properties
+        public override GameStates CurrentState => GameStates.AfterCombat;
+        #endregion
+
         #region Methods
         public override GameStates NextState()
         {

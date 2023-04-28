@@ -20,6 +20,10 @@ namespace Abraxas.GameStates
         public class Factory : PlaceholderFactory<EndState>{}
         #endregion
 
+        #region Properties
+        public override GameStates CurrentState => GameStates.End;
+        #endregion
+
         #region Methods
         public override GameStates NextState()
         {
@@ -35,7 +39,7 @@ namespace Abraxas.GameStates
         public override IEnumerator OnExitState()
         {
             yield return base.OnExitState();
-            _playerManager.ToggleActivePlayer();
+            yield return _playerManager.ToggleActivePlayer();
         }
         #endregion
     }

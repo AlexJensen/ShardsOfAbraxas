@@ -1,11 +1,24 @@
 using System.Collections;
 using UnityEngine;
 using Abraxas.Cards;
+using Unity.Netcode;
+using Zenject;
+using Abraxas.Game;
 
 namespace Abraxas.Zones.Fields
 {
-    public class FieldManager : MonoBehaviour, IFieldManager
+    public class FieldManager : NetworkBehaviour, IFieldManager
     {
+        #region Dependencies
+        GameManager _gameManager;
+        [Inject]
+        public void Construct(GameManager gameManager)
+        {
+            _gameManager = gameManager;
+        }
+
+        #endregion
+
         #region Fields
         [SerializeField]
         Field _field;

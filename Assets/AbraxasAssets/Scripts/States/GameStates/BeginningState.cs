@@ -1,6 +1,7 @@
 ﻿using Abraxas.Events;
 using Abraxas.Game;
 using System.Collections;
+using Unity.Netcode;
 using Zenject;
 
 namespace Abraxas.GameStates
@@ -17,6 +18,10 @@ namespace Abraxas.GameStates
         public class Factory : PlaceholderFactory<BeginningState>{}
         #endregion
 
+        #region Properties
+        public override GameStates CurrentState => GameStates.Beginning;
+        #endregion
+
         #region Methods
         public override GameStates NextState()
         {
@@ -28,6 +33,7 @@ namespace Abraxas.GameStates
             yield return gameManager.DrawStartOfTurnCardsForActivePlayer();
             yield return gameManager.GenerateStartOfTurnManaForActivePlayer();
             yield return _gameStateManager.BeginNextGameState();
+
         }
         public override IEnumerator OnExitState()
         {

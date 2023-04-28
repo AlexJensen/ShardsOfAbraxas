@@ -1,7 +1,6 @@
 using Abraxas.Cards;
 using Abraxas.Zones.Overlays;
 using System.Collections;
-using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 
@@ -11,7 +10,7 @@ namespace Abraxas.Zones
     {
         DECK, DRAG, HAND, PLAY, GRAVEYARD, BANISHED
     }
-    public abstract class Zone : NetworkBehaviour
+    public abstract class Zone : MonoBehaviour
     {
         #region Dependencies
         IOverlayManager _overlayManager;

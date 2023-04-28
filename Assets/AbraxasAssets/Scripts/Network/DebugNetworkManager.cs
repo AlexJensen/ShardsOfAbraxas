@@ -3,7 +3,7 @@ using Unity.Netcode;
 
 namespace Abraxas.Network
 {
-    public class DebugNetworkManager : Singleton<DebugNetworkManager>
+    public class DebugNetworkManager : NetworkBehaviour
     {
         public bool isDebugMode = false;
 

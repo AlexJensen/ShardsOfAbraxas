@@ -1,29 +1,35 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Abraxas.Players
 {
-        public class PlayerManager : MonoBehaviour, IPlayerManager
+        public class PlayerManager : NetworkBehaviour, IPlayerManager
         {
         #region Fields
-        Players _activePlayer = Players.Player1;
+        NetworkVariable<Players> _activePlayer = new NetworkVariable<Players>(Players.Player1);
 
         [SerializeField]
         List<PlayerHealth> _hps;
+
         #endregion
 
         #region Properties
-        public Players ActivePlayer => _activePlayer;
+        public Players ActivePlayer => _activePlayer.Value;
+        #endregion
 
+        #region Methods
         public void ModifyPlayerHealth(Players player, int amount)
         {
             GetPlayerHealth(player).CurrentHP += amount;
         }
 
-        public void ToggleActivePlayer()
+        public IEnumerator ToggleActivePlayer()
         {
-            _activePlayer = _activePlayer == Players.Player1 ? Players.Player2 : Players.Player1;
+            if (!IsServer) yield break;
+            _activePlayer.Value = _activePlayer.Value == Players.Player1 ? Players.Player2 : Players.Player1;
         }
 
         public PlayerHealth GetPlayerHealth(Players player)

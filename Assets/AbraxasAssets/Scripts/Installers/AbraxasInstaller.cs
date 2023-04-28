@@ -44,8 +44,7 @@ namespace Abraxas.Core.Installers
             Container.BindInterfacesAndSelfTo<PlayerManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<OverlayManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<MenuManager>().FromComponentInHierarchy().AsSingle();
-
-            Container.BindInterfacesAndSelfTo<GameStateManager>().FromNew().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameStateManager>().FromComponentInHierarchy().AsSingle();
         }
 
         private void InstallGameStateFactories()

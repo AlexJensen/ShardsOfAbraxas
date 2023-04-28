@@ -9,6 +9,8 @@ namespace Abraxas.GameStates
         protected readonly IGameManager gameManager;
         protected readonly IEventManager eventManager;
 
+        public virtual GameStates CurrentState { get; }
+
         protected GameState(IGameManager gameManager, IEventManager eventManager)
         {
             this.gameManager = gameManager;

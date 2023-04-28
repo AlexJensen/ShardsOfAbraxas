@@ -10,6 +10,7 @@ using Abraxas.Zones.Overlays;
 
 using Zone = Abraxas.Zones.Zones;
 using Abraxas.Zones.Hands;
+using Abraxas.Game;
 
 namespace Abraxas.Cards
 {
@@ -18,15 +19,17 @@ namespace Abraxas.Cards
     {
         #region Dependencies
         Card.Settings _cardSettings;
+        IGameManager _gameManager;
         IPlayerManager _playerManager;
         IManaManager _manaManager;
         IOverlayManager _overlayManager;
         IFieldManager _fieldManager;
         IHandManager _handManager;
         [Inject]
-        public void Construct(Card.Settings cardSettings, IPlayerManager playerManager, IManaManager manaManager, IOverlayManager overlayManager, IFieldManager fieldManager, IHandManager handManager)
+        public void Construct(Card.Settings cardSettings, IGameManager gameManager, IPlayerManager playerManager, IManaManager manaManager, IOverlayManager overlayManager, IFieldManager fieldManager, IHandManager handManager)
         {
             _cardSettings = cardSettings;
+            _gameManager = gameManager;
             _playerManager = playerManager;
             _manaManager = manaManager;
             _overlayManager = overlayManager;
@@ -71,7 +74,6 @@ namespace Abraxas.Cards
         {
             if (_overlayManager.Card == Card)
             {
-                
                 List<RaycastResult> results = new();
                 GraphicRaycaster.Raycast(eventData, results);
                 foreach (var hit in results)
@@ -82,8 +84,7 @@ namespace Abraxas.Cards
                         if (cell.Cards.Count == 0 && cell.Player == Card.Controller && _manaManager.CanPurchaseCard(Card))
                         {
                             _overlayManager.RemoveCard(Card);
-                            _manaManager.PurchaseCard(Card);
-                            Card.RequestMoveToCellServerRpc(cell.FieldPosition);
+                            _gameManager.PurchaseCardAndMoveFromHandToCell(Card, cell.FieldPosition);
                             return;
                         }
                     }

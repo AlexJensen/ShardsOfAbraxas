@@ -1,10 +1,11 @@
 ﻿using Abraxas.Network;
+using Abraxas.Events;
 using Abraxas.Game;
 using System.Collections;
 using Unity.Netcode;
-using UnityEngine;
+
 using Zenject;
-using Abraxas.Events;
+
 
 namespace Abraxas.GameStates
 {
@@ -27,6 +28,10 @@ namespace Abraxas.GameStates
         }
         #endregion
 
+        #region Properties
+        public override GameStates CurrentState => GameStates.GameNotStarted;
+        #endregion
+
         #region Methods
         public override GameStates NextState()
         {
@@ -38,22 +43,24 @@ namespace Abraxas.GameStates
             yield return base.OnEnterState();
             if (_debugNetworkManager.isDebugMode)
             {
-                yield return new WaitForSeconds(1.0f);
+                yield return _gameStateManager.BeginNextGameState();
             }
             else
             {
-                while (!_networkManager.IsServer)
+                while (!_networkManager.IsServer && !_networkManager.IsClient)
                 {
-                    Debug.Log(_networkManager.IsServer);
                     yield return null;
                 }
-                while (_networkManager.ConnectedClients.Count != 2)
+
+                if (_networkManager.IsServer)
                 {
-                    Debug.Log(_networkManager.ConnectedClients.Count);
-                    yield return null;
+                    while (_networkManager.ConnectedClients.Count != 2)
+                    {
+                        yield return null;
+                    }
+                    yield return _gameStateManager.BeginNextGameState();
                 }
             }
-            yield return _gameStateManager.BeginNextGameState();
         }
 
         public override IEnumerator OnExitState()

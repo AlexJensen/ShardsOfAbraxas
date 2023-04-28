@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Abraxas.Players
@@ -11,7 +12,7 @@ namespace Abraxas.Players
         Neutral
     }
 
-    public class Player
+    public class Player: NetworkBehaviour
     {
         #region Settings
         [Serializable]

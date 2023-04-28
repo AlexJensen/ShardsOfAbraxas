@@ -63,25 +63,12 @@ namespace Abraxas.Zones.Decks
             }
             return totalCost;
         }
-        #endregion
 
-        #region Server Methods
-        [ServerRpc]
-        public void ShuffleServerRpc()
+        internal void Shuffle()
         {
             foreach (Transform card in Cards)
             {
                 card.SetSiblingIndex(Random.Range(0, Cards.childCount));
-            }
-        }
-
-        [ClientRpc]
-        private void ShuffleClientRpc()
-        {
-            // On the clients, the shuffle method just re-parents the cards
-            for (int i = 0; i < Cards.childCount; i++)
-            {
-                Cards.GetChild(i).SetSiblingIndex(i);
             }
         }
         #endregion

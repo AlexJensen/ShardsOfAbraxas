@@ -3,6 +3,7 @@ using Abraxas.GameStates;
 using System;
 using System.Collections;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -28,12 +29,14 @@ namespace Abraxas.UI
         #region Dependencies
         IGameStateManager _gameStateManager;
         IEventManager _eventManager;
+        NetworkManager _networkManager;
         [Inject]
         public void Construct(Settings buttonSettings, IGameStateManager gameStateManager, IEventManager eventManager)
         {
             _buttonSettings = buttonSettings;
             _gameStateManager = gameStateManager;
             _eventManager = eventManager;
+            _networkManager = NetworkManager.Singleton;
 
             _eventManager.AddListener(typeof(GameStateEnteredEvent), this);
         }
@@ -58,7 +61,7 @@ namespace Abraxas.UI
 
         public void NextButtonPressed()
         {
-            StartCoroutine(_gameStateManager.BeginNextGameState());
+            StartCoroutine( _gameStateManager.RequestNextGameState());
         }
 
         public IEnumerator OnEventRaised(GameStateEnteredEvent eventData)

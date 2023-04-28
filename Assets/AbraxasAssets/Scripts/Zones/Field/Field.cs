@@ -138,6 +138,7 @@ namespace Abraxas.Zones.Fields
             _overlayManager.AddCard(card);
             yield return card.RectTransformMover.MoveToFitRectangle(cell.RectTransform, MoveCardTime);
             cell.AddCard(card);
+            _overlayManager.RemoveCard(card);
         }
 
         public IEnumerator MoveCardToCell(Card card, Vector2Int fieldPos)
