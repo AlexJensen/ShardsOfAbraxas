@@ -84,7 +84,7 @@ namespace Abraxas.Cards
                         if (cell.Cards.Count == 0 && cell.Player == Card.Controller && _manaManager.CanPurchaseCard(Card))
                         {
                             _overlayManager.RemoveCard(Card);
-                            _gameManager.PurchaseCardAndMoveFromHandToCell(Card, cell.FieldPosition);
+                            _gameManager.RequestPurchaseCardAndMoveFromHandToCell(Card, cell.FieldPosition);
                             return;
                         }
                     }

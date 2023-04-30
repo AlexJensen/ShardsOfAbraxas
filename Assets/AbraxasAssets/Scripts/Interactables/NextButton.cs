@@ -61,6 +61,7 @@ namespace Abraxas.UI
 
         public void NextButtonPressed()
         {
+            _button.interactable = false;
             StartCoroutine( _gameStateManager.RequestNextGameState());
         }
 

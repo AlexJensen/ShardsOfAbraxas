@@ -137,7 +137,7 @@ namespace Abraxas.Game
             yield return _graveyardManager.MoveCardToGraveyard(card.Owner, card);
         }
 
-        public void PurchaseCardAndMoveFromHandToCell(Card card, Vector2Int fieldPosition)
+        public void RequestPurchaseCardAndMoveFromHandToCell(Card card, Vector2Int fieldPosition)
         {
             PurchaseCardAndMoveFromHandToCellServerRpc(card, fieldPosition);
         }
@@ -148,6 +148,10 @@ namespace Abraxas.Game
         private void PurchaseCardAndMoveFromHandToCellServerRpc(NetworkBehaviourReference cardReference, Vector2Int fieldPosition)
         {
             if (!IsServer) return;
+            if (cardReference.TryGet(out Card card))
+            {
+                PurchaseCardAndMoveFromHandToCell(fieldPosition, card);
+            }
             PurchaseCardAndMoveFromHandToCellClientRpc(cardReference, fieldPosition);
         }
 
@@ -158,10 +162,16 @@ namespace Abraxas.Game
 
             if (cardReference.TryGet(out Card card))
             {
-                _handManager.RemoveCard(card.Owner, card);
-                _manaManager.PurchaseCard(card);
-               StartCoroutine(_fieldManager.MoveCardToCell(card, fieldPosition));
+                PurchaseCardAndMoveFromHandToCell(fieldPosition, card);
             }
+        }
+
+        private void PurchaseCardAndMoveFromHandToCell(Vector2Int fieldPosition, Card card)
+        {
+            _handManager.RemoveCard(card.Owner, card);
+            _manaManager.PurchaseCard(card);
+            StartCoroutine(_fieldManager.MoveCardToCell(card, fieldPosition));
+            _fieldManager.AddCard(card, fieldPosition);
         }
         #endregion
     }
