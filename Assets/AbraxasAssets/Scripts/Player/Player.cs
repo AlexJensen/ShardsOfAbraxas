@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using Zenject;
 
 namespace Abraxas.Players
 {
@@ -34,6 +35,34 @@ namespace Abraxas.Players
                 return players.Find(x => x.player == player);
             }
         }
-         #endregion
+        #endregion
+
+        [SerializeField]
+        Players _player;
+
+        public Players PlayerType
+        {
+            get => _player;
+        }
+
+        public void Start()
+        {
+            if (IsLocalPlayer)
+            {
+                Player[] players = FindObjectsOfType<Player>();
+                if (players.Length == 1)
+                {
+                    _player = Players.Player1;
+                }
+                else
+                {
+                    _player = Players.Player2;
+                }
+
+                // I'll DI this when I figure out more about how it's generated in NetworkManager :/
+                FindObjectOfType<PlayerManager>().RegisterLocalPlayer(_player);
+            }
+
+        }
     }
 }

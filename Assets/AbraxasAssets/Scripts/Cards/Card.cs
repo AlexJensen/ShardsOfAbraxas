@@ -7,7 +7,6 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-
 using Abraxas.Core;
 using Abraxas.Game;
 using Abraxas.Stones;
@@ -15,8 +14,6 @@ using Abraxas.Zones.Fields;
 
 using Zone = Abraxas.Zones.Zones;
 using Player = Abraxas.Players.Players;
-
-using Abraxas.Players;
 
 namespace Abraxas.Cards
 {
@@ -29,7 +26,6 @@ namespace Abraxas.Cards
     public class Card : NetworkBehaviour, ICard
     {
         #region Settings
-        Settings _settings;
         [Serializable]
         public class Settings
         {
@@ -42,17 +38,16 @@ namespace Abraxas.Cards
         Stone.Settings _stoneSettings;
         Players.Player.Settings _playerSettings;
         IGameManager _gameManager;
-        IPlayerManager _playerManager;
+        IHealthManager _healthManager;
         IFieldManager _fieldManager;
 
         [Inject]
-        public void Construct(Settings settings, Stone.Settings stoneSettings, Players.Player.Settings playerSettings, IGameManager gameManager, IPlayerManager playerManager, IFieldManager fieldManager)
+        public void Construct(Stone.Settings stoneSettings, Players.Player.Settings playerSettings, IGameManager gameManager, IHealthManager healthManager, IFieldManager fieldManager)
         {
-            _settings = settings;
             _stoneSettings = stoneSettings;
             _playerSettings = playerSettings;
             _gameManager = gameManager;
-            _playerManager = playerManager;
+            _healthManager = healthManager;
             _fieldManager = fieldManager;
         }
         #endregion
@@ -139,7 +134,15 @@ namespace Abraxas.Cards
         public Cell Cell { get; set; }
         public Vector2Int FieldPosition { get => _fieldPosition; set => _fieldPosition = value; }
         public Zone Zone { get => _zone; set => _zone = value; }
-        public bool Hidden { get => _hidden; set => _hidden = value; }
+        public bool Hidden
+        {
+            get => _hidden; 
+            set
+            {
+                _hidden = value;
+                _cover.SetActive(value);
+            }
+        }
         public RectTransformMover RectTransformMover => _rectTransformMover != null ? _rectTransformMover : _rectTransformMover = GetComponent<RectTransformMover>();
         #endregion
 
@@ -184,7 +187,7 @@ namespace Abraxas.Cards
 
         public IEnumerator PassHomeRow()
         {
-            _playerManager.ModifyPlayerHealth(Controller ==
+            _healthManager.ModifyPlayerHealth(Controller ==
                 Player.Player1 ? Player.Player2 : Player.Player1,
                 -StatBlock[StatBlock.StatValues.ATK]);
             yield return _gameManager.MoveCardFromFieldToDeck(this);
@@ -215,22 +218,6 @@ namespace Abraxas.Cards
             yield return _fieldManager.MoveCardAndFight(this, new Vector2Int(
                 Controller == Player.Player1 ? StatBlock[StatBlock.StatValues.MV] :
                 Controller == Player.Player2 ? -StatBlock[StatBlock.StatValues.MV] : 0, 0));
-        }
-        #endregion
-
-        #region Server Methods
-        [ServerRpc(RequireOwnership = false)]
-        public void RequestMoveToCellServerRpc(Vector2Int cell)
-        {
-            if (!IsServer) return;
-            MoveToCellClientRpc(cell);
-        }
-
-        [ClientRpc]
-        void MoveToCellClientRpc(Vector2Int cell)
-        {
-            if (!IsClient) return;
-            StartCoroutine(_gameManager.MoveCardFromHandToCell(this, cell));
         }
         #endregion
     }

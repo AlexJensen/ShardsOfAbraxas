@@ -8,9 +8,6 @@ using Zenject;
 
 namespace Abraxas.CardViewers
 {
-    /// <summary>
-    /// Displays detailed information about the card currently under the mouse.
-    /// </summary>
     public class CardViewer : MonoBehaviour
     {
         #region Dependencies
@@ -35,10 +32,6 @@ namespace Abraxas.CardViewers
         #endregion
 
         #region methods
-        /// <summary>
-        /// Displays a card's information in the card detail pane.
-        /// </summary>
-        /// <param name="card">Card to display.</param>
         public void ShowCardDetails(Card card)
         {
             _title.text = card.Title;

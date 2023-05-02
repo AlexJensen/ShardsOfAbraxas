@@ -12,12 +12,13 @@ using Abraxas.Zones.Fields;
 using Abraxas.Events;
 using Abraxas.Network;
 using Abraxas.UI;
+using Abraxas.Health;
 
 namespace Abraxas.Core.Installers
 {
     public class AbraxasInstaller : MonoInstaller
     {
-        [Inject] readonly Mana.Settings _manaSettings;
+        [Inject] private readonly Mana.Settings _manaSettings;
         public override void InstallBindings()
         {
             InstallManagers();
@@ -42,6 +43,7 @@ namespace Abraxas.Core.Installers
             Container.BindInterfacesAndSelfTo<FieldManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<EventManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<HealthManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<OverlayManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<MenuManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<GameStateManager>().FromComponentInHierarchy().AsSingle();
@@ -49,7 +51,7 @@ namespace Abraxas.Core.Installers
 
         private void InstallGameStateFactories()
         {
-            Container.Bind<IGameStateFactory>().To<GameStateFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameStateFactory>().AsSingle();
 
             Container.BindFactory<GameNotStartedState, GameNotStartedState.Factory>().WhenInjectedInto<GameStateFactory>();
             Container.BindFactory<BeginningState, BeginningState.Factory>().WhenInjectedInto<GameStateFactory>();

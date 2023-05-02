@@ -48,6 +48,15 @@ namespace Abraxas.GameStates
             if (!IsClient) yield break;
             AdvanceGameStateServerRpc();
         }
+
+        private IEnumerator WaitForGameStateInitialized()
+        {
+            while (State == null)
+            {
+                yield return null;
+            }
+            yield return SwitchGameStateTo(State.NextState());
+        }
         #endregion
 
         #region Server Methods
@@ -63,7 +72,7 @@ namespace Abraxas.GameStates
         private void AdvanceGameStateClientRpc()
         {
             if (!IsClient) return;
-            StartCoroutine(SwitchGameStateTo(State.NextState()));
+            StartCoroutine(WaitForGameStateInitialized());
         }
         #endregion
     }

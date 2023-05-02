@@ -29,7 +29,7 @@ namespace Abraxas.Manas
         ManaType.Factory _typeFactory;
         IDeckManager _deckManager;
         [Inject]
-        void Construct(ManaType.Factory typeFactory, IDeckManager deckManager)
+        public void Construct(ManaType.Factory typeFactory, IDeckManager deckManager)
         {
             _typeFactory = typeFactory;
             _deckManager = deckManager;

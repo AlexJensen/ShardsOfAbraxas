@@ -51,7 +51,7 @@ namespace Abraxas.Game
         IFieldManager _fieldManager;
 
         [Inject]
-        void Construct(Settings settings,
+        public void Construct(Settings settings,
                        IGameStateManager gameStateManager, 
                        IEventManager eventManager,
                        IPlayerManager playerManager,
@@ -108,6 +108,7 @@ namespace Abraxas.Game
             for (int i = 0; i < amount; i++)
             {
                 Card card = _deckManager.RemoveCard(player, index);
+                card.Hidden = card.Controller != _playerManager.LocalPlayer;
                 yield return _handManager.MoveCardToHand(player, card);
             }
         }
@@ -122,6 +123,7 @@ namespace Abraxas.Game
         public IEnumerator MoveCardFromHandToCell(Card card, Vector2Int fieldPosition)
         {
             _handManager.RemoveCard(card.Owner, card);
+            card.Hidden = false;
             yield return _fieldManager.MoveCardToCell(card, fieldPosition);
             _fieldManager.AddCard(card, fieldPosition);
         }
@@ -147,10 +149,10 @@ namespace Abraxas.Game
         [ServerRpc(RequireOwnership = false)]
         private void PurchaseCardAndMoveFromHandToCellServerRpc(NetworkBehaviourReference cardReference, Vector2Int fieldPosition)
         {
-            if (!IsServer) return;
             if (cardReference.TryGet(out Card card))
             {
-                PurchaseCardAndMoveFromHandToCell(fieldPosition, card);
+                _manaManager.PurchaseCard(card);
+                StartCoroutine(MoveCardFromHandToCell(card, fieldPosition));
             }
             PurchaseCardAndMoveFromHandToCellClientRpc(cardReference, fieldPosition);
         }
@@ -158,20 +160,11 @@ namespace Abraxas.Game
         [ClientRpc]
         private void PurchaseCardAndMoveFromHandToCellClientRpc(NetworkBehaviourReference cardReference, Vector2Int fieldPosition)
         {
-            if (!IsClient) return;
-
             if (cardReference.TryGet(out Card card))
             {
-                PurchaseCardAndMoveFromHandToCell(fieldPosition, card);
+                _manaManager.PurchaseCard(card);
+                StartCoroutine(MoveCardFromHandToCell(card, fieldPosition));
             }
-        }
-
-        private void PurchaseCardAndMoveFromHandToCell(Vector2Int fieldPosition, Card card)
-        {
-            _handManager.RemoveCard(card.Owner, card);
-            _manaManager.PurchaseCard(card);
-            StartCoroutine(_fieldManager.MoveCardToCell(card, fieldPosition));
-            _fieldManager.AddCard(card, fieldPosition);
         }
         #endregion
     }

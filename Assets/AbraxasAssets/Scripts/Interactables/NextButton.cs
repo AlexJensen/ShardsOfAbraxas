@@ -1,9 +1,9 @@
 using Abraxas.Events;
 using Abraxas.GameStates;
+using Abraxas.Players;
 using System;
 using System.Collections;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -29,15 +29,14 @@ namespace Abraxas.UI
         #region Dependencies
         IGameStateManager _gameStateManager;
         IEventManager _eventManager;
-        NetworkManager _networkManager;
+        IPlayerManager _playerManager;
         [Inject]
-        public void Construct(Settings buttonSettings, IGameStateManager gameStateManager, IEventManager eventManager)
+        public void Construct(Settings buttonSettings, IGameStateManager gameStateManager, IPlayerManager playerManager, IEventManager eventManager)
         {
             _buttonSettings = buttonSettings;
             _gameStateManager = gameStateManager;
             _eventManager = eventManager;
-            _networkManager = NetworkManager.Singleton;
-
+            _playerManager = playerManager;
             _eventManager.AddListener(typeof(GameStateEnteredEvent), this);
         }
         #endregion
@@ -92,6 +91,11 @@ namespace Abraxas.UI
             {
                 _button.interactable = false;
                 _buttonStr.text = _buttonSettings.EndOfTurnText;
+            }
+
+            if (_playerManager.LocalPlayer != _playerManager.ActivePlayer)
+            {
+                _button.interactable = false;
             }
             yield break;
         }

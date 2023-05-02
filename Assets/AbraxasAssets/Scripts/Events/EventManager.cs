@@ -42,10 +42,6 @@ namespace Abraxas.Events
                     }
                 }
             }
-            else
-            {
-                Debug.LogWarning($"No listeners for event type {eventType}");
-            }
         }
         #endregion
     }

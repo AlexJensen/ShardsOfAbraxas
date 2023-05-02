@@ -10,7 +10,6 @@ namespace Abraxas.Cards
     public class CardMouseOverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         #region Dependencies
-
         ICardViewerManager _cardViewerManager;
         [Inject]
         public void Construct(ICardViewerManager cardViewerManager)
@@ -30,6 +29,7 @@ namespace Abraxas.Cards
         #region Methods
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (Card.Hidden) return;
             StartCoroutine(_cardViewerManager.ShowCardDetail(Card));
         }
 

@@ -68,7 +68,8 @@ namespace Abraxas.Zones.Decks
         {
             foreach (Transform card in Cards)
             {
-                card.SetSiblingIndex(Random.Range(0, Cards.childCount));
+                card.transform.SetSiblingIndex(Random.Range(0, Cards.childCount));
+                card.GetComponent<Card>().Hidden = true;
             }
         }
         #endregion

@@ -11,11 +11,13 @@ namespace Abraxas.Manas
     [RequireComponent(typeof(Image))]
     public class ManaType : MonoBehaviour
     {
+        #region Enums
         public enum ManaChangeAnimationTriggers
         {
             AddManaDown,
             AddManaUp,
         }
+        #endregion
 
         #region Dependencies
         Stone.Settings _stoneSettings;

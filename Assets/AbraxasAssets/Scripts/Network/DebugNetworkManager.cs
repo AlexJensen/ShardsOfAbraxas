@@ -6,7 +6,6 @@ namespace Abraxas.Network
     public class DebugNetworkManager : NetworkBehaviour
     {
         public bool isDebugMode = false;
-
         private void Start()
         {
             if (isDebugMode)

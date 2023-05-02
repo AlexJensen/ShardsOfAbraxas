@@ -30,22 +30,5 @@ namespace Abraxas.Core
             else
                 yield return null;
         }
-
-        /// <summary>
-        /// Checks if the input is of the type indicated by the generic, and shows a debug message if it isn't.
-        /// </summary>
-        /// <typeparam name="T">Type to check</typeparam>
-        /// <param name="source">Object calling this method, used for the debug message if the method fails.</param>
-        /// <param name="val">Object to check type.</param>
-        /// <returns>True if the types match, false otherwise.</returns>
-        public static bool ValidateParam<T>(object source, object val)
-        {
-            if (val is not T)
-            {
-                Debug.LogWarning(source.GetType() + ": TypeMismatch Exception! " + val.GetType() + " was not a " + typeof(T) + "!");
-                return false;
-            }
-            return true;
-        }
     }
 }

@@ -54,7 +54,7 @@ namespace Abraxas.Cards
         #region Methods
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (!Card.Hidden && Card.Owner == _playerManager.ActivePlayer && Card.Zone == Zone.HAND)
+            if (!Card.Hidden && Card.Owner == _playerManager.LocalPlayer && Card.Zone == Zone.HAND)
             {
                 _handManager.RemoveCard(Card.Owner, Card);
                 _overlayManager.AddCard(Card);
@@ -74,23 +74,27 @@ namespace Abraxas.Cards
         {
             if (_overlayManager.Card == Card)
             {
-                List<RaycastResult> results = new();
-                GraphicRaycaster.Raycast(eventData, results);
-                foreach (var hit in results)
+                if (Card.Owner == _playerManager.ActivePlayer)
                 {
-                    Cell cell = hit.gameObject.GetComponent<Cell>();
-                    if (cell)
+                    List<RaycastResult> results = new();
+                    GraphicRaycaster.Raycast(eventData, results);
+                    foreach (var hit in results)
                     {
-                        if (cell.Cards.Count == 0 && cell.Player == Card.Controller && _manaManager.CanPurchaseCard(Card))
+                        Cell cell = hit.gameObject.GetComponent<Cell>();
+                        if (cell)
                         {
-                            _overlayManager.RemoveCard(Card);
-                            _gameManager.RequestPurchaseCardAndMoveFromHandToCell(Card, cell.FieldPosition);
-                            return;
+                            if (cell.Cards.Count == 0 && cell.Player == Card.Controller && _manaManager.CanPurchaseCard(Card))
+                            {
+                                _overlayManager.RemoveCard(Card);
+                                _gameManager.RequestPurchaseCardAndMoveFromHandToCell(Card, cell.FieldPosition);
+                                return;
+                            }
                         }
                     }
                 }
                 StartCoroutine(_handManager.ReturnCardToHand(Card));
                 _overlayManager.RemoveCard(Card);
+
             }
         }
         #endregion

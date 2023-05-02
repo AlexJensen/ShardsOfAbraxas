@@ -2,11 +2,14 @@ using UnityEngine;
 using TMPro;
 using Zenject;
 
-namespace Abraxas.Players
+using Player = Abraxas.Players.Players;
+
+namespace Abraxas.Health
 {
     [RequireComponent(typeof(Animator))]
     public class PlayerHealth : MonoBehaviour
     {
+        #region Enums
         public enum HealthChangeAnimationTriggers
         {
             AddHPDown,
@@ -14,11 +17,12 @@ namespace Abraxas.Players
             AddMaxHPDown,
             AddMaxHPUp,
         }
+        #endregion
 
         #region Dependencies
-        Player.Settings _playerSettings;
+        Players.Player.Settings _playerSettings;
         [Inject]
-        public void Construct(Player.Settings playerSettings)
+        public void Construct(Players.Player.Settings playerSettings)
         {
             _playerSettings = playerSettings;
         }
@@ -30,7 +34,7 @@ namespace Abraxas.Players
         TMP_Text _HPText, _addHPText, _addMaxHPText;
 
         [SerializeField]
-        Players _player;
+        Player _player;
 
         Animator _animator;
 
@@ -39,7 +43,7 @@ namespace Abraxas.Players
         #endregion
 
         #region Properties
-        public Players Player { get => _player; set => _player = value; }
+        public Player Player { get => _player; set => _player = value; }
 
         public int CurrentHP
         {
@@ -91,8 +95,8 @@ namespace Abraxas.Players
             {
                 int change = currentValue - previousValue;
                 text.text = $"{(change >= 0 ? "+" : "")}{change}";
-                if (Player == Players.Player1) SetAnimationTrigger(change >= 0 ? animationTriggerUp : animationTriggerDown);
-                if (Player == Players.Player2) SetAnimationTrigger(change >= 0 ? animationTriggerDown : animationTriggerUp);
+                if (Player == Player.Player1) SetAnimationTrigger(change >= 0 ? animationTriggerUp : animationTriggerDown);
+                if (Player == Player.Player2) SetAnimationTrigger(change >= 0 ? animationTriggerDown : animationTriggerUp);
                 previousValue = currentValue;
             }
         }

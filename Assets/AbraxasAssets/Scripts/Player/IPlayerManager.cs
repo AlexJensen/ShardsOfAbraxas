@@ -5,8 +5,9 @@ namespace Abraxas.Players
     public interface IPlayerManager
     {
         Players ActivePlayer { get;}
+        Players LocalPlayer { get; }
 
+        void RegisterLocalPlayer(Players player);
         IEnumerator ToggleActivePlayer();
-        void ModifyPlayerHealth(Players player, int amount);
     }
 }
