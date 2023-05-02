@@ -64,6 +64,7 @@ namespace Abraxas.Manas
                 {
                     ManaType manaType = _typeFactory.Create().GetComponent<ManaType>();
                     manaType.transform.SetParent(transform);
+                    manaType.Mana = this;
                     manaType.Type = manaAmount.Key;
                     manaType.Amount = 0;
                     manaType.Player = Player;

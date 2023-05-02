@@ -5,6 +5,7 @@ using Zenject;
 using Abraxas.Stones;
 
 using Player = Abraxas.Players.Players;
+using Abraxas.Events;
 
 namespace Abraxas.Manas
 {
@@ -21,10 +22,12 @@ namespace Abraxas.Manas
 
         #region Dependencies
         Stone.Settings _stoneSettings;
+        EventManager _eventManager;
         [Inject]
-        public void Construct(Stone.Settings stoneSettings)
+        public void Construct(Stone.Settings stoneSettings, EventManager eventManager)
         {
             _stoneSettings = stoneSettings;
+            _eventManager = eventManager;
         }
 
         public class Factory : PlaceholderFactory<ManaType>
@@ -68,6 +71,7 @@ namespace Abraxas.Manas
         }
 
         public Player Player { get => _player; set => _player = value; }
+        public Mana Mana { get; internal set; }
         #endregion
 
         #region Methods
@@ -95,6 +99,7 @@ namespace Abraxas.Manas
             _image.color = colorData.color;
             name = colorData.name;
             _amountStr.text = _amount.ToString();
+            StartCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(Mana)));
         }
 
         public void SetAnimationTrigger(ManaChangeAnimationTriggers trigger)

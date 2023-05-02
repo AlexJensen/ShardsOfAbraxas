@@ -37,6 +37,7 @@ namespace Abraxas.UI
             _gameStateManager = gameStateManager;
             _eventManager = eventManager;
             _playerManager = playerManager;
+
             _eventManager.AddListener(typeof(GameStateEnteredEvent), this);
         }
         #endregion

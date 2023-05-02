@@ -14,6 +14,7 @@ using Abraxas.Zones.Fields;
 
 using Zone = Abraxas.Zones.Zones;
 using Player = Abraxas.Players.Players;
+using Abraxas.Events;
 
 namespace Abraxas.Cards
 {
@@ -23,7 +24,7 @@ namespace Abraxas.Cards
     [RequireComponent(typeof(RectTransformMover))]
     [RequireComponent(typeof(CardDragHandler))]
     [RequireComponent(typeof(CardMouseOverHandler))]
-    public class Card : NetworkBehaviour, ICard
+    public class Card : NetworkBehaviour, ICard, IGameEventListener<ManaModifiedEvent>
     {
         #region Settings
         [Serializable]
@@ -38,17 +39,21 @@ namespace Abraxas.Cards
         Stone.Settings _stoneSettings;
         Players.Player.Settings _playerSettings;
         IGameManager _gameManager;
+        IEventManager _eventManager;
         IHealthManager _healthManager;
         IFieldManager _fieldManager;
 
         [Inject]
-        public void Construct(Stone.Settings stoneSettings, Players.Player.Settings playerSettings, IGameManager gameManager, IHealthManager healthManager, IFieldManager fieldManager)
+        public void Construct(Stone.Settings stoneSettings, Players.Player.Settings playerSettings, IGameManager gameManager, IEventManager eventManager, IHealthManager healthManager, IFieldManager fieldManager)
         {
             _stoneSettings = stoneSettings;
             _playerSettings = playerSettings;
             _gameManager = gameManager;
+            _eventManager = eventManager;
             _healthManager = healthManager;
             _fieldManager = fieldManager;
+
+            _eventManager.AddListener(typeof(ManaModifiedEvent), this);
         }
         #endregion
 
@@ -123,8 +128,6 @@ namespace Abraxas.Cards
         public StatBlock StatBlock => _statBlock = _statBlock != null ? _statBlock : GetComponent<StatBlock>();
         public Image Image => _image;
         
-        
-        
         public Dictionary<StoneType, int> TotalCosts
         {
             get => _totalCosts ??= GenerateTotalCost(); 
@@ -151,6 +154,12 @@ namespace Abraxas.Cards
         {
             Controller = _controller;
             Owner = _owner;
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            _eventManager.RemoveListener(typeof(ManaModifiedEvent), this);
         }
 
         private Dictionary<StoneType, int> GenerateTotalCost()
@@ -218,6 +227,25 @@ namespace Abraxas.Cards
             yield return _fieldManager.MoveCardAndFight(this, new Vector2Int(
                 Controller == Player.Player1 ? StatBlock[StatBlock.StatValues.MV] :
                 Controller == Player.Player2 ? -StatBlock[StatBlock.StatValues.MV] : 0, 0));
+        }
+
+        public IEnumerator OnEventRaised(ManaModifiedEvent eventData)
+        {
+            if (eventData.Mana.Player == Controller && eventData.Mana.ManaTypes != null)
+            {
+                string TotalCost = "";
+                foreach (var (pair, alpha) in from KeyValuePair<StoneType, int> pair in TotalCosts
+                                              from Manas.ManaType manaPair in eventData.Mana.ManaTypes
+                                              where pair.Key == manaPair.Type
+                                              let alpha = pair.Value <= manaPair.Amount ? "FF" : "44"
+                                              select (pair, alpha))
+                {
+                    TotalCost += $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneDetails(pair.Key).color)}{alpha}>{pair.Value}";
+                }
+
+                TotalCostText = TotalCost;
+            }
+            yield break;
         }
         #endregion
     }
