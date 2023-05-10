@@ -1,5 +1,4 @@
-using Abraxas.Cards;
-using System;
+using Abraxas.Cards.Controllers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,14 +45,14 @@ namespace Abraxas.Manas
             yield return GetPlayerMana(player).GenerateRatioMana(amount);
         }
 
-        public bool CanPurchaseCard(Card card)
+        public bool CanPurchaseCard(ICardController card)
         {
-            return GetPlayerMana(card.Owner).CanPurchaseCard(card);            
+            return GetPlayerMana(card.OriginalOwner).CanPurchaseCard(card.Model);            
         }
 
-        public void PurchaseCard(Card card)
+        public void PurchaseCard(ICardController card)
         {
-            GetPlayerMana(card.Owner).PurchaseCard(card);
+            GetPlayerMana(card.OriginalOwner).PurchaseCard(card.Model);
         }
 
         public void IncrementStartOfTurnManaAmount()
@@ -63,17 +62,7 @@ namespace Abraxas.Manas
 
         private Mana GetPlayerMana(Player player)
         {
-            if (player == Player.Neutral)
-            {
-                throw new ArgumentException("Cannot get mana for neutral player.");
-            }
-
             Mana playerMana = _manas.Find(x => x.Player == player);
-            if (playerMana == null)
-            {
-                throw new ArgumentException($"No mana value found for player {player}.");
-            }
-
             return playerMana;
         }
         #endregion

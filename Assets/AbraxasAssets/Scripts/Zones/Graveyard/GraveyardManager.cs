@@ -1,4 +1,5 @@
 using Abraxas.Cards;
+using Abraxas.Cards.Controllers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,12 +15,12 @@ namespace Abraxas.Zones.Graveyards
         List<Graveyard> _graveyards;
         #endregion
 
-        public void AddCard(Player player, Card card)
+        public void AddCard(Player player, ICardController card)
         {
             throw new System.NotImplementedException();
         }
 
-        public IEnumerator MoveCardToGraveyard(Player player, Card card)
+        public IEnumerator MoveCardToGraveyard(Player player, ICardController card)
         {
             yield return GetPlayerGraveyard(player).MoveCardToZone(card);
         }

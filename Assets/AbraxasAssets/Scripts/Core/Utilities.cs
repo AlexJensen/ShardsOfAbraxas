@@ -17,18 +17,29 @@ namespace Abraxas.Core
         /// <param name="source">Coroutines are started from this Monobehavior.</param>
         /// <param name="ienumerators">List of all IEnumerators to create coroutines for.</param>
         /// <returns></returns>
-        public static IEnumerator WaitForCoroutines(MonoBehaviour source, params IEnumerator[] ienumerators)
+        public static IEnumerator WaitForCoroutines(params IEnumerator[] coroutines)
         {
-            if (ienumerators != null & ienumerators.Length > 0)
+            if (coroutines == null || coroutines.Length == 0)
             {
-                Coroutine[] coroutines = new Coroutine[ienumerators.Length];
-                for (int i = 0; i < ienumerators.Length; i++)
-                    coroutines[i] = source.StartCoroutine(ienumerators[i]);
-                for (int i = 0; i < coroutines.Length; i++)
-                    yield return coroutines[i];
-            }
-            else
                 yield return null;
+                yield break;
+            }
+
+            var remainingCoroutines = new List<IEnumerator>(coroutines);
+            while (remainingCoroutines.Count > 0)
+            {
+                var currentCoroutine = remainingCoroutines[0];
+                remainingCoroutines.RemoveAt(0);
+                yield return currentCoroutine;
+
+                for (int i = remainingCoroutines.Count - 1; i >= 0; i--)
+                {
+                    if (!remainingCoroutines[i].MoveNext())
+                    {
+                        remainingCoroutines.RemoveAt(i);
+                    }
+                }
+            }
         }
     }
 }

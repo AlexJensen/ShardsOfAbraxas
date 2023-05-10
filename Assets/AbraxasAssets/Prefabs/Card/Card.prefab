@@ -446,11 +446,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6750648729959934836}
+  - component: {fileID: 7512888073759737977}
   - component: {fileID: 6750648729959934838}
   - component: {fileID: 6750648729959934837}
   - component: {fileID: 9211214414908797190}
-  - component: {fileID: -8881554692825692823}
-  - component: {fileID: -8972399931271291979}
   - component: {fileID: 7929139538098473339}
   - component: {fileID: 863860183196246628}
   - component: {fileID: 8562167584312568464}
@@ -487,6 +486,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7512888073759737977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6750648729959934835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7279eafcb57f6a545b37f18cc9c67b47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cover: {fileID: 6398438861453359915}
+  _titleText: {fileID: 7259762031145244380}
+  _costText: {fileID: 6266378685714880545}
+  _image: {fileID: 933676109856729092}
 --- !u!222 &6750648729959934838
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -545,43 +560,6 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &-8881554692825692823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6750648729959934835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0d507de2d4d70f418e01314c8ac7dce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _title: 
-  _controller: 0
-  _owner: 0
-  _cover: {fileID: 6398438861453359915}
-  _hidden: 0
-  _titleText: {fileID: 7259762031145244380}
-  _costText: {fileID: 6266378685714880545}
-  _image: {fileID: 933676109856729092}
---- !u!114 &-8972399931271291979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6750648729959934835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b011fb44ee7e6154e8cdd1e0d0d53d03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  card: {fileID: 0}
-  _cost: 0
-  _stoneType: 0
-  _stats: {x: 0, y: 0, z: 0}
-  _statsText: {fileID: 6696371828357479150}
 --- !u!114 &7929139538098473339
 MonoBehaviour:
   m_ObjectHideFlags: 0

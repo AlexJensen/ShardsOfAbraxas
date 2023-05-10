@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Abraxas.Cards;
+using Abraxas.Cards.Controllers;
 using UnityEngine;
 
 using Player = Abraxas.Players.Players;
@@ -11,27 +11,29 @@ namespace Abraxas.Zones.Hands
     {
         #region Fields
         [SerializeField]
-        List<Hand> _hands;
+        List<HandView> _hands;
         #endregion
 
         #region Methods
-        public void RemoveCard(Player player, Card card)
+        public void RemoveCard(Player player, ICardController card)
         {
             GetPlayerHand(player).RemoveCard(card);
         }
-        public IEnumerator MoveCardToHand(Player player, Card card)
+
+        public IEnumerator MoveCardToHand(Player player, ICardController card)
         {
             yield return GetPlayerHand(player).MoveCardToZone(card);
         }
-        private Hand GetPlayerHand(Player player)
+
+        public IEnumerator ReturnCardToHand(ICardController card)
         {
-            return _hands.Find(x => x.Player == player);
+            HandView playerHand = GetPlayerHand(card.OriginalOwner);
+            yield return playerHand.MoveCardToZone(card, playerHand.CardPlaceholder.transform.GetSiblingIndex());
         }
 
-        public IEnumerator ReturnCardToHand(Card card)
+        private HandView GetPlayerHand(Player player)
         {
-            Hand playerHand = GetPlayerHand(card.Owner);
-            yield return playerHand.MoveCardToZone(card, playerHand.CardPlaceholder.transform.GetSiblingIndex());
+            return _hands.Find(x => x.Player == player);
         }
         #endregion
     }

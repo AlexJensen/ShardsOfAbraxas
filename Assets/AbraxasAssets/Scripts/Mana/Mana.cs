@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using Abraxas.Stones;
-using Abraxas.Cards;
 using System.Linq;
 
 using Player = Abraxas.Players.Players;
 using Random = UnityEngine.Random;
 using Abraxas.Zones.Decks;
+using Abraxas.Cards.Models;
 
 namespace Abraxas.Manas
 {
@@ -80,7 +80,7 @@ namespace Abraxas.Manas
             }
         }
 
-        public void PurchaseCard(Card card)
+        public void PurchaseCard(ICardModelReader card)
         {
             foreach (var cost in card.TotalCosts)
             {
@@ -109,7 +109,7 @@ namespace Abraxas.Manas
             yield break;
         }
 
-        public bool CanPurchaseCard(Card card)
+        public bool CanPurchaseCard(ICardModelReader card)
         {
             foreach (var _ in from cost in card.TotalCosts
                               let result = ManaTypes.Find(x => x.Type == cost.Key)

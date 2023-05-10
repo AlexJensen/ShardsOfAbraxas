@@ -1,4 +1,5 @@
 using Abraxas.Core;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -43,9 +44,14 @@ namespace Abraxas
 
         public IEnumerator MoveToFitRectangle(RectTransform rectTransform, float time)
         {
-            yield return StartCoroutine(Utilities.WaitForCoroutines(this,
+            yield return StartCoroutine(Utilities.WaitForCoroutines(
                 ChangeScaleEnumerator(rectTransform.rect.size, time),
                 MoveToEnumerator(rectTransform.position, time)));
+        }
+
+        public void SetCardPosition(Vector3 position)
+        {
+            RectTransform.position = position;
         }
         #endregion
     }

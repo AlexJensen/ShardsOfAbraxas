@@ -1,4 +1,4 @@
-using Abraxas.Cards;
+using Abraxas.Cards.Controllers;
 using System.Collections;
 
 using Player = Abraxas.Players.Players;
@@ -7,8 +7,8 @@ namespace Abraxas.Zones.Hands
 {
     public interface IHandManager
     {
-        IEnumerator MoveCardToHand(Player player, Card card);
-        void RemoveCard(Player player, Card card);
-        IEnumerator ReturnCardToHand(Card card);
+        IEnumerator MoveCardToHand(Player player, ICardController card);
+        void RemoveCard(Player player, ICardController card);
+        IEnumerator ReturnCardToHand(ICardController card);
     }
 }

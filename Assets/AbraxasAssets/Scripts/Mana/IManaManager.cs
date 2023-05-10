@@ -1,4 +1,5 @@
 using Abraxas.Cards;
+using Abraxas.Cards.Controllers;
 using System.Collections;
 
 using Player = Abraxas.Players.Players;
@@ -10,8 +11,8 @@ namespace Abraxas.Manas
         int StartOfTurnMana { get; }
 
         IEnumerator GenerateManaFromDeckRatio(Player player, int startOfTurnMana);
-        bool CanPurchaseCard(Card card);
+        bool CanPurchaseCard(ICardController card);
         void IncrementStartOfTurnManaAmount();
-        void PurchaseCard(Card card);
+        void PurchaseCard(ICardController card);
     }
 }

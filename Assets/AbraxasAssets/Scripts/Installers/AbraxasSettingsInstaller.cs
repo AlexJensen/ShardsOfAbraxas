@@ -1,5 +1,4 @@
 ﻿using Abraxas.Cards;
-using Abraxas.Game;
 using Abraxas.Manas;
 using Abraxas.Players;
 using Abraxas.Stones;
@@ -16,14 +15,14 @@ namespace Abraxas.Core.Installers
     [CreateAssetMenu(menuName = "Abraxas/Game Settings")]
     class AbraxasSettingsInstaller : ScriptableObjectInstaller<AbraxasSettingsInstaller>
     {
-        public GameManager.Settings GameSettings;
+        public Game.Game.Settings GameSettings;
+        public Stone.Settings StoneSettings;
         public Card.Settings CardSettings;
         public CardPlaceholder.Settings CardPlaceholderSettings;
-        public Stone.Settings StoneSettings;
         public Player.Settings PlayerSettings;
         public Mana.Settings ManaSettings;
-        public Hand.Settings HandSettings;
-        public Field.Settings FieldSettings;
+        public HandView.Settings HandSettings;
+        public FieldView.Settings FieldSettings;
         public Deck.Settings DeckSettings;
         public NextButton.Settings NextButtonSettings;
         public Graveyard.Settings GraveyardSettings;

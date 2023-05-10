@@ -1,4 +1,4 @@
-using Abraxas.Cards;
+using Abraxas.Cards.Controllers;
 using Abraxas.Stones;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,9 +17,9 @@ namespace Abraxas.Zones.Decks
         #endregion
 
         #region Methods
-        public void AddCard(Card card)
+        public void AddCard(ICardController card)
         {
-            GetPlayerDeck(card.Owner).AddCard(card);
+            GetPlayerDeck(card.OriginalOwner).AddCard(card);
         }
 
         public Dictionary<StoneType, int> GetDeckCost(Player player)
@@ -27,12 +27,12 @@ namespace Abraxas.Zones.Decks
             return GetPlayerDeck(player).GetDeckCost();
         }
 
-        public IEnumerator MoveCardToDeck(Player player, Card card)
+        public IEnumerator MoveCardToDeck(Player player, ICardController card)
         {
             yield return GetPlayerDeck(player).MoveCardToZone(card);
         }
 
-        public Card RemoveCard(Player player, int index)
+        public ICardController RemoveCard(Player player, int index)
         {
             return GetPlayerDeck(player).RemoveCard(index);
         }

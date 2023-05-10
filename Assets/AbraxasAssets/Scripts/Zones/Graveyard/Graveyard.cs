@@ -7,7 +7,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Graveyards
 {
-    public class Graveyard : Zone
+    public class Graveyard : ZoneView
     {
         #region Settings
         Settings _graveyardSettings;

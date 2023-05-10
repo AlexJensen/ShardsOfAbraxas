@@ -1,17 +1,16 @@
-using Abraxas.Cards;
 using Abraxas.Stones;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
 using Random = UnityEngine.Random;
 using Player = Abraxas.Players.Players;
 using Zenject;
 using System;
+using Abraxas.Cards.Views;
 
 namespace Abraxas.Zones.Decks
 {
-    public class Deck : Zone
+    public class Deck : ZoneView
     {
         #region Settings
         Settings _deckSettings;
@@ -46,10 +45,10 @@ namespace Abraxas.Zones.Decks
         public Dictionary<StoneType, int> GetDeckCost()
         {
             Dictionary<StoneType, int> totalCost = new();
-            Card[] cards = GetComponentsInChildren<Card>();
-            foreach (Card card in cards)
+            ICardView[] cards = GetComponentsInChildren<ICardView>();
+            foreach (ICardView card in cards)
             {
-                foreach (var manaAmount in card.TotalCosts)
+                foreach (var manaAmount in card.Model.TotalCosts)
                 {
                     if (!totalCost.ContainsKey(manaAmount.Key))
                     {
@@ -69,7 +68,7 @@ namespace Abraxas.Zones.Decks
             foreach (Transform card in Cards)
             {
                 card.transform.SetSiblingIndex(Random.Range(0, Cards.childCount));
-                card.GetComponent<Card>().Hidden = true;
+                card.GetComponent<ICardView>().Controller.Hidden = true;
             }
         }
         #endregion

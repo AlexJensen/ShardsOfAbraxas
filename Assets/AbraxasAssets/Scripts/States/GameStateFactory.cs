@@ -33,9 +33,9 @@ namespace Abraxas.GameStates
             switch (state)
             {
                 case GameStates.GameNotStarted:
-                {
-                    return _gameNotStartedFactory.Create();
-                }
+                    {
+                        return _gameNotStartedFactory.Create();
+                    }
                 case GameStates.Beginning:
                     {
                         return _beginningFactory.Create();

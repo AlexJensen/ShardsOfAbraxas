@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using Abraxas.Core;
@@ -8,10 +7,8 @@ using Abraxas.Zones.Hands;
 using Abraxas.Manas;
 using Abraxas.GameStates;
 using Abraxas.Players;
-using Abraxas.Stones;
 using Abraxas.UI;
 using Abraxas.CardViewers;
-using Abraxas.Cards;
 using Abraxas.Events;
 using Abraxas.Zones.Fields;
 using Abraxas.Zones.Graveyards;
@@ -20,29 +17,25 @@ using Abraxas.Zones.Decks;
 using States = Abraxas.GameStates.GameStates;
 using Player = Abraxas.Players.Players;
 using Unity.Netcode;
+using Abraxas.Cards.Controllers;
+using System.Drawing;
+using Abraxas.Cards.Views;
 
 namespace Abraxas.Game
 {
     public class GameManager : NetworkBehaviour, IGameManager
     {
         #region Settings
-        Settings _settings;
-        [Serializable]
-        public class Settings
-        {
-            public int Player1CardsToDrawAtStartOfGame;
-            public int Player2CardsToDrawAtStartOfGame;
-            public int CardsToDrawAtStartOfTurn;
-        }
+        Game.Settings _settings;
         #endregion
 
         #region Dependencies
         IGameStateManager _gameStateManager;
-        IEventManager _eventManager;
+        //IEventManager _eventManager;
         IPlayerManager _playerManager;
-        ICardViewerManager _cardViewerManager;
+        //ICardViewerManager _cardViewerManager;
         IManaManager _manaManager;
-        IMenuManager _menuManager;
+        //IMenuManager _menuManager;
 
         // Zones
         IHandManager _handManager;
@@ -51,13 +44,13 @@ namespace Abraxas.Game
         IFieldManager _fieldManager;
 
         [Inject]
-        public void Construct(Settings settings,
+        public void Construct(Game.Settings settings,
                        IGameStateManager gameStateManager, 
-                       IEventManager eventManager,
+                       //IEventManager eventManager,
                        IPlayerManager playerManager,
-                       ICardViewerManager cardViewerManager,
+                       //ICardViewerManager cardViewerManager,
                        IManaManager manaManager,
-                       IMenuManager menuManager,
+                       //IMenuManager menuManager,
                        IHandManager handManager,
                        IDeckManager deckManager,
                        IGraveyardManager graveyardManager,
@@ -65,11 +58,11 @@ namespace Abraxas.Game
         {
             _settings = settings;
             _gameStateManager = gameStateManager;
-            _eventManager = eventManager;
+            //_eventManager = eventManager;
             _playerManager = playerManager;
-            _cardViewerManager = cardViewerManager;
+            //_cardViewerManager = cardViewerManager;
             _manaManager = manaManager;
-            _menuManager = menuManager;
+            //_menuManager = menuManager;
             _handManager = handManager;
             _deckManager = deckManager;
             _graveyardManager = graveyardManager;
@@ -85,11 +78,11 @@ namespace Abraxas.Game
 
         public IEnumerator StartGame()
         {
-            yield return Utilities.WaitForCoroutines(this,
+            yield return Utilities.WaitForCoroutines(
                             _deckManager.ShuffleDeck(Player.Player1),
                             _deckManager.ShuffleDeck(Player.Player2));
             yield return new WaitForSeconds(.1f);
-            yield return Utilities.WaitForCoroutines(this,
+            yield return Utilities.WaitForCoroutines(
                             MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
                             MoveCardsFromDeckToHand(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
         }
@@ -107,8 +100,8 @@ namespace Abraxas.Game
         {
             for (int i = 0; i < amount; i++)
             {
-                Card card = _deckManager.RemoveCard(player, index);
-                card.Hidden = card.Controller != _playerManager.LocalPlayer;
+                ICardController card = _deckManager.RemoveCard(player, index);
+                card.Hidden = card.Owner != _playerManager.LocalPlayer;
                 yield return _handManager.MoveCardToHand(player, card);
             }
         }
@@ -116,32 +109,38 @@ namespace Abraxas.Game
         {
             for (int i = 0; i < amount; i++)
             {
-                Card card = _deckManager.RemoveCard(player, index);
+                ICardController card = _deckManager.RemoveCard(player, index);
                 yield return _graveyardManager.MoveCardToGraveyard(player, card);
             }
         }
-        public IEnumerator MoveCardFromHandToCell(Card card, Vector2Int fieldPosition)
+        public IEnumerator MoveCardFromHandToCell(ICardController card, Point fieldPosition)
         {
-            _handManager.RemoveCard(card.Owner, card);
+            _handManager.RemoveCard(card.OriginalOwner, card);
             card.Hidden = false;
             yield return _fieldManager.MoveCardToCell(card, fieldPosition);
             _fieldManager.AddCard(card, fieldPosition);
         }
-        public IEnumerator MoveCardFromFieldToDeck(Card card)
+        public IEnumerator MoveCardFromFieldToDeck(ICardController card)
         {
             _fieldManager.RemoveCard(card);
-            yield return _deckManager.MoveCardToDeck(card.Owner, card);
-            _deckManager.ShuffleDeck(card.Owner);
+            yield return _deckManager.MoveCardToDeck(card.OriginalOwner, card);
+            _deckManager.ShuffleDeck(card.OriginalOwner);
         }
-        public IEnumerator MoveCardFromFieldToGraveyard(Card card)
+        public IEnumerator MoveCardFromFieldToGraveyard(ICardController card)
         {
             _fieldManager.RemoveCard(card);
-            yield return _graveyardManager.MoveCardToGraveyard(card.Owner, card);
+            yield return _graveyardManager.MoveCardToGraveyard(card.OriginalOwner, card);
         }
 
-        public void RequestPurchaseCardAndMoveFromHandToCell(Card card, Vector2Int fieldPosition)
+        public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
         {
-            PurchaseCardAndMoveFromHandToCellServerRpc(card, fieldPosition);
+            PurchaseCardAndMoveFromHandToCellServerRpc(card.View.NetworkBehaviourReference, new Vector2Int(fieldPosition.X, fieldPosition.Y));
+        }
+
+        private void PurchaseCardAndMoveFromHandToCell(ICardView card, Vector2Int fieldPosition)
+        {
+            _manaManager.PurchaseCard(card.Controller);
+            StartCoroutine(MoveCardFromHandToCell(card.Controller, new Point(fieldPosition.x, fieldPosition.y)));
         }
         #endregion
 
@@ -149,10 +148,9 @@ namespace Abraxas.Game
         [ServerRpc(RequireOwnership = false)]
         private void PurchaseCardAndMoveFromHandToCellServerRpc(NetworkBehaviourReference cardReference, Vector2Int fieldPosition)
         {
-            if (cardReference.TryGet(out Card card))
+            if (cardReference.TryGet(out CardView card))
             {
-                _manaManager.PurchaseCard(card);
-                StartCoroutine(MoveCardFromHandToCell(card, fieldPosition));
+                PurchaseCardAndMoveFromHandToCell(card, fieldPosition);
             }
             PurchaseCardAndMoveFromHandToCellClientRpc(cardReference, fieldPosition);
         }
@@ -160,10 +158,9 @@ namespace Abraxas.Game
         [ClientRpc]
         private void PurchaseCardAndMoveFromHandToCellClientRpc(NetworkBehaviourReference cardReference, Vector2Int fieldPosition)
         {
-            if (cardReference.TryGet(out Card card))
+            if (cardReference.TryGet(out CardView card))
             {
-                _manaManager.PurchaseCard(card);
-                StartCoroutine(MoveCardFromHandToCell(card, fieldPosition));
+                PurchaseCardAndMoveFromHandToCell(card, fieldPosition);
             }
         }
         #endregion
