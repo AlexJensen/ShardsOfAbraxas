@@ -20,7 +20,7 @@ namespace Abraxas.Cards.Views
         #region Properties
         public Canvas Canvas => _canvas = _canvas != null ? _canvas : GetComponentInParent<Canvas>();
         public GraphicRaycaster GraphicRaycaster => _graphicRaycaster = _graphicRaycaster != null ? _graphicRaycaster : Canvas.GetComponent<GraphicRaycaster>();
-        public ICardDragHandler DragHandler => _dragHandler != null? _dragHandler : GetComponent<ICardView>().Controller.DragHandler;
+        public ICardDragHandler DragHandler => _dragHandler ??= GetComponent<ICardView>().Controller.DragHandler;
         #endregion
 
         #region Methods

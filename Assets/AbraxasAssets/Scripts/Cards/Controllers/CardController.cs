@@ -86,7 +86,7 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator Fight(ICardController opponent)
         {
-            StatBlock collidedStats = opponent.Model.StatBlock;
+            StatBlock collidedStats = opponent.StatBlock;
             collidedStats[StatBlock.StatValues.DEF] -= Model.StatBlock[StatBlock.StatValues.ATK];
             Model.StatBlock[StatBlock.StatValues.DEF] -= collidedStats[StatBlock.StatValues.ATK];
 

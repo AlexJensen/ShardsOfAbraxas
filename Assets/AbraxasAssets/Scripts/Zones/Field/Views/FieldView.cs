@@ -105,7 +105,7 @@ namespace Abraxas.Zones.Fields
                 Mathf.Clamp(card.FieldPosition.Y + movement.Y, 0, FieldGrid.Count - 1));
 
             ICardController collided = null;
-            IEnumerable<ICardController> activeCards = Enumerable.Empty<ICardController>();
+            IEnumerable<ICardController> activeCards;
             for (int i = card.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
             {
                 activeCards = FieldGrid[card.FieldPosition.Y][i].Controller.Cards;

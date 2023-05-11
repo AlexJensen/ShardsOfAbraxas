@@ -64,7 +64,7 @@ namespace Abraxas.Cards.Views
         #region Properties
         public ICardController Controller { get => _controller; }
         public ICardModelReader Model { get => _model; }
-        public RectTransformMover RectTransformMover { get => _rectTransformMover != null ? _rectTransformMover : GetComponent<RectTransformMover>(); }
+        public RectTransformMover RectTransformMover { get => _rectTransformMover != null ? _rectTransformMover :_rectTransformMover = GetComponent<RectTransformMover>(); }
         public Image Image { get => _image; set => _image = value; }
 
         public Transform Transform => transform;
