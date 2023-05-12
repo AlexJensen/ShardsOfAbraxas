@@ -12,8 +12,7 @@ namespace Abraxas.Cards.Controllers
     {
         ICardModelReader Model { get; }
         ICardView View { get; }
-        ICardDragHandler DragHandler { get; }
-        ICardMouseOverHandler MouseOverHandler { get; }
+
         public Dictionary<StoneType, int> TotalCosts { get; }
         Zones.Zones Zone { get; set; }
         bool Hidden { get; set; }

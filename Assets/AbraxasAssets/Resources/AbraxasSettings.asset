@@ -16,13 +16,6 @@ MonoBehaviour:
     Player1CardsToDrawAtStartOfGame: 5
     Player2CardsToDrawAtStartOfGame: 5
     CardsToDrawAtStartOfTurn: 1
-  CardSettings:
-    MovementOnFieldTime: 0.2
-    ScaleToFieldCellTime: 0.2
-  CardPlaceholderSettings:
-    scaleToMaxSizeTime: 0.2
-    minScale: 0
-    maxScale: 70
   StoneSettings:
     stones:
     - name: Garnet
@@ -61,6 +54,12 @@ MonoBehaviour:
     - name: Tourquoise
       type: 11
       color: {r: 0, g: 0.49803922, b: 0.49803922, a: 1}
+  CardSettings:
+    cardPrefab: {fileID: 6750648729959934835, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+  CardPlaceholderSettings:
+    scaleToMaxSizeTime: 0.2
+    minScale: 0
+    maxScale: 70
   PlayerSettings:
     StartingHealth: 50
     players:

@@ -1,11 +1,13 @@
-﻿using Abraxas.CardViewers;
+﻿using Abraxas.Cards.Views;
+using Abraxas.CardViewers;
+using System;
 
 namespace Abraxas.Cards.Controllers
 {
     class CardMouseOverHandler : ICardMouseOverHandler
     {
         #region Dependencies
-        readonly ICardController _cardController;
+        ICardController _cardController;
         readonly ICardViewerManager _cardViewerManager;
         public CardMouseOverHandler(ICardController cardController, ICardViewerManager cardViewerManager)
         {
@@ -22,6 +24,11 @@ namespace Abraxas.Cards.Controllers
         public void OnPointerExit()
         {
             _cardViewerManager.HideCardViewer();
+        }
+
+        internal void Initialize(ICardController cardController)
+        {
+            _cardController = cardController;
         }
     }
 }

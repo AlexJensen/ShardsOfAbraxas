@@ -10,9 +10,11 @@ using Abraxas.Stones;
 
 using Player = Abraxas.Players.Players;
 using Abraxas.Events;
+using Abraxas.Cards.Data;
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Controllers;
 using Unity.Netcode;
+
 
 namespace Abraxas.Cards.Views
 {
@@ -28,10 +30,8 @@ namespace Abraxas.Cards.Views
         ICardModelReader _model;
         ICardController _controller;
         [Inject]
-        public void Construct(ICardModelReader model, ICardController controller, Stone.Settings stoneSettings, Players.Player.Settings playerSettings)
+        public void Construct(Stone.Settings stoneSettings, Players.Player.Settings playerSettings)
         {
-            _model = model;
-            _controller = controller;
             _stoneSettings = stoneSettings;
             _playerSettings = playerSettings;
 
@@ -39,6 +39,12 @@ namespace Abraxas.Cards.Views
             Model.OnOwnerChanged += OnOwnerChanged;
             Model.OnOriginalOwnerChanged += OnOriginalOwnerChanged;
             Model.OnHiddenChanged += OnHiddenChanged;
+        }
+
+        public void Initialize(ICardModelReader model, ICardController controller)
+        {
+            _model = model;
+            _controller = controller;
         }
 
         public override void OnDestroy()

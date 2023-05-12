@@ -19,6 +19,13 @@ namespace Abraxas.Cards.Models
         public event Action OnHiddenChanged;
         #endregion
 
+        #region Dependencies
+        public void Initialize(CardData data)
+        {
+            _data = data;
+        }
+        #endregion
+
         #region Fields
         CardData _data;
 
@@ -32,24 +39,18 @@ namespace Abraxas.Cards.Models
         #endregion
 
         #region Properties
-        public string Title 
-        { 
-            get 
-            { 
-                return _data.Title; 
-            } 
-            set 
-            { 
+        public string Title
+        {
+            get => _data.Title;
+            set
+            {
                 _data.Title = value;
                 OnTitleChanged.Invoke();
-            } 
+            }
         }
         public Player Owner
         {
-            get
-            {
-                return _owner;
-            }
+            get => _owner;
             set
             {
                 _owner = value;
@@ -58,10 +59,7 @@ namespace Abraxas.Cards.Models
         }
         public Player OriginalOwner
         {
-            get
-            {
-                return _originalOwner;
-            }
+            get => _originalOwner;
             set
             {
                 _originalOwner = value;
@@ -70,21 +68,14 @@ namespace Abraxas.Cards.Models
         }
         public List<IStoneController> Stones
         {
-            get
-            {
-                return _stones;
-            }
+            get => _stones;
             set
-            {
-                _stones = value;
-            }
+            => _stones = value;
         }
         public StatBlock StatBlock
         {
             get
-            {
-                return _data.StatBlock;
-            }
+            => _data.StatBlock;
             set
             {
                 _data.StatBlock = value;
@@ -93,42 +84,26 @@ namespace Abraxas.Cards.Models
         public ICellController Cell
         {
             get
-            {
-                return _cell;
-            }
+            => _cell;
             set
-            {
-                _cell = value;
-            }
+            => _cell = value;
         }
         public Point FieldPosition
         {
             get
-            {
-                return _fieldPosition;
-            }
-            set
-            {
-                _fieldPosition = value;
-            }
+            => _fieldPosition;
+            set => _fieldPosition = value;
         }
         public Zone Zone
         {
             get
-            {
-                return _zone;
-            }
-            set
-            {
-                _zone = value;
-            }
+            => _zone;
+            set => _zone = value;
         }
         public bool Hidden
         {
             get
-            {
-                return _hidden;
-            }
+            => _hidden;
             set
             {
                 _hidden = value;

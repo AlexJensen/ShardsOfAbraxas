@@ -1,9 +1,11 @@
-﻿using Abraxas.Game;
+﻿using Abraxas.Cards.Views;
+using Abraxas.Game;
 using Abraxas.Manas;
 using Abraxas.Players;
 using Abraxas.Zones.Fields;
 using Abraxas.Zones.Hands;
 using Abraxas.Zones.Overlays;
+using System;
 using System.Collections;
 using Zone = Abraxas.Zones.Zones;
 
@@ -12,7 +14,7 @@ namespace Abraxas.Cards.Controllers
     class CardDragHandler : ICardDragHandler
     {
         #region Dependencies
-        readonly ICardController _cardController;
+        ICardController _cardController;
 
         readonly Overlay.Settings _overlaySettings;
         readonly IGameManager _gameManager;
@@ -21,11 +23,10 @@ namespace Abraxas.Cards.Controllers
         readonly IOverlayManager _overlayManager;
         readonly IFieldManager _fieldManager;
         readonly IManaManager _manaManager;
-        public CardDragHandler(ICardController cardController, Overlay.Settings overlaySettings, IGameManager gameManager, IPlayerManager playerManager,
+        public CardDragHandler(Overlay.Settings overlaySettings, IGameManager gameManager, IPlayerManager playerManager,
                                IHandManager handManager, IOverlayManager overlayManager, IFieldManager fieldManager,
                                IManaManager manaManager)
         {
-            _cardController = cardController;
             _overlaySettings = overlaySettings;
             _gameManager = gameManager;
             _playerManager = playerManager;
@@ -33,6 +34,11 @@ namespace Abraxas.Cards.Controllers
             _overlayManager = overlayManager;
             _fieldManager = fieldManager;
             _manaManager = manaManager;
+        }
+
+        internal void Initialize(ICardController cardController)
+        {
+            _cardController = cardController;
         }
         #endregion
 

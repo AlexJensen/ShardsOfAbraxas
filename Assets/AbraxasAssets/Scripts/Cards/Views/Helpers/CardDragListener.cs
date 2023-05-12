@@ -11,6 +11,13 @@ namespace Abraxas.Cards.Views
     [RequireComponent(typeof(ICardView))]
     public class CardDragListener : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
+        #region Dependencies
+        internal void Initialize(ICardDragHandler cardDragHandler)
+        {
+            _dragHandler = cardDragHandler;
+        }
+        #endregion
+
         #region Fields
         ICardDragHandler _dragHandler;
         Canvas _canvas;
@@ -20,18 +27,18 @@ namespace Abraxas.Cards.Views
         #region Properties
         public Canvas Canvas => _canvas = _canvas != null ? _canvas : GetComponentInParent<Canvas>();
         public GraphicRaycaster GraphicRaycaster => _graphicRaycaster = _graphicRaycaster != null ? _graphicRaycaster : Canvas.GetComponent<GraphicRaycaster>();
-        public ICardDragHandler DragHandler => _dragHandler ??= GetComponent<ICardView>().Controller.DragHandler;
+
         #endregion
 
         #region Methods
         public void OnBeginDrag(PointerEventData eventData)
         {
-            DragHandler.OnBeginDrag();
+            _dragHandler.OnBeginDrag();
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            DragHandler.OnDrag();
+            _dragHandler.OnDrag();
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -43,12 +50,14 @@ namespace Abraxas.Cards.Views
                 ICellView cell = hit.gameObject.GetComponent<ICellView>();
                 if (cell != null)
                 {
-                    DragHandler.OnCardDraggedOverCell(cell.Controller);
+                    _dragHandler.OnCardDraggedOverCell(cell.Controller);
                     return;
                 }
             }
-            StartCoroutine(DragHandler.ReturnFromOverlayToHand());
+            StartCoroutine(_dragHandler.ReturnFromOverlayToHand());
         }
+
+
         #endregion
     }
 }

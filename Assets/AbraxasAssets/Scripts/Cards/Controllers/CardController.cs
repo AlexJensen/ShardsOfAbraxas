@@ -13,35 +13,26 @@ using System.Drawing;
 
 using Player = Abraxas.Players.Players;
 using Zone = Abraxas.Zones.Zones;
-
+using Zenject;
+using Abraxas.Cards.Data;
 
 namespace Abraxas.Cards.Controllers
 {
     class CardController : ICardController, IGameEventListener<ManaModifiedEvent>
     {
         #region Dependencies
+        ICardModelReader _modelReader;
+        ICardModelWriter _modelWriter;
+        ICardView _view;
+
         readonly IGameManager _gameManager;
         readonly IEventManager _eventManager;
         readonly IHealthManager _healthManager;
         readonly IFieldManager _fieldManager;
 
-        readonly ICardModelReader _modelReader;
-        readonly ICardModelWriter _modelWriter;
-        readonly ICardView _view;
-        readonly ICardDragHandler _dragHandler;
-        readonly ICardMouseOverHandler _mouseOverHandler;
-
-        public CardController(ICardModelReader modelReader, ICardModelWriter modelWriter, ICardView view,
-                              ICardDragHandler dragHandler, ICardMouseOverHandler mouseOverHandler,
-                              IGameManager gameManager, IEventManager eventManager, IHealthManager healthManager,
+        public CardController(IGameManager gameManager, IEventManager eventManager, IHealthManager healthManager,
                               IFieldManager fieldManager)
         {
-            _modelReader = modelReader;
-            _modelWriter = modelWriter;
-            _view = view;
-            _dragHandler = dragHandler;
-            _mouseOverHandler = mouseOverHandler;
-
             _gameManager = gameManager;
             _eventManager = eventManager;
             _healthManager = healthManager;
@@ -49,13 +40,23 @@ namespace Abraxas.Cards.Controllers
             
             _eventManager.AddListener(typeof(ManaModifiedEvent), this);
         }
+
+        public void Initialize(ICardModelReader modelReader, ICardModelWriter modelWriter, ICardView view)
+        {
+            _modelReader = modelReader;
+            _modelWriter = modelWriter;
+            _view = view;
+        }
+
+        public class Factory : PlaceholderFactory<CardData, ICardController>
+        {
+
+        }
         #endregion
 
         #region Properties
         public ICardModelReader Model => _modelReader;
         public ICardView View => _view;
-        public ICardDragHandler DragHandler => _dragHandler;
-        public ICardMouseOverHandler MouseOverHandler => _mouseOverHandler;
 
         public string Title { get => _modelReader.Title; set => _modelWriter.Title = value; }
         public Player Owner { get => _modelReader.Owner; set => _modelWriter.Owner = value; }
