@@ -1,13 +1,12 @@
 using Abraxas.Stones;
-using Abraxas.Zones.Fields;
 using Abraxas.Cards.Data;
 using System.Collections.Generic;
 using System.Drawing;
 
-using Zone = Abraxas.Zones.Zones;
 using Player = Abraxas.Players.Players;
 using System;
-
+using Abraxas.Cells.Controllers;
+using Abraxas.Zones.Controllers;
 
 namespace Abraxas.Cards.Models
 {
@@ -32,9 +31,9 @@ namespace Abraxas.Cards.Models
         List<IStoneController> _stones = new();
         Player _owner;
         Player _originalOwner;
+        IZoneController _zone;
         ICellController _cell;
         Point _fieldPosition;
-        Zone _zone;
         bool _hidden;
         #endregion
 
@@ -94,7 +93,7 @@ namespace Abraxas.Cards.Models
             => _fieldPosition;
             set => _fieldPosition = value;
         }
-        public Zone Zone
+        public IZoneController Zone
         {
             get
             => _zone;

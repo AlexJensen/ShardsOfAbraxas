@@ -10,11 +10,11 @@ using Abraxas.Stones;
 
 using Player = Abraxas.Players.Players;
 using Abraxas.Events;
-using Abraxas.Cards.Data;
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Controllers;
 using Unity.Netcode;
-
+using System.Collections;
+using Abraxas.Cells.Views;
 
 namespace Abraxas.Cards.Views
 {
@@ -99,15 +99,6 @@ namespace Abraxas.Cards.Views
             _cover.SetActive(Model.Hidden);
         }
 
-        public void UpdateVisuals()
-        {
-            _titleText.text = Model.Title;
-            Image.transform.localScale = new Vector3(Model.OriginalOwner == Player.Player1 ? 1 : -1, 1, 1);
-            _titleText.color = _playerSettings.GetPlayerDetails(Model.Owner).color;
-            _costText.text = GetCostText();
-            _cover.SetActive(Model.Hidden);
-        }
-
         public void UpdateCostTextWithCastability(ManaModifiedEvent eventData)
         {
             string TotalCost = "";
@@ -139,6 +130,11 @@ namespace Abraxas.Cards.Views
         public void SetCardPositionToMousePosition()
         {
             RectTransformMover.SetCardPosition(Input.mousePosition);
+        }
+
+        public IEnumerator MoveToCell(ICellView cell, float moveCardTime)
+        {
+            yield return RectTransformMover.MoveToFitRectangle(cell.RectTransform, moveCardTime);
         }
         #endregion
     }

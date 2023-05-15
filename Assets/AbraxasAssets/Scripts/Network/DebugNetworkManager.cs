@@ -1,7 +1,6 @@
-using Abraxas.Core;
 using Unity.Netcode;
 
-namespace Abraxas.Network
+namespace Abraxas.Network.Managers
 {
     public class DebugNetworkManager : NetworkBehaviour
     {

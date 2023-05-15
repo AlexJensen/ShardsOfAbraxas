@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Abraxas.Players
+namespace Abraxas.Players.Managers
 {
     public interface IPlayerManager
     {

@@ -1,4 +1,4 @@
-﻿using Abraxas.Zones.Fields;
+﻿using Abraxas.Cells.Controllers;
 using System.Collections;
 
 namespace Abraxas.Cards.Controllers
@@ -6,7 +6,7 @@ namespace Abraxas.Cards.Controllers
     public interface ICardDragHandler
     {
         void OnBeginDrag();
-        void OnCardDraggedOverCell(ICellController cell);
+        IEnumerator OnCardDraggedOverCell(ICellController cell);
         void OnDrag();
         IEnumerator ReturnFromOverlayToHand();
     }

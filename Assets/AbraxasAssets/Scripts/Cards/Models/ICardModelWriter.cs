@@ -1,11 +1,12 @@
-﻿using Abraxas.Stones;
-using Abraxas.Zones.Fields;
+﻿
+
 using System.Collections.Generic;
 using System.Drawing;
 
-using Zone = Abraxas.Zones.Zones;
 using Player = Abraxas.Players.Players;
-
+using Abraxas.Stones;
+using Abraxas.Cells.Controllers;
+using Abraxas.Zones.Controllers;
 
 namespace Abraxas.Cards.Models
 {
@@ -18,7 +19,7 @@ namespace Abraxas.Cards.Models
         public List<IStoneController> Stones { set; }
         public StatBlock StatBlock { set; }
         public Point FieldPosition { set; }
-        public Zone Zone { set; }
+        public IZoneController Zone { set; }
         public bool Hidden { set; }
         ICellController Cell { set; }
         #endregion

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Abraxas.UI
+namespace Abraxas.UI.Managers
 {
     public class MenuManager : MonoBehaviour, IMenuManager
     {

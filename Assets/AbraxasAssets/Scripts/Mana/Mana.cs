@@ -8,8 +8,8 @@ using System.Linq;
 
 using Player = Abraxas.Players.Players;
 using Random = UnityEngine.Random;
-using Abraxas.Zones.Decks;
 using Abraxas.Cards.Models;
+using Abraxas.Zones.Decks.Managers;
 
 namespace Abraxas.Manas
 {

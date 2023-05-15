@@ -1,13 +1,12 @@
-﻿using Abraxas.Cards.Views;
-using Abraxas.Game;
+﻿using Abraxas.Game.Managers;
 using Abraxas.Manas;
-using Abraxas.Players;
 using Abraxas.Zones.Fields;
-using Abraxas.Zones.Hands;
+using Abraxas.Cells.Controllers;
+using Abraxas.Zones.Hands.Managers;
+using Abraxas.Zones.Hands.Controllers;
 using Abraxas.Zones.Overlays;
-using System;
 using System.Collections;
-using Zone = Abraxas.Zones.Zones;
+using Abraxas.Players.Managers;
 
 namespace Abraxas.Cards.Controllers
 {
@@ -42,46 +41,40 @@ namespace Abraxas.Cards.Controllers
         }
         #endregion
 
-        #region Fields
-
-        #endregion
-
         #region Methods
         public void OnBeginDrag()
         {
-            if (!_cardController.Hidden && _cardController.OriginalOwner == _playerManager.LocalPlayer && _cardController.Zone == Zone.HAND)
+            if (!_cardController.Hidden && _cardController.OriginalOwner == _playerManager.LocalPlayer && _cardController.Zone is IHandController)
             {
                 _handManager.RemoveCard(_cardController.OriginalOwner, _cardController);
-                _overlayManager.AddCard(_cardController);
                 _cardController.View.ChangeScale(_fieldManager.GetCellDimensions(), _overlaySettings.ScaleCardToOverlayTime);
             }
         }
 
         public void OnDrag()
         {
-            if (_overlayManager.Card == this)
+            if (_overlayManager.Card == _cardController.View)
             {
                 _cardController.View.SetCardPositionToMousePosition();
             }
         }
 
-        public void OnCardDraggedOverCell(ICellController cell)
+        public IEnumerator OnCardDraggedOverCell(ICellController cell)
         {
-            if (_overlayManager.Card == this && _cardController.OriginalOwner == _playerManager.ActivePlayer)
+            if (_overlayManager.Card == _cardController.View && _cardController.OriginalOwner == _playerManager.ActivePlayer)
             {
                 if (cell.Cards.Count == 0 && cell.Player == _cardController.Owner && _manaManager.CanPurchaseCard(_cardController))
                 {
-                    _overlayManager.RemoveCard(_cardController);
                     _gameManager.RequestPurchaseCardAndMoveFromHandToCell(_cardController, cell.FieldPosition);
-                    return;
+                    yield break;
                 }
             }
+            yield return ReturnFromOverlayToHand();
         }
 
         public IEnumerator ReturnFromOverlayToHand()
         {
             yield return _handManager.ReturnCardToHand(_cardController);
-            _overlayManager.RemoveCard(_cardController);
         }
         #endregion
     }

@@ -5,7 +5,6 @@ namespace Abraxas.Game
     public class Game
     {
         #region Settings
-
         [Serializable]
         public class Settings
         {

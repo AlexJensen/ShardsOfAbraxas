@@ -22,9 +22,9 @@ namespace Abraxas.Manas
 
         #region Dependencies
         Stone.Settings _stoneSettings;
-        EventManager _eventManager;
+        IEventManager _eventManager;
         [Inject]
-        public void Construct(Stone.Settings stoneSettings, EventManager eventManager)
+        public void Construct(Stone.Settings stoneSettings, IEventManager eventManager)
         {
             _stoneSettings = stoneSettings;
             _eventManager = eventManager;

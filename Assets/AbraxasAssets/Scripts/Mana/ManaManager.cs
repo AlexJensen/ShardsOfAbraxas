@@ -6,7 +6,7 @@ using Zenject;
 
 using Player = Abraxas.Players.Players;
 
-namespace Abraxas.Manas
+namespace Abraxas.Manas.Managers
 {
     public class ManaManager : MonoBehaviour, IManaManager
     {

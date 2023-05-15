@@ -1,18 +1,20 @@
-using Abraxas.Game;
+using Zenject;
 using Abraxas.Manas;
 using Abraxas.GameStates;
-using Zenject;
-using Abraxas.Zones.Overlays;
-using Abraxas.Players;
-using Abraxas.CardViewers;
-using Abraxas.Zones.Hands;
-using Abraxas.Zones.Decks;
-using Abraxas.Zones.Graveyards;
-using Abraxas.Zones.Fields;
-using Abraxas.Events;
-using Abraxas.Network;
-using Abraxas.UI;
-using Abraxas.Health;
+using Abraxas.Zones.Decks.Managers;
+using Abraxas.Zones.Hands.Managers;
+using Abraxas.Game.Managers;
+using Abraxas.Network.Managers;
+using Abraxas.CardViewers.Managers;
+using Abraxas.Manas.Managers;
+using Abraxas.Zones.Graveyards.Managers;
+using Abraxas.Events.Managers;
+using Abraxas.Players.Managers;
+using Abraxas.Health.Managers;
+using Abraxas.Zones.Overlays.Managers;
+using Abraxas.UI.Managers;
+using Abraxas.Zones.Fields.Managers;
+using Abraxas.Zones.Managers;
 
 namespace Abraxas.Core.Installers
 {
@@ -34,6 +36,7 @@ namespace Abraxas.Core.Installers
         private void InstallManagers()
         {
             Container.BindInterfacesAndSelfTo<GameManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<ZoneManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<DebugNetworkManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<CardViewerManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<ManaManager>().FromComponentInHierarchy().AsSingle();

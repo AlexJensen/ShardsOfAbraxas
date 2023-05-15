@@ -10,12 +10,15 @@ namespace Abraxas.Stones.Models
         public event Action OnStoneTypeChanged;
         #endregion
 
-        #region Fields
+        #region Dependencies
         StoneData _data;
+        public StoneModel(StoneData data)
+        {
+            _data = data;
+        }
         #endregion
+
         #region Properties
-
-
         public int Cost
         {
             get

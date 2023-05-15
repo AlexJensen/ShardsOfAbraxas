@@ -3,7 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 
-namespace Abraxas.Players
+namespace Abraxas.Players.Managers
 {
     public class PlayerManager : NetworkBehaviour, IPlayerManager
     {

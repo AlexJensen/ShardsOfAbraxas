@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Abraxas.Stones
 {
     [Serializable]
-    public abstract class StoneData : ScriptableObject
+    public struct StoneData
     {
         public int Cost { get; set; }
         public string Info { get; set; }

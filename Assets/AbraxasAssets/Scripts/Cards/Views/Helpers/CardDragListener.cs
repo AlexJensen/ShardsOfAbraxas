@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-using Abraxas.Zones.Fields;
 using Abraxas.Cards.Controllers;
+using Abraxas.Cells.Views;
 
 namespace Abraxas.Cards.Views
 {

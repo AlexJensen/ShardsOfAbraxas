@@ -1,20 +1,21 @@
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
-
-using Abraxas.Core;
-using Abraxas.Game;
+using Abraxas.Cards.Data;
 using Abraxas.Events;
 using Abraxas.Stones;
 using Abraxas.Zones.Fields;
+using Abraxas.Cells.Controllers;
 
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 
 using Player = Abraxas.Players.Players;
-using Zone = Abraxas.Zones.Zones;
+
 using Zenject;
-using Abraxas.Cards.Data;
+using Abraxas.Zones.Controllers;
+using Abraxas.Zones.Managers;
+using Abraxas.Core;
 
 namespace Abraxas.Cards.Controllers
 {
@@ -25,15 +26,15 @@ namespace Abraxas.Cards.Controllers
         ICardModelWriter _modelWriter;
         ICardView _view;
 
-        readonly IGameManager _gameManager;
+        readonly IZoneManager _zoneManager;
         readonly IEventManager _eventManager;
         readonly IHealthManager _healthManager;
         readonly IFieldManager _fieldManager;
 
-        public CardController(IGameManager gameManager, IEventManager eventManager, IHealthManager healthManager,
+        public CardController(IZoneManager zoneManager, IEventManager eventManager, IHealthManager healthManager,
                               IFieldManager fieldManager)
         {
-            _gameManager = gameManager;
+            _zoneManager = zoneManager;
             _eventManager = eventManager;
             _healthManager = healthManager;
             _fieldManager = fieldManager;
@@ -66,7 +67,7 @@ namespace Abraxas.Cards.Controllers
         public Dictionary<StoneType, int> TotalCosts { get => _modelReader.TotalCosts;}
         public Point FieldPosition { get => _modelReader.FieldPosition; set => _modelWriter.FieldPosition = value; }
         public ICellController Cell { get => _modelReader.Cell; set => _modelWriter.Cell = value; }
-        public Zone Zone { get => _modelReader.Zone; set => _modelWriter.Zone = value; }
+        public IZoneController Zone { get => _modelReader.Zone; set => _modelWriter.Zone = value; }
         public bool Hidden { get => _modelReader.Hidden; set => _modelWriter.Hidden = value; }
 
         #endregion
@@ -82,7 +83,7 @@ namespace Abraxas.Cards.Controllers
             _healthManager.ModifyPlayerHealth(Model.Owner ==
                 Player.Player1 ? Player.Player2 : Player.Player1,
                 -Model.StatBlock[StatBlock.StatValues.ATK]);
-            yield return _gameManager.MoveCardFromFieldToDeck(this);
+            yield return _zoneManager.MoveCardFromFieldToDeck(this);
         }
 
         public IEnumerator Fight(ICardController opponent)
@@ -100,7 +101,7 @@ namespace Abraxas.Cards.Controllers
         {
             if (Model.StatBlock[StatBlock.StatValues.DEF] <= 0)
             {
-                yield return _gameManager.MoveCardFromFieldToGraveyard(this);
+                yield return _zoneManager.MoveCardFromFieldToGraveyard(this);
             }
         }
 
