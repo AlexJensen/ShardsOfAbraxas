@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Abraxas.Stones;
+﻿using Abraxas.Stones;
 using System;
+using System.Collections.Generic;
 
 namespace Abraxas.Cards.Data
 {

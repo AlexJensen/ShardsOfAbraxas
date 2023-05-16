@@ -2,7 +2,7 @@ using Abraxas.Cards;
 using Abraxas.Cards.Views;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Models;
-using Abraxas.Zones.Overlays;
+using Abraxas.Zones.Overlays.Managers;
 using System.Collections;
 using UnityEngine;
 using Zenject;
@@ -37,15 +37,14 @@ namespace Abraxas.Zones.Views
         [SerializeField]
         RectTransform _cardHolder;
         [SerializeField]
-        Player player;
+        Player _player;
 
 
         #endregion
 
         #region Properties
         public Transform CardHolder { get => _cardHolder; }
-
-        public Player Player { get => player; }
+        public Player Player { get => _player; }
         public abstract float MoveCardTime { get; }
         public IZoneController Controller { get => _controller; set => _controller = value; }
         public IZoneModel Model { get => _model; set => _model = value; }

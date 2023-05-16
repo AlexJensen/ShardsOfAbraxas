@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Abraxas.Zones.Fields.Models
 {
-    interface IFieldModel : IZoneModel
+    public interface IFieldModel : IZoneModel
     {
         List<List<ICellController>> FieldGrid { get; }
     }

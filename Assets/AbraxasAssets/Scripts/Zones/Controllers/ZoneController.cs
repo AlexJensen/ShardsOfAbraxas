@@ -18,10 +18,14 @@ namespace Abraxas.Zones.Controllers
         protected IZoneView View { get => _view; }
         protected IZoneModel Model { get => _model; }
 
-        public void Initialize(IZoneView view, IZoneModel model)
+        public void Initialize<TView, TModel>(TView view, TModel model)
+            where TView : IZoneView
+            where TModel : IZoneModel
         {
             _view = view;
             _model = model;
+
+            _model.Player = view.Player;
         }
         #endregion
 
@@ -48,11 +52,6 @@ namespace Abraxas.Zones.Controllers
         public virtual ICardController RemoveCard(int index)
         {
             return Model.RemoveCard(index);
-        }
-
-        public virtual void Shuffle()
-        {
-            Model.Shuffle();
         }
         #endregion
 

@@ -4,5 +4,6 @@ namespace Abraxas.Zones.Decks.Models
 {
     class DeckModel : ZoneModel, IDeckModel
     {
+
     }
 }

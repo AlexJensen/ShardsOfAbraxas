@@ -1,7 +1,6 @@
 ﻿using Abraxas.Cells.Controllers;
 using Abraxas.Zones.Models;
 using System.Collections.Generic;
-using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Fields.Models
 {

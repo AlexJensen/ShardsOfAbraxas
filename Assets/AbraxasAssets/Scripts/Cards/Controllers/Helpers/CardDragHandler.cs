@@ -1,12 +1,12 @@
-﻿using Abraxas.Game.Managers;
+﻿using Abraxas.Cells.Controllers;
+using Abraxas.Game.Managers;
 using Abraxas.Manas;
-using Abraxas.Zones.Fields;
-using Abraxas.Cells.Controllers;
-using Abraxas.Zones.Hands.Managers;
-using Abraxas.Zones.Hands.Controllers;
-using Abraxas.Zones.Overlays;
-using System.Collections;
 using Abraxas.Players.Managers;
+using Abraxas.Zones.Fields.Managers;
+using Abraxas.Zones.Hands.Controllers;
+using Abraxas.Zones.Hands.Managers;
+using Abraxas.Zones.Overlays.Managers;
+using System.Collections;
 
 namespace Abraxas.Cards.Controllers
 {
@@ -63,7 +63,7 @@ namespace Abraxas.Cards.Controllers
         {
             if (_overlayManager.Card == _cardController.View && _cardController.OriginalOwner == _playerManager.ActivePlayer)
             {
-                if (cell.Cards.Count == 0 && cell.Player == _cardController.Owner && _manaManager.CanPurchaseCard(_cardController))
+                if (cell.CardsOnCell == 0 && cell.Player == _cardController.Owner && _manaManager.CanPurchaseCard(_cardController))
                 {
                     _gameManager.RequestPurchaseCardAndMoveFromHandToCell(_cardController, cell.FieldPosition);
                     yield break;

@@ -1,20 +1,18 @@
-using System.Linq;
-using System.Drawing;
+using Abraxas.Cards.Controllers;
+using Abraxas.Cards.Models;
+using Abraxas.Cells.Views;
+using Abraxas.Events;
+using Abraxas.Stones;
+using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-
-using Abraxas.Stones;
-
 using Player = Abraxas.Players.Players;
-using Abraxas.Events;
-using Abraxas.Cards.Models;
-using Abraxas.Cards.Controllers;
-using Unity.Netcode;
-using System.Collections;
-using Abraxas.Cells.Views;
 
 namespace Abraxas.Cards.Views
 {
@@ -34,19 +32,18 @@ namespace Abraxas.Cards.Views
         {
             _stoneSettings = stoneSettings;
             _playerSettings = playerSettings;
+        }
+        public void Initialize(ICardModelReader model, ICardController controller)
+        {
+            _model = model;
+            _controller = controller;
+
 
             Model.OnTitleChanged += OnTitleChanged;
             Model.OnOwnerChanged += OnOwnerChanged;
             Model.OnOriginalOwnerChanged += OnOriginalOwnerChanged;
             Model.OnHiddenChanged += OnHiddenChanged;
         }
-
-        public void Initialize(ICardModelReader model, ICardController controller)
-        {
-            _model = model;
-            _controller = controller;
-        }
-
         public override void OnDestroy()
         {
             Model.OnTitleChanged -= OnTitleChanged;

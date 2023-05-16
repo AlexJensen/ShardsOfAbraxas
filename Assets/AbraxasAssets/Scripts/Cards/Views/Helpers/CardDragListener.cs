@@ -1,10 +1,9 @@
+using Abraxas.Cards.Controllers;
+using Abraxas.Cells.Views;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
-using Abraxas.Cards.Controllers;
-using Abraxas.Cells.Views;
 
 namespace Abraxas.Cards.Views
 {

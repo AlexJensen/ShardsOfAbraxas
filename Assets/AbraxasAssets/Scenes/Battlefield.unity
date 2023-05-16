@@ -1665,6 +1665,10 @@ PrefabInstance:
       propertyPath: player
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1020619548192875471, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
+      propertyPath: _player
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1352394205056031336, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1704011966
@@ -1729,6 +1733,10 @@ PrefabInstance:
       propertyPath: player
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3692436287121420699, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
+      propertyPath: _player
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4912693534307488164, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1755,6 +1763,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6221310334819598760, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
       propertyPath: player
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221310334819598760, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
+      propertyPath: _player
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6221310334819598760, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
@@ -2204,9 +2216,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 656731016}
-  - component: {fileID: 656731015}
   - component: {fileID: 656731017}
+  - component: {fileID: 656731015}
   - component: {fileID: 656731018}
+  - component: {fileID: 656731019}
+  - component: {fileID: 656731020}
   m_Layer: 0
   m_Name: SceneContext
   m_TagString: Untagged
@@ -2258,6 +2272,8 @@ MonoBehaviour:
   _monoInstallers:
   - {fileID: 656731015}
   - {fileID: 656731018}
+  - {fileID: 656731019}
+  - {fileID: 656731020}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -2285,6 +2301,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3b46dfd743cc484da0bd3ce15ea0479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &656731019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656731013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce50ac51ba340b64f94f11d30be3d597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &656731020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656731013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ca37846e25a15a44b40336cb382c66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &661525559
@@ -3762,6 +3802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ae042fa0e9a00740bdee138d0b4e7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _graveyardViews: []
 --- !u!1 &1120174894
 GameObject:
   m_ObjectHideFlags: 0
@@ -4766,7 +4807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardHolder: {fileID: 0}
-  player: 0
+  _player: 0
 --- !u!1001 &1397702233
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6122,6 +6163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15cc99ad303f4e04a8e69f4601da854c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deckViews:
+  - {fileID: 478580410}
+  - {fileID: 1518706813}
 --- !u!114 &1691989343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6328,6 +6372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 045cc408344bbe147b31d381068df848, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deckViews: []
 --- !u!1 &1811214901
 GameObject:
   m_ObjectHideFlags: 0
@@ -6372,6 +6417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ecff5cb3b7e1914b94a89a84f14e68f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fieldView: {fileID: 1381748589}
 --- !u!224 &1853638934 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6272898999008346511, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}

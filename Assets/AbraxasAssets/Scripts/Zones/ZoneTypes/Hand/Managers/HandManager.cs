@@ -1,18 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using Abraxas.Cards.Controllers;
+using Abraxas.Zones.Factories;
 using Abraxas.Zones.Hands.Controllers;
+using Abraxas.Zones.Hands.Models;
+using Abraxas.Zones.Hands.Views;
 using UnityEngine;
-
+using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Hands.Managers
 {
     public class HandManager : MonoBehaviour, IHandManager
     {
-        #region Fields
+        #region Dependencies
         [SerializeField]
-        List<IHandController> _hands;
+        List<HandView> _handViews;
+        List<IHandController> _hands = new();
+        [Inject]
+        void Construct(ZoneFactory<IHandView, HandController, HandModel> handFactory)
+        {
+            foreach (var deckView in _handViews)
+            {
+                _hands.Add(handFactory.Create(deckView));
+            }
+        }
         #endregion
 
         #region Methods

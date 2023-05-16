@@ -7,15 +7,6 @@ namespace Abraxas.Players.Managers
 {
     public class PlayerManager : NetworkBehaviour, IPlayerManager
     {
-        #region Dependencies
-        NetworkManager _networkManager;
-        [Inject]
-        public void Construct()
-        {
-            _networkManager = NetworkManager.Singleton;
-        }
-        #endregion
-
         #region Fields
         readonly NetworkVariable<Players> _activePlayer = new(Players.Player1);
         Players _localPlayer;

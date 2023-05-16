@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Abraxas.Zones.Overlays
+namespace Abraxas.Zones.Overlays.Managers
 {
     class Overlay
     {

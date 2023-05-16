@@ -1,6 +1,6 @@
 ﻿using Abraxas.Events;
 using Abraxas.Game.Managers;
-using Abraxas.Zones.Fields;
+using Abraxas.Zones.Fields.Managers;
 using System.Collections;
 using Zenject;
 

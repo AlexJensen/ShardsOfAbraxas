@@ -2,7 +2,7 @@ using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Views;
 using UnityEngine;
 
-namespace Abraxas.Zones.Overlays
+namespace Abraxas.Zones.Overlays.Managers
 {
     public interface IOverlayManager
     {

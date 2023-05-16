@@ -15,7 +15,7 @@ namespace Abraxas.GameStates
         readonly DebugNetworkManager _debugNetworkManager;
         readonly IGameStateManager _gameStateManager;
         [Inject]
-        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, DebugNetworkManager debugNetworkManager) :base(gameManager, eventManager)
+        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, DebugNetworkManager debugNetworkManager) : base(gameManager, eventManager)
         {
             _gameStateManager = gameStateManager;
             _networkManager = NetworkManager.Singleton;

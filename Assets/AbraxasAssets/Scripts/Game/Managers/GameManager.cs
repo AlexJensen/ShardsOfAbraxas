@@ -1,19 +1,18 @@
+using Abraxas.Cards.Controllers;
+using Abraxas.Cards.Views;
+using Abraxas.Core;
+using Abraxas.GameStates;
+using Abraxas.Manas;
+using Abraxas.Players.Managers;
+using Abraxas.Zones.Decks.Managers;
+using Abraxas.Zones.Managers;
 using System.Collections;
+using System.Drawing;
+using Unity.Netcode;
 using UnityEngine;
 using Zenject;
-using Abraxas.Core;
-using Abraxas.Manas;
-using Abraxas.GameStates;
-
-using States = Abraxas.GameStates.GameStates;
 using Player = Abraxas.Players.Players;
-using Unity.Netcode;
-using Abraxas.Cards.Controllers;
-using System.Drawing;
-using Abraxas.Cards.Views;
-using Abraxas.Zones.Decks.Managers;
-using Abraxas.Players.Managers;
-using Abraxas.Zones.Managers;
+using States = Abraxas.GameStates.GameStates;
 
 namespace Abraxas.Game.Managers
 {
@@ -30,23 +29,19 @@ namespace Abraxas.Game.Managers
 
         // Zones
         IZoneManager _zoneManager;
-        IDeckManager _deckManager;
-
 
         [Inject]
         public void Construct(Game.Settings settings,
                        IGameStateManager gameStateManager,
                        IZoneManager zoneManager,
                        IPlayerManager playerManager,
-                       IManaManager manaManager,
-                       IDeckManager deckManager)
+                       IManaManager manaManager)
         {
             _settings = settings;
             _gameStateManager = gameStateManager;
             _zoneManager = zoneManager;
             _playerManager = playerManager;
             _manaManager = manaManager;
-            _deckManager = deckManager;
         }
         #endregion
 
@@ -59,8 +54,8 @@ namespace Abraxas.Game.Managers
         public IEnumerator StartGame()
         {
             yield return Utilities.WaitForCoroutines(
-                            _deckManager.ShuffleDeck(Player.Player1),
-                            _deckManager.ShuffleDeck(Player.Player2));
+                            _zoneManager.ShuffleDeck(Player.Player1),
+                            _zoneManager.ShuffleDeck(Player.Player2));
             yield return new WaitForSeconds(.1f);
             yield return Utilities.WaitForCoroutines(
                             _zoneManager.MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),

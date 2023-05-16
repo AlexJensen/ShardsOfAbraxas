@@ -3,7 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 
-namespace Abraxas.GameStates
+namespace Abraxas.GameStates.Managers
 {
 
     public class GameStateManager : NetworkBehaviour, IGameStateManager

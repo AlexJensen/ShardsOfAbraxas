@@ -1,12 +1,9 @@
-using Abraxas.Cards;
 using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Views;
 using Abraxas.Zones.Hands.Controllers;
-using Abraxas.Zones.Overlays;
 using Abraxas.Zones.Views;
 using System.Collections;
 using UnityEngine;
-using Zenject;
 
 using Player = Abraxas.Players.Players;
 
@@ -16,9 +13,6 @@ namespace Abraxas.Zones.Hands.Views
     { 
 
         #region Fields
-        [SerializeField]
-        RectTransform HandParent;
-
         CardPlaceholder _cardPlaceholder;
         bool cardReturningToPlaceholder;
         #endregion

@@ -16,7 +16,7 @@ namespace Zenject
         InjectContext _injectContext;
 
         [Inject]
-        void Construct(IProvider provider, InjectContext injectContext)
+        public void Construct(IProvider provider, InjectContext injectContext)
         {
             Assert.IsNotNull(provider);
             Assert.IsNotNull(injectContext);

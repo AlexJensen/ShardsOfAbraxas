@@ -56,6 +56,12 @@ MonoBehaviour:
       color: {r: 0, g: 0.49803922, b: 0.49803922, a: 1}
   CardSettings:
     cardPrefab: {fileID: 6750648729959934835, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+    animationSettings:
+      MoveCardToFieldTime: 0.2
+      MoveCardToDeckTime: 0.2
+      MoveCardToGraveyardTime: 0.2
+      MoveCardToHandTime: 0.2
+      MoveCardFromCellToCellOnFieldTime: 0.2
   CardPlaceholderSettings:
     scaleToMaxSizeTime: 0.2
     minScale: 0
@@ -73,18 +79,9 @@ MonoBehaviour:
     ManaTypePrefab: {fileID: 5328795667250569614, guid: 8aff0008d6cddae4e8d382c0b547ef3f, type: 3}
     StartingMana: 2
     ManaPerTurnIncrement: 2
-  HandSettings:
-    MoveCardToHandTime: 0.2
-  FieldSettings:
-    MoveCardToFieldTime: 0.2
-    MoveCardOnFieldTime: 0.2
-  DeckSettings:
-    MoveCardToDeckTime: 0.2
   NextButtonSettings:
     BeginningText: Start of Turn
     BeforeCombatText: To Combat
     CombatText: Combat
     AfterCombatText: End Turn
     EndOfTurnText: Turn Ending
-  GraveyardSettings:
-    MoveCardToGraveyardTime: 0.2

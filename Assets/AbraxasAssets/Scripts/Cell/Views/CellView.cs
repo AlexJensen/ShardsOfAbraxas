@@ -1,7 +1,7 @@
 using Abraxas.Cells.Controllers;
-using Abraxas.Cells.Models;
+using System.Drawing;
 using UnityEngine;
-using Zenject;
+using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cells.Views
 {
@@ -10,10 +10,15 @@ namespace Abraxas.Cells.Views
         #region Dependencies
         ICellController _controller;
 
-        public void Initialize(ICellController controller, ICellModel model)
+        public void Initialize(ICellController controller)
         {
             _controller = controller;
         }
+        #endregion
+
+        #region Fields
+        [SerializeField]
+        Player _player;
         #endregion
 
         #region Properties
@@ -25,6 +30,10 @@ namespace Abraxas.Cells.Views
             } 
         }
         public RectTransform RectTransform { get => (RectTransform)transform; }
+
+        public Point FieldPosition => new(transform.parent.GetSiblingIndex(), transform.GetSiblingIndex());
+
+        public Player Player { get => _player; }
         #endregion
 
         #region Methods

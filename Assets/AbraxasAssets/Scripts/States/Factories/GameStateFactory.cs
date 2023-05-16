@@ -1,6 +1,6 @@
 using ModestTree;
 
-namespace Abraxas.GameStates
+namespace Abraxas.GameStates.Factories
 {
     public class GameStateFactory : IGameStateFactory
     {
@@ -10,7 +10,6 @@ namespace Abraxas.GameStates
         readonly CombatState.Factory _combatFactory;
         readonly AfterCombatState.Factory _afterCombatFactory;
         readonly EndState.Factory _endFactory;
-
 
         public GameStateFactory(
             GameNotStartedState.Factory gameNotStartedFactory,

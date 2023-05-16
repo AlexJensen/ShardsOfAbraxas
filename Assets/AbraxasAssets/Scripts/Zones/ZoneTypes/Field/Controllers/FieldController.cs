@@ -4,13 +4,13 @@ using Abraxas.Cells.Controllers;
 using System;
 using System.Collections;
 using System.Linq;
-using System.Collections.Generic;
 using System.Drawing;
 
 using Player = Abraxas.Players.Players;
 using Abraxas.Zones.Controllers;
 using Abraxas.Players.Managers;
 using Abraxas.Zones.Fields.Models;
+using Zenject;
 
 namespace Abraxas.Zones.Fields.Controllers
 {
@@ -21,6 +21,11 @@ namespace Abraxas.Zones.Fields.Controllers
         public FieldController(IPlayerManager playerManager)
         {
             _playerManager = playerManager;
+        }
+
+        public class Factory : PlaceholderFactory<IFieldView, IFieldController, IFieldModel>
+        {
+
         }
         #endregion
 
@@ -42,15 +47,13 @@ namespace Abraxas.Zones.Fields.Controllers
                 Math.Clamp(card.FieldPosition.Y + movement.Y, 0, ((IFieldModel)Model).FieldGrid.Count - 1));
 
             ICardController collided = null;
-            IEnumerable<ICardController> activeCards;
             var FieldGrid = ((IFieldModel)Model).FieldGrid;
 
             for (int i = card.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
             {
-                activeCards = FieldGrid[card.FieldPosition.Y][i].Cards;
-                if (activeCards.Count() <= 0) continue;
+                if (FieldGrid[card.FieldPosition.Y][i].CardsOnCell <= 0) continue;
                 destination.X = i - Math.Sign(movement.X);
-                collided = FieldGrid[card.FieldPosition.Y][i].Cards[0];
+                collided = FieldGrid[card.FieldPosition.Y][i].GetCardAtIndex(0);
                 break;
             }
             

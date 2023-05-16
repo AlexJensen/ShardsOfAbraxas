@@ -3,7 +3,7 @@ using System.Collections;
 using System.Drawing;
 
 
-namespace Abraxas.Zones.Fields
+namespace Abraxas.Zones.Fields.Managers
 {
     public interface IFieldManager
     {

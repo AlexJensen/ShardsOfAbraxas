@@ -10,7 +10,7 @@ namespace Abraxas.Zones.Models
     {
         #region Properties
         List<ICardController> CardList { get; }
-        Player Player { get; }
+        Player Player { get; set; }
         #endregion
 
         #region Methods

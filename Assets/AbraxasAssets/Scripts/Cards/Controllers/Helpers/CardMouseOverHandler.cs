@@ -1,6 +1,4 @@
-﻿using Abraxas.Cards.Views;
-using Abraxas.CardViewers;
-using System;
+﻿using Abraxas.CardViewers;
 
 namespace Abraxas.Cards.Controllers
 {

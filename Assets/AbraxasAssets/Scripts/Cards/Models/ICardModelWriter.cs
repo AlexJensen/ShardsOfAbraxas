@@ -1,12 +1,9 @@
-﻿
-
+﻿using Abraxas.Cells.Controllers;
+using Abraxas.Stones;
+using Abraxas.Zones.Controllers;
 using System.Collections.Generic;
 using System.Drawing;
-
 using Player = Abraxas.Players.Players;
-using Abraxas.Stones;
-using Abraxas.Cells.Controllers;
-using Abraxas.Zones.Controllers;
 
 namespace Abraxas.Cards.Models
 {

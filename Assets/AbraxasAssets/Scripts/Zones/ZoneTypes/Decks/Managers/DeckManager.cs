@@ -1,20 +1,32 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Stones;
 using Abraxas.Zones.Decks.Controllers;
+using Abraxas.Zones.Decks.Models;
+using Abraxas.Zones.Decks.Views;
+using Abraxas.Zones.Factories;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-
+using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Decks.Managers
 {
     public class DeckManager : NetworkBehaviour, IDeckManager
     {
-        #region Fields
+        #region Dependencies
         [SerializeField]
-        List<IDeckController> _decks;
+        List<DeckView> _deckViews;
+        List<IDeckController> _decks = new();
+        [Inject]
+        void Construct(ZoneFactory<IDeckView, DeckController, DeckModel> deckFactory)
+        {
+            foreach (var deckView in _deckViews)
+            {
+                _decks.Add(deckFactory.Create(deckView));
+            }
+        }
         #endregion
 
         #region Methods

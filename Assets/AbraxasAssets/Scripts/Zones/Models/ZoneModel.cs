@@ -64,7 +64,15 @@ namespace Abraxas.Zones.Models
 
         public virtual void Shuffle()
         {
+            int count = _cardList.Count;
+            for (int i = count - 1; i > 0; i--)
+            {
+                int j = UnityEngine.Random.Range(0, i + 1);
 
+                ICardController temp = _cardList[i];
+                _cardList[i] = _cardList[j];
+                _cardList[j] = temp;
+            }
         }
         #endregion
     }

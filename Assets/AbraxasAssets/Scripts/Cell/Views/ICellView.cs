@@ -1,4 +1,6 @@
 ﻿using Abraxas.Cells.Controllers;
+using System.Drawing;
+using Player = Abraxas.Players.Players;
 using UnityEngine;
 
 namespace Abraxas.Cells.Views
@@ -7,6 +9,9 @@ namespace Abraxas.Cells.Views
     {
         RectTransform RectTransform { get; }
         ICellController Controller { get; }
+
+        Player Player { get; }
+        Point FieldPosition { get; }
 
         void SetChild(Transform cardTransform);
     }

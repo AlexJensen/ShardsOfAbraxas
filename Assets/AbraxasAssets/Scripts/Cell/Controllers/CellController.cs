@@ -1,9 +1,8 @@
 ﻿using Abraxas.Cards.Controllers;
 using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
-using System.Collections.Generic;
 using System.Drawing;
-
+using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cells.Controllers
@@ -12,41 +11,45 @@ namespace Abraxas.Cells.Controllers
     {
         #region Dependencies
         ICellView _view;
-        readonly Player _player;
-        public CellController(Player player)
-        {
-            _player = player;
-        }
-
+        ICellModel _model;
+        public ICellView View => _view;
         public void Initialize(ICellView view, ICellModel model)
         {
             _view = view;
+            _model = model;
+
+            _model.FieldPosition = _view.FieldPosition;
+            _model.Player = _view.Player;
+        }
+
+        public class Factory : PlaceholderFactory<ICellView, ICellController>
+        {
+
         }
         #endregion
 
-        #region Fields
-        readonly List<ICardController> _cards = new();
-        Point _fieldPosition;
-        #endregion
-
         #region Properties
-        public ICellView View => _view;
-        public List<ICardController> Cards { get => _cards; }
-        public Player Player { get => _player; }
-        public Point FieldPosition { get => _fieldPosition; set => _fieldPosition = value; }
+        public Player Player { get => _model.Player; }
+        public Point FieldPosition { get => _model.FieldPosition; }
+        public int CardsOnCell => _model.CardsOnCell;
         #endregion
 
         #region Methods
         public void AddCard(ICardController card)
         {
-            Cards.Add(card);
-            View.SetChild(card.View.Transform);
+            _model.AddCard(card);
+            _view.SetChild(card.View.Transform);
             card.FieldPosition = FieldPosition;
         }
 
         public void RemoveCard(ICardController card)
         {
-            Cards.Remove(card);
+            _model.RemoveCard(card);
+        }
+
+        public ICardController GetCardAtIndex(int index)
+        {
+            return _model.GetCardAtIndex(index);
         }
         #endregion
     }

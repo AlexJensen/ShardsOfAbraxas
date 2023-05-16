@@ -1,7 +1,7 @@
 ﻿using Abraxas.Cards.Controllers;
 using Abraxas.Players.Managers;
 using Abraxas.Zones.Decks.Managers;
-using Abraxas.Zones.Fields;
+using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Graveyards;
 using Abraxas.Zones.Hands.Managers;
 using System.Collections;
@@ -14,11 +14,11 @@ namespace Abraxas.Zones.Managers
     {
         #region Dependencies
         // Zones
-        IHandManager _handManager;
-        IDeckManager _deckManager;
-        IGraveyardManager _graveyardManager;
-        IFieldManager _fieldManager;
-        IPlayerManager _playerManager;
+        readonly IHandManager _handManager;
+        readonly IDeckManager _deckManager;
+        readonly IGraveyardManager _graveyardManager;
+        readonly IFieldManager _fieldManager;
+        readonly IPlayerManager _playerManager;
 
         public ZoneManager(IHandManager handManager, IDeckManager deckManager, IGraveyardManager graveyardManager, IFieldManager fieldManager, IPlayerManager playerManager)
         {
@@ -66,6 +66,11 @@ namespace Abraxas.Zones.Managers
         {
             _fieldManager.RemoveCard(card);
             yield return _graveyardManager.MoveCardToGraveyard(card.OriginalOwner, card);
+        }
+
+        public IEnumerator ShuffleDeck(Player player)
+        {
+            yield return _deckManager.ShuffleDeck(player);
         }
         #endregion
     }
