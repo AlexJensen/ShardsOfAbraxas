@@ -4,6 +4,7 @@ using Abraxas.Players;
 using Abraxas.Stones;
 using Abraxas.UI;
 using Abraxas.Zones.Hands;
+using Abraxas.Zones.Overlays.Managers;
 using UnityEngine;
 using Zenject;
 
@@ -19,6 +20,7 @@ namespace Abraxas.Core.Installers
         public Player.Settings PlayerSettings;
         public Mana.Settings ManaSettings;
         public NextButton.Settings NextButtonSettings;
+        public Overlay.Settings OverlaySettings;
         public override void InstallBindings()
         {
             Container.BindInstance(GameSettings).AsSingle();
@@ -28,6 +30,7 @@ namespace Abraxas.Core.Installers
             Container.BindInstance(PlayerSettings).AsSingle();
             Container.BindInstance(ManaSettings).AsSingle();
             Container.BindInstance(NextButtonSettings).AsSingle();
+            Container.BindInstance(OverlaySettings).AsSingle();
         }
     }
 }

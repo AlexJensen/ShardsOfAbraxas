@@ -5,7 +5,7 @@ namespace Abraxas.CardViewers
 {
     public interface ICardViewerManager
     {
-        IEnumerator HideCardViewer();
-        IEnumerator ShowCardViewer(ICardController card);
+        void HideCardViewer();
+        void ShowCardViewer(ICardController card);
     }
 }

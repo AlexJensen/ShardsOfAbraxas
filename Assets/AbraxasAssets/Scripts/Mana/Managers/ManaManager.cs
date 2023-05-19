@@ -1,4 +1,5 @@
 using Abraxas.Cards.Controllers;
+using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Manas.Managers
 {
-    public class ManaManager : MonoBehaviour, IManaManager
+    class ManaManager : MonoBehaviour, IManaManager
     {
         #region Dependencies
         Mana.Settings _settings;
@@ -16,6 +17,8 @@ namespace Abraxas.Manas.Managers
         public void Construct(Mana.Settings settings)
         {
             _settings = settings;
+
+            StartOfTurnMana = _settings.StartingMana;
         }
         #endregion
 
@@ -35,11 +38,6 @@ namespace Abraxas.Manas.Managers
         #endregion
 
         #region Methods
-        void Start()
-        {
-            StartOfTurnMana = _settings.StartingMana;
-        }
-
         public IEnumerator GenerateManaFromDeckRatio(Player player, int amount)
         {
             yield return GetPlayerMana(player).GenerateRatioMana(amount);
@@ -58,6 +56,11 @@ namespace Abraxas.Manas.Managers
         public void IncrementStartOfTurnManaAmount()
         {
             StartOfTurnMana += _settings.ManaPerTurnIncrement;
+        }
+
+        public void InitializeManaFromDeck(IDeckController deck)
+        {
+            GetPlayerMana(deck.Player).CreateManaTypesFromDeck();
         }
 
         private Mana GetPlayerMana(Player player)

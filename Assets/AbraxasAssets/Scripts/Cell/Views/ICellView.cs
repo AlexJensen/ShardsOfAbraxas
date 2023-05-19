@@ -13,6 +13,7 @@ namespace Abraxas.Cells.Views
         Player Player { get; }
         Point FieldPosition { get; }
 
+        void Initialize(ICellController controller);
         void SetChild(Transform cardTransform);
     }
 }

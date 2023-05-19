@@ -1,4 +1,5 @@
 using Abraxas.Cards.Controllers;
+using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
 
 using Player = Abraxas.Players.Players;
@@ -13,5 +14,6 @@ namespace Abraxas.Manas
         bool CanPurchaseCard(ICardController card);
         void IncrementStartOfTurnManaAmount();
         void PurchaseCard(ICardController card);
+        void InitializeManaFromDeck(IDeckController deck);
     }
 }

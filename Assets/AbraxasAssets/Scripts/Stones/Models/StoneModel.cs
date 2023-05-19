@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Abraxas.Stones.Data;
+using System;
 
 namespace Abraxas.Stones.Models
 {

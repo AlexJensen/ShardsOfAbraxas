@@ -1,5 +1,6 @@
 ﻿using Abraxas.Cells.Controllers;
-using Abraxas.Stones;
+using Abraxas.StatBlocks.Models;
+using Abraxas.Stones.Models;
 using Abraxas.Zones.Controllers;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,8 +14,8 @@ namespace Abraxas.Cards.Models
         public string Title { set; }
         public Player Owner { set; }
         public Player OriginalOwner { set; }
-        public List<IStoneController> Stones { set; }
-        public StatBlock StatBlock { set; }
+        public List<IStoneModel> Stones { set; }
+
         public Point FieldPosition { set; }
         public IZoneController Zone { set; }
         public bool Hidden { set; }

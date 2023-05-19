@@ -1,5 +1,4 @@
 using Abraxas.Core;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -49,7 +48,7 @@ namespace Abraxas
                 MoveToEnumerator(rectTransform.position, time)));
         }
 
-        public void SetCardPosition(Vector3 position)
+        public void SetPosition(Vector3 position)
         {
             RectTransform.position = position;
         }

@@ -1,6 +1,8 @@
 using Abraxas.Cards.Data;
 using Abraxas.Cells.Controllers;
+using Abraxas.StatBlocks.Models;
 using Abraxas.Stones;
+using Abraxas.Stones.Models;
 using Abraxas.Zones.Controllers;
 using System;
 using System.Collections.Generic;
@@ -18,22 +20,26 @@ namespace Abraxas.Cards.Models
         #endregion
 
         #region Dependencies
-        public void Initialize(CardData data)
+        CardData _data;
+        public void Initialize(CardData data, IStatBlockModel statBlockModel, Player player)
         {
             _data = data;
+            _statBlock = statBlockModel;
+            _owner = player;
+            _originalOwner = player;
+           ((IStatBlockModelWriter)statBlockModel).Initialize(data.StatBlock);
         }
         #endregion
 
         #region Fields
-        CardData _data;
-
-        List<IStoneController> _stones = new();
+        List<IStoneModel> _stones = new();
         Player _owner;
         Player _originalOwner;
         IZoneController _zone;
         ICellController _cell;
         Point _fieldPosition;
         bool _hidden;
+        IStatBlockModel _statBlock;
         #endregion
 
         #region Properties
@@ -42,8 +48,8 @@ namespace Abraxas.Cards.Models
             get => _data.Title;
             set
             {
+                if (_data.Title != value) OnTitleChanged.Invoke();
                 _data.Title = value;
-                OnTitleChanged.Invoke();
             }
         }
         public Player Owner
@@ -51,8 +57,8 @@ namespace Abraxas.Cards.Models
             get => _owner;
             set
             {
+                if (_owner != value) OnOwnerChanged.Invoke();
                 _owner = value;
-                OnOwnerChanged.Invoke();
             }
         }
         public Player OriginalOwner
@@ -60,24 +66,21 @@ namespace Abraxas.Cards.Models
             get => _originalOwner;
             set
             {
+                if (_originalOwner != value) OnOriginalOwnerChanged.Invoke(); 
                 _originalOwner = value;
-                OnOriginalOwnerChanged.Invoke();
             }
         }
-        public List<IStoneController> Stones
+        public List<IStoneModel> Stones
         {
             get => _stones;
             set
             => _stones = value;
         }
-        public StatBlock StatBlock
+        public IStatBlockModel StatBlock
         {
             get
-            => _data.StatBlock;
-            set
-            {
-                _data.StatBlock = value;
-            }
+            => _statBlock;
+            
         }
         public ICellController Cell
         {
@@ -123,6 +126,14 @@ namespace Abraxas.Cards.Models
                     {
                         totalCosts[stone.StoneType] += stone.Cost;
                     }
+                }
+                if (!totalCosts.ContainsKey(StatBlock.StoneType))
+                {
+                    totalCosts.Add(StatBlock.StoneType, StatBlock.Cost);
+                }
+                else
+                {
+                    totalCosts[StatBlock.StoneType] += StatBlock.Cost;
                 }
 
                 return totalCosts;

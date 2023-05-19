@@ -4,6 +4,8 @@ using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
 using Abraxas.Core;
 using Abraxas.Events;
+using Abraxas.StatBlocks;
+using Abraxas.StatBlocks.Models;
 using Abraxas.Stones;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Fields.Managers;
@@ -22,7 +24,7 @@ namespace Abraxas.Cards.Controllers
         ICardModelReader _modelReader;
         ICardModelWriter _modelWriter;
         ICardView _view;
-
+        List<IStoneController> _stones;
         readonly IZoneManager _zoneManager;
         readonly IEventManager _eventManager;
         readonly IHealthManager _healthManager;
@@ -35,8 +37,6 @@ namespace Abraxas.Cards.Controllers
             _eventManager = eventManager;
             _healthManager = healthManager;
             _fieldManager = fieldManager;
-            
-            _eventManager.AddListener(typeof(ManaModifiedEvent), this);
         }
 
         public void Initialize(ICardModelReader modelReader, ICardModelWriter modelWriter, ICardView view)
@@ -44,9 +44,11 @@ namespace Abraxas.Cards.Controllers
             _modelReader = modelReader;
             _modelWriter = modelWriter;
             _view = view;
+
+            _eventManager.AddListener(typeof(ManaModifiedEvent), this);
         }
 
-        public class Factory : PlaceholderFactory<CardData, ICardController>
+        public class Factory : PlaceholderFactory<CardData, Player, ICardController>
         {
 
         }
@@ -55,12 +57,12 @@ namespace Abraxas.Cards.Controllers
         #region Properties
         public ICardModelReader Model => _modelReader;
         public ICardView View => _view;
+        public IStatBlockModel StatBlock => _modelReader.StatBlock;
 
         public string Title { get => _modelReader.Title; set => _modelWriter.Title = value; }
         public Player Owner { get => _modelReader.Owner; set => _modelWriter.Owner = value; }
         public Player OriginalOwner { get => _modelReader.OriginalOwner; set => _modelWriter.OriginalOwner = value; }
-        public List<IStoneController> Stones { get => _modelReader.Stones; set => _modelWriter.Stones = value; }
-        public StatBlock StatBlock { get => _modelReader.StatBlock; set => _modelWriter.StatBlock = value; }
+        public List<IStoneController> Stones { get => _stones; set => _stones = value; }
         public Dictionary<StoneType, int> TotalCosts { get => _modelReader.TotalCosts;}
         public Point FieldPosition { get => _modelReader.FieldPosition; set => _modelWriter.FieldPosition = value; }
         public ICellController Cell { get => _modelReader.Cell; set => _modelWriter.Cell = value; }
@@ -79,15 +81,15 @@ namespace Abraxas.Cards.Controllers
         {
             _healthManager.ModifyPlayerHealth(Model.Owner ==
                 Player.Player1 ? Player.Player2 : Player.Player1,
-                -Model.StatBlock[StatBlock.StatValues.ATK]);
+                -Model.StatBlock[StatValues.ATK]);
             yield return _zoneManager.MoveCardFromFieldToDeck(this);
         }
 
         public IEnumerator Fight(ICardController opponent)
         {
-            StatBlock collidedStats = opponent.StatBlock;
-            collidedStats[StatBlock.StatValues.DEF] -= Model.StatBlock[StatBlock.StatValues.ATK];
-            Model.StatBlock[StatBlock.StatValues.DEF] -= collidedStats[StatBlock.StatValues.ATK];
+            IStatBlockModel collidedStats = opponent.StatBlock;
+            collidedStats[StatValues.DEF] -= Model.StatBlock[StatValues.ATK];
+            Model.StatBlock[StatValues.DEF] -= collidedStats[StatValues.ATK];
 
             yield return Utilities.WaitForCoroutines(
                 opponent.CheckDeath(),
@@ -96,7 +98,7 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator CheckDeath()
         {
-            if (Model.StatBlock[StatBlock.StatValues.DEF] <= 0)
+            if (Model.StatBlock[StatValues.DEF] <= 0)
             {
                 yield return _zoneManager.MoveCardFromFieldToGraveyard(this);
             }
@@ -105,8 +107,8 @@ namespace Abraxas.Cards.Controllers
         public IEnumerator Combat()
         {
             yield return _fieldManager.MoveCardAndFight(this, new Point(
-                Model.Owner == Player.Player1 ? Model.StatBlock[StatBlock.StatValues.MV] :
-                Model.Owner == Player.Player2 ? -Model.StatBlock[StatBlock.StatValues.MV] : 0, 0));
+                Model.Owner == Player.Player1 ? Model.StatBlock[StatValues.MV] :
+                Model.Owner == Player.Player2 ? -Model.StatBlock[StatValues.MV] : 0, 0));
         }
 
         public IEnumerator OnEventRaised(ManaModifiedEvent eventData)

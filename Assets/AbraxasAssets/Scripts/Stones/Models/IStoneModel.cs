@@ -2,7 +2,7 @@
 
 namespace Abraxas.Stones.Models
 {
-    interface IStoneModel
+    public interface IStoneModel
     {
         #region Events
         public event Action OnCostChanged;

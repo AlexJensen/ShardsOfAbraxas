@@ -1,5 +1,6 @@
 ﻿using Abraxas.Cards.Controllers;
 using Abraxas.Stones;
+using Abraxas.Zones.Views;
 using System.Collections.Generic;
 using System.Linq;
 using Player = Abraxas.Players.Players;
@@ -73,6 +74,11 @@ namespace Abraxas.Zones.Models
                 _cardList[i] = _cardList[j];
                 _cardList[j] = temp;
             }
+        }
+
+        public virtual void Initialize<TView>(TView view) where TView : IZoneView
+        {
+
         }
         #endregion
     }

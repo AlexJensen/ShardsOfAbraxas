@@ -1,6 +1,7 @@
 ﻿using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
+using Abraxas.StatBlocks.Models;
 using Abraxas.Stones;
 using Abraxas.Zones.Controllers;
 using System.Collections;
@@ -21,7 +22,7 @@ namespace Abraxas.Cards.Controllers
         Players.Players OriginalOwner { get; }
         Point FieldPosition { get; set; }
         ICellController Cell { get; set; }
-        StatBlock StatBlock { get; }
+        IStatBlockModel StatBlock { get; }
 
         IEnumerator CheckDeath();
         IEnumerator Combat();

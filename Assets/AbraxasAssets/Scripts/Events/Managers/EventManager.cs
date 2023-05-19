@@ -34,7 +34,8 @@ namespace Abraxas.Events.Managers
         {
             if (_eventListeners.TryGetValue(eventType, out var listeners))
             {
-                foreach (var listener in listeners)
+                var listenersCopy = new HashSet<object>(listeners);
+                foreach (var listener in listenersCopy)
                 {
                     if (listener is IGameEventListener<T> gameEventListener)
                     {

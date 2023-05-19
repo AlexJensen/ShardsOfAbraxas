@@ -12,13 +12,15 @@ namespace Abraxas.Zones.Controllers
     public interface IZoneController
     {
         Player Player { get; }
+        IZoneView View { get; }
         Dictionary<StoneType, int> GetTotalCostOfZone();
         ICardController RemoveCard(ICardController card);
-        IEnumerator AddCard(ICardController card, int index = 0);
+        IEnumerator MoveCardToZone(ICardController card, int index = 0);
         ICardController RemoveCard(int index);
 
         void Initialize<TView, TModel>(TView view, TModel model)
             where TView : IZoneView
             where TModel : IZoneModel;
+        void AddCardToZone(ICardController card, int index = 0);
     }
 }

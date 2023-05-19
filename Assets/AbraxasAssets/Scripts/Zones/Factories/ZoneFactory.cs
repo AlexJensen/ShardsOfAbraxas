@@ -23,6 +23,8 @@ namespace Abraxas.Zones.Factories
             var controller = _container.Instantiate<TController>();
             var model = _container.Instantiate<TModel>();
 
+            view.Initialize(controller, model);
+            model.Initialize(view);
             controller.Initialize(view, model);
             return controller;
         }

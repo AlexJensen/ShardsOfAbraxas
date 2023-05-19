@@ -1,5 +1,4 @@
 ﻿using Abraxas.Cards.Controllers;
-using Abraxas.Cards.Models;
 using Abraxas.Cells.Views;
 using Abraxas.Events;
 using System.Collections;
@@ -13,7 +12,6 @@ namespace Abraxas.Cards.Views
     public interface ICardView
     {
         ICardController Controller { get; }
-        ICardModelReader Model { get; }
         Image Image { get; }
         Transform Transform { get; }
         NetworkBehaviourReference NetworkBehaviourReference { get; }

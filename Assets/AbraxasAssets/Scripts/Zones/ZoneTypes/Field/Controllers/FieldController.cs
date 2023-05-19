@@ -22,7 +22,6 @@ namespace Abraxas.Zones.Fields.Controllers
         {
             _playerManager = playerManager;
         }
-
         public class Factory : PlaceholderFactory<IFieldView, IFieldController, IFieldModel>
         {
 

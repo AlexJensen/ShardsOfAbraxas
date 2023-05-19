@@ -5,5 +5,8 @@ namespace Abraxas.Zones.Hands.Views
     interface IHandView : IZoneView
     {
         int CardPlaceholderSiblingIndex { get; }
+
+        void HidePlaceholder();
+        void UpdateCardPlaceholderPosition();
     }
 }

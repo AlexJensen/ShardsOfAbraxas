@@ -4,7 +4,6 @@ using Abraxas.Core;
 using Abraxas.GameStates;
 using Abraxas.Manas;
 using Abraxas.Players.Managers;
-using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Drawing;
@@ -45,6 +44,10 @@ namespace Abraxas.Game.Managers
         }
         #endregion
 
+        #region Properties
+        public bool GameStarted { get; private set; } = false;
+        #endregion;
+
         #region Methods
         public void Start()
         {
@@ -53,17 +56,22 @@ namespace Abraxas.Game.Managers
 
         public IEnumerator StartGame()
         {
-            yield return Utilities.WaitForCoroutines(
-                            _zoneManager.ShuffleDeck(Player.Player1),
-                            _zoneManager.ShuffleDeck(Player.Player2));
-            yield return new WaitForSeconds(.1f);
-            yield return Utilities.WaitForCoroutines(
-                            _zoneManager.MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
-                            _zoneManager.MoveCardsFromDeckToHand(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
+            if (!GameStarted)
+            {
+                GameStarted = true;
+                _zoneManager.BuildDecks();
+                yield return Utilities.WaitForCoroutines(
+                                _zoneManager.ShuffleDeck(Player.Player1),
+                                _zoneManager.ShuffleDeck(Player.Player2));
+                yield return new WaitForSeconds(.1f);
+                Debug.Log($"GameManagerDrawingStartOfGameCards");
+                yield return Utilities.WaitForCoroutines(
+                                _zoneManager.MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
+                                _zoneManager.MoveCardsFromDeckToHand(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
+            }
         }
         public IEnumerator DrawStartOfTurnCardsForActivePlayer()
         {
-            yield return new WaitForSeconds(.1f);
             yield return _zoneManager.MoveCardsFromDeckToHand(_playerManager.ActivePlayer, _settings.CardsToDrawAtStartOfTurn);
         }
         public IEnumerator GenerateStartOfTurnManaForActivePlayer()
@@ -71,12 +79,10 @@ namespace Abraxas.Game.Managers
             yield return _manaManager.GenerateManaFromDeckRatio(_playerManager.ActivePlayer, _manaManager.StartOfTurnMana);
             _manaManager.IncrementStartOfTurnManaAmount();
         }
-        
         public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
         {
             PurchaseCardAndMoveFromHandToCellServerRpc(card.View.NetworkBehaviourReference, new Vector2Int(fieldPosition.X, fieldPosition.Y));
         }
-
         private void PurchaseCardAndMoveFromHandToCell(ICardView card, Vector2Int fieldPosition)
         {
             _manaManager.PurchaseCard(card.Controller);

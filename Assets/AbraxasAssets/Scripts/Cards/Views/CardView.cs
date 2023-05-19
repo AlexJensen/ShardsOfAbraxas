@@ -19,7 +19,7 @@ namespace Abraxas.Cards.Views
     [RequireComponent(typeof(RectTransform))]
     [RequireComponent(typeof(RectTransformMover))]
     [RequireComponent(typeof(CardDragListener))]
-    [RequireComponent(typeof(CardMouseOverListener))]
+    [RequireComponent(typeof(CardMouseOverView))]
     class CardView : NetworkBehaviour, ICardView
     {
         #region Dependencies
@@ -38,68 +38,66 @@ namespace Abraxas.Cards.Views
             _model = model;
             _controller = controller;
 
-
-            Model.OnTitleChanged += OnTitleChanged;
-            Model.OnOwnerChanged += OnOwnerChanged;
-            Model.OnOriginalOwnerChanged += OnOriginalOwnerChanged;
-            Model.OnHiddenChanged += OnHiddenChanged;
+            _model.OnTitleChanged += OnTitleChanged;
+            _model.OnOwnerChanged += OnOwnerChanged;
+            _model.OnOriginalOwnerChanged += OnOriginalOwnerChanged;
+            _model.OnHiddenChanged += OnHiddenChanged;
+            OnTitleChanged();
+            OnOwnerChanged();
+            OnOriginalOwnerChanged();
+            OnHiddenChanged();
         }
         public override void OnDestroy()
         {
-            Model.OnTitleChanged -= OnTitleChanged;
-            Model.OnOwnerChanged -= OnOwnerChanged;
-            Model.OnOriginalOwnerChanged -= OnOriginalOwnerChanged;
-            Model.OnHiddenChanged -= OnHiddenChanged;
+            _model.OnTitleChanged -= OnTitleChanged;
+            _model.OnOwnerChanged -= OnOwnerChanged;
+            _model.OnOriginalOwnerChanged -= OnOriginalOwnerChanged;
+            _model.OnHiddenChanged -= OnHiddenChanged;
         }
         #endregion
 
         #region Fields
         [SerializeField]
-        GameObject _cover;
+        Image _cover, _cardBack;
         [SerializeField]
         TMP_Text _titleText, _costText;
         [SerializeField]
         Image _image;
-
         RectTransformMover _rectTransformMover;
         #endregion
 
         #region Properties
         public ICardController Controller { get => _controller; }
-        public ICardModelReader Model { get => _model; }
         public RectTransformMover RectTransformMover { get => _rectTransformMover != null ? _rectTransformMover :_rectTransformMover = GetComponent<RectTransformMover>(); }
         public Image Image { get => _image; set => _image = value; }
-
         public Transform Transform => transform;
-
         public NetworkBehaviourReference NetworkBehaviourReference => NetworkBehaviourReference;
         #endregion
 
         #region Methods
         public void OnTitleChanged()
         {
-            _titleText.text = Model.Title;
+            _titleText.text = _model.Title;
         }
-
         public void OnOwnerChanged()
         {
-            _titleText.color = _playerSettings.GetPlayerDetails(Model.Owner).color;
+            UnityEngine.Color playerColor = _playerSettings.GetPlayerDetails(_model.Owner).color;
+            _titleText.color = playerColor;
+            _cover.color = playerColor;
+            _cardBack.color = playerColor;
         }
-
         public void OnOriginalOwnerChanged()
         {
-            Image.transform.localScale = new Vector3(Model.OriginalOwner == Player.Player1 ? 1 : -1, 1, 1);
+            Image.transform.localScale = new Vector3(_model.OriginalOwner == Player.Player1 ? 1 : -1, 1, 1);
         }
-
         public void OnHiddenChanged()
         {
-            _cover.SetActive(Model.Hidden);
+            _cover.gameObject.SetActive(_model.Hidden);
         }
-
         public void UpdateCostTextWithCastability(ManaModifiedEvent eventData)
         {
             string TotalCost = "";
-            foreach (var (pair, alpha) in from KeyValuePair<StoneType, int> pair in Model.TotalCosts
+            foreach (var (pair, alpha) in from KeyValuePair<StoneType, int> pair in _model.TotalCosts
                                           from Manas.ManaType manaPair in eventData.Mana.ManaTypes
                                           where pair.Key == manaPair.Type
                                           let alpha = pair.Value <= manaPair.Amount ? "FF" : "44"
@@ -109,26 +107,22 @@ namespace Abraxas.Cards.Views
             }
             _costText.text = TotalCost;
         }
-
         public string GetCostText()
         {
-            var costStrings = Model.TotalCosts
+            var costStrings = _model.TotalCosts
                 .Where(pair => pair.Value != 0)
                 .Select(pair => $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneDetails(pair.Key).color)}>{pair.Value}");
 
             return string.Join("", costStrings);
         }
-
         public void ChangeScale(PointF scale, float time)
         {
             StartCoroutine(RectTransformMover.ChangeScaleEnumerator(new Vector2(scale.X, scale.Y), time));
         }
-
         public void SetCardPositionToMousePosition()
         {
-            RectTransformMover.SetCardPosition(Input.mousePosition);
+            RectTransformMover.SetPosition(Input.mousePosition);
         }
-
         public IEnumerator MoveToCell(ICellView cell, float moveCardTime)
         {
             yield return RectTransformMover.MoveToFitRectangle(cell.RectTransform, moveCardTime);

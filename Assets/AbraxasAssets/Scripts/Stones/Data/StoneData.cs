@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine;
 
-namespace Abraxas.Stones
+namespace Abraxas.Stones.Data
 {
     [Serializable]
     public struct StoneData

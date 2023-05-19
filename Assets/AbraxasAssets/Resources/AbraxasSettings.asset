@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AbraxasSettings
   m_EditorClassIdentifier: 
   GameSettings:
-    Player1CardsToDrawAtStartOfGame: 5
+    Player1CardsToDrawAtStartOfGame: 4
     Player2CardsToDrawAtStartOfGame: 5
     CardsToDrawAtStartOfTurn: 1
   StoneSettings:
@@ -44,7 +44,7 @@ MonoBehaviour:
       color: {r: 0.49803922, g: 1, b: 0.49803922, a: 1}
     - name: Sapphire
       type: 8
-      color: {r: 0, g: 0, b: 1, a: 1}
+      color: {r: 0.18396229, g: 0.18396229, b: 1, a: 1}
     - name: Tourmaline
       type: 9
       color: {r: 1, g: 0, b: 0.49803922, a: 1}
@@ -85,3 +85,5 @@ MonoBehaviour:
     CombatText: Combat
     AfterCombatText: End Turn
     EndOfTurnText: Turn Ending
+  OverlaySettings:
+    ScaleCardToOverlayTime: 0.2

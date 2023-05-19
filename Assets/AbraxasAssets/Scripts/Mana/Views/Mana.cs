@@ -50,12 +50,7 @@ namespace Abraxas.Manas
         #endregion
 
         #region Methods
-        void Start()
-        {
-            CreateManaTypes();
-        }
-
-        private void CreateManaTypes()
+        public void CreateManaTypesFromDeck()
         {
             _deckCosts = _deckManager.GetDeckCost(Player);
             _manaTypes = _deckCosts

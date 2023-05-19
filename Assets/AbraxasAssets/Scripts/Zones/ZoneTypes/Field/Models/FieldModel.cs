@@ -1,4 +1,5 @@
 ﻿using Abraxas.Cells.Controllers;
+using Abraxas.Zones.Fields.Views;
 using Abraxas.Zones.Models;
 using System.Collections.Generic;
 
@@ -11,11 +12,10 @@ namespace Abraxas.Zones.Fields.Models
         #endregion
 
         #region Properties
-        public List<List<ICellController>> FieldGrid { get => _fieldGrid; set => _fieldGrid = value; }
-
-        public override void Shuffle()
+        public List<List<ICellController>> FieldGrid { get => _fieldGrid; }
+        public override void Initialize<TView>(TView view)
         {
-            throw new System.NotImplementedException();
+            _fieldGrid = ((IFieldView)view).GenerateField();
         }
         #endregion
     }

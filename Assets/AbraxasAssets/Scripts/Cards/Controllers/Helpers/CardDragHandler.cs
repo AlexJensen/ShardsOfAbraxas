@@ -19,18 +19,16 @@ namespace Abraxas.Cards.Controllers
         readonly IGameManager _gameManager;
         readonly IPlayerManager _playerManager;
         readonly IHandManager _handManager;
-        readonly IOverlayManager _overlayManager;
         readonly IFieldManager _fieldManager;
         readonly IManaManager _manaManager;
         public CardDragHandler(Overlay.Settings overlaySettings, IGameManager gameManager, IPlayerManager playerManager,
-                               IHandManager handManager, IOverlayManager overlayManager, IFieldManager fieldManager,
+                               IHandManager handManager, IFieldManager fieldManager,
                                IManaManager manaManager)
         {
             _overlaySettings = overlaySettings;
             _gameManager = gameManager;
             _playerManager = playerManager;
             _handManager = handManager;
-            _overlayManager = overlayManager;
             _fieldManager = fieldManager;
             _manaManager = manaManager;
         }
@@ -46,14 +44,15 @@ namespace Abraxas.Cards.Controllers
         {
             if (!_cardController.Hidden && _cardController.OriginalOwner == _playerManager.LocalPlayer && _cardController.Zone is IHandController)
             {
-                _handManager.RemoveCard(_cardController.OriginalOwner, _cardController);
+                _handManager.CardDragging = _cardController;
+                _handManager.RemoveCard(_cardController);
                 _cardController.View.ChangeScale(_fieldManager.GetCellDimensions(), _overlaySettings.ScaleCardToOverlayTime);
             }
         }
 
         public void OnDrag()
         {
-            if (_overlayManager.Card == _cardController.View)
+            if (_handManager.CardDragging == _cardController)
             {
                 _cardController.View.SetCardPositionToMousePosition();
             }
@@ -61,7 +60,7 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator OnCardDraggedOverCell(ICellController cell)
         {
-            if (_overlayManager.Card == _cardController.View && _cardController.OriginalOwner == _playerManager.ActivePlayer)
+            if (_handManager.CardDragging == _cardController && _cardController.OriginalOwner == _playerManager.ActivePlayer)
             {
                 if (cell.CardsOnCell == 0 && cell.Player == _cardController.Owner && _manaManager.CanPurchaseCard(_cardController))
                 {

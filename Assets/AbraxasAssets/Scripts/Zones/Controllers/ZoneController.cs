@@ -15,7 +15,7 @@ namespace Abraxas.Zones.Controllers
         IZoneView _view;
         IZoneModel _model;
 
-        protected IZoneView View { get => _view; }
+        public IZoneView View { get => _view; }
         protected IZoneModel Model { get => _model; }
 
         public void Initialize<TView, TModel>(TView view, TModel model)
@@ -31,28 +31,40 @@ namespace Abraxas.Zones.Controllers
 
         #region Properties
         public Player Player => Model.Player;
+
         #endregion
 
         #region Methods
         public virtual ICardController RemoveCard(ICardController card)
         {
-            return Model.RemoveCard(card);  
+            UnityEngine.Debug.Log("ZoneController.RemoveCard");
+            View.RemoveCardFromHolder(card.View);
+            return Model.RemoveCard(card);
         }
-
+        public virtual ICardController RemoveCard(int index)
+        {
+            UnityEngine.Debug.Log("ZoneController.RemoveCard (index)");
+            return RemoveCard(Model.CardList[index]);
+        }
         public Dictionary<StoneType, int> GetTotalCostOfZone()
         {
             return Model.GetTotalCostOfZone();
         }
-
-        public virtual IEnumerator AddCard(ICardController card, int index = 0)
+        public virtual IEnumerator MoveCardToZone(ICardController card, int index = 0)
         {
+            UnityEngine.Debug.Log("ZoneController.MoveCardToZone");
+            card.Zone = this;
             yield return View.MoveCardToZone(card.View, index);
             Model.AddCard(card, index);
         }
-        public virtual ICardController RemoveCard(int index)
+        public virtual void AddCardToZone(ICardController card, int index = 0)
         {
-            return Model.RemoveCard(index);
+            UnityEngine.Debug.Log("ZoneController.AddCardToZone");
+            card.Zone = this;
+            View.AddCardToHolder(card.View, index);
+            Model.AddCard(card, index);
         }
+        
         #endregion
 
     }

@@ -17,31 +17,37 @@ namespace Abraxas.Zones.Hands.Managers
         [SerializeField]
         List<HandView> _handViews;
         List<IHandController> _hands = new();
+
+        public ICardController CardDragging { get; set; }
+
         [Inject]
         void Construct(ZoneFactory<IHandView, HandController, HandModel> handFactory)
         {
-            foreach (var deckView in _handViews)
+            foreach (var handView in _handViews)
             {
-                _hands.Add(handFactory.Create(deckView));
+                _hands.Add(handFactory.Create(handView));
             }
         }
         #endregion
 
         #region Methods
-        public void RemoveCard(Player player, ICardController card)
+        public void RemoveCard(ICardController card)
         {
-            GetPlayerHand(player).RemoveCard(card);
+            UnityEngine.Debug.Log("HandManager.RemoveCard");
+            GetPlayerHand(card.OriginalOwner).RemoveCard(card);
         }
 
         public IEnumerator MoveCardToHand(Player player, ICardController card)
         {
-            yield return GetPlayerHand(player).AddCard(card);
+            UnityEngine.Debug.Log("HandManager.MoveCardToHand");
+            yield return GetPlayerHand(player).MoveCardToZone(card);
         }
 
         public IEnumerator ReturnCardToHand(ICardController card)
         {
+            UnityEngine.Debug.Log("HandManager.ReturnCardToHand");
             IHandController playerHand = GetPlayerHand(card.OriginalOwner);
-            yield return playerHand.AddCard(card, playerHand.CardPlaceholderSiblingIndex);
+            yield return playerHand.MoveCardToZone(card, playerHand.CardPlaceholderSiblingIndex);
         }
 
         private IHandController GetPlayerHand(Player player)

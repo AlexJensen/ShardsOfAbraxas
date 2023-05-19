@@ -1,6 +1,7 @@
 using Abraxas.Cards;
 using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Views;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Abraxas.Zones.Overlays.Managers
@@ -14,19 +15,24 @@ namespace Abraxas.Zones.Overlays.Managers
 
         #region Properties
         public Transform Overlay { get => _overlay; }
-        public ICardView Card { get; private set; }
+        List<ICardView> Cards { get;} = new();
         #endregion
 
         #region Methods
         public void SetCard(ICardView card)
         {
             card.Transform.SetParent(Overlay.transform);
-            Card = card;
+            Cards.Add(card);
         }
 
         public void ClearCard(ICardView card)
         {
-            Card = null;
+            Cards.Remove(card);
+        }
+
+        public bool HasCard(ICardView card)
+        {
+            return Cards.Contains(card);
         }
         #endregion
     }

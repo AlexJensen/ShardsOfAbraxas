@@ -1,5 +1,6 @@
 ﻿using Abraxas.Cards.Controllers;
 using Abraxas.Stones;
+using Abraxas.Zones.Views;
 using System.Collections.Generic;
 using Player = Abraxas.Players.Players;
 
@@ -20,6 +21,7 @@ namespace Abraxas.Zones.Models
         IEnumerable<ICardController> GetCardsForPlayer(Player player);
         Dictionary<StoneType, int> GetTotalCostOfZone();
         void Shuffle();
+        void Initialize<TView>(TView view) where TView : IZoneView;
         #endregion
     }
 }

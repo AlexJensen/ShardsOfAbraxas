@@ -26,7 +26,9 @@ namespace Abraxas.Zones.Views
 
         IZoneController _controller;
         IZoneModel _model;
-        public void Initialize(IZoneController controller, IZoneModel model)
+        public void Initialize<TController, TModel>(TController controller, TModel model)
+            where TController : IZoneController
+            where TModel : IZoneModel
         {
             _controller = controller;
             _model = model;
@@ -38,8 +40,6 @@ namespace Abraxas.Zones.Views
         RectTransform _cardHolder;
         [SerializeField]
         Player _player;
-
-
         #endregion
 
         #region Properties
@@ -60,14 +60,19 @@ namespace Abraxas.Zones.Views
             AddCardToHolder(card, index);
             OverlayManager.ClearCard(card);
         }
-
-        private void AddCardToHolder(ICardView card, int index = 0)
+        public virtual void AddCardToHolder(ICardView card, int index = 0)
         {
             card.Transform.localScale = Vector3.zero;
             card.Transform.position = transform.position;
             card.Transform.SetParent(CardHolder.transform);
             card.Transform.SetSiblingIndex(index);
         }
+        public void RemoveCardFromHolder(ICardView card)
+        {
+            card.Transform.localScale = Vector3.one;
+        }
+
+        
         #endregion
     }
 }

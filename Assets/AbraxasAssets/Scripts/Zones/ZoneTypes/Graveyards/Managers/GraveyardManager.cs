@@ -30,7 +30,7 @@ namespace Abraxas.Zones.Graveyards.Managers
         #region Methods
         public IEnumerator MoveCardToGraveyard(Player player, ICardController card)
         {
-            yield return GetPlayerGraveyard(player).AddCard(card);
+            yield return GetPlayerGraveyard(player).MoveCardToZone(card);
         }
 
         private IGraveyardController GetPlayerGraveyard(Player player)

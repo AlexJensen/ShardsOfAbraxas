@@ -10,8 +10,7 @@ using Player = Abraxas.Players.Players;
 namespace Abraxas.Zones.Hands.Views
 {
     class HandView : ZoneView, IHandView
-    { 
-
+    {
         #region Fields
         CardPlaceholder _cardPlaceholder;
         bool cardReturningToPlaceholder;
@@ -34,14 +33,7 @@ namespace Abraxas.Zones.Hands.Views
 
         void Update()
         {
-            if (OverlayManager.Card != null && OverlayManager.Card.Controller.Owner == Player && OverlayManager.Card.Controller.Zone is IHandController)
-            {
-                UpdateCardPlaceholderPosition();
-            }
-            else if (!cardReturningToPlaceholder && CardPlaceholder.isActiveAndEnabled)
-            {
-                CardPlaceholder.Hide();
-            }
+          
         }
 
         public void RemoveCard(ICardController card)
@@ -71,7 +63,7 @@ namespace Abraxas.Zones.Hands.Views
             CardPlaceholder.Reset();
         }
 
-        private void UpdateCardPlaceholderPosition()
+        public void UpdateCardPlaceholderPosition()
         {
             var cardList = Model.CardList;
             foreach (ICardController card in cardList)
@@ -90,6 +82,14 @@ namespace Abraxas.Zones.Hands.Views
                 }
             }
             CardPlaceholder.UpdatePosition();
+        }
+
+        public void HidePlaceholder()
+        {
+            if (!cardReturningToPlaceholder && CardPlaceholder.isActiveAndEnabled)
+            {
+                CardPlaceholder.Hide();
+            }
         }
         #endregion
     }

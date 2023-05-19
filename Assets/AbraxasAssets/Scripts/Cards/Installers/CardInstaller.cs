@@ -4,6 +4,7 @@ using Abraxas.Cards.Factories;
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Zenject;
+using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Installers
 {
@@ -15,7 +16,7 @@ namespace Abraxas.Cards.Installers
             Container.BindInterfacesAndSelfTo<CardView>().AsTransient();
             Container.BindInterfacesAndSelfTo<CardController>().AsTransient();
             Container.BindInterfacesAndSelfTo<CardModel>().AsTransient();
-            Container.BindFactory<CardData, ICardController, CardController.Factory>().FromFactory<CardFactory>();
+            Container.BindFactory<CardData, Player, ICardController, CardController.Factory>().FromFactory<CardFactory>();
         }
         #endregion
     }

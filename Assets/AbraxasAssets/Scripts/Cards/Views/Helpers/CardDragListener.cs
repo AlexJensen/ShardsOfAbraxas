@@ -55,8 +55,6 @@ namespace Abraxas.Cards.Views
             }
             StartCoroutine(_dragHandler.ReturnFromOverlayToHand());
         }
-
-
         #endregion
     }
 }

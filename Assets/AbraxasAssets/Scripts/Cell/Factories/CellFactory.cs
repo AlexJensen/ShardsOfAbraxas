@@ -19,6 +19,7 @@ namespace Abraxas.Cell.Factories
             var controller = _container.Instantiate<CellController>();
             var model = _container.Instantiate<CellModel>();
 
+            view.Initialize(controller);
             controller.Initialize(view, model);
             return controller;
         }

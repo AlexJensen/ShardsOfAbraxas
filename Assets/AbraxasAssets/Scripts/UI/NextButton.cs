@@ -10,7 +10,6 @@ using Zenject;
 
 namespace Abraxas.UI
 {
-    [RequireComponent(typeof(Button))]
     public class NextButton : MonoBehaviour, IGameEventListener<GameStateEnteredEvent>
     {
         #region Settings

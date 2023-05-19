@@ -7,9 +7,9 @@ namespace Abraxas.Zones.Overlays.Managers
     public interface IOverlayManager
     {
         Transform Overlay { get; }
-        ICardView Card { get; }
 
         void SetCard(ICardView card);
         void ClearCard(ICardView card);
+        bool HasCard(ICardView card);
     }
 }

@@ -47,13 +47,12 @@ namespace Abraxas.CardViewers.Managers
             _cardViewer.ShowCardDetails(card);
         }
 
-        public IEnumerator HideCardViewer()
+        public void HideCardViewer()
         {
             _cardViewer.gameObject.SetActive(false);
-            yield break;
         }
 
-        public IEnumerator ShowCardViewer(ICardController card)
+        public void ShowCardViewer(ICardController card)
         {
             if (Input.mousePosition.x > Screen.width * .5f)
             {
@@ -63,7 +62,6 @@ namespace Abraxas.CardViewers.Managers
             {
                 ShowCardViewerOnSide(card, ScreenSide.RIGHT);
             }
-            yield break;
         }
         #endregion
     }
