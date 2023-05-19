@@ -3,13 +3,19 @@ using Abraxas.Stones.Data;
 using System;
 using System.Collections.Generic;
 
+using Player = Abraxas.Players.Players;
+
 namespace Abraxas.Cards.Data
 {
     [Serializable]
     public struct CardData
     {
-        public string Title { get; set; }
-        public List<StoneData> Stones { get; set; }
-        public StatBlockData StatBlock { get; set; }
+        #region Fields
+        public string Title;
+        public Player Owner;
+        public Player OriginalOwner;
+        public List<StoneData> Stones;
+        public StatBlockData StatBlock;
+        #endregion
     }
 }

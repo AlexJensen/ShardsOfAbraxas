@@ -34,7 +34,7 @@ namespace Abraxas.Cards.Factories
             var statBlockView = gameObject.GetComponent<StatBlockView>();
 
             statBlockView.Initialize(statBlockModel);
-            model.Initialize(data, statBlockModel, player);
+            model.Initialize(data, statBlockModel);
             controller.Initialize(model, model, view);
             view.Initialize(model, controller);
             dragHandler.Initialize(controller);

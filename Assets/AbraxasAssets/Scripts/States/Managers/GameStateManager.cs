@@ -40,7 +40,7 @@ namespace Abraxas.GameStates.Managers
         {
             if (!IsServer) yield break;
             AdvanceGameStateClientRpc();
-            yield return SwitchGameStateTo(State.NextState());
+            if (!IsHost) yield return SwitchGameStateTo(State.NextState());
         }
 
         public IEnumerator RequestNextGameState()
@@ -64,7 +64,7 @@ namespace Abraxas.GameStates.Managers
         private void AdvanceGameStateServerRpc()
         {
             if (!IsServer) return;
-            StartCoroutine(SwitchGameStateTo(State.NextState()));
+            if (!IsHost) StartCoroutine(SwitchGameStateTo(State.NextState()));
             AdvanceGameStateClientRpc();
         }
 

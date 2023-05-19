@@ -8,6 +8,6 @@ namespace Abraxas.Players.Managers
         Players LocalPlayer { get; }
 
         void RegisterLocalPlayer(Players player);
-        IEnumerator ToggleActivePlayer();
+        IEnumerator SetActivePlayer(Players player);
     }
 }

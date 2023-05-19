@@ -21,12 +21,10 @@ namespace Abraxas.Cards.Models
 
         #region Dependencies
         CardData _data;
-        public void Initialize(CardData data, IStatBlockModel statBlockModel, Player player)
+        public void Initialize(CardData data, IStatBlockModel statBlockModel)
         {
             _data = data;
             _statBlock = statBlockModel;
-            _owner = player;
-            _originalOwner = player;
            ((IStatBlockModelWriter)statBlockModel).Initialize(data.StatBlock);
         }
         #endregion
@@ -54,7 +52,7 @@ namespace Abraxas.Cards.Models
         }
         public Player Owner
         {
-            get => _owner;
+            get => _data.Owner;
             set
             {
                 if (_owner != value) OnOwnerChanged.Invoke();
@@ -63,7 +61,7 @@ namespace Abraxas.Cards.Models
         }
         public Player OriginalOwner
         {
-            get => _originalOwner;
+            get => _data.OriginalOwner;
             set
             {
                 if (_originalOwner != value) OnOriginalOwnerChanged.Invoke(); 

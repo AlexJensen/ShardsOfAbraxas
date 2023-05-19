@@ -33,23 +33,17 @@ namespace Abraxas.Zones.Hands.Managers
         #region Methods
         public void RemoveCard(ICardController card)
         {
-            UnityEngine.Debug.Log("HandManager.RemoveCard");
             GetPlayerHand(card.OriginalOwner).RemoveCard(card);
         }
-
         public IEnumerator MoveCardToHand(Player player, ICardController card)
         {
-            UnityEngine.Debug.Log("HandManager.MoveCardToHand");
             yield return GetPlayerHand(player).MoveCardToZone(card);
         }
-
         public IEnumerator ReturnCardToHand(ICardController card)
         {
-            UnityEngine.Debug.Log("HandManager.ReturnCardToHand");
             IHandController playerHand = GetPlayerHand(card.OriginalOwner);
             yield return playerHand.MoveCardToZone(card, playerHand.CardPlaceholderSiblingIndex);
         }
-
         private IHandController GetPlayerHand(Player player)
         {
             return _hands.Find(x => x.Player == player);

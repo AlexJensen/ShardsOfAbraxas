@@ -8,13 +8,12 @@ namespace Abraxas.StatBlocks.Data
     public struct StatBlockData
     {
         #region Fields
-        Vector3Int _stats;
+        public Vector3Int _stats;
+        public int Cost;
+        public StoneType StoneType;
         #endregion
 
         #region Properties
-        public int Cost { get; internal set; }
-        public StoneType StoneType { get; internal set; }
-
         public int this[StatValues index]
         {
             get => _stats[(int)index];

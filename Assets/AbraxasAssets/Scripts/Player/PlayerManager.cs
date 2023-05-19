@@ -1,7 +1,5 @@
 using System.Collections;
 using Unity.Netcode;
-using UnityEngine;
-using Zenject;
 
 namespace Abraxas.Players.Managers
 {
@@ -18,10 +16,12 @@ namespace Abraxas.Players.Managers
         #endregion
 
         #region Methods
-        public IEnumerator ToggleActivePlayer()
+        public IEnumerator SetActivePlayer(Players player)
         {
             if (!IsServer) yield break;
-            _activePlayer.Value = _activePlayer.Value == Players.Player1 ? Players.Player2 : Players.Player1;
+            _activePlayer.Value = player;
+            if (IsHost) _localPlayer = player;
+
         }
 
         public void RegisterLocalPlayer(Players player)

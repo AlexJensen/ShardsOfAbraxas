@@ -2,6 +2,8 @@
 using Abraxas.Game.Managers;
 using Abraxas.Players.Managers;
 using System.Collections;
+using Unity.Netcode;
+using UnityEngine;
 using Zenject;
 
 namespace Abraxas.GameStates
@@ -39,7 +41,7 @@ namespace Abraxas.GameStates
         public override IEnumerator OnExitState()
         {
             yield return base.OnExitState();
-            yield return _playerManager.ToggleActivePlayer();
+            yield return _playerManager.SetActivePlayer(_playerManager.ActivePlayer == Players.Players.Player1? Players.Players.Player2: Players.Players.Player1);
         }
         #endregion
     }

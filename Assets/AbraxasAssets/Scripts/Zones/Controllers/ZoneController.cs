@@ -17,7 +17,6 @@ namespace Abraxas.Zones.Controllers
 
         public IZoneView View { get => _view; }
         protected IZoneModel Model { get => _model; }
-
         public void Initialize<TView, TModel>(TView view, TModel model)
             where TView : IZoneView
             where TModel : IZoneModel
@@ -30,39 +29,35 @@ namespace Abraxas.Zones.Controllers
         #endregion
 
         #region Properties
-        public Player Player => Model.Player;
+        public Player Player => _model.Player;
 
         #endregion
 
         #region Methods
         public virtual ICardController RemoveCard(ICardController card)
         {
-            UnityEngine.Debug.Log("ZoneController.RemoveCard");
-            View.RemoveCardFromHolder(card.View);
-            return Model.RemoveCard(card);
+            _view.RemoveCardFromHolder(card.View);
+            return _model.RemoveCard(card);
         }
         public virtual ICardController RemoveCard(int index)
         {
-            UnityEngine.Debug.Log("ZoneController.RemoveCard (index)");
-            return RemoveCard(Model.CardList[index]);
+            return RemoveCard(_model.CardList[index]);
         }
         public Dictionary<StoneType, int> GetTotalCostOfZone()
         {
-            return Model.GetTotalCostOfZone();
+            return _model.GetTotalCostOfZone();
         }
         public virtual IEnumerator MoveCardToZone(ICardController card, int index = 0)
         {
-            UnityEngine.Debug.Log("ZoneController.MoveCardToZone");
             card.Zone = this;
-            yield return View.MoveCardToZone(card.View, index);
-            Model.AddCard(card, index);
+            yield return _view.MoveCardToZone(card.View, index);
+            _model.AddCard(card, index);
         }
         public virtual void AddCardToZone(ICardController card, int index = 0)
         {
-            UnityEngine.Debug.Log("ZoneController.AddCardToZone");
             card.Zone = this;
-            View.AddCardToHolder(card.View, index);
-            Model.AddCard(card, index);
+            _view.AddCardToHolder(card.View, index);
+            _model.AddCard(card, index);
         }
         
         #endregion

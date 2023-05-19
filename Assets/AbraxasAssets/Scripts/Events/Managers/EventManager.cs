@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Netcode;
 
 namespace Abraxas.Events.Managers
 {
-    public class EventManager : MonoBehaviour, IEventManager
+    public class EventManager : NetworkBehaviour, IEventManager
     {
         #region Fields
         readonly Dictionary<Type, HashSet<object>> _eventListeners = new();

@@ -49,7 +49,7 @@ namespace Abraxas.Cards.Views
                 ICellView cell = hit.gameObject.GetComponent<ICellView>();
                 if (cell != null)
                 {
-                    _dragHandler.OnCardDraggedOverCell(cell.Controller);
+                    StartCoroutine(_dragHandler.OnCardDraggedOverCell(cell.Controller));
                     return;
                 }
             }

@@ -7,6 +7,7 @@ using Zenject;
 
 namespace Abraxas.Players
 {
+    [Serializable]
     public enum Players
     {
         Player1,

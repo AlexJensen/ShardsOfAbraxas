@@ -63,6 +63,8 @@ namespace Abraxas.Cards.Views
         TMP_Text _titleText, _costText;
         [SerializeField]
         Image _image;
+        [SerializeField]
+        NetworkObject _networkObject;
         RectTransformMover _rectTransformMover;
         #endregion
 
@@ -71,7 +73,7 @@ namespace Abraxas.Cards.Views
         public RectTransformMover RectTransformMover { get => _rectTransformMover != null ? _rectTransformMover :_rectTransformMover = GetComponent<RectTransformMover>(); }
         public Image Image { get => _image; set => _image = value; }
         public Transform Transform => transform;
-        public NetworkBehaviourReference NetworkBehaviourReference => NetworkBehaviourReference;
+        public NetworkObject NetworkObject => _networkObject;
         #endregion
 
         #region Methods

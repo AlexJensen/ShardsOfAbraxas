@@ -12,8 +12,6 @@ namespace Abraxas.Zones.Managers
         IEnumerator MoveCardFromHandToCell(ICardController card, Point fieldPosition);
         IEnumerator MoveCardsFromDeckToGraveyard(Players.Players player, int amount, int index = 0);
         IEnumerator MoveCardsFromDeckToHand(Players.Players player, int amount, int index = 0);
-        IEnumerator ShuffleDeck(Players.Players player1);
-        void BuildDecks();
         #endregion
     }
 }

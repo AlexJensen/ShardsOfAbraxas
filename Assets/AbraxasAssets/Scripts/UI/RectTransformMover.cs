@@ -13,6 +13,7 @@ namespace Abraxas
         #region Methods
         public IEnumerator ChangeScaleEnumerator(Vector2 size, float time)
         {
+            Debug.Log($"ChangeScaleEnumeratorFiring: {size},{time}");
             Vector2 origSize = RectTransform.rect.size;
             float lerpIncrement = 1 / time, lerpProgress = 0;
             while (lerpProgress <= 1)
@@ -29,6 +30,7 @@ namespace Abraxas
 
         public IEnumerator MoveToEnumerator(Vector2 location, float time)
         {
+            Debug.Log($"MoveToEnumeratorFiring: {location.x},{location.y},{time}");
             Vector2 originalLocation = RectTransform.position;
             float lerpIncrement = 1 / time, lerpProgress = 0;
             while (lerpProgress <= 1)

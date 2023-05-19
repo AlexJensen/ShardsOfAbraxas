@@ -4,6 +4,7 @@ using Abraxas.Core;
 using Abraxas.GameStates;
 using Abraxas.Manas;
 using Abraxas.Players.Managers;
+using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Drawing;
@@ -25,6 +26,7 @@ namespace Abraxas.Game.Managers
         IGameStateManager _gameStateManager;
         IPlayerManager _playerManager;
         IManaManager _manaManager;
+        IDeckManager _deckManager;
 
         // Zones
         IZoneManager _zoneManager;
@@ -32,6 +34,7 @@ namespace Abraxas.Game.Managers
         [Inject]
         public void Construct(Game.Settings settings,
                        IGameStateManager gameStateManager,
+                       IDeckManager deckManager,
                        IZoneManager zoneManager,
                        IPlayerManager playerManager,
                        IManaManager manaManager)
@@ -41,6 +44,7 @@ namespace Abraxas.Game.Managers
             _zoneManager = zoneManager;
             _playerManager = playerManager;
             _manaManager = manaManager;
+            _deckManager = deckManager;
         }
         #endregion
 
@@ -59,15 +63,13 @@ namespace Abraxas.Game.Managers
             if (!GameStarted)
             {
                 GameStarted = true;
-                _zoneManager.BuildDecks();
-                yield return Utilities.WaitForCoroutines(
-                                _zoneManager.ShuffleDeck(Player.Player1),
-                                _zoneManager.ShuffleDeck(Player.Player2));
-                yield return new WaitForSeconds(.1f);
-                Debug.Log($"GameManagerDrawingStartOfGameCards");
-                yield return Utilities.WaitForCoroutines(
-                                _zoneManager.MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
-                                _zoneManager.MoveCardsFromDeckToHand(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
+                 _deckManager.RequestBuildDecks();
+                yield return new WaitForSeconds(.5f);
+                _deckManager.RequestShuffleDeck(Player.Player1);
+                _deckManager.RequestShuffleDeck(Player.Player2);
+                yield return new WaitForSeconds(.5f);
+                yield return Utilities.WaitForCoroutines(_zoneManager.MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
+                                                         _zoneManager.MoveCardsFromDeckToHand(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
             }
         }
         public IEnumerator DrawStartOfTurnCardsForActivePlayer()
@@ -79,34 +81,47 @@ namespace Abraxas.Game.Managers
             yield return _manaManager.GenerateManaFromDeckRatio(_playerManager.ActivePlayer, _manaManager.StartOfTurnMana);
             _manaManager.IncrementStartOfTurnManaAmount();
         }
-        public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
-        {
-            PurchaseCardAndMoveFromHandToCellServerRpc(card.View.NetworkBehaviourReference, new Vector2Int(fieldPosition.X, fieldPosition.Y));
-        }
-        private void PurchaseCardAndMoveFromHandToCell(ICardView card, Vector2Int fieldPosition)
-        {
-            _manaManager.PurchaseCard(card.Controller);
-            StartCoroutine(_zoneManager.MoveCardFromHandToCell(card.Controller, new Point(fieldPosition.x, fieldPosition.y)));
-        }
+
         #endregion
 
         #region Server Methods
-        [ServerRpc(RequireOwnership = false)]
-        private void PurchaseCardAndMoveFromHandToCellServerRpc(NetworkBehaviourReference cardReference, Vector2Int fieldPosition)
+        public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
         {
-            if (cardReference.TryGet(out CardView card))
+            NetworkObject cardNetworkObject = card.View.NetworkObject;
+            if (cardNetworkObject != null)
             {
-                PurchaseCardAndMoveFromHandToCell(card, fieldPosition);
+                ulong cardNetworkObjectId = cardNetworkObject.NetworkObjectId;
+                PurchaseCardAndMoveFromHandToCellServerRpc(cardNetworkObjectId, new Vector2Int(fieldPosition.X, fieldPosition.Y));
             }
-            PurchaseCardAndMoveFromHandToCellClientRpc(cardReference, fieldPosition);
         }
-
-        [ClientRpc]
-        private void PurchaseCardAndMoveFromHandToCellClientRpc(NetworkBehaviourReference cardReference, Vector2Int fieldPosition)
+        private void PurchaseCardAndMoveFromHandToCell(ICardController card, Vector2Int fieldPosition)
         {
-            if (cardReference.TryGet(out CardView card))
+            _manaManager.PurchaseCard(card);
+            StartCoroutine(_zoneManager.MoveCardFromHandToCell(card, new Point(fieldPosition.x, fieldPosition.y)));
+        }
+        [ServerRpc(RequireOwnership = false)]
+        private void PurchaseCardAndMoveFromHandToCellServerRpc(ulong cardNetworkObjectId, Vector2Int fieldPosition)
+        {
+            NetworkObject cardNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[cardNetworkObjectId];
+            if (cardNetworkObject != null)
             {
-                PurchaseCardAndMoveFromHandToCell(card, fieldPosition);
+                if (cardNetworkObject.GetComponent<CardView>() is CardView card)
+                {
+                    PurchaseCardAndMoveFromHandToCell(card.Controller, fieldPosition);
+                }
+                if (!IsHost) PurchaseCardAndMoveFromHandToCellClientRpc(cardNetworkObjectId, fieldPosition);
+            }
+        }
+        [ClientRpc]
+        private void PurchaseCardAndMoveFromHandToCellClientRpc(ulong cardNetworkObjectId, Vector2Int fieldPosition)
+        {
+            NetworkObject cardNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[cardNetworkObjectId];
+            if (cardNetworkObject != null)
+            {
+                if (cardNetworkObject.GetComponent<CardView>() is CardView card)
+                {
+                    PurchaseCardAndMoveFromHandToCell(card.Controller, fieldPosition);
+                }
             }
         }
         #endregion

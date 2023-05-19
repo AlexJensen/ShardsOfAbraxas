@@ -6,6 +6,7 @@ using Abraxas.Zones.Graveyards;
 using Abraxas.Zones.Hands.Managers;
 using System.Collections;
 using System.Drawing;
+using Unity.Netcode;
 using UnityEngine;
 using Player = Abraxas.Players.Players;
 
@@ -34,11 +35,10 @@ namespace Abraxas.Zones.Managers
         #region Methods
         public IEnumerator MoveCardsFromDeckToHand(Player player, int amount, int index = 0)
         {
-            Debug.Log($"MoveCardsFromDeckToHand: {player}");
             for (int i = 0; i < amount; i++)
             {
                 ICardController card = _deckManager.RemoveCard(player, index);
-                card.Hidden = card.Owner != _playerManager.LocalPlayer;
+                if (!NetworkManager.Singleton.IsServer) card.Hidden = card.Owner != _playerManager.LocalPlayer;
                 yield return _handManager.MoveCardToHand(player, card);
             }
         }
@@ -61,20 +61,11 @@ namespace Abraxas.Zones.Managers
         {
             _fieldManager.RemoveCard(card);
             yield return _deckManager.MoveCardToDeck(card.OriginalOwner, card);
-            _deckManager.ShuffleDeck(card.OriginalOwner);
         }
         public IEnumerator MoveCardFromFieldToGraveyard(ICardController card)
         {
             _fieldManager.RemoveCard(card);
             yield return _graveyardManager.MoveCardToGraveyard(card.OriginalOwner, card);
-        }
-        public void BuildDecks()
-        {
-            _deckManager.BuildDecks();
-        }
-        public IEnumerator ShuffleDeck(Player player)
-        {
-            yield return _deckManager.ShuffleDeck(player);
         }
         #endregion
     }

@@ -28,5 +28,7 @@ namespace Abraxas.Cards.Controllers
         IEnumerator Combat();
         IEnumerator Fight(ICardController opponent);
         IEnumerator PassHomeRow();
+        void ScaleToRectangle(PointF dimensions, float time);
+        void AddToOverlay();
     }
 }

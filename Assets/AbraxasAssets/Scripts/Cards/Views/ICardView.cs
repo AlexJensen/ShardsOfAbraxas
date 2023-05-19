@@ -14,7 +14,7 @@ namespace Abraxas.Cards.Views
         ICardController Controller { get; }
         Image Image { get; }
         Transform Transform { get; }
-        NetworkBehaviourReference NetworkBehaviourReference { get; }
+        NetworkObject NetworkObject { get; }
         RectTransformMover RectTransformMover { get; }
 
         void UpdateCostTextWithCastability(ManaModifiedEvent eventData);

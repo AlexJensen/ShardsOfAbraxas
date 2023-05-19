@@ -46,7 +46,8 @@ namespace Abraxas.Cards.Controllers
             {
                 _handManager.CardDragging = _cardController;
                 _handManager.RemoveCard(_cardController);
-                _cardController.View.ChangeScale(_fieldManager.GetCellDimensions(), _overlaySettings.ScaleCardToOverlayTime);
+                _cardController.AddToOverlay();
+                _cardController.ScaleToRectangle(_fieldManager.GetCellDimensions(), _overlaySettings.ScaleCardToOverlayTime);
             }
         }
 
