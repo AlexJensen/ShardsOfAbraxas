@@ -63,8 +63,6 @@ namespace Abraxas.Cards.Views
         TMP_Text _titleText, _costText;
         [SerializeField]
         Image _image;
-        [SerializeField]
-        NetworkObject _networkObject;
         RectTransformMover _rectTransformMover;
         #endregion
 
@@ -73,28 +71,27 @@ namespace Abraxas.Cards.Views
         public RectTransformMover RectTransformMover { get => _rectTransformMover != null ? _rectTransformMover :_rectTransformMover = GetComponent<RectTransformMover>(); }
         public Image Image { get => _image; set => _image = value; }
         public Transform Transform => transform;
-        public NetworkObject NetworkObject => _networkObject;
         #endregion
 
         #region Methods
         public void OnTitleChanged()
         {
-            _titleText.text = _model.Title;
+            _titleText.text = _controller.Title;
         }
         public void OnOwnerChanged()
         {
-            UnityEngine.Color playerColor = _playerSettings.GetPlayerDetails(_model.Owner).color;
+            UnityEngine.Color playerColor = _playerSettings.GetPlayerDetails(_controller.Owner).color;
             _titleText.color = playerColor;
             _cover.color = playerColor;
             _cardBack.color = playerColor;
         }
         public void OnOriginalOwnerChanged()
         {
-            Image.transform.localScale = new Vector3(_model.OriginalOwner == Player.Player1 ? 1 : -1, 1, 1);
+            Image.transform.localScale = new Vector3(_controller.OriginalOwner == Player.Player1 ? 1 : -1, 1, 1);
         }
         public void OnHiddenChanged()
         {
-            _cover.gameObject.SetActive(_model.Hidden);
+            _cover.gameObject.SetActive(_controller.Hidden);
         }
         public void UpdateCostTextWithCastability(ManaModifiedEvent eventData)
         {
@@ -111,12 +108,13 @@ namespace Abraxas.Cards.Views
         }
         public string GetCostText()
         {
-            var costStrings = _model.TotalCosts
+            var costStrings = _controller.TotalCosts
                 .Where(pair => pair.Value != 0)
                 .Select(pair => $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneDetails(pair.Key).color)}>{pair.Value}");
 
             return string.Join("", costStrings);
         }
+        
         public void ChangeScale(PointF scale, float time)
         {
             StartCoroutine(RectTransformMover.ChangeScaleEnumerator(new Vector2(scale.X, scale.Y), time));

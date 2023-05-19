@@ -31,7 +31,7 @@ namespace Abraxas.Cells.Views
         }
         public RectTransform RectTransform { get => (RectTransform)transform; }
 
-        public Point FieldPosition => new(transform.parent.GetSiblingIndex(), transform.GetSiblingIndex());
+        public Point FieldPosition => new(transform.GetSiblingIndex(), transform.parent.GetSiblingIndex());
 
         public Player Player { get => _player; }
         #endregion
@@ -45,7 +45,7 @@ namespace Abraxas.Cells.Views
 
         public void SetChild(Transform transform)
         {
-            transform.SetParent(transform);
+            transform.SetParent(this.transform);
             FitRectTransformInCell((RectTransform)transform);
         }
         #endregion

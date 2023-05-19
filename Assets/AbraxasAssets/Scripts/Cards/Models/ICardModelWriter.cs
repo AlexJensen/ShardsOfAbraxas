@@ -14,8 +14,6 @@ namespace Abraxas.Cards.Models
         public string Title { set; }
         public Player Owner { set; }
         public Player OriginalOwner { set; }
-        public List<IStoneModel> Stones { set; }
-
         public Point FieldPosition { set; }
         public IZoneController Zone { set; }
         public bool Hidden { set; }

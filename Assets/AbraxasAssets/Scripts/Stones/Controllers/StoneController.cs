@@ -7,8 +7,8 @@ namespace Abraxas.Stones.Controllers
     class StoneController: IStoneController
     {
         #region Dependencies
-        readonly IStoneModel _model;
-        public StoneController(IStoneModel model)
+        IStoneModel _model;
+        public void Initialize(IStoneModel model)
         {
             _model = model;
         }

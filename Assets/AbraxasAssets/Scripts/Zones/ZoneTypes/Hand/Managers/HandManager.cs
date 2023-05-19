@@ -37,7 +37,8 @@ namespace Abraxas.Zones.Hands.Managers
         }
         public IEnumerator MoveCardToHand(Player player, ICardController card)
         {
-            yield return GetPlayerHand(player).MoveCardToZone(card);
+            card.Zone = GetPlayerHand(player);
+            yield return card.Zone.MoveCardToZone(card);
         }
         public IEnumerator ReturnCardToHand(ICardController card)
         {

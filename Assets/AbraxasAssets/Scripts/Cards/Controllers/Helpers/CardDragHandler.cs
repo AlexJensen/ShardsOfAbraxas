@@ -1,4 +1,5 @@
-﻿using Abraxas.Cells.Controllers;
+﻿using Abraxas.Cards.Views;
+using Abraxas.Cells.Controllers;
 using Abraxas.Game.Managers;
 using Abraxas.Manas;
 using Abraxas.Players.Managers;
@@ -14,6 +15,7 @@ namespace Abraxas.Cards.Controllers
     {
         #region Dependencies
         ICardController _cardController;
+        ICardDragListener _cardDragListener;
 
         readonly Overlay.Settings _overlaySettings;
         readonly IGameManager _gameManager;
@@ -33,8 +35,9 @@ namespace Abraxas.Cards.Controllers
             _manaManager = manaManager;
         }
 
-        internal void Initialize(ICardController cardController)
+        internal void Initialize(ICardDragListener cardDragListener, ICardController cardController)
         {
+            _cardDragListener = cardDragListener;
             _cardController = cardController;
         }
         #endregion
@@ -59,12 +62,21 @@ namespace Abraxas.Cards.Controllers
             }
         }
 
+        public void OnEndDrag()
+        {
+            if (_handManager.CardDragging == _cardController)
+            {
+                _cardDragListener.DetermineDragRaycast();
+            }
+        }
+
         public IEnumerator OnCardDraggedOverCell(ICellController cell)
         {
             if (_handManager.CardDragging == _cardController && _cardController.OriginalOwner == _playerManager.ActivePlayer)
             {
                 if (cell.CardsOnCell == 0 && cell.Player == _cardController.Owner && _manaManager.CanPurchaseCard(_cardController))
                 {
+                    _handManager.CardDragging = null;
                     _gameManager.RequestPurchaseCardAndMoveFromHandToCell(_cardController, cell.FieldPosition);
                     yield break;
                 }
@@ -75,7 +87,10 @@ namespace Abraxas.Cards.Controllers
         public IEnumerator ReturnFromOverlayToHand()
         {
             yield return _handManager.ReturnCardToHand(_cardController);
+            _handManager.CardDragging = null;
         }
+
+       
         #endregion
     }
 }

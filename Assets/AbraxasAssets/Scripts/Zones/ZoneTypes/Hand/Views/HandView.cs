@@ -31,11 +31,6 @@ namespace Abraxas.Zones.Hands.Views
             CardPlaceholder.Reset();
         }
 
-        void Update()
-        {
-          
-        }
-
         public void RemoveCard(ICardController card)
         {
             CardPlaceholder.transform.SetSiblingIndex(card.View.Transform.GetSiblingIndex());

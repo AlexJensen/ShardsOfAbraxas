@@ -11,11 +11,6 @@ namespace Abraxas.Zones.Fields.Views
 {
     public class FieldView : ZoneView, IFieldView
     {
-        #region Fields
-        [SerializeField]
-        List<List<ICellView>> field = new();
-        #endregion
-
         #region Properties
         public override float MoveCardTime => AnimationSettings.MoveCardToFieldTime;
 

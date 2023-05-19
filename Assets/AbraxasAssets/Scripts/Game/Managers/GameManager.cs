@@ -94,11 +94,6 @@ namespace Abraxas.Game.Managers
                 PurchaseCardAndMoveFromHandToCellServerRpc(cardNetworkObjectId, new Vector2Int(fieldPosition.X, fieldPosition.Y));
             }
         }
-        private void PurchaseCardAndMoveFromHandToCell(ICardController card, Vector2Int fieldPosition)
-        {
-            _manaManager.PurchaseCard(card);
-            StartCoroutine(_zoneManager.MoveCardFromHandToCell(card, new Point(fieldPosition.x, fieldPosition.y)));
-        }
         [ServerRpc(RequireOwnership = false)]
         private void PurchaseCardAndMoveFromHandToCellServerRpc(ulong cardNetworkObjectId, Vector2Int fieldPosition)
         {
@@ -123,6 +118,11 @@ namespace Abraxas.Game.Managers
                     PurchaseCardAndMoveFromHandToCell(card.Controller, fieldPosition);
                 }
             }
+        }
+        private void PurchaseCardAndMoveFromHandToCell(ICardController card, Vector2Int fieldPosition)
+        {
+            _manaManager.PurchaseCard(card);
+            StartCoroutine(_zoneManager.MoveCardFromHandToCell(card, new Point(fieldPosition.x, fieldPosition.y)));
         }
         #endregion
     }

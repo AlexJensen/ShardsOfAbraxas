@@ -23,8 +23,7 @@ namespace Abraxas.Cards.Controllers
     class CardController : ICardController, IGameEventListener<ManaModifiedEvent>
     {
         #region Dependencies
-        ICardModelReader _modelReader;
-        ICardModelWriter _modelWriter;
+        ICardModel _model;
         ICardView _view;
         readonly IZoneManager _zoneManager;
         readonly IEventManager _eventManager;
@@ -43,10 +42,9 @@ namespace Abraxas.Cards.Controllers
             _overlayManager = overlayManager;
         }
 
-        public void Initialize(ICardModelReader modelReader, ICardModelWriter modelWriter, ICardView view)
+        public void Initialize(ICardModel model, ICardView view)
         {
-            _modelReader = modelReader;
-            _modelWriter = modelWriter;
+            _model = model;
             _view = view;
 
             _eventManager.AddListener(typeof(ManaModifiedEvent), this);
@@ -59,17 +57,17 @@ namespace Abraxas.Cards.Controllers
         #endregion
 
         #region Properties
-        public ICardModelReader Model => _modelReader;
+        public ICardModel Model => _model;
         public ICardView View => _view;
-        public IStatBlockModel StatBlock => _modelReader.StatBlock;
-        public string Title { get => _modelReader.Title; set => _modelWriter.Title = value; }
-        public Player Owner { get => _modelReader.Owner; set => _modelWriter.Owner = value; }
-        public Player OriginalOwner { get => _modelReader.OriginalOwner; set => _modelWriter.OriginalOwner = value; }
-        public Dictionary<StoneType, int> TotalCosts { get => _modelReader.TotalCosts;}
-        public Point FieldPosition { get => _modelReader.FieldPosition; set => _modelWriter.FieldPosition = value; }
-        public ICellController Cell { get => _modelReader.Cell; set => _modelWriter.Cell = value; }
-        public IZoneController Zone { get => _modelReader.Zone; set => _modelWriter.Zone = value; }
-        public bool Hidden { get => _modelReader.Hidden; set => _modelWriter.Hidden = value; }
+        public IStatBlockModel StatBlock => _model.StatBlock;
+        public string Title { get => ((ICardModelReader)_model).Title; set => ((ICardModelWriter)_model).Title = value; }
+        public Player Owner { get => ((ICardModelReader)_model).Owner; set => ((ICardModelWriter)_model).Owner = value; }
+        public Player OriginalOwner { get => ((ICardModelReader)_model).OriginalOwner; set => ((ICardModelWriter)_model).OriginalOwner = value; }
+        public Dictionary<StoneType, int> TotalCosts { get => _model.TotalCosts;}
+        public Point FieldPosition { get => ((ICardModelReader)_model).FieldPosition; set => ((ICardModelWriter)_model).FieldPosition = value; }
+        public ICellController Cell { get => ((ICardModelReader)_model).Cell; set => ((ICardModelWriter)_model).Cell = value; }
+        public IZoneController Zone { get => ((ICardModelReader)_model).Zone; set => ((ICardModelWriter)_model).Zone = value; }
+        public bool Hidden { get => ((ICardModelReader)_model).Hidden; set => ((ICardModelWriter)_model).Hidden = value; }
 
         #endregion
 
@@ -81,11 +79,11 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator PassHomeRow()
         {
-            _healthManager.ModifyPlayerHealth(Model.Owner ==
+            _healthManager.ModifyPlayerHealth(((ICardModelReader)_model).Owner ==
                 Player.Player1 ? Player.Player2 : Player.Player1,
                 -Model.StatBlock[StatValues.ATK]);
             yield return _zoneManager.MoveCardFromFieldToDeck(this);
-            _deckManager.RequestShuffleDeck(Model.Owner);
+            _deckManager.RequestShuffleDeck(((ICardModelReader)_model).Owner);
         }
 
         public IEnumerator Fight(ICardController opponent)
@@ -109,14 +107,14 @@ namespace Abraxas.Cards.Controllers
         public IEnumerator Combat()
         {
             yield return _fieldManager.MoveCardAndFight(this, new Point(
-                Model.Owner == Player.Player1 ? Model.StatBlock[StatValues.MV] :
-                Model.Owner == Player.Player2 ? -Model.StatBlock[StatValues.MV] : 0, 0));
+                ((ICardModelReader)_model).Owner == Player.Player1 ? Model.StatBlock[StatValues.MV] :
+                ((ICardModelReader)_model).Owner == Player.Player2 ? -Model.StatBlock[StatValues.MV] : 0, 0));
         }
         public IEnumerator OnEventRaised(ManaModifiedEvent eventData)
         {
             if (eventData.Mana.Player == Owner && eventData.Mana.ManaTypes != null)
             {
-                View.UpdateCostTextWithCastability(eventData);
+                _view.UpdateCostTextWithCastability(eventData);
             }
             yield break;
         }

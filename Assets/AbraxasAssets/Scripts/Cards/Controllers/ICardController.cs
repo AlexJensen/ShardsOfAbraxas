@@ -12,9 +12,10 @@ namespace Abraxas.Cards.Controllers
 {
     public interface ICardController
     {
-        ICardModelReader Model { get; }
+        ICardModel Model { get; }
         ICardView View { get; }
 
+        string Title { get; }
         public Dictionary<StoneType, int> TotalCosts { get; }
         IZoneController Zone { get; set; }
         bool Hidden { get; set; }
@@ -23,6 +24,7 @@ namespace Abraxas.Cards.Controllers
         Point FieldPosition { get; set; }
         ICellController Cell { get; set; }
         IStatBlockModel StatBlock { get; }
+        
 
         IEnumerator CheckDeath();
         IEnumerator Combat();

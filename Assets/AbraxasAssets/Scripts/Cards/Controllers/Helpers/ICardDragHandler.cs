@@ -8,6 +8,8 @@ namespace Abraxas.Cards.Controllers
         void OnBeginDrag();
         IEnumerator OnCardDraggedOverCell(ICellController cell);
         void OnDrag();
+        void OnEndDrag();
         IEnumerator ReturnFromOverlayToHand();
+
     }
 }

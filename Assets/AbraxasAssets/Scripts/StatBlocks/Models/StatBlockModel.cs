@@ -15,7 +15,6 @@ namespace Abraxas.StatBlocks.Models
         public void Initialize(StatBlockData data)
         {
             _data = data;
-            OnStatsChanged.Invoke();
         }
         #endregion
 

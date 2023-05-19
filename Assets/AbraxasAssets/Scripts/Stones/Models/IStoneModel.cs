@@ -1,9 +1,14 @@
-﻿using System;
+﻿using Abraxas.Stones.Data;
+using System;
 
 namespace Abraxas.Stones.Models
 {
     public interface IStoneModel
     {
+        #region Dependencies
+        void Initialize(StoneData data);
+        #endregion
+
         #region Events
         public event Action OnCostChanged;
         public event Action OnInfoChanged;
@@ -15,5 +20,7 @@ namespace Abraxas.Stones.Models
         string Info { get; set; }
         StoneType StoneType { get; set; }
         #endregion
+
+
     }
 }

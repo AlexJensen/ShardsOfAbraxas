@@ -35,7 +35,7 @@ namespace Abraxas.CardViewers
         #region methods
         public void ShowCardDetails(ICardController card)
         {
-            _title.text = card.Model.Title;
+            _title.text = card.Title;
             _cost.text = card.View.GetCostText();
             _attack.text = card.StatBlock[StatValues.ATK].ToString();
             _health.text = card.StatBlock[StatValues.DEF].ToString();

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace Abraxas.Cards.Views
 {
     [RequireComponent(typeof(ICardView))]
-    public class CardDragListener : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+    public class CardDragListener : MonoBehaviour, ICardDragListener, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         #region Dependencies
         internal void Initialize(ICardDragHandler cardDragHandler)
@@ -21,12 +21,12 @@ namespace Abraxas.Cards.Views
         ICardDragHandler _dragHandler;
         Canvas _canvas;
         GraphicRaycaster _graphicRaycaster;
+        PointerEventData lastPointerData;
         #endregion
 
         #region Properties
         public Canvas Canvas => _canvas = _canvas != null ? _canvas : GetComponentInParent<Canvas>();
         public GraphicRaycaster GraphicRaycaster => _graphicRaycaster = _graphicRaycaster != null ? _graphicRaycaster : Canvas.GetComponent<GraphicRaycaster>();
-
         #endregion
 
         #region Methods
@@ -42,8 +42,14 @@ namespace Abraxas.Cards.Views
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            lastPointerData = eventData;
+            _dragHandler.OnEndDrag();
+        }
+
+        public void DetermineDragRaycast()
+        {
             List<RaycastResult> results = new();
-            GraphicRaycaster.Raycast(eventData, results);
+            GraphicRaycaster.Raycast(lastPointerData, results);
             foreach (var hit in results)
             {
                 ICellView cell = hit.gameObject.GetComponent<ICellView>();

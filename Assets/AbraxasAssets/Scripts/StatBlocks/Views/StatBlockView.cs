@@ -19,11 +19,15 @@ namespace Abraxas.StackBlocks.Views
             _stoneSettings = stoneSettings;
         }
 
-        private IStatBlockModel _model;
-        public void Initialize(IStatBlockModel model)
+        IStatBlockModelReader _model;
+        IStatBlockController _controller;
+        public void Initialize(IStatBlockModelReader model, IStatBlockController controller)
         {
             _model = model;
+            _controller = controller;
+
             model.OnStatsChanged += RefreshVisuals;
+            RefreshVisuals();
         }
 
         public override void OnDestroy()
@@ -40,8 +44,8 @@ namespace Abraxas.StackBlocks.Views
         #region Methods
         private void RefreshVisuals()
         {
-            _statsText.text = _model.StatsStr;
-            _statsText.color = _stoneSettings.GetStoneDetails(_model.StoneType).color;
+            _statsText.text = _controller.StatsStr;
+            _statsText.color = _stoneSettings.GetStoneDetails(_controller.StoneType).color;
         }
         #endregion
     }

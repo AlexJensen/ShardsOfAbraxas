@@ -13,7 +13,7 @@ namespace Abraxas.Stones.Models
 
         #region Dependencies
         StoneData _data;
-        public StoneModel(StoneData data)
+        public void Initialize(StoneData data)
         {
             _data = data;
         }
@@ -41,7 +41,7 @@ namespace Abraxas.Stones.Models
             set
             {
                 _data.Info = value;
-                OnCostChanged.Invoke();
+                OnInfoChanged.Invoke();
             }
         }
         public StoneType StoneType

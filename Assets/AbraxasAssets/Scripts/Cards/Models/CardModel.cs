@@ -11,7 +11,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Models
 {
-    class CardModel : ICardModelReader, ICardModelWriter {
+    class CardModel : ICardModel {
         #region Events
         public event Action OnTitleChanged;
         public event Action OnOwnerChanged;
@@ -21,18 +21,16 @@ namespace Abraxas.Cards.Models
 
         #region Dependencies
         CardData _data;
-        public void Initialize(CardData data, IStatBlockModel statBlockModel)
+        public void Initialize(CardData data, IStatBlockModel statBlockModel, List<IStoneModel> stones)
         {
             _data = data;
             _statBlock = statBlockModel;
-           ((IStatBlockModelWriter)statBlockModel).Initialize(data.StatBlock);
+            _stones = stones;
         }
         #endregion
 
         #region Fields
         List<IStoneModel> _stones = new();
-        Player _owner;
-        Player _originalOwner;
         IZoneController _zone;
         ICellController _cell;
         Point _fieldPosition;
@@ -55,8 +53,8 @@ namespace Abraxas.Cards.Models
             get => _data.Owner;
             set
             {
-                if (_owner != value) OnOwnerChanged.Invoke();
-                _owner = value;
+                if (_data.Owner != value) OnOwnerChanged.Invoke();
+                _data.Owner = value;
             }
         }
         public Player OriginalOwner
@@ -64,45 +62,30 @@ namespace Abraxas.Cards.Models
             get => _data.OriginalOwner;
             set
             {
-                if (_originalOwner != value) OnOriginalOwnerChanged.Invoke(); 
-                _originalOwner = value;
+                if (_data.OriginalOwner != value) OnOriginalOwnerChanged.Invoke();
+                _data.OriginalOwner = value;
             }
         }
-        public List<IStoneModel> Stones
-        {
-            get => _stones;
-            set
-            => _stones = value;
-        }
-        public IStatBlockModel StatBlock
-        {
-            get
-            => _statBlock;
-            
-        }
+        public List<IStoneModel> Stones => _stones;
+        public IStatBlockModel StatBlock => _statBlock;
         public ICellController Cell
         {
-            get
-            => _cell;
-            set
-            => _cell = value;
+            get => _cell;
+            set => _cell = value;
         }
         public Point FieldPosition
         {
-            get
-            => _fieldPosition;
+            get => _fieldPosition;
             set => _fieldPosition = value;
         }
         public IZoneController Zone
         {
-            get
-            => _zone;
+            get => _zone;
             set => _zone = value;
         }
         public bool Hidden
         {
-            get
-            => _hidden;
+            get => _hidden;
             set
             {
                 _hidden = value;
@@ -114,27 +97,24 @@ namespace Abraxas.Cards.Models
             get
             {
                 Dictionary<StoneType, int> totalCosts = new();
-                foreach (IStoneController stone in Stones)
+                foreach (IStoneModel stone in Stones)
                 {
-                    if (!totalCosts.ContainsKey(stone.StoneType))
-                    {
-                        totalCosts.Add(stone.StoneType, stone.Cost);
-                    }
-                    else
-                    {
-                        totalCosts[stone.StoneType] += stone.Cost;
-                    }
+                    AddCost(totalCosts, stone.StoneType, stone.Cost);
                 }
-                if (!totalCosts.ContainsKey(StatBlock.StoneType))
-                {
-                    totalCosts.Add(StatBlock.StoneType, StatBlock.Cost);
-                }
-                else
-                {
-                    totalCosts[StatBlock.StoneType] += StatBlock.Cost;
-                }
-
+                AddCost(totalCosts, StatBlock.StoneType, StatBlock.Cost);
                 return totalCosts;
+            }
+        }
+
+        private void AddCost(Dictionary<StoneType, int> totalCosts, StoneType type, int cost)
+        {
+            if (!totalCosts.ContainsKey(type))
+            {
+                totalCosts.Add(type, cost);
+            }
+            else
+            {
+                totalCosts[type] += cost;
             }
         }
         #endregion

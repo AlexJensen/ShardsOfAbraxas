@@ -35,6 +35,7 @@ namespace Abraxas.Zones.Fields.Managers
         #region Methods
         public void AddCard(ICardController card, Point fieldPos)
         {
+            card.Zone = _field;
             _field.AddCard(card, fieldPos);
         }
 

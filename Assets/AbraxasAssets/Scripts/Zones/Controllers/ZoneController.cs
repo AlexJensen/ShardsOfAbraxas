@@ -34,6 +34,12 @@ namespace Abraxas.Zones.Controllers
         #endregion
 
         #region Methods
+        public virtual void AddCard(ICardController card)
+        {
+            card.Zone = this;
+            Model.AddCard(card);
+        }
+
         public virtual ICardController RemoveCard(ICardController card)
         {
             _view.RemoveCardFromHolder(card.View);

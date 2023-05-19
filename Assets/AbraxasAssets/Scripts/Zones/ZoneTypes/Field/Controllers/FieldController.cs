@@ -76,6 +76,7 @@ namespace Abraxas.Zones.Fields.Controllers
             card.Cell?.RemoveCard(card);
             yield return ((IFieldView)View).MoveCardToCell(card.View, cell.View);
             cell.AddCard(card);
+            card.Cell = cell;
         }
 
         public IEnumerator MoveCardToCell(ICardController card, Point fieldPos)
@@ -90,6 +91,8 @@ namespace Abraxas.Zones.Fields.Controllers
 
         public void AddCard(ICardController card, Point fieldPos)
         {
+            card.Zone = this;
+            card.FieldPosition = fieldPos;
             Model.AddCard(card);
         }
 
