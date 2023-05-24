@@ -17,7 +17,7 @@ namespace Abraxas.Stones
         SAPPHIRE,
         TOURMALINE,
         CITRINE,
-        TOURQUOISE
+        TURQUOISE
     }
 
     public class Stone

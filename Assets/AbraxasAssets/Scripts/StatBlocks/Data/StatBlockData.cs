@@ -1,14 +1,15 @@
 ﻿using Abraxas.Stones;
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Abraxas.StatBlocks.Data
 {
     [Serializable]
-    public struct StatBlockData
+    public struct StatBlockData : INetworkSerializable
     {
         #region Fields
-        public Vector3Int _stats;
+        public Vector3Int Stats;
         public int Cost;
         public StoneType StoneType;
         #endregion
@@ -16,11 +17,18 @@ namespace Abraxas.StatBlocks.Data
         #region Properties
         public int this[StatValues index]
         {
-            get => _stats[(int)index];
+            get => Stats[(int)index];
             set
             {
-                _stats[(int)index] = value;
+                Stats[(int)index] = value;
             }
+        }
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref Stats);
+            serializer.SerializeValue(ref Cost);
+            serializer.SerializeValue(ref StoneType);
         }
         #endregion
     }

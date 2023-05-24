@@ -20,60 +20,103 @@ namespace Abraxas.GameStates.Managers
 
         #region Fields
         GameState _state = null;
+        private int clientAcknowledgments = 0;
+        private bool isWaitingForClientAcknowledgments = false;
+        private bool isWaitingForServer = true;
 
         public GameState State { get => _state; }
         #endregion
 
         #region Methods
-        public IEnumerator SwitchGameStateTo(GameStates state)
-        {
-            yield return new WaitForSeconds(0.1f);
-            yield return State?.OnExitState();
-            yield return new WaitForSeconds(0.1f);
-            _state = _stateFactory.CreateState(state);
-            yield return new WaitForSeconds(0.1f);
-            yield return State?.OnEnterState();
-            yield return new WaitForSeconds(0.1f);
-        }
-
         public IEnumerator BeginNextGameState()
         {
             if (!IsServer) yield break;
-            AdvanceGameStateClientRpc();
-            if (!IsHost) yield return SwitchGameStateTo(State.NextState());
+            Debug.Log($"BeginNextGameState;");
+            yield return SwitchGameStateTo(State.NextState());
         }
-
         public IEnumerator RequestNextGameState()
         {
+            Debug.Log($"RequestNextGameState;");
             if (!IsClient) yield break;
-            AdvanceGameStateServerRpc();
+            SetGameStateServerRpc(State.NextState());
         }
-
-        private IEnumerator WaitForGameStateInitialized()
+        public IEnumerator InitializeState(GameStates state)
         {
-            while (State == null)
+            Debug.Log($"InitializeState; {state}");
+            _state = _stateFactory.CreateState(state);
+            yield return null;
+            yield return State?.OnEnterState();
+            yield return null;
+        }
+        private IEnumerator SwitchGameStateTo(GameStates state)
+        {
+            if (!IsClient)
             {
-                yield return null;
+                Debug.Log($"Server: State?.OnExitState(); {_state.CurrentState}");
+                yield return State?.OnExitState();
+                isWaitingForClientAcknowledgments = true;
+                clientAcknowledgments = 0;
+                SetGameStateClientRpc(state);
+                _state = _stateFactory.CreateState(state);
+                while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count) yield return null;
+
+                Debug.Log($"Server: State?.OnEnterState(); {_state.CurrentState}");
+                yield return State?.OnEnterState();
+
+                clientAcknowledgments = 0;
+                AdvanceGameStateClientRpc();
+                while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count) yield return null;
+                Debug.Log($"Server: SwitchGameStateTo {state} completed");
+                isWaitingForClientAcknowledgments = false;
             }
-            yield return SwitchGameStateTo(State.NextState());
+            else
+            {
+                Debug.Log($"Client: State?.OnExitState(); {_state.CurrentState}");
+                yield return State?.OnExitState();
+                isWaitingForServer = true;
+                AcknowledgeServerRpc();
+                _state = _stateFactory.CreateState(state);
+                while (isWaitingForServer) yield return null;
+                Debug.Log($"Client: State?.OnEnterState();{_state.CurrentState}");
+                yield return State?.OnEnterState();
+                isWaitingForServer = true;
+                AcknowledgeServerRpc();
+                while (isWaitingForServer) yield return null;
+            }
         }
         #endregion
 
         #region Server Methods
+        #region Server Side
         [ServerRpc(RequireOwnership = false)]
-        private void AdvanceGameStateServerRpc()
+        private void SetGameStateServerRpc(GameStates state)
         {
-            if (!IsServer) return;
-            if (!IsHost) StartCoroutine(SwitchGameStateTo(State.NextState()));
-            AdvanceGameStateClientRpc();
+            Debug.Log($"SetGameStateServerRpc {state}");
+            StartCoroutine(SwitchGameStateTo(state));
         }
-
+        [ServerRpc(RequireOwnership = false)]
+        private void AcknowledgeServerRpc()
+        {
+            if (!isWaitingForClientAcknowledgments) return;
+            Debug.Log($"AcknowledgeServerRpc {clientAcknowledgments} + 1");
+            clientAcknowledgments++;
+        }
+        #endregion
+        #region Client Side
+        [ClientRpc]
+        private void SetGameStateClientRpc(GameStates state)
+        {
+            Debug.Log($"SetGameStateClientRpc {state}");
+            StartCoroutine(SwitchGameStateTo(state));
+        }
         [ClientRpc]
         private void AdvanceGameStateClientRpc()
         {
-            if (!IsClient) return;
-            StartCoroutine(WaitForGameStateInitialized());
+            Debug.Log($"AdvanceGameStateClientRpc");
+            isWaitingForServer = false;
         }
+
+        #endregion
         #endregion
     }
 }

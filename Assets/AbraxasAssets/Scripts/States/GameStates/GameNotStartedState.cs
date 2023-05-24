@@ -1,25 +1,26 @@
 ﻿using Abraxas.Events;
 using Abraxas.Game.Managers;
+using Abraxas.Zones.Decks.Managers;
 using System.Collections;
 using Unity.Netcode;
-
+using UnityEngine;
 using Zenject;
-using Abraxas.Network.Managers;
 
+using Player = Abraxas.Players.Players;
 namespace Abraxas.GameStates
 {
     public class GameNotStartedState : GameState
     {
         #region Dependencies
         readonly NetworkManager _networkManager;
-        readonly DebugNetworkManager _debugNetworkManager;
         readonly IGameStateManager _gameStateManager;
+        readonly IDeckManager _deckManager;
         [Inject]
-        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, DebugNetworkManager debugNetworkManager) : base(gameManager, eventManager)
+        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, IDeckManager deckManager) : base(gameManager, eventManager)
         {
             _gameStateManager = gameStateManager;
             _networkManager = NetworkManager.Singleton;
-            _debugNetworkManager = debugNetworkManager;
+            _deckManager = deckManager;
         }
 
         public class Factory : PlaceholderFactory<GameNotStartedState>
@@ -39,31 +40,29 @@ namespace Abraxas.GameStates
 
         public override IEnumerator OnEnterState()
         {
-            yield return base.OnEnterState();
-            if (_debugNetworkManager.isDebugMode)
+            if (_networkManager.IsHost)
             {
+                yield return base.OnEnterState();
                 yield return _gameStateManager.BeginNextGameState();
             }
-            else
+            else if(_networkManager.IsServer)
             {
-                while (!_networkManager.IsServer && !_networkManager.IsClient)
+                Debug.Log($"GameNotStartedState OnEnterState {_networkManager.IsServer}");
+                while (_networkManager.ConnectedClients.Count != 2)
                 {
                     yield return null;
                 }
-
-                if (_networkManager.IsServer)
-                {
-                    while (_networkManager.ConnectedClients.Count != 2)
-                    {
-                        yield return null;
-                    }
-                    yield return _gameStateManager.BeginNextGameState();
-                }
+                Debug.Log($"GameNotStartedState OnEnterState Clients Joined");
+                yield return _deckManager.BuildDecks();
+                yield return _deckManager.ShuffleDeck(Player.Player1);
+                yield return _deckManager.ShuffleDeck(Player.Player2);
+                yield return _gameStateManager.BeginNextGameState();
             }
         }
 
         public override IEnumerator OnExitState()
         {
+            Debug.Log($"GameNotStartedState OnExitState {_networkManager.IsServer}");
             yield return base.OnExitState();
             yield return gameManager.StartGame();
         }

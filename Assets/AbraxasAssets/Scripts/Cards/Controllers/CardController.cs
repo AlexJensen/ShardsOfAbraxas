@@ -83,11 +83,12 @@ namespace Abraxas.Cards.Controllers
                 Player.Player1 ? Player.Player2 : Player.Player1,
                 -Model.StatBlock[StatValues.ATK]);
             yield return _zoneManager.MoveCardFromFieldToDeck(this);
-            _deckManager.RequestShuffleDeck(((ICardModelReader)_model).Owner);
+            _deckManager.ShuffleDeck(((ICardModelReader)_model).Owner);
         }
 
         public IEnumerator Fight(ICardController opponent)
         {
+            if (opponent.Owner == Owner) yield break;
             IStatBlockModel collidedStats = opponent.StatBlock;
             collidedStats[StatValues.DEF] -= Model.StatBlock[StatValues.ATK];
             Model.StatBlock[StatValues.DEF] -= collidedStats[StatValues.ATK];
@@ -99,10 +100,9 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator CheckDeath()
         {
-            if (Model.StatBlock[StatValues.DEF] <= 0)
-            {
-                yield return _zoneManager.MoveCardFromFieldToGraveyard(this);
-            }
+            if (Model.StatBlock[StatValues.DEF] > 0) yield break;
+            yield return _zoneManager.MoveCardFromFieldToGraveyard(this);
+
         }
         public IEnumerator Combat()
         {

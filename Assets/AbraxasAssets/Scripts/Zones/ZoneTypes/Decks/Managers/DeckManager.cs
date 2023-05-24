@@ -35,6 +35,11 @@ namespace Abraxas.Zones.Decks.Managers
         }
         #endregion
 
+        #region Fields
+        private int clientAcknowledgments = 0;
+        private bool isWaitingForClientAcknowledgments = false;
+        #endregion
+
         #region Methods
 
         public Dictionary<StoneType, int> GetDeckCost(Player player)
@@ -99,26 +104,26 @@ namespace Abraxas.Zones.Decks.Managers
         #endregion
 
         #region Server Methods
-        public void RequestShuffleDeck(Player player)
+        #region Server Side
+        public IEnumerator ShuffleDeck(Player player)
         {
-            if (!IsServer) return;
-
+            if (!IsServer) yield break;
             int randomSeed = Random.Range(int.MinValue, int.MaxValue);
             Random.InitState(randomSeed);
+            if (!IsHost) GetPlayerDeck(player).Shuffle();
             ShuffleDeckClientRpc(player, randomSeed);
-            if (IsHost) return;
-            GetPlayerDeck(player).Shuffle();
-        } 
-        [ClientRpc]
-        private void ShuffleDeckClientRpc(Player player, int seed)
-        {
-            Random.InitState(seed);
-            GetPlayerDeck(player).Shuffle();
-        }
-        public void RequestBuildDecks()
-        {
-            if (!IsServer) return;
 
+            isWaitingForClientAcknowledgments = true;
+            clientAcknowledgments = 0;
+            while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count)
+            {
+                yield return null;
+            }
+            isWaitingForClientAcknowledgments = false;
+        }
+        public IEnumerator BuildDecks()
+        {
+            if (!IsServer) yield break;
             List<CardData> cardDataListPlayer1 = GenerateCardDataList(Player.Player1);
             List<CardData> cardDataListPlayer2 = GenerateCardDataList(Player.Player2);
 
@@ -130,16 +135,49 @@ namespace Abraxas.Zones.Decks.Managers
             {
                 CardDataList = cardDataListPlayer2
             };
-
             string serializedCardDataPlayer1 = JsonUtility.ToJson(wrapperPlayer1);
             string serializedCardDataPlayer2 = JsonUtility.ToJson(wrapperPlayer2);
 
-            BuildDecksClientRpc(Player.Player1, serializedCardDataPlayer1);
-            BuildDecksClientRpc(Player.Player2, serializedCardDataPlayer2);
 
-            if (IsHost) return;
-            BuildDeck(cardDataListPlayer1, Player.Player1);
-            BuildDeck(cardDataListPlayer2, Player.Player2);
+            if (!IsHost)
+            {
+                BuildDeck(cardDataListPlayer1, Player.Player1);
+                BuildDeck(cardDataListPlayer2, Player.Player2);
+            }
+            yield return SendBuildDecksRpcAndWait(Player.Player1, serializedCardDataPlayer1);
+            yield return SendBuildDecksRpcAndWait(Player.Player2, serializedCardDataPlayer2);
+        }
+
+        private IEnumerator SendBuildDecksRpcAndWait(Player player, string serializedCardData)
+        {
+            isWaitingForClientAcknowledgments = true;
+            clientAcknowledgments = 0;
+
+            BuildDecksClientRpc(player, serializedCardData);
+
+            while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count)
+            {
+                yield return null;
+            }
+
+            isWaitingForClientAcknowledgments = false;
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void AcknowledgeServerRpc()
+        {
+            if (!isWaitingForClientAcknowledgments) return;
+            clientAcknowledgments++;
+        }
+        #endregion
+
+        #region Client Side
+        [ClientRpc]
+        private void ShuffleDeckClientRpc(Player player, int seed)
+        {
+            Random.InitState(seed);
+            GetPlayerDeck(player).Shuffle();
+            AcknowledgeServerRpc();
         }
         [ClientRpc]
         public void BuildDecksClientRpc(Player player, string serializedCardData)
@@ -147,6 +185,7 @@ namespace Abraxas.Zones.Decks.Managers
             CardDataListWrapper wrapper = JsonUtility.FromJson<CardDataListWrapper>(serializedCardData);
             List<CardData> cardDataList = wrapper.CardDataList;
             BuildDeck(cardDataList, player);
+            AcknowledgeServerRpc();
         }
         private void BuildDeck(List<CardData> cardDataList, Player player)
         {
@@ -155,16 +194,28 @@ namespace Abraxas.Zones.Decks.Managers
                 var deckController = _deckFactory.Create(deckView);
                 if (player != deckController.Player) continue;
                 _decks.Add(deckController);
+
                 foreach (var cardData in cardDataList)
                 {
                     CardData modifiedCardData = cardData;
                     modifiedCardData.Owner = deckController.Player;
                     modifiedCardData.OriginalOwner = deckController.Player;
-                    deckController.AddCardToZone(_cardFactory.Create(modifiedCardData, deckController.Player));
+                    BuildCard(cardData, player);
                 }
+
                 _manaManager.InitializeManaFromDeck(deckController);
             }
         }
+
+        private void BuildCard(CardData cardData, Player player)
+        {
+            var deckController = GetPlayerDeck(player);
+            if (deckController == null) return;
+
+            var cardController = _cardFactory.Create(cardData, player);
+            deckController.AddCardToZone(cardController);
+        }
+        #endregion
         #endregion
     }
 }

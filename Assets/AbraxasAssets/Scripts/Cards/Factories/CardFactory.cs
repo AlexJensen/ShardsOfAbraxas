@@ -10,8 +10,10 @@ using Abraxas.Stones.Models;
 using Abraxas.Stones.Views;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEngine;
 using Zenject;
 using Player = Abraxas.Players.Players;
+using System.Linq;
 
 namespace Abraxas.Cards.Factories
 {
@@ -20,10 +22,12 @@ namespace Abraxas.Cards.Factories
         #region Dependencies
         readonly DiContainer _container;
         readonly Card.Settings _cardSettings;
+        readonly NetworkManager _networkManager;
         public CardFactory(DiContainer container, Card.Settings cardSettings)
         {
             _container = container;
             _cardSettings = cardSettings;
+            _networkManager = NetworkManager.Singleton;
         }
         #endregion
 
@@ -31,7 +35,6 @@ namespace Abraxas.Cards.Factories
         public ICardController Create(CardData data, Player player)
         {
             var gameObject = _container.InstantiatePrefab(_cardSettings.cardPrefab);
-
             var view = gameObject.GetComponent<CardView>();
             var dragListener = gameObject.GetComponent<CardDragListener>();
             var mouseOverListener = gameObject.GetComponent<CardMouseOverView>();
@@ -48,15 +51,19 @@ namespace Abraxas.Cards.Factories
             statBlockView.Initialize(statBlockModel, statBlockController);
 
             List<IStoneModel> stoneModels = new();
-            foreach (var stoneData in data.Stones)
+            if (data.Stones != null)
             {
-                var stoneModel = _container.Instantiate<StoneModel>();
-                var stoneController = _container.Instantiate<StoneController>();
-                var stoneView = _container.InstantiateComponent<StoneView>(gameObject);
-                stoneModel.Initialize(stoneData);
-                stoneController.Initialize(stoneModel);
-                stoneView.Initialize(stoneModel, stoneController);
-                stoneModels.Add(stoneModel);
+                foreach (var (stoneData, stoneModel, stoneController, stoneView) in from stoneData in data.Stones
+                                                                                    let stoneModel = _container.Instantiate<StoneModel>()
+                                                                                    let stoneController = _container.Instantiate<StoneController>()
+                                                                                    let stoneView = _container.InstantiateComponent<StoneView>(gameObject)
+                                                                                    select (stoneData, stoneModel, stoneController, stoneView))
+                {
+                    stoneModel.Initialize(stoneData);
+                    stoneController.Initialize(stoneModel);
+                    stoneView.Initialize(stoneModel, stoneController);
+                    stoneModels.Add(stoneModel);
+                }
             }
 
             model.Initialize(data, statBlockModel, stoneModels);
@@ -68,7 +75,6 @@ namespace Abraxas.Cards.Factories
             mouseOverHandler.Initialize(controller);
             mouseOverListener.Initialize(mouseOverHandler);
 
-            gameObject.GetComponent<NetworkObject>().Spawn();
             return controller;
         }
         #endregion

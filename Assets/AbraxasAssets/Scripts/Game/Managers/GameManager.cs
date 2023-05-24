@@ -4,7 +4,6 @@ using Abraxas.Core;
 using Abraxas.GameStates;
 using Abraxas.Manas;
 using Abraxas.Players.Managers;
-using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Drawing;
@@ -26,7 +25,6 @@ namespace Abraxas.Game.Managers
         IGameStateManager _gameStateManager;
         IPlayerManager _playerManager;
         IManaManager _manaManager;
-        IDeckManager _deckManager;
 
         // Zones
         IZoneManager _zoneManager;
@@ -34,7 +32,6 @@ namespace Abraxas.Game.Managers
         [Inject]
         public void Construct(Game.Settings settings,
                        IGameStateManager gameStateManager,
-                       IDeckManager deckManager,
                        IZoneManager zoneManager,
                        IPlayerManager playerManager,
                        IManaManager manaManager)
@@ -44,49 +41,46 @@ namespace Abraxas.Game.Managers
             _zoneManager = zoneManager;
             _playerManager = playerManager;
             _manaManager = manaManager;
-            _deckManager = deckManager;
         }
         #endregion
-
-        #region Properties
-        public bool GameStarted { get; private set; } = false;
-        #endregion;
 
         #region Methods
         public void Start()
         {
-            StartCoroutine(_gameStateManager.SwitchGameStateTo(States.GameNotStarted));
+            StartCoroutine(WaitForServerOrClient());
         }
-
+        public IEnumerator WaitForServerOrClient()
+        {
+            while (!IsServer && !IsClient)
+            {
+                yield return null;
+            }
+            yield return _gameStateManager.InitializeState(States.GameNotStarted);
+        }
         public IEnumerator StartGame()
         {
-            if (!GameStarted)
-            {
-                GameStarted = true;
-                 _deckManager.RequestBuildDecks();
-                yield return new WaitForSeconds(.5f);
-                _deckManager.RequestShuffleDeck(Player.Player1);
-                _deckManager.RequestShuffleDeck(Player.Player2);
-                yield return new WaitForSeconds(.5f);
-                yield return Utilities.WaitForCoroutines(_zoneManager.MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
-                                                         _zoneManager.MoveCardsFromDeckToHand(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
-            }
+            Debug.Log($"StartGame");
+            yield return Utilities.WaitForCoroutines(_zoneManager.MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
+                                                     _zoneManager.MoveCardsFromDeckToHand(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
+            Debug.Log($"StartGameCompleted");
         }
         public IEnumerator DrawStartOfTurnCardsForActivePlayer()
         {
+            Debug.Log($"DrawStartOfTurnCardsForActivePlayer: {_playerManager.ActivePlayer}");
             yield return _zoneManager.MoveCardsFromDeckToHand(_playerManager.ActivePlayer, _settings.CardsToDrawAtStartOfTurn);
         }
         public IEnumerator GenerateStartOfTurnManaForActivePlayer()
         {
+            Debug.Log($"GenerateStartOfTurnManaForActivePlayer: {_playerManager.ActivePlayer}");
             yield return _manaManager.GenerateManaFromDeckRatio(_playerManager.ActivePlayer, _manaManager.StartOfTurnMana);
             _manaManager.IncrementStartOfTurnManaAmount();
         }
-
         #endregion
 
         #region Server Methods
         public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
         {
+            if (!IsClient) return;
             NetworkObject cardNetworkObject = card.View.NetworkObject;
             if (cardNetworkObject != null)
             {
@@ -100,7 +94,7 @@ namespace Abraxas.Game.Managers
             NetworkObject cardNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[cardNetworkObjectId];
             if (cardNetworkObject != null)
             {
-                if (cardNetworkObject.GetComponent<CardView>() is CardView card)
+                if (cardNetworkObject.GetComponent<CardView>() is ICardView card)
                 {
                     PurchaseCardAndMoveFromHandToCell(card.Controller, fieldPosition);
                 }
@@ -113,7 +107,7 @@ namespace Abraxas.Game.Managers
             NetworkObject cardNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[cardNetworkObjectId];
             if (cardNetworkObject != null)
             {
-                if (cardNetworkObject.GetComponent<CardView>() is CardView card)
+                if (cardNetworkObject.GetComponent<CardView>() is ICardView card)
                 {
                     PurchaseCardAndMoveFromHandToCell(card.Controller, fieldPosition);
                 }

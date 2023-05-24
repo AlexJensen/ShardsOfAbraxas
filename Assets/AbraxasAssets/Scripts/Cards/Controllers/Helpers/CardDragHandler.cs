@@ -89,8 +89,6 @@ namespace Abraxas.Cards.Controllers
             yield return _handManager.ReturnCardToHand(_cardController);
             _handManager.CardDragging = null;
         }
-
-       
         #endregion
     }
 }

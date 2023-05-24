@@ -32,7 +32,7 @@ namespace Abraxas.Zones.Fields.Controllers
         #region Methods
         public IEnumerator StartCombat()
         {
-            ICardController[] activeCards = Model.GetCardsForPlayer(_playerManager.ActivePlayer).Reverse().ToArray();
+            ICardController[] activeCards = Model.GetCardsForPlayer(_playerManager.ActivePlayer).ToArray();
             for (int i = activeCards.Length - 1; i >= 0; i--)
             {
                 yield return activeCards[i].Combat();
@@ -86,6 +86,8 @@ namespace Abraxas.Zones.Fields.Controllers
 
         public override ICardController RemoveCard(ICardController card)
         {
+            card.Cell?.RemoveCard(card);
+            card.Cell = null;
             return Model.RemoveCard(card);
         }
 

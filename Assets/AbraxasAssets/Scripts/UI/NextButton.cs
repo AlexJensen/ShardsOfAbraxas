@@ -3,25 +3,57 @@ using Abraxas.GameStates;
 using Abraxas.Players.Managers;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using System.Linq;
+using Abraxas.Players;
 
 namespace Abraxas.UI
 {
     public class NextButton : MonoBehaviour, IGameEventListener<GameStateEnteredEvent>
     {
         #region Settings
-        Settings _buttonSettings;
+
         [Serializable]
         public class Settings
         {
-            public string BeginningText;
-            public string BeforeCombatText;
-            public string CombatText;
-            public string AfterCombatText;
-            public string EndOfTurnText;
+            [Serializable]
+            public struct NextButtonState
+            {
+                public string Text;
+                public bool Interactable;
+                public GameStates.GameStates State;
+            }
+
+            [SerializeField]
+            private List<NextButtonState> _nextButtonStates = new List<NextButtonState>();
+
+            public string GetText(GameStates.GameStates state)
+            {
+                foreach (var nextState in from nextState in _nextButtonStates
+                                          where nextState.State == state
+                                          select nextState)
+                {
+                    return nextState.Text;
+                }
+
+                return "NO STATE FOUND";
+            }
+
+            public bool GetInteractable(GameStates.GameStates state)
+            {
+                foreach (var nextState in from nextState in _nextButtonStates
+                                          where nextState.State == state
+                                          select nextState)
+                {
+                    return nextState.Interactable;
+                }
+
+                return false;
+            }
         }
         #endregion
 
@@ -29,10 +61,13 @@ namespace Abraxas.UI
         IGameStateManager _gameStateManager;
         IEventManager _eventManager;
         IPlayerManager _playerManager;
+        Settings _buttonSettings;
+        Player.Settings _playerSettings;
         [Inject]
-        public void Construct(Settings buttonSettings, IGameStateManager gameStateManager, IPlayerManager playerManager, IEventManager eventManager)
+        public void Construct(Settings buttonSettings, Player.Settings playerSettings, IGameStateManager gameStateManager, IPlayerManager playerManager, IEventManager eventManager)
         {
             _buttonSettings = buttonSettings;
+            _playerSettings = playerSettings;
             _gameStateManager = gameStateManager;
             _eventManager = eventManager;
             _playerManager = playerManager;
@@ -43,6 +78,7 @@ namespace Abraxas.UI
 
         #region Fields
         Button _button;
+        Image _image;
         TMP_Text _buttonStr;
         #endregion
 
@@ -50,6 +86,7 @@ namespace Abraxas.UI
         void Start()
         {
             _button = GetComponent<Button>();
+            _image = GetComponent<Image>();
             _buttonStr = _button.GetComponentInChildren<TMP_Text>();
         }
 
@@ -67,32 +104,9 @@ namespace Abraxas.UI
         public IEnumerator OnEventRaised(GameStateEnteredEvent eventData)
         {
             GameState state = eventData.State;
-            if (state is BeginningState)
-            {
-                _button.interactable = false;
-                _buttonStr.text = _buttonSettings.BeginningText;
-            }
-            else if (state is BeforeCombatState)
-            {
-                _button.interactable = true;
-                _buttonStr.text = _buttonSettings.BeforeCombatText;
-            }
-            else if (state is CombatState)
-            {
-                _button.interactable = false;
-                _buttonStr.text = _buttonSettings.CombatText;
-            }
-            else if (state is AfterCombatState)
-            {
-                _button.interactable = true;
-                _buttonStr.text = _buttonSettings.AfterCombatText;
-            }
-            else if (state is EndState)
-            {
-                _button.interactable = false;
-                _buttonStr.text = _buttonSettings.EndOfTurnText;
-            }
-
+            _button.interactable = _buttonSettings.GetInteractable(state.CurrentState);
+            _buttonStr.text = _buttonSettings.GetText(state.CurrentState);
+            _image.color = _playerSettings.GetPlayerDetails(_playerManager.ActivePlayer).color;
             if (_playerManager.LocalPlayer != _playerManager.ActivePlayer)
             {
                 _button.interactable = false;

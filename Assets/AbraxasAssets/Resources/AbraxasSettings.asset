@@ -51,11 +51,11 @@ MonoBehaviour:
     - name: Citrine
       type: 10
       color: {r: 1, g: 0.49803922, b: 0, a: 1}
-    - name: Tourquoise
+    - name: Turquoise
       type: 11
       color: {r: 0, g: 0.49803922, b: 0.49803922, a: 1}
   CardSettings:
-    cardPrefab: {fileID: 6750648729959934835, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+    cardPrefab: {fileID: 1104794862965023311, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
     animationSettings:
       MoveCardToFieldTime: 0.2
       MoveCardToDeckTime: 0.2
@@ -77,13 +77,27 @@ MonoBehaviour:
       color: {r: 1, g: 0.6862745, b: 0.6862745, a: 1}
   ManaSettings:
     ManaTypePrefab: {fileID: 5328795667250569614, guid: 8aff0008d6cddae4e8d382c0b547ef3f, type: 3}
-    StartingMana: 2
+    StartingMana: 6
     ManaPerTurnIncrement: 2
   NextButtonSettings:
-    BeginningText: Start of Turn
-    BeforeCombatText: To Combat
-    CombatText: Combat
-    AfterCombatText: End Turn
-    EndOfTurnText: Turn Ending
+    _nextButtonStates:
+    - Text: Waiting for Players...
+      Interactable: 0
+      State: 0
+    - Text: Turn Starting...
+      Interactable: 0
+      State: 1
+    - Text: To Combat
+      Interactable: 1
+      State: 2
+    - Text: Waiting for Combat...
+      Interactable: 0
+      State: 3
+    - Text: End Turn
+      Interactable: 1
+      State: 4
+    - Text: Turn Ending...
+      Interactable: 0
+      State: 5
   OverlaySettings:
     ScaleCardToOverlayTime: 0.2

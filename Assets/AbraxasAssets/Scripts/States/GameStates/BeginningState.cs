@@ -1,7 +1,6 @@
 ﻿using Abraxas.Events;
 using Abraxas.Game.Managers;
 using System.Collections;
-using Unity.Netcode;
 using Zenject;
 
 namespace Abraxas.GameStates
@@ -30,14 +29,13 @@ namespace Abraxas.GameStates
         public override IEnumerator OnEnterState()
         {
             yield return base.OnEnterState();
-            yield return gameManager.DrawStartOfTurnCardsForActivePlayer();
-            yield return gameManager.GenerateStartOfTurnManaForActivePlayer();
             yield return _gameStateManager.BeginNextGameState();
-
         }
         public override IEnumerator OnExitState()
         {
             yield return base.OnExitState();
+            yield return gameManager.DrawStartOfTurnCardsForActivePlayer();
+            yield return gameManager.GenerateStartOfTurnManaForActivePlayer();
         }
         #endregion
     }

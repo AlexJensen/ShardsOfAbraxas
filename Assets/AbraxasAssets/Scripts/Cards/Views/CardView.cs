@@ -46,6 +46,8 @@ namespace Abraxas.Cards.Views
             OnOwnerChanged();
             OnOriginalOwnerChanged();
             OnHiddenChanged();
+
+            _image.sprite = _images[Random.Range(0, _images.Length)];
         }
         public override void OnDestroy()
         {
@@ -61,6 +63,8 @@ namespace Abraxas.Cards.Views
         Image _cover, _cardBack;
         [SerializeField]
         TMP_Text _titleText, _costText;
+        [SerializeField]
+        Sprite[] _images;
         [SerializeField]
         Image _image;
         RectTransformMover _rectTransformMover;

@@ -14,7 +14,7 @@ namespace Abraxas.Zones.Decks.Controllers
 
         public virtual void Shuffle()
         {
-            ((IDeckModel)Model).Shuffle();
+            Model.Shuffle();
         }
     }
 }
