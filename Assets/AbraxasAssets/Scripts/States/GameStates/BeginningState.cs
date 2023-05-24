@@ -1,6 +1,7 @@
 ﻿using Abraxas.Events;
 using Abraxas.Game.Managers;
 using System.Collections;
+using UnityEngine;
 using Zenject;
 
 namespace Abraxas.GameStates
@@ -29,6 +30,7 @@ namespace Abraxas.GameStates
         public override IEnumerator OnEnterState()
         {
             yield return base.OnEnterState();
+            yield return new WaitForSeconds(.1f);
             yield return _gameStateManager.BeginNextGameState();
         }
         public override IEnumerator OnExitState()

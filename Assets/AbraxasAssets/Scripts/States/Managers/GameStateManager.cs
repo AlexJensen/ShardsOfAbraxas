@@ -53,30 +53,24 @@ namespace Abraxas.GameStates.Managers
             if (!IsClient)
             {
                 Debug.Log($"Server: State?.OnExitState(); {_state.CurrentState}");
-                yield return State?.OnExitState();
                 isWaitingForClientAcknowledgments = true;
                 clientAcknowledgments = 0;
                 SetGameStateClientRpc(state);
-                _state = _stateFactory.CreateState(state);
                 while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count) yield return null;
-
+                isWaitingForClientAcknowledgments = false;
+                yield return State?.OnExitState();
+                _state = _stateFactory.CreateState(state);
                 Debug.Log($"Server: State?.OnEnterState(); {_state.CurrentState}");
                 yield return State?.OnEnterState();
-
                 clientAcknowledgments = 0;
                 AdvanceGameStateClientRpc();
-                while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count) yield return null;
-                Debug.Log($"Server: SwitchGameStateTo {state} completed");
-                isWaitingForClientAcknowledgments = false;
+                
             }
             else
             {
                 Debug.Log($"Client: State?.OnExitState(); {_state.CurrentState}");
                 yield return State?.OnExitState();
-                isWaitingForServer = true;
-                AcknowledgeServerRpc();
                 _state = _stateFactory.CreateState(state);
-                while (isWaitingForServer) yield return null;
                 Debug.Log($"Client: State?.OnEnterState();{_state.CurrentState}");
                 yield return State?.OnEnterState();
                 isWaitingForServer = true;
