@@ -1,5 +1,6 @@
 ﻿using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Data;
+using Abraxas.Cards.Managers;
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Abraxas.StackBlocks.Views;
@@ -9,11 +10,10 @@ using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Models;
 using Abraxas.Stones.Views;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
-using UnityEngine;
 using Zenject;
 using Player = Abraxas.Players.Players;
-using System.Linq;
 
 namespace Abraxas.Cards.Factories
 {
@@ -22,12 +22,12 @@ namespace Abraxas.Cards.Factories
         #region Dependencies
         readonly DiContainer _container;
         readonly Card.Settings _cardSettings;
-        readonly NetworkManager _networkManager;
-        public CardFactory(DiContainer container, Card.Settings cardSettings)
+        readonly ICardManager _cardManager;
+        public CardFactory(DiContainer container, Card.Settings cardSettings, ICardManager cardManager)
         {
             _container = container;
             _cardSettings = cardSettings;
-            _networkManager = NetworkManager.Singleton;
+            _cardManager = cardManager;
         }
         #endregion
 
@@ -75,6 +75,7 @@ namespace Abraxas.Cards.Factories
             mouseOverHandler.Initialize(controller);
             mouseOverListener.Initialize(mouseOverHandler);
 
+            _cardManager.AddCard(controller);
             return controller;
         }
         #endregion

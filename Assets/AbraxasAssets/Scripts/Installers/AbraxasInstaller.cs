@@ -1,3 +1,4 @@
+using Abraxas.Cards.Managers;
 using Abraxas.CardViewers.Managers;
 using Abraxas.Events.Managers;
 using Abraxas.Game.Managers;
@@ -42,6 +43,7 @@ namespace Abraxas.Core.Installers
             Container.BindInterfacesAndSelfTo<DebugNetworkManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<CardViewerManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<ManaManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<CardManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<HandManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<DeckManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<GraveyardManager>().FromComponentInHierarchy().AsSingle();

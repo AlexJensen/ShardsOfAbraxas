@@ -1,4 +1,5 @@
 using Abraxas.Cards.Controllers;
+using Abraxas.Cards.Managers;
 using Abraxas.Cards.Views;
 using Abraxas.Core;
 using Abraxas.GameStates;
@@ -25,6 +26,7 @@ namespace Abraxas.Game.Managers
         IGameStateManager _gameStateManager;
         IPlayerManager _playerManager;
         IManaManager _manaManager;
+        ICardManager _cardManager;
 
         // Zones
         IZoneManager _zoneManager;
@@ -34,13 +36,15 @@ namespace Abraxas.Game.Managers
                        IGameStateManager gameStateManager,
                        IZoneManager zoneManager,
                        IPlayerManager playerManager,
-                       IManaManager manaManager)
+                       IManaManager manaManager,
+                       ICardManager cardManager)
         {
             _settings = settings;
             _gameStateManager = gameStateManager;
             _zoneManager = zoneManager;
             _playerManager = playerManager;
             _manaManager = manaManager;
+            _cardManager = cardManager;
         }
         #endregion
 
@@ -81,36 +85,27 @@ namespace Abraxas.Game.Managers
         public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
         {
             if (!IsClient) return;
-            NetworkObject cardNetworkObject = card.View.NetworkObject;
-            if (cardNetworkObject != null)
-            {
-                ulong cardNetworkObjectId = cardNetworkObject.NetworkObjectId;
-                PurchaseCardAndMoveFromHandToCellServerRpc(cardNetworkObjectId, new Vector2Int(fieldPosition.X, fieldPosition.Y));
-            }
+            int cardNetworkObjectId = _cardManager.GetCardIndex(card);
+            PurchaseCardAndMoveFromHandToCellServerRpc(cardNetworkObjectId, new Vector2Int(fieldPosition.X, fieldPosition.Y));
         }
         [ServerRpc(RequireOwnership = false)]
-        private void PurchaseCardAndMoveFromHandToCellServerRpc(ulong cardNetworkObjectId, Vector2Int fieldPosition)
+        private void PurchaseCardAndMoveFromHandToCellServerRpc(int cardNetworkObjectId, Vector2Int fieldPosition)
         {
-            NetworkObject cardNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[cardNetworkObjectId];
-            if (cardNetworkObject != null)
+
+            ICardController card = _cardManager.GetCardFromIndex(cardNetworkObjectId);
+            if (card != null)
             {
-                if (cardNetworkObject.GetComponent<CardView>() is ICardView card)
-                {
-                    PurchaseCardAndMoveFromHandToCell(card.Controller, fieldPosition);
-                }
+                PurchaseCardAndMoveFromHandToCell(card, fieldPosition);
                 if (!IsHost) PurchaseCardAndMoveFromHandToCellClientRpc(cardNetworkObjectId, fieldPosition);
             }
         }
         [ClientRpc]
-        private void PurchaseCardAndMoveFromHandToCellClientRpc(ulong cardNetworkObjectId, Vector2Int fieldPosition)
+        private void PurchaseCardAndMoveFromHandToCellClientRpc(int cardNetworkObjectId, Vector2Int fieldPosition)
         {
-            NetworkObject cardNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[cardNetworkObjectId];
-            if (cardNetworkObject != null)
+            ICardController card = _cardManager.GetCardFromIndex(cardNetworkObjectId);
+            if (card != null)
             {
-                if (cardNetworkObject.GetComponent<CardView>() is ICardView card)
-                {
-                    PurchaseCardAndMoveFromHandToCell(card.Controller, fieldPosition);
-                }
+                PurchaseCardAndMoveFromHandToCell(card, fieldPosition);
             }
         }
         private void PurchaseCardAndMoveFromHandToCell(ICardController card, Vector2Int fieldPosition)
