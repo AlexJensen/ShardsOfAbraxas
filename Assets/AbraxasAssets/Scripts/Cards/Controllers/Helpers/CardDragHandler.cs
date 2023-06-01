@@ -1,12 +1,12 @@
 ﻿using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
-using Abraxas.Game.Managers;
+using Abraxas.Games.Managers;
 using Abraxas.Manas;
 using Abraxas.Players.Managers;
 using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Hands.Controllers;
 using Abraxas.Zones.Hands.Managers;
-using Abraxas.Zones.Overlays.Managers;
+using Abraxas.Zones.Overlays;
 using System.Collections;
 
 namespace Abraxas.Cards.Controllers
@@ -17,17 +17,17 @@ namespace Abraxas.Cards.Controllers
         ICardController _cardController;
         ICardDragListener _cardDragListener;
 
-        readonly Overlay.Settings _overlaySettings;
+        readonly Card.Settings.AnimationSettings _cardAnimationSettings;
         readonly IGameManager _gameManager;
         readonly IPlayerManager _playerManager;
         readonly IHandManager _handManager;
         readonly IFieldManager _fieldManager;
         readonly IManaManager _manaManager;
-        public CardDragHandler(Overlay.Settings overlaySettings, IGameManager gameManager, IPlayerManager playerManager,
+        public CardDragHandler(Card.Settings overlaySettings, IGameManager gameManager, IPlayerManager playerManager,
                                IHandManager handManager, IFieldManager fieldManager,
                                IManaManager manaManager)
         {
-            _overlaySettings = overlaySettings;
+            _cardAnimationSettings = overlaySettings.animationSettings;
             _gameManager = gameManager;
             _playerManager = playerManager;
             _handManager = handManager;
@@ -50,7 +50,7 @@ namespace Abraxas.Cards.Controllers
                 _handManager.CardDragging = _cardController;
                 _handManager.RemoveCard(_cardController);
                 _cardController.AddToOverlay();
-                _cardController.ScaleToRectangle(_fieldManager.GetCellDimensions(), _overlaySettings.ScaleCardToOverlayTime);
+                _cardController.ScaleToRectangle(_fieldManager.GetCellDimensions(), _cardAnimationSettings.ScaleCardToOverlayTime);
             }
         }
 

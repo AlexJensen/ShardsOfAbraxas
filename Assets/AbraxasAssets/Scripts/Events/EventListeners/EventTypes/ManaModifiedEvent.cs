@@ -5,11 +5,11 @@ namespace Abraxas.Events
     public class ManaModifiedEvent
     {
         #region Properties
-        public Mana Mana { get; }
+        public ManaView Mana { get; }
         #endregion
 
         #region Methods
-        public ManaModifiedEvent(Mana mana)
+        public ManaModifiedEvent(ManaView mana)
         {
             Mana = mana;
         }

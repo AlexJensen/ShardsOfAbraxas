@@ -5,7 +5,7 @@ using System.Collections;
 using System.Drawing;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UI;
+using Image = UnityEngine.UI.Image;
 
 namespace Abraxas.Cards.Views
 {

@@ -76,10 +76,11 @@ namespace Abraxas.Zones.Decks.Managers
                 int atk = Random.Range(1, 5);
                 int def = Random.Range(1, 5);
                 int mv = Random.Range(1, 5);
+                int imageIndex = Random.Range(0, 4);
 
                 for (int j = 0; j < 4; j++)
                 {
-                    CardData cardData = new CardData
+                    CardData cardData = new()
                     {
                         Title = titles[i],
                         Owner = player,
@@ -92,13 +93,12 @@ namespace Abraxas.Zones.Decks.Managers
                             [StatValues.ATK] = atk,
                             [StatValues.DEF] = def,
                             [StatValues.MV] = mv
-                        }
+                        },
+                        ImageIndex = imageIndex
                     };
-
                     cardDataList.Add(cardData);
                 }
             }
-
             return cardDataList;
         }
         #endregion
@@ -127,11 +127,11 @@ namespace Abraxas.Zones.Decks.Managers
             List<CardData> cardDataListPlayer1 = GenerateCardDataList(Player.Player1);
             List<CardData> cardDataListPlayer2 = GenerateCardDataList(Player.Player2);
 
-            CardDataListWrapper wrapperPlayer1 = new CardDataListWrapper
+            CardDataListWrapper wrapperPlayer1 = new()
             {
                 CardDataList = cardDataListPlayer1
             };
-            CardDataListWrapper wrapperPlayer2 = new CardDataListWrapper
+            CardDataListWrapper wrapperPlayer2 = new()
             {
                 CardDataList = cardDataListPlayer2
             };

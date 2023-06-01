@@ -1,9 +1,7 @@
 using Abraxas.Events;
-using Abraxas.Game.Managers;
-using Abraxas.UI;
+using Abraxas.Events.Managers;
+using Abraxas.Games.Managers;
 using System.Collections;
-using TMPro;
-using UnityEngine.UI;
 
 namespace Abraxas.GameStates
 {

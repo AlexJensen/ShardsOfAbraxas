@@ -10,8 +10,8 @@ using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
+using Image = UnityEngine.UI.Image;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Views
@@ -23,13 +23,15 @@ namespace Abraxas.Cards.Views
     class CardView : NetworkBehaviour, ICardView
     {
         #region Dependencies
+        Card.Settings _cardSettings;
         Stone.Settings _stoneSettings;
         Players.Player.Settings _playerSettings;
         ICardModelReader _model;
         ICardController _controller;
         [Inject]
-        public void Construct(Stone.Settings stoneSettings, Players.Player.Settings playerSettings)
+        public void Construct(Card.Settings cardSettings, Stone.Settings stoneSettings, Players.Player.Settings playerSettings)
         {
+            _cardSettings = cardSettings;
             _stoneSettings = stoneSettings;
             _playerSettings = playerSettings;
         }
@@ -47,7 +49,7 @@ namespace Abraxas.Cards.Views
             OnOriginalOwnerChanged();
             OnHiddenChanged();
 
-            _image.sprite = _images[Random.Range(0, _images.Length)];
+            _image.sprite = _cardSettings.images[_model.ImageIndex];
         }
         public override void OnDestroy()
         {
@@ -63,8 +65,6 @@ namespace Abraxas.Cards.Views
         Image _cover, _cardBack;
         [SerializeField]
         TMP_Text _titleText, _costText;
-        [SerializeField]
-        Sprite[] _images;
         [SerializeField]
         Image _image;
         RectTransformMover _rectTransformMover;

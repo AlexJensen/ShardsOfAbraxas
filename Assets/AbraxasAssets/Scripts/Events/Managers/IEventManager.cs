@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-namespace Abraxas.Events
+namespace Abraxas.Events.Managers
 {
     public interface IEventManager
     {

@@ -1,25 +1,35 @@
 using Abraxas.Zones.Decks.Controllers;
+using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Decks.Models;
 using Abraxas.Zones.Decks.Views;
 using Abraxas.Zones.Factories;
 using Abraxas.Zones.Fields.Controllers;
+using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Fields.Models;
 using Abraxas.Zones.Fields.Views;
 using Abraxas.Zones.Graveyard.Controllers;
+using Abraxas.Zones.Graveyards.Managers;
 using Abraxas.Zones.Graveyards.Models;
 using Abraxas.Zones.Graveyards.Views;
 using Abraxas.Zones.Hands.Controllers;
+using Abraxas.Zones.Hands.Managers;
 using Abraxas.Zones.Hands.Models;
 using Abraxas.Zones.Hands.Views;
+using Abraxas.Zones.Managers;
 using Abraxas.Zones.Models;
 using Zenject;
 
-namespace Abraxas
+namespace Abraxas.Zones
 {
     public class ZoneInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<ZoneManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<HandManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<DeckManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<GraveyardManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<FieldManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<FieldView>().AsTransient();
             Container.BindInterfacesAndSelfTo<FieldController>().AsTransient();
             Container.BindInterfacesAndSelfTo<FieldModel>().AsTransient();

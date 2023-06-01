@@ -4,6 +4,7 @@ using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
 using Abraxas.Core;
 using Abraxas.Events;
+using Abraxas.Events.Managers;
 using Abraxas.StatBlocks;
 using Abraxas.StatBlocks.Models;
 using Abraxas.Stones;
@@ -106,7 +107,7 @@ namespace Abraxas.Cards.Controllers
         }
         public IEnumerator Combat()
         {
-            yield return _fieldManager.MoveCardAndFight(this, new Point(
+            yield return _fieldManager.CombatMovement(this, new Point(
                 ((ICardModelReader)_model).Owner == Player.Player1 ? Model.StatBlock[StatValues.MV] :
                 ((ICardModelReader)_model).Owner == Player.Player2 ? -Model.StatBlock[StatValues.MV] : 0, 0));
         }

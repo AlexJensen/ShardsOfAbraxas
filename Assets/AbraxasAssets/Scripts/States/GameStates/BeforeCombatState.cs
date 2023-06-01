@@ -1,5 +1,5 @@
-﻿using Abraxas.Events;
-using Abraxas.Game.Managers;
+﻿using Abraxas.Events.Managers;
+using Abraxas.Games.Managers;
 using System.Collections;
 using Zenject;
 

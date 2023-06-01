@@ -22,6 +22,7 @@ namespace Abraxas.Cards.Models
         public bool Hidden { get; }
         Point FieldPosition { get; }
         ICellController Cell { get; }
+        int ImageIndex { get; }
 
         event Action OnTitleChanged;
         event Action OnOwnerChanged;

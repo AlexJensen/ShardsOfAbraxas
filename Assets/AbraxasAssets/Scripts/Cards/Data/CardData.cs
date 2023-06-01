@@ -16,6 +16,7 @@ namespace Abraxas.Cards.Data
         public Player OriginalOwner;
         public List<StoneData> Stones;
         public StatBlockData StatBlock;
+        public int ImageIndex;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {

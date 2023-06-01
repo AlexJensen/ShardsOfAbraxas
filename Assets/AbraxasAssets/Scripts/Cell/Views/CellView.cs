@@ -1,9 +1,8 @@
 using Abraxas.Cells.Controllers;
 using System.Drawing;
 using UnityEngine;
-using UnityEngine.UI;
+using Image = UnityEngine.UI.Image;
 using Player = Abraxas.Players.Players;
-
 namespace Abraxas.Cells.Views
 {
     class CellView : MonoBehaviour, ICellView
@@ -26,6 +25,8 @@ namespace Abraxas.Cells.Views
         Sprite[] _cellBackTextures;
         [SerializeField]
         Image _cellBack;
+        [SerializeField]
+        RectTransform _cardHolder;
         #endregion
 
         #region Properties
@@ -36,7 +37,7 @@ namespace Abraxas.Cells.Views
                 return _controller; 
             } 
         }
-        public RectTransform RectTransform { get => (RectTransform)transform; }
+        public RectTransform RectTransform { get => _cardHolder; }
 
         public Point FieldPosition => new(transform.GetSiblingIndex(), transform.parent.GetSiblingIndex());
 
@@ -52,8 +53,8 @@ namespace Abraxas.Cells.Views
 
         public void SetChild(Transform transform)
         {
-            transform.SetParent(this.transform);
-            FitRectTransformInCell((RectTransform)transform);
+            transform.SetParent(RectTransform);
+            FitRectTransformInCell(RectTransform);
         }
         #endregion
     }

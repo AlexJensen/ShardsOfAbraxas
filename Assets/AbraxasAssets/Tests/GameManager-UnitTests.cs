@@ -1,4 +1,4 @@
-using Abraxas.Game.Managers;
+using Abraxas.Games.Managers;
 using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Hands.Managers;
 using NUnit.Framework;

@@ -7,7 +7,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Abraxas.Runtime",
-        "Unity.Netcode.Runtime"
+        "Unity.Netcode.Runtime",
+        ""
     ],
     "includePlatforms": [
         "Editor"
@@ -17,7 +18,8 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "Zenject-usage.dll",
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "Moq.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

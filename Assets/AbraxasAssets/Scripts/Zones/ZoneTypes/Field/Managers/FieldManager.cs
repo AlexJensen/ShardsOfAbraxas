@@ -49,9 +49,9 @@ namespace Abraxas.Zones.Fields.Managers
             yield return _field.StartCombat();
         }
 
-        public IEnumerator MoveCardAndFight(ICardController card, Point movement)
+        public IEnumerator CombatMovement(ICardController card, Point movement)
         {
-            yield return _field.MoveCardAndFight(card, movement);
+            yield return _field.CombatMovement(card, movement);
         }
 
         public IEnumerator MoveCardToCell(ICardController card, Point fieldPos)

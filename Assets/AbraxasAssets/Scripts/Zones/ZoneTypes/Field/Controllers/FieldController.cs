@@ -27,8 +27,6 @@ namespace Abraxas.Zones.Fields.Controllers
 
         }
         #endregion
-
-
         #region Methods
         public IEnumerator StartCombat()
         {
@@ -39,7 +37,7 @@ namespace Abraxas.Zones.Fields.Controllers
             }
         }
 
-        public IEnumerator MoveCardAndFight(ICardController card, Point movement)
+        public IEnumerator CombatMovement(ICardController card, Point movement)
         {
             Point destination = new(
                 Math.Clamp(card.FieldPosition.X + movement.X, 0, ((IFieldModel)Model).FieldGrid[0].Count - 1),
@@ -58,13 +56,12 @@ namespace Abraxas.Zones.Fields.Controllers
             
             if (destination != card.FieldPosition)
             {
-                yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[destination.Y][destination.X]);
-                if (FieldGrid[destination.Y][destination.Y].Player != card.Owner && FieldGrid[destination.Y][destination.X].Player != Player.Neutral)
-                {
-                    yield return card.PassHomeRow();
-                }
+                yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[destination.Y][destination.X]);            
             }
-
+            if (FieldGrid[destination.Y][destination.Y].Player != card.Owner && FieldGrid[destination.Y][destination.X].Player != Player.Neutral)
+            {
+                yield return card.PassHomeRow();
+            }
             if (collided != null)
             {
                 yield return card.Fight(collided);

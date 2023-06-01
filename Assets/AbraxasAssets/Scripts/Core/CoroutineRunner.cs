@@ -12,7 +12,7 @@ namespace Abraxas.Core
             {
                 if (instance == null)
                 {
-                    GameObject runnerObject = new GameObject("CoroutineRunner");
+                    GameObject runnerObject = new("CoroutineRunner");
                     instance = runnerObject.AddComponent<CoroutineRunner>();
                     DontDestroyOnLoad(runnerObject);
                 }

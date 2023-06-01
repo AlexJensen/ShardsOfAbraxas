@@ -66,6 +66,14 @@ namespace Abraxas.Cards.Models
                 _data.OriginalOwner = value;
             }
         }
+        public int ImageIndex
+        {
+            get => _data.ImageIndex;
+            set
+            {
+                _data.ImageIndex = value;
+            }
+        }
         public List<IStoneModel> Stones => _stones;
         public IStatBlockModel StatBlock => _statBlock;
         public ICellController Cell
