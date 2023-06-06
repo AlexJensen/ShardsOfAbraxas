@@ -58,7 +58,7 @@ namespace Abraxas.Zones.Fields.Controllers
             {
                 yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[destination.Y][destination.X]);            
             }
-            if (FieldGrid[destination.Y][destination.Y].Player != card.Owner && FieldGrid[destination.Y][destination.X].Player != Player.Neutral)
+            if (FieldGrid[destination.Y][destination.X].Player != card.Owner && FieldGrid[destination.Y][destination.X].Player != Player.Neutral)
             {
                 yield return card.PassHomeRow();
             }

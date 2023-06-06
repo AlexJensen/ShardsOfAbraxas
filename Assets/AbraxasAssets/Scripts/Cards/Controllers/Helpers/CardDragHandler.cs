@@ -6,7 +6,6 @@ using Abraxas.Players.Managers;
 using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Hands.Controllers;
 using Abraxas.Zones.Hands.Managers;
-using Abraxas.Zones.Overlays;
 using System.Collections;
 
 namespace Abraxas.Cards.Controllers

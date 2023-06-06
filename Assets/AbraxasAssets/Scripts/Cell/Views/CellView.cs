@@ -1,6 +1,7 @@
 using Abraxas.Cells.Controllers;
 using System.Drawing;
 using UnityEngine;
+using Zenject;
 using Image = UnityEngine.UI.Image;
 using Player = Abraxas.Players.Players;
 namespace Abraxas.Cells.Views
@@ -9,20 +10,24 @@ namespace Abraxas.Cells.Views
     {
         #region Dependencies
         ICellController _controller;
+        Cell.Settings _cellSettings;
+        [Inject]
+        public void Construct(Cell.Settings cellSettings)
+        {
+            _cellSettings = cellSettings;
+        }
 
         public void Initialize(ICellController controller)
         {
             _controller = controller;
 
-            _cellBack.sprite = _cellBackTextures[Random.Range(0, _cellBackTextures.Length)];
+            _cellBack.sprite = _cellSettings.cellBackTextures[Random.Range(0, _cellSettings.cellBackTextures.Length)];
         }
         #endregion
 
         #region Fields
         [SerializeField]
         Player _player;
-        [SerializeField]
-        Sprite[] _cellBackTextures;
         [SerializeField]
         Image _cellBack;
         [SerializeField]
