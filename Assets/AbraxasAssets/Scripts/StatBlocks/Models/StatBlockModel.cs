@@ -30,8 +30,8 @@ namespace Abraxas.StatBlocks.Models
             }
             set
             {
-                OnStatsChanged.Invoke();
                 _data.Cost = value;
+                OnStatsChanged.Invoke();
             }
         }
 
@@ -40,8 +40,8 @@ namespace Abraxas.StatBlocks.Models
             get => _data[index];
             set
             {
-                OnStatsChanged.Invoke();
                 _data[index] = value;
+                OnStatsChanged.Invoke();
             }
         }
         #endregion

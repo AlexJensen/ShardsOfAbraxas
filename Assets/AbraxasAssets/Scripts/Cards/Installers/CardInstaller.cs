@@ -9,9 +9,18 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Installers
 {
-    public class CardInstaller : MonoInstaller
+    public class CardInstaller : MonoInstaller<CardInstaller>
     {
         #region Bindings
+        public override void InstallBindings()
+        {
+            CardBaseInstaller.Install(Container);
+        }
+        #endregion
+    }
+
+    public class CardBaseInstaller : Installer<CardBaseInstaller>
+    {
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<CardManager>().FromComponentInHierarchy().AsSingle();
@@ -20,6 +29,5 @@ namespace Abraxas.Cards.Installers
             Container.BindInterfacesAndSelfTo<CardModel>().AsTransient();
             Container.BindFactory<CardData, Player, ICardController, CardController.Factory>().FromFactory<CardFactory>();
         }
-        #endregion
     }
 }

@@ -4,10 +4,10 @@ using Unity.Netcode;
 
 namespace Abraxas.Cards.Managers
 {
-    public class CardManager : NetworkBehaviour, ICardManager
+    internal class CardManager : NetworkBehaviour, ICardManager
     {
         #region Fields
-        List<ICardController> _cards = new();
+        readonly List<ICardController> _cards = new();
         #endregion
         #region Methods
         public void AddCard(ICardController card)

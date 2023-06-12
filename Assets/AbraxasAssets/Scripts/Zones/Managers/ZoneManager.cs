@@ -7,12 +7,11 @@ using Abraxas.Zones.Hands.Managers;
 using System.Collections;
 using System.Drawing;
 using Unity.Netcode;
-using UnityEngine;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Managers
 {
-    class ZoneManager: IZoneManager
+    internal class ZoneManager : IZoneManager
     {
         #region Dependencies
         // Zones
@@ -22,7 +21,7 @@ namespace Abraxas.Zones.Managers
         readonly IFieldManager _fieldManager;
         readonly IPlayerManager _playerManager;
 
-        public ZoneManager(IHandManager handManager, IDeckManager deckManager, IGraveyardManager graveyardManager, IFieldManager fieldManager, IPlayerManager playerManager)
+        internal ZoneManager(IHandManager handManager, IDeckManager deckManager, IGraveyardManager graveyardManager, IFieldManager fieldManager, IPlayerManager playerManager)
         {
             _handManager = handManager;
             _deckManager = deckManager;

@@ -21,7 +21,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Controllers
 {
-    class CardController : ICardController, IGameEventListener<ManaModifiedEvent>
+    internal class CardController : ICardController, IGameEventListener<ManaModifiedEvent>
     {
         #region Dependencies
         ICardModel _model;
@@ -69,7 +69,6 @@ namespace Abraxas.Cards.Controllers
         public ICellController Cell { get => ((ICardModelReader)_model).Cell; set => ((ICardModelWriter)_model).Cell = value; }
         public IZoneController Zone { get => ((ICardModelReader)_model).Zone; set => ((ICardModelWriter)_model).Zone = value; }
         public bool Hidden { get => ((ICardModelReader)_model).Hidden; set => ((ICardModelWriter)_model).Hidden = value; }
-
         #endregion
 
         #region Methods
