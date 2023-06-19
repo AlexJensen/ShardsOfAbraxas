@@ -9,13 +9,19 @@ namespace Abraxas.Zones.Models
 {
     abstract class ZoneModel :IZoneModel
     {
+        #region Dependencies
+        public virtual void Initialize<TView>(TView view) where TView : IZoneView
+        {
+
+        }
+        #endregion
+
         #region Fields
         readonly List<ICardController> _cardList = new();
         #endregion
 
         #region Properties
         public List<ICardController> CardList => _cardList;
-
         public Player Player { get; set; }
         #endregion
 
@@ -76,10 +82,7 @@ namespace Abraxas.Zones.Models
             }
         }
 
-        public virtual void Initialize<TView>(TView view) where TView : IZoneView
-        {
 
-        }
         #endregion
     }
 }

@@ -35,13 +35,7 @@ namespace Abraxas.Cells.Views
         #endregion
 
         #region Properties
-        public ICellController Controller 
-        { 
-            get 
-            { 
-                return _controller; 
-            } 
-        }
+        public ICellController Controller => _controller;
         public RectTransform RectTransform { get => _cardHolder; }
 
         public Point FieldPosition => new(transform.GetSiblingIndex(), transform.parent.GetSiblingIndex());

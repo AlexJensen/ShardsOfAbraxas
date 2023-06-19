@@ -1,13 +1,14 @@
-using UnityEngine;
+using Abraxas.Health.Controllers;
+using Abraxas.Health.Models;
 using TMPro;
+using UnityEngine;
 using Zenject;
-
 using Player = Abraxas.Players.Players;
 
-namespace Abraxas.Health
+namespace Abraxas.Health.Views
 {
     [RequireComponent(typeof(Animator))]
-    public class PlayerHealth : MonoBehaviour
+    class PlayerHealthView : MonoBehaviour, IPlayerHealthView
     {
         #region Enums
         public enum HealthChangeAnimationTriggers
@@ -21,10 +22,19 @@ namespace Abraxas.Health
 
         #region Dependencies
         Players.Player.Settings _playerSettings;
+        IPlayerHealthModel _model;
         [Inject]
         public void Construct(Players.Player.Settings playerSettings)
         {
             _playerSettings = playerSettings;
+        }
+
+        public void Initialize(IPlayerHealthModel model)
+        {
+            _model = model;
+
+            _model.OnHealthChanged += Refresh;
+            _model.OnMaxHealthChanged += Refresh;
         }
 
         #endregion
@@ -38,55 +48,27 @@ namespace Abraxas.Health
 
         Animator _animator;
 
-        int _currentHP, _maxHP;
+        bool _healthChanged;
         int _previousHP, _previousMaxHP;
         #endregion
 
         #region Properties
         public Player Player { get => _player; set => _player = value; }
-
-        public int CurrentHP
-        {
-            get => _currentHP; 
-            set
-            {
-                if (_previousHP == _currentHP)
-                {
-                    _previousHP = _currentHP;
-                }
-                _currentHP = Mathf.Min(MaxHP, value);
-                Refresh();
-            }
-        }
-        public int MaxHP
-        {
-            get => _maxHP;
-            set
-            {
-                if (_previousHP == _currentHP)
-                {
-                    _previousMaxHP = _maxHP;
-                }
-                _maxHP = value;
-                Refresh();
-            }
-        }
         #endregion
 
         #region Methods
         private void Awake()
         {
             _animator = GetComponent<Animator>();
-            MaxHP = _playerSettings.StartingHealth;
-            CurrentHP = _playerSettings.StartingHealth;
-            _previousMaxHP = MaxHP;
-            _previousHP = CurrentHP;
         }
 
         private void LateUpdate()
         {
-            UpdateHpText(ref _previousHP, _currentHP, _addHPText, HealthChangeAnimationTriggers.AddHPUp, HealthChangeAnimationTriggers.AddHPDown);
-            UpdateHpText(ref _previousMaxHP, _maxHP, _addMaxHPText, HealthChangeAnimationTriggers.AddMaxHPUp, HealthChangeAnimationTriggers.AddMaxHPDown);
+            if (_healthChanged)
+            {
+                UpdateHpText(ref _previousHP, _model.HP, _addHPText, HealthChangeAnimationTriggers.AddHPUp, HealthChangeAnimationTriggers.AddHPDown);
+                UpdateHpText(ref _previousMaxHP, _model.MaxHP, _addMaxHPText, HealthChangeAnimationTriggers.AddMaxHPUp, HealthChangeAnimationTriggers.AddMaxHPDown);
+            }
         }
 
         private void UpdateHpText(ref int previousValue, int currentValue, TMP_Text text, HealthChangeAnimationTriggers animationTriggerUp, HealthChangeAnimationTriggers animationTriggerDown)
@@ -103,7 +85,8 @@ namespace Abraxas.Health
 
         private void Refresh()
         {
-            _HPText.text = $"{_currentHP + "/" + _maxHP}";
+            if (_HPText != null)
+            _HPText.text = $"{_model.HP + "/" + _model.MaxHP}";
         }
 
         private void SetAnimationTrigger(HealthChangeAnimationTriggers trigger)

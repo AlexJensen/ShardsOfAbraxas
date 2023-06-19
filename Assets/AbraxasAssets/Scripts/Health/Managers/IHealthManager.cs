@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Abraxas.Health.Controllers;
 
 namespace Abraxas
 {
     public interface IHealthManager
     {
+        IPlayerHealthController GetPlayerHealth(Players.Players player);
         void ModifyPlayerHealth(Players.Players player, int amount);
     }
 }

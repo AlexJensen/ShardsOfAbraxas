@@ -14,7 +14,6 @@ namespace Abraxas.Cards.Controllers
     {
         ICardModel Model { get; }
         ICardView View { get; }
-
         string Title { get; }
         public Dictionary<StoneType, int> TotalCosts { get; }
         IZoneController Zone { get; set; }
@@ -25,12 +24,9 @@ namespace Abraxas.Cards.Controllers
         ICellController Cell { get; set; }
         IStatBlockModel StatBlock { get; }
         
-
         IEnumerator CheckDeath();
         IEnumerator Combat();
         IEnumerator Fight(ICardController opponent);
         IEnumerator PassHomeRow();
-        void ScaleToRectangle(PointF dimensions, float time);
-        void AddToOverlay();
     }
 }

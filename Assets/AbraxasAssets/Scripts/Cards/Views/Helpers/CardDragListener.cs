@@ -11,6 +11,7 @@ namespace Abraxas.Cards.Views
     public class CardDragListener : MonoBehaviour, ICardDragListener, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         #region Dependencies
+        ICardDragHandler _dragHandler;
         internal void Initialize(ICardDragHandler cardDragHandler)
         {
             _dragHandler = cardDragHandler;
@@ -18,7 +19,6 @@ namespace Abraxas.Cards.Views
         #endregion
 
         #region Fields
-        ICardDragHandler _dragHandler;
         Canvas _canvas;
         GraphicRaycaster _graphicRaycaster;
         PointerEventData lastPointerData;
@@ -46,7 +46,7 @@ namespace Abraxas.Cards.Views
             _dragHandler.OnEndDrag();
         }
 
-        public void DetermineDragRaycast()
+        public void DetermineLastDragRaycast()
         {
             List<RaycastResult> results = new();
             GraphicRaycaster.Raycast(lastPointerData, results);

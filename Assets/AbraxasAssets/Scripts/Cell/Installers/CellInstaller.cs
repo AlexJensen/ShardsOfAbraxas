@@ -12,6 +12,7 @@ namespace Abraxas.Cells.Installers
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<CellView>().AsTransient();
+            Container.BindInterfacesAndSelfTo<CellController>().AsTransient();
             Container.BindInterfacesAndSelfTo<CellModel>().AsTransient();
 
             Container.BindFactory<ICellView, ICellController, CellController.Factory>().FromFactory<CellFactory>();    

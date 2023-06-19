@@ -6,6 +6,7 @@ using Abraxas.Players.Managers;
 using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Hands.Controllers;
 using Abraxas.Zones.Hands.Managers;
+using Abraxas.Zones.Overlays.Managers;
 using System.Collections;
 
 namespace Abraxas.Cards.Controllers
@@ -17,16 +18,18 @@ namespace Abraxas.Cards.Controllers
         ICardDragListener _cardDragListener;
 
         readonly Card.Settings.AnimationSettings _cardAnimationSettings;
+        readonly IOverlayManager _overlayManager;
         readonly IGameManager _gameManager;
         readonly IPlayerManager _playerManager;
         readonly IHandManager _handManager;
         readonly IFieldManager _fieldManager;
         readonly IManaManager _manaManager;
-        public CardDragHandler(Card.Settings overlaySettings, IGameManager gameManager, IPlayerManager playerManager,
+        public CardDragHandler(Card.Settings overlaySettings, IGameManager gameManager, IOverlayManager overlayManager, IPlayerManager playerManager,
                                IHandManager handManager, IFieldManager fieldManager,
                                IManaManager manaManager)
         {
             _cardAnimationSettings = overlaySettings.animationSettings;
+            _overlayManager = overlayManager;
             _gameManager = gameManager;
             _playerManager = playerManager;
             _handManager = handManager;
@@ -48,8 +51,8 @@ namespace Abraxas.Cards.Controllers
             {
                 _handManager.CardDragging = _cardController;
                 _handManager.RemoveCard(_cardController);
-                _cardController.AddToOverlay();
-                _cardController.ScaleToRectangle(_fieldManager.GetCellDimensions(), _cardAnimationSettings.ScaleCardToOverlayTime);
+                _overlayManager.SetCard(_cardController.View);
+                _cardController.View.ChangeScale(_fieldManager.GetCellDimensions(), _cardAnimationSettings.ScaleCardToOverlayTime);
             }
         }
 
@@ -65,7 +68,7 @@ namespace Abraxas.Cards.Controllers
         {
             if (_handManager.CardDragging == _cardController)
             {
-                _cardDragListener.DetermineDragRaycast();
+                _cardDragListener.DetermineLastDragRaycast();
             }
         }
 

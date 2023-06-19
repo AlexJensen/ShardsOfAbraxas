@@ -2,9 +2,9 @@
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Abraxas.Players.Views
+namespace Abraxas.Players
 {
-    public class PlayerView: NetworkBehaviour
+    public class PlayerInstance: NetworkBehaviour
     {
 
 
@@ -18,9 +18,10 @@ namespace Abraxas.Players.Views
 
         public void Start()
         {
+            //TODO: This approach to player assignment won't work with rejoining players.
             if (IsLocalPlayer)
             {
-                PlayerView[] players = FindObjectsOfType<PlayerView>();
+                PlayerInstance[] players = FindObjectsOfType<PlayerInstance>();
                 if (players.Length == 1)
                 {
                     _player = Players.Player1;

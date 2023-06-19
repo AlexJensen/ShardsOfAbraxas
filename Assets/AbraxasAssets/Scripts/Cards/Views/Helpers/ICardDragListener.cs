@@ -2,6 +2,6 @@
 {
     interface ICardDragListener
     {
-        void DetermineDragRaycast();
+        void DetermineLastDragRaycast();
     }
 }

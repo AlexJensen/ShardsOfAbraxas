@@ -12,7 +12,6 @@ using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Managers;
-using Abraxas.Zones.Overlays.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -26,21 +25,21 @@ namespace Abraxas.Cards.Controllers
         #region Dependencies
         ICardModel _model;
         ICardView _view;
+
         readonly IZoneManager _zoneManager;
         readonly IEventManager _eventManager;
         readonly IHealthManager _healthManager;
         readonly IFieldManager _fieldManager;
         readonly IDeckManager _deckManager;
-        readonly IOverlayManager _overlayManager;
-        public CardController(IZoneManager zoneManager, IDeckManager deckManager, IEventManager eventManager, IHealthManager healthManager,
-                              IFieldManager fieldManager, IOverlayManager overlayManager)
+
+        public CardController(IZoneManager zoneManager, IDeckManager deckManager, IEventManager eventManager,
+                              IHealthManager healthManager, IFieldManager fieldManager)
         {
             _zoneManager = zoneManager;
             _eventManager = eventManager;
             _healthManager = healthManager;
             _fieldManager = fieldManager;
             _deckManager = deckManager;
-            _overlayManager = overlayManager;
         }
 
         public void Initialize(ICardModel model, ICardView view)
@@ -76,7 +75,6 @@ namespace Abraxas.Cards.Controllers
         {
             _eventManager.RemoveListener(typeof(ManaModifiedEvent), this);
         }
-
         public IEnumerator PassHomeRow()
         {
             _healthManager.ModifyPlayerHealth(((ICardModelReader)_model).Owner ==
@@ -85,7 +83,6 @@ namespace Abraxas.Cards.Controllers
             yield return _zoneManager.MoveCardFromFieldToDeck(this);
             _deckManager.ShuffleDeck(((ICardModelReader)_model).Owner);
         }
-
         public IEnumerator Fight(ICardController opponent)
         {
             if (opponent.Owner == Owner) yield break;
@@ -97,7 +94,6 @@ namespace Abraxas.Cards.Controllers
                 opponent.CheckDeath(),
                 CheckDeath());
         }
-
         public IEnumerator CheckDeath()
         {
             if (Model.StatBlock[StatValues.DEF] > 0) yield break;
@@ -117,14 +113,6 @@ namespace Abraxas.Cards.Controllers
                 _view.UpdateCostTextWithCastability(eventData);
             }
             yield break;
-        }
-        public void AddToOverlay()
-        {
-            _overlayManager.SetCard(_view);
-        }
-        public void ScaleToRectangle(PointF dimensions, float time)
-        {
-            _view.ChangeScale(dimensions, time);
         }
         #endregion
     }
