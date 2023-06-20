@@ -35,6 +35,7 @@ namespace Abraxas.Health.Controllers
         public Player Player
         {
             get => _model.Player;
+            set => _model.Player = value;
         }
         #endregion
     }

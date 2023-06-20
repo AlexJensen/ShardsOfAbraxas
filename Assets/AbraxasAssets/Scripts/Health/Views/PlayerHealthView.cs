@@ -21,13 +21,7 @@ namespace Abraxas.Health.Views
         #endregion
 
         #region Dependencies
-        Players.Player.Settings _playerSettings;
         IPlayerHealthModel _model;
-        [Inject]
-        public void Construct(Players.Player.Settings playerSettings)
-        {
-            _playerSettings = playerSettings;
-        }
 
         public void Initialize(IPlayerHealthModel model)
         {

@@ -31,7 +31,7 @@ namespace Abraxas.Health.Models
             get => _HP;
             set
             {
-                if (_HP != value) OnHealthChanged.Invoke();
+                if (_HP != value) OnHealthChanged?.Invoke();
                 _HP = Math.Min(MaxHP, value);
             }
         }
@@ -40,7 +40,7 @@ namespace Abraxas.Health.Models
             get => _maxHP;
             set
             {
-                if (_maxHP != value) OnMaxHealthChanged.Invoke();
+                if (_maxHP != value) OnMaxHealthChanged?.Invoke();
                 _maxHP = value;
             }
         }

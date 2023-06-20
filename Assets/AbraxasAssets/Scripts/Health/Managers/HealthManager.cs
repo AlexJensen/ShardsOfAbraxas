@@ -45,6 +45,10 @@ namespace Abraxas.Health.Managers
 
             return playerHP;
         }
+        public void AddPlayerHealth(IPlayerHealthController playerHealthController)
+        {
+            _hps.Add(playerHealthController);
+        }
         #endregion
     }
 }

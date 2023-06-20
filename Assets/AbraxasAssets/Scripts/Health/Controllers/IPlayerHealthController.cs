@@ -6,6 +6,6 @@ namespace Abraxas.Health.Controllers
     {
         int HP { get; set; }
         int MaxHP { get; set; }
-        Player Player { get; }
+        Player Player { get; set; }
     }
 }

@@ -14,10 +14,8 @@ namespace Abraxas.Zones.Fields.Managers
 {
     public class FieldManager : MonoBehaviour, IFieldManager
     {
-
         #region Dependencies
-        [SerializeField]
-        FieldView _fieldView;
+        IFieldView _fieldView;
         IFieldController _field;
 
         [Inject]
@@ -27,7 +25,7 @@ namespace Abraxas.Zones.Fields.Managers
             {
                 cellFactory.Create(cellView);
             }
-            _field = fieldFactory.Create(_fieldView);
+            _field = fieldFactory.Create(FindObjectOfType<FieldView>());
         }
         #endregion
 

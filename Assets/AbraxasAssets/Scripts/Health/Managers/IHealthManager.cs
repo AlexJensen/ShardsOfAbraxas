@@ -6,5 +6,6 @@ namespace Abraxas
     {
         IPlayerHealthController GetPlayerHealth(Players.Players player);
         void ModifyPlayerHealth(Players.Players player, int amount);
+        void AddPlayerHealth(IPlayerHealthController playerHealthController);
     }
 }
