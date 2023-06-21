@@ -106,6 +106,7 @@ namespace Abraxas.Cards.Controllers
                 ((ICardModelReader)_model).Owner == Player.Player1 ? Model.StatBlock[StatValues.MV] :
                 ((ICardModelReader)_model).Owner == Player.Player2 ? -Model.StatBlock[StatValues.MV] : 0, 0));
         }
+
         public IEnumerator OnEventRaised(ManaModifiedEvent eventData)
         {
             if (eventData.Mana.Player == Owner && eventData.Mana.ManaTypes != null)

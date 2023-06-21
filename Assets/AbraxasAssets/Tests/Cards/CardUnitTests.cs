@@ -1,5 +1,4 @@
-﻿using Abraxas.Assets.AbraxasAssets.Scripts.Stones.Installers;
-using Abraxas.Cards.Controllers;
+﻿using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Data;
 using Abraxas.Cards.Factories;
 using Abraxas.Cards.Installers;
@@ -20,6 +19,7 @@ using Abraxas.Health.Views;
 using Abraxas.Manas;
 using Abraxas.Players.Installers;
 using Abraxas.Players.Managers;
+using Abraxas.Stones.Installers;
 using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Factories;
 using Abraxas.Zones.Fields.Controllers;
@@ -28,7 +28,6 @@ using Abraxas.Zones.Fields.Models;
 using Abraxas.Zones.Fields.Views;
 using Abraxas.Zones.Hands.Managers;
 using Abraxas.Zones.Managers;
-using Abraxas.Zones.Models;
 using Abraxas.Zones.Overlays.Managers;
 using Moq;
 using NUnit.Framework;
@@ -71,8 +70,6 @@ namespace Abraxas.Tests
             Container.BindFactory<CardData, Player, ICardController, CardController.Factory>().FromFactory<CardFactory>();
             Container.BindFactory<IPlayerHealthView, IPlayerHealthController, PlayerHealthController.Factory>().FromFactory<PlayerHealthFactory>();
             Container.BindFactory<ICellView, ICellController, CellController.Factory>().FromFactory<CellFactory>();
-
-            Container.Bind<IZoneModel>().To<FieldModel>().WhenInjectedInto<FieldController>();
         }
     }
 
@@ -150,7 +147,7 @@ namespace Abraxas.Tests
                 Owner = Player.Player1,
                 StatBlock = new()
                 {
-                    Stats = new (1, 0, 0)
+                    Stats = new(1, 0, 0)
                 }
             };
 
@@ -177,7 +174,7 @@ namespace Abraxas.Tests
         }
 
         [Test]
-        public void CardController_Fight_CorrectlyDamagesOpponent()
+        public void CardController_Fight_DamagesOpponent()
         {
             // Arrange
             CardData cardData1 = new()
@@ -211,59 +208,39 @@ namespace Abraxas.Tests
             Assert.AreEqual(-1, opponentController.StatBlock[StatBlocks.StatValues.DEF]);
         }
 
-        /*[Test]
-        public void CardController_CheckDeath_MovesCardToGraveyard()
-        {
-            // Arrange
-            CardData cardData = new CardData
-            {
-                StatBlock = new()
-                {
-                    Stats = new(0, 0, 0)
-                }
-            };
-
-            var zoneManager = Container.Resolve<IZoneManager>();
-
-            var factory = Container.Resolve<CardController.Factory>();
-            var cardController = factory.Create(cardData, Player.Player1);
-
-
-            // Act
-            IEnumerator enumerator = cardController.CheckDeath();
-            while (enumerator.MoveNext()) { }
-
-            // Assert
-            // Verify that the card has been moved to the graveyard
-            Assert.AreEqual(ZoneType.Graveyard, cardData.Zone.Type);
-            Assert.IsTrue(zoneManager.GetZoneCards(ZoneType.Graveyard).Contains(cardController));
-        }
-
         [Test]
-        public void CardController_Combat_PerformsCombatMovement()
+        public void CardController_Fight_DoesNotDamageAllies()
         {
             // Arrange
-            CardData cardData = new CardData
+            CardData cardData1 = new()
             {
                 Owner = Player.Player1,
                 StatBlock = new()
                 {
-                    Stats = new (0, 0, 1),
+                    Stats = new(1, 0, 0)
                 }
             };
 
-            var fieldManager = Container.Resolve<IFieldManager>();
+            CardData cardData2 = new()
+            {
+                Owner = Player.Player1,
+                StatBlock = new()
+                {
+                    Stats = new(1, 0, 0)
+                }
+            };
 
-            var factory = Container.Resolve<CardController.Factory>();
-            var cardController = factory.Create(cardData, Player.Player1);
+            var cardFactory = Container.Resolve<CardController.Factory>();
+            var cardController = cardFactory.Create(cardData1, Player.Player1);
+            var opponentController = cardFactory.Create(cardData2, Player.Player2);
 
             // Act
-            IEnumerator enumerator = cardController.Combat();
+            IEnumerator enumerator = cardController.Fight(opponentController);
             while (enumerator.MoveNext()) { }
 
             // Assert
-            // Verify that the combat movement has been performed
-            Assert.AreEqual(1, fieldManager.GetCardMovement(cardController));
-        }*/
+            Assert.AreEqual(0, cardController.StatBlock[StatBlocks.StatValues.DEF]);
+            Assert.AreEqual(0, opponentController.StatBlock[StatBlocks.StatValues.DEF]);
+        }
     }
 }

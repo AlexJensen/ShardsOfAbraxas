@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace Abraxas.Assets.AbraxasAssets.Scripts.Stones.Installers
+namespace Abraxas.Stones.Installers
 {
     [CreateAssetMenu(fileName = "StoneSettings", menuName = "Abraxas/Stone Settings")]
     class StoneSettingsInstaller : ScriptableObjectInstaller<StoneSettingsInstaller>
