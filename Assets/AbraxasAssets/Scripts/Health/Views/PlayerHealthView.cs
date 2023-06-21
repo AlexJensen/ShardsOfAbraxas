@@ -22,7 +22,6 @@ namespace Abraxas.Health.Views
 
         #region Dependencies
         IPlayerHealthModel _model;
-
         public void Initialize(IPlayerHealthModel model)
         {
             _model = model;
@@ -30,7 +29,6 @@ namespace Abraxas.Health.Views
             _model.OnHealthChanged += Refresh;
             _model.OnMaxHealthChanged += Refresh;
         }
-
         #endregion
 
         #region Fields

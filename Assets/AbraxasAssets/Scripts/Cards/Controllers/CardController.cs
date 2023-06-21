@@ -50,7 +50,12 @@ namespace Abraxas.Cards.Controllers
             _eventManager.AddListener(typeof(ManaModifiedEvent), this);
         }
 
-        public class Factory : PlaceholderFactory<CardData, Player, ICardController>
+        public void OnDestroy()
+        {
+            _eventManager.RemoveListener(typeof(ManaModifiedEvent), this);
+        }
+
+        public class Factory : PlaceholderFactory<CardData, ICardController>
         {
 
         }
@@ -71,10 +76,6 @@ namespace Abraxas.Cards.Controllers
         #endregion
 
         #region Methods
-        public void OnDestroy()
-        {
-            _eventManager.RemoveListener(typeof(ManaModifiedEvent), this);
-        }
         public IEnumerator PassHomeRow()
         {
             _healthManager.ModifyPlayerHealth(((ICardModelReader)_model).Owner ==
@@ -98,7 +99,6 @@ namespace Abraxas.Cards.Controllers
         {
             if (Model.StatBlock[StatValues.DEF] > 0) yield break;
             yield return _zoneManager.MoveCardFromFieldToGraveyard(this);
-
         }
         public IEnumerator Combat()
         {
@@ -106,7 +106,9 @@ namespace Abraxas.Cards.Controllers
                 ((ICardModelReader)_model).Owner == Player.Player1 ? Model.StatBlock[StatValues.MV] :
                 ((ICardModelReader)_model).Owner == Player.Player2 ? -Model.StatBlock[StatValues.MV] : 0, 0));
         }
+        #endregion
 
+        #region Delegate Methods
         public IEnumerator OnEventRaised(ManaModifiedEvent eventData)
         {
             if (eventData.Mana.Player == Owner && eventData.Mana.ManaTypes != null)

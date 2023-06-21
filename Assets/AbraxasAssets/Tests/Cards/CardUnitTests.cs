@@ -67,7 +67,7 @@ namespace Abraxas.Tests
 
             Container.Bind(typeof(ZoneFactory<IFieldView, IFieldController, IFieldModel>)).ToSelf().AsTransient();
             
-            Container.BindFactory<CardData, Player, ICardController, CardController.Factory>().FromFactory<CardFactory>();
+            Container.BindFactory<CardData, ICardController, CardController.Factory>().FromFactory<CardFactory>();
             Container.BindFactory<IPlayerHealthView, IPlayerHealthController, PlayerHealthController.Factory>().FromFactory<PlayerHealthFactory>();
             Container.BindFactory<ICellView, ICellController, CellController.Factory>().FromFactory<CellFactory>();
         }
@@ -125,12 +125,11 @@ namespace Abraxas.Tests
         {
             // Arrange
             CardData cardData = new();
-            var player = Player.Player1;
 
             var factory = Container.Resolve<CardController.Factory>();
 
             // Act
-            var cardController = factory.Create(cardData, player);
+            var cardController = factory.Create(cardData);
 
             // Assert
             Assert.IsNotNull(cardController);
@@ -161,7 +160,7 @@ namespace Abraxas.Tests
             healthManager.AddPlayerHealth(playerHealthController);
 
             var cardFactory = Container.Resolve<CardController.Factory>();
-            var cardController = cardFactory.Create(cardData, Player.Player1);
+            var cardController = cardFactory.Create(cardData);
             int expectedHealth = playerHealthController.HP - cardData.StatBlock[StatBlocks.StatValues.ATK];
 
             // Act
@@ -196,8 +195,8 @@ namespace Abraxas.Tests
             };
 
             var cardFactory = Container.Resolve<CardController.Factory>();
-            var cardController = cardFactory.Create(cardData1, Player.Player1);
-            var opponentController = cardFactory.Create(cardData2, Player.Player2);
+            var cardController = cardFactory.Create(cardData1);
+            var opponentController = cardFactory.Create(cardData2);
 
             // Act
             IEnumerator enumerator = cardController.Fight(opponentController);
@@ -231,8 +230,8 @@ namespace Abraxas.Tests
             };
 
             var cardFactory = Container.Resolve<CardController.Factory>();
-            var cardController = cardFactory.Create(cardData1, Player.Player1);
-            var opponentController = cardFactory.Create(cardData2, Player.Player2);
+            var cardController = cardFactory.Create(cardData1);
+            var opponentController = cardFactory.Create(cardData2);
 
             // Act
             IEnumerator enumerator = cardController.Fight(opponentController);
@@ -241,6 +240,20 @@ namespace Abraxas.Tests
             // Assert
             Assert.AreEqual(0, cardController.StatBlock[StatBlocks.StatValues.DEF]);
             Assert.AreEqual(0, opponentController.StatBlock[StatBlocks.StatValues.DEF]);
+        }
+
+        [Test]
+        public void CardController_Combat_Player1MovesCardForward()
+        {
+            // Arrange
+            CardData cardData = new()
+            {
+                Owner = Player.Player1,
+                StatBlock = new()
+                {
+                    Stats = new(0, 0, 1)
+                }
+            };
         }
     }
 }

@@ -52,7 +52,6 @@ namespace Abraxas.Health.Models
         }
         #endregion
 
-
         #region Methods
         public void Initialize()
         {
@@ -60,7 +59,5 @@ namespace Abraxas.Health.Models
             HP = _playerSettings.StartingHealth;
         }
         #endregion
-
-      
     }
 }

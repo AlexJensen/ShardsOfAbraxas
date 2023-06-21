@@ -1,5 +1,4 @@
-﻿using Abraxas.Stones;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 namespace Abraxas.Stones.Installers

@@ -19,6 +19,8 @@ namespace Abraxas.Health.Factories
             var controller = _container.Instantiate<PlayerHealthController>();
             var model = _container.Instantiate<PlayerHealthModel>();
 
+            model.Initialize();
+            view.Initialize(model);
             controller.Initialize(view, model);
             return controller;
         }

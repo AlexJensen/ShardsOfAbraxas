@@ -27,7 +27,7 @@ namespace Abraxas.Cards.Installers
             Container.BindInterfacesAndSelfTo<CardView>().AsTransient();
             Container.BindInterfacesAndSelfTo<CardController>().AsTransient();
             Container.BindInterfacesAndSelfTo<CardModel>().AsTransient();
-            Container.BindFactory<CardData, Player, ICardController, CardController.Factory>().FromFactory<CardFactory>();
+            Container.BindFactory<CardData, ICardController, CardController.Factory>().FromFactory<CardFactory>();
         }
     }
 }

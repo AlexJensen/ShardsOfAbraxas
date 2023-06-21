@@ -10,5 +10,7 @@ namespace Abraxas.Health.Models
         int HP { get; set; }
         int MaxHP { get; set; }
         Player Player { get; set; }
+
+        void Initialize();
     }
 }

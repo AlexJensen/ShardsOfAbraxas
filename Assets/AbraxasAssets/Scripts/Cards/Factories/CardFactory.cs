@@ -16,7 +16,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Factories
 {
-    class CardFactory : IFactory<CardData, Player, ICardController>
+    class CardFactory : IFactory<CardData, ICardController>
     {
         #region Dependencies
         readonly DiContainer _container;
@@ -31,7 +31,7 @@ namespace Abraxas.Cards.Factories
         #endregion
 
         #region Methods
-        public ICardController Create(CardData data, Player player)
+        public ICardController Create(CardData data)
         {
             var gameObject = _container.InstantiatePrefab(_cardSettings.cardPrefab);
             var view = gameObject.GetComponent<CardView>();
