@@ -6,8 +6,9 @@ using Abraxas.Cards.Managers;
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Abraxas.CardViewers;
-using Abraxas.Cell.Factories;
+using Abraxas.Cells.Factories;
 using Abraxas.Cells.Controllers;
+using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
 using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
@@ -32,11 +33,13 @@ using Abraxas.Zones.Overlays.Managers;
 using Moq;
 using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using UnityEditor.SceneManagement;
 using Zenject;
 using Player = Abraxas.Players.Players;
-
-
+using System.Threading.Tasks;
 
 namespace Abraxas.Tests
 {
@@ -44,6 +47,10 @@ namespace Abraxas.Tests
     {
         public override void InstallBindings()
         {
+            CardSettingsInstaller.InstallFromResource("Settings/CardSettings", Container);
+            StoneSettingsInstaller.InstallFromResource("Settings/StoneSettings", Container);
+            PlayerSettingsInstaller.InstallFromResource("Settings/PlayerSettings", Container);
+
             Container.Bind<IGameManager>().FromMock();
             Container.Bind<IPlayerManager>().FromMock();
             Container.Bind<IHandManager>().FromMock();
@@ -53,7 +60,7 @@ namespace Abraxas.Tests
             Container.Bind<IZoneManager>().FromMock();
             Container.Bind<IDeckManager>().FromMock();
             Container.Bind<IEventManager>().FromMock();
-            Container.BindInterfacesAndSelfTo<HealthManager>().FromNewComponentOnNewGameObject().AsSingle();
+            Container.Bind<IHealthManager>().FromMock();
             Container.Bind<IFieldManager>().FromMock();
             Container.Bind<IOverlayManager>().FromMock();
 
@@ -61,15 +68,7 @@ namespace Abraxas.Tests
             Container.BindInterfacesAndSelfTo<CardController>().AsTransient();
             Container.BindInterfacesAndSelfTo<CardModel>().AsTransient();
 
-            Container.BindInterfacesAndSelfTo<PlayerHealthView>().FromNewComponentOnNewGameObject().AsTransient();
-            Container.BindInterfacesAndSelfTo<PlayerHealthController>().AsTransient();
-            Container.BindInterfacesAndSelfTo<PlayerHealthModel>().AsTransient();
-
-            Container.Bind(typeof(ZoneFactory<IFieldView, IFieldController, IFieldModel>)).ToSelf().AsTransient();
-            
             Container.BindFactory<CardData, ICardController, CardController.Factory>().FromFactory<CardFactory>();
-            Container.BindFactory<IPlayerHealthView, IPlayerHealthController, PlayerHealthController.Factory>().FromFactory<PlayerHealthFactory>();
-            Container.BindFactory<ICellView, ICellController, CellController.Factory>().FromFactory<CellFactory>();
         }
     }
 
@@ -84,9 +83,6 @@ namespace Abraxas.Tests
         [SetUp]
         public void BindInterfaces()
         {
-            CardSettingsInstaller.InstallFromResource("Settings/CardSettings", Container);
-            StoneSettingsInstaller.InstallFromResource("Settings/StoneSettings", Container);
-            PlayerSettingsInstaller.InstallFromResource("Settings/PlayerSettings", Container);
             TestInstaller.Install(Container);
         }
 
@@ -137,40 +133,7 @@ namespace Abraxas.Tests
             Assert.IsNotNull(cardController.View);
         }
 
-        [Test]
-        public void CardController_PassHomeRow_ModifiesPlayerHealth()
-        {
-            // Arrange
-            CardData cardData = new()
-            {
-                Owner = Player.Player1,
-                StatBlock = new()
-                {
-                    Stats = new(1, 0, 0)
-                }
-            };
-
-            var healthManager = Container.Resolve<IHealthManager>();
-            var healthFactory = Container.Resolve<PlayerHealthController.Factory>();
-            var playerHealthViewMock = new Mock<IPlayerHealthView>();
-            var playerHealthController = healthFactory.Create(playerHealthViewMock.Object);
-            playerHealthController.MaxHP = 1;
-            playerHealthController.HP = 1;
-            playerHealthController.Player = Player.Player2;
-            healthManager.AddPlayerHealth(playerHealthController);
-
-            var cardFactory = Container.Resolve<CardController.Factory>();
-            var cardController = cardFactory.Create(cardData);
-            int expectedHealth = playerHealthController.HP - cardData.StatBlock[StatBlocks.StatValues.ATK];
-
-            // Act
-            IEnumerator enumerator = cardController.PassHomeRow();
-            while (enumerator.MoveNext()) { }
-
-            // Assert
-            int player2Health = playerHealthController.HP;
-            Assert.AreEqual(expectedHealth, player2Health);
-        }
+        
 
         [Test]
         public void CardController_Fight_DamagesOpponent()
@@ -243,8 +206,71 @@ namespace Abraxas.Tests
         }
 
         [Test]
-        public void CardController_Combat_Player1MovesCardForward()
+        public void CardController_PassHomeRow_ModifiesPlayerHealth()
         {
+            //Bind
+            Container.Unbind<IHealthManager>();
+            Container.BindInterfacesAndSelfTo<HealthManager>().FromNewComponentOnNewGameObject().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<PlayerHealthView>().FromNewComponentOnNewGameObject().AsTransient();
+            Container.BindInterfacesAndSelfTo<PlayerHealthController>().AsTransient();
+            Container.BindInterfacesAndSelfTo<PlayerHealthModel>().AsTransient();
+
+            Container.BindFactory<IPlayerHealthView, IPlayerHealthController, PlayerHealthController.Factory>().FromFactory<PlayerHealthFactory>();
+
+            // Arrange
+            CardData cardData = new()
+            {
+                Owner = Player.Player1,
+                StatBlock = new()
+                {
+                    Stats = new(1, 0, 0)
+                }
+            };
+            var healthManager = Container.Resolve<IHealthManager>();
+            var healthFactory = Container.Resolve<PlayerHealthController.Factory>();
+            var playerHealthViewMock = new Mock<IPlayerHealthView>();
+            var playerHealthController = healthFactory.Create(playerHealthViewMock.Object);
+            playerHealthController.MaxHP = 1;
+            playerHealthController.HP = 1;
+            playerHealthController.Player = Player.Player2;
+            healthManager.AddPlayerHealth(playerHealthController);
+
+            var cardFactory = Container.Resolve<CardController.Factory>();
+            var cardController = cardFactory.Create(cardData);
+            int expectedHealth = playerHealthController.HP - cardData.StatBlock[StatBlocks.StatValues.ATK];
+
+            // Act
+            IEnumerator enumerator = cardController.PassHomeRow();
+            while (enumerator.MoveNext()) { }
+
+            // Assert
+            int player2Health = playerHealthController.HP;
+            Assert.AreEqual(expectedHealth, player2Health);
+
+            // Unbind
+            Container.Unbind<IHealthManager>();
+            Container.Bind<IHealthManager>().FromMock();
+        }
+
+        [Test]
+        public async Task CardController_Combat_Player1MovesCardForward()
+        {
+            // Bind
+            Container.Unbind<IFieldManager>();
+            Container.BindInterfacesAndSelfTo<FieldManager>().FromNewComponentOnNewGameObject().AsSingle();
+            Container.BindInterfacesAndSelfTo<FieldView>().FromNewComponentOnNewGameObject().AsTransient();
+            Container.BindInterfacesAndSelfTo<FieldController>().AsTransient();
+            Container.BindInterfacesAndSelfTo<FieldModel>().AsTransient();
+
+            Container.BindInterfacesAndSelfTo<CellView>().FromNewComponentOnNewGameObject().AsTransient();
+            Container.BindInterfacesAndSelfTo<CellController>().AsTransient();
+            Container.BindInterfacesAndSelfTo<CellModel>().AsTransient();
+
+            Container.BindFactory<ICellView, ICellController, CellController.Factory>().FromFactory<CellFactory>();
+
+            Container.Bind(typeof(ZoneFactory<IFieldView, FieldController, FieldModel>)).ToSelf().AsTransient();
+
             // Arrange
             CardData cardData = new()
             {
@@ -254,6 +280,42 @@ namespace Abraxas.Tests
                     Stats = new(0, 0, 1)
                 }
             };
+
+            var fieldViewMock = new Mock<IFieldView>();
+            var cellFactory = Container.Resolve<CellController.Factory>();
+
+            var fieldGrid = new List<List<ICellController>>();
+            var row = new List<ICellController>();
+            for (int i = 0; i < 2; i++)
+            {
+                var cellView = new Mock<ICellView>();
+                var fieldPosition = new Point(i, 0);
+                cellView.SetupGet(view => view.FieldPosition).Returns(fieldPosition);
+                row.Add(cellFactory.Create(cellView.Object));
+            }
+            fieldGrid.Add(row);
+
+            fieldViewMock.Setup(view => view.GenerateField()).Returns(fieldGrid);            
+
+            var fieldManager = Container.Resolve<IFieldManager>();
+            var fieldFactory = Container.Resolve<ZoneFactory<IFieldView, FieldController, FieldModel>>();
+            var fieldController = fieldFactory.Create(fieldViewMock.Object);
+            fieldManager.SetField(fieldController);
+
+            var cardFactory = Container.Resolve<CardController.Factory>();
+            var cardController = cardFactory.Create(cardData);
+            fieldManager.AddCard(cardController, new Point(0,0));
+
+            // Act
+            await cardController.Combat();
+
+            // Assert
+            Assert.AreEqual(1, cardController.FieldPosition.X);
+            Assert.AreEqual(0, cardController.FieldPosition.Y);
+
+            // Unbind
+            Container.Unbind<IFieldManager>();
+            Container.Bind<IFieldManager>().FromMock();
         }
     }
 }

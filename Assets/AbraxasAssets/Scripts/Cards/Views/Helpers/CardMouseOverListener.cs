@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace Abraxas.Cards.Views
 {
-    public class CardMouseOverView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class CardMouseOverListener : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         #region Dependencies
         ICardMouseOverHandler _mouseOverHandler;

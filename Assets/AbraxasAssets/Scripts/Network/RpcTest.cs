@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Abraxas.Behaviours.Network
+namespace Abraxas.Network
 {
     public class RpcTest : NetworkBehaviour
     {

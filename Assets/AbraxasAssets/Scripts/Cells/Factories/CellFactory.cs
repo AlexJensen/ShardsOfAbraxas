@@ -3,7 +3,7 @@ using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
 using Zenject;
 
-namespace Abraxas.Cell.Factories
+namespace Abraxas.Cells.Factories
 {
     class CellFactory : IFactory<ICellView, ICellController>
     {

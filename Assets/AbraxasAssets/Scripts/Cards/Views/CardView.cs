@@ -19,7 +19,7 @@ namespace Abraxas.Cards.Views
     [RequireComponent(typeof(RectTransform))]
     [RequireComponent(typeof(RectTransformMover))]
     [RequireComponent(typeof(CardDragListener))]
-    [RequireComponent(typeof(CardMouseOverView))]
+    [RequireComponent(typeof(CardMouseOverListener))]
     internal class CardView : NetworkBehaviour, ICardView
     {
         #region Dependencies

@@ -41,7 +41,6 @@ namespace Abraxas.Zones.Decks.Managers
         #endregion
 
         #region Methods
-
         public Dictionary<StoneType, int> GetDeckCost(Player player)
         {
             return GetPlayerDeck(player).GetTotalCostOfZone();
@@ -53,13 +52,11 @@ namespace Abraxas.Zones.Decks.Managers
         public ICardController RemoveCard(Player player, int index)
         {
             return GetPlayerDeck(player).RemoveCard(index);
-        }
-        
+        }   
         private IDeckController GetPlayerDeck(Player player)
         {
             return _decks.Find(x => x.Player == player);
         }
-
         private List<CardData> GenerateCardDataList(Player player)
         {
             List<CardData> cardDataList = new();
@@ -200,7 +197,7 @@ namespace Abraxas.Zones.Decks.Managers
                     CardData modifiedCardData = cardData;
                     modifiedCardData.Owner = deckController.Player;
                     modifiedCardData.OriginalOwner = deckController.Player;
-                    BuildCard(cardData, player);
+                    BuildCard(modifiedCardData, player);
                 }
 
                 _manaManager.InitializeManaFromDeck(deckController);
@@ -212,7 +209,7 @@ namespace Abraxas.Zones.Decks.Managers
             var deckController = GetPlayerDeck(player);
             if (deckController == null) return;
 
-            var cardController = _cardFactory.Create(cardData, player);
+            var cardController = _cardFactory.Create(cardData);
             deckController.AddCardToZone(cardController);
         }
         #endregion

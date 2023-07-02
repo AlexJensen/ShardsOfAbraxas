@@ -20,7 +20,7 @@ namespace Abraxas.Stones
         TURQUOISE
     }
 
-    public class Stone
+    public static class Stone
     {
         #region Settings
         [Serializable]

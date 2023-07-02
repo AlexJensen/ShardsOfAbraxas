@@ -1,4 +1,5 @@
 using Abraxas.Cards.Controllers;
+using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
 using System.Drawing;
 
@@ -13,5 +14,6 @@ namespace Abraxas.Zones.Fields.Managers
         PointF GetCellDimensions();
         IEnumerator StartCombat();
         IEnumerator CombatMovement(ICardController card, Point movement);
+        void SetField(IFieldController fieldController);
     }
 }

@@ -1,6 +1,6 @@
 using Abraxas.Health.Controllers;
 
-namespace Abraxas
+namespace Abraxas.Health.Managers
 {
     public interface IHealthManager
     {

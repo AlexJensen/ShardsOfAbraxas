@@ -36,7 +36,7 @@ namespace Abraxas.Cards.Factories
             var gameObject = _container.InstantiatePrefab(_cardSettings.cardPrefab);
             var view = gameObject.GetComponent<CardView>();
             var dragListener = gameObject.GetComponent<CardDragListener>();
-            var mouseOverListener = gameObject.GetComponent<CardMouseOverView>();
+            var mouseOverListener = gameObject.GetComponent<CardMouseOverListener>();
             var controller = _container.Instantiate<CardController>();
             var model = _container.Instantiate<CardModel>();
             var dragHandler = _container.Instantiate<CardDragHandler>();

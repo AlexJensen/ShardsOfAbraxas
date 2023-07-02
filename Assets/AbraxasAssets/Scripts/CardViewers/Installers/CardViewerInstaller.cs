@@ -1,7 +1,7 @@
 ﻿using Abraxas.CardViewers.Managers;
 using Zenject;
 
-namespace Abraxas.CardViewer.Installers
+namespace Abraxas.CardViewers.Installers
 {
     class CardViewerInstaller : MonoInstaller
     {

@@ -2,7 +2,7 @@
 
 namespace Abraxas.Games
 {
-    public class Game
+    public static class Game
     {
         #region Settings
         [Serializable]

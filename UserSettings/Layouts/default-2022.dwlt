@@ -97,7 +97,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 121}
   m_MaxSize: {x: 4000, y: 4021}
   vertical: 0
-  controlID: 1748
+  controlID: 15
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 1054
+  controlID: 83
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 1052
+  controlID: 81
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 1053
+  controlID: 82
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -384,7 +384,7 @@ MonoBehaviour:
     m_SaveData: []
     m_OverlaysVisible: 1
   m_Spl:
-    ID: 1778
+    ID: 151
     splitterInitialOffset: 0
     currentActiveSplitter: -1
     realSizes:
@@ -451,7 +451,7 @@ MonoBehaviour:
       name: Shards of Abraxas
       fullName: Shards of Abraxas
       resultStatus: 2
-      duration: 1.8526486
+      duration: 547.2341
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -468,7 +468,7 @@ MonoBehaviour:
       fullName: D:/Users/Jax/Documents/Work/Projects/Shards of Abraxas/Shards of
         Abraxas/Library/ScriptAssemblies/Abraxas-UnitTests.dll
       resultStatus: 2
-      duration: 1.8120068
+      duration: 547.2015
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -484,7 +484,7 @@ MonoBehaviour:
       name: Abraxas
       fullName: Abraxas
       resultStatus: 2
-      duration: 1.8110505
+      duration: 547.2004
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -500,7 +500,7 @@ MonoBehaviour:
       name: Tests
       fullName: Abraxas.Tests
       resultStatus: 2
-      duration: 1.8103
+      duration: 547.1992
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -516,7 +516,7 @@ MonoBehaviour:
       name: CardUnitTests
       fullName: Abraxas.Tests.CardUnitTests
       resultStatus: 2
-      duration: 1.8065248
+      duration: 547.1953
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -527,35 +527,53 @@ MonoBehaviour:
       categories: []
       parentId: 1010
       parentUniqueId: Abraxas-UnitTests.dll/Abraxas/[Abraxas-UnitTests][Abraxas.Tests][suite]
-    - id: 1007
-      uniqueId: Abraxas-UnitTests.dll/Abraxas/Tests/CardUnitTests/[Abraxas-UnitTests][Abraxas.Tests.CardUnitTests.CardController_Fight_CorrectlyDamagesOpponent]
-      name: CardController_Fight_CorrectlyDamagesOpponent
-      fullName: Abraxas.Tests.CardUnitTests.CardController_Fight_CorrectlyDamagesOpponent
+    - id: 1009
+      uniqueId: Abraxas-UnitTests.dll/Abraxas/Tests/CardUnitTests/[Abraxas-UnitTests][Abraxas.Tests.CardUnitTests.CardController_Combat_Player1MovesCardForward]
+      name: CardController_Combat_Player1MovesCardForward
+      fullName: Abraxas.Tests.CardUnitTests.CardController_Combat_Player1MovesCardForward
       resultStatus: 2
-      duration: 0.2879777
-      messages: 'Zenject.ZenjectException : Unable to resolve ''FieldController.Factory''.
-        Object graph:
+      duration: 547.1881
+      messages: "  Expected: 1\r\n  But was:  0\r\n"
+      output: 
+      stacktrace: 'at Abraxas.Tests.CardUnitTests.CardController_Combat_Player1MovesCardForward
+        () [0x00182] in D:\Users\Jax\Documents\Work\Projects\Shards of Abraxas\Shards
+        of Abraxas\Assets\AbraxasAssets\Tests\Cards\CardUnitTests.cs:299
 
 '
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: Abraxas-UnitTests.dll/Abraxas/Tests/[Abraxas-UnitTests][Abraxas.Tests.CardUnitTests][suite]
+    - id: 1007
+      uniqueId: Abraxas-UnitTests.dll/Abraxas/Tests/CardUnitTests/[Abraxas-UnitTests][Abraxas.Tests.CardUnitTests.CardController_Fight_DamagesOpponent]
+      name: CardController_Fight_DamagesOpponent
+      fullName: Abraxas.Tests.CardUnitTests.CardController_Fight_DamagesOpponent
+      resultStatus: 1
+      duration: 0.4417063
+      messages: 
       output: 
-      stacktrace: "  at Zenject.DiContainer.Resolve (Zenject.InjectContext context)
-        [0x001af] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards of Abraxas\\Shards
-        of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:1044 \r\n 
-        at Zenject.DiContainer.ResolveId (System.Type contractType, System.Object
-        identifier) [0x00012] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards
-        of Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:2433
-        \r\n  at Zenject.DiContainer.Resolve (System.Type contractType) [0x00001]
-        in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards of Abraxas\\Shards of
-        Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:2420 \r\n 
-        at Zenject.DiContainer.Resolve[TContract] () [0x00001] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards
-        of Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:2415
-        \r\n  at Abraxas.Tests.CardUnitTests.CardController_Fight_CorrectlyDamagesOpponent
-        () [0x00001] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards of Abraxas\\Shards
-        of Abraxas\\Assets\\AbraxasAssets\\Tests\\Cards\\CardUnitTests.cs:179 \r\n 
-        at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
-        at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
-        invokeAttr, System.Reflection.Binder binder, System.Object[] parameters,
-        System.Globalization.CultureInfo culture) [0x0006a] in <5d4cbfbeb62e454f98e19b231866113e>:0 "
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: Abraxas-UnitTests.dll/Abraxas/Tests/[Abraxas-UnitTests][Abraxas.Tests.CardUnitTests][suite]
+    - id: 1008
+      uniqueId: Abraxas-UnitTests.dll/Abraxas/Tests/CardUnitTests/[Abraxas-UnitTests][Abraxas.Tests.CardUnitTests.CardController_Fight_DoesNotDamageAllies]
+      name: CardController_Fight_DoesNotDamageAllies
+      fullName: Abraxas.Tests.CardUnitTests.CardController_Fight_DoesNotDamageAllies
+      resultStatus: 1
+      duration: 0.2672406
+      messages: 
+      output: 
+      stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
       description: 
@@ -569,7 +587,7 @@ MonoBehaviour:
       name: CardController_PassHomeRow_ModifiesPlayerHealth
       fullName: Abraxas.Tests.CardUnitTests.CardController_PassHomeRow_ModifiesPlayerHealth
       resultStatus: 1
-      duration: 0.3468719
+      duration: 32.32839
       messages: 
       output: 
       stacktrace: 
@@ -586,7 +604,7 @@ MonoBehaviour:
       name: Create_CardWithDependencies_Success
       fullName: Abraxas.Tests.CardUnitTests.Create_CardWithDependencies_Success
       resultStatus: 1
-      duration: 0.294324
+      duration: 0.3232839
       messages: 
       output: 
       stacktrace: 
@@ -603,7 +621,7 @@ MonoBehaviour:
       name: WillCardControllerResolve
       fullName: Abraxas.Tests.CardUnitTests.WillCardControllerResolve
       resultStatus: 1
-      duration: 0.2838458
+      duration: 0.3152181
       messages: 
       output: 
       stacktrace: 
@@ -620,7 +638,7 @@ MonoBehaviour:
       name: WillCardModelResolve
       fullName: Abraxas.Tests.CardUnitTests.WillCardModelResolve
       resultStatus: 1
-      duration: 0.2958828
+      duration: 0.2773256
       messages: 
       output: 
       stacktrace: 
@@ -637,7 +655,7 @@ MonoBehaviour:
       name: WillCardViewResolve
       fullName: Abraxas.Tests.CardUnitTests.WillCardViewResolve
       resultStatus: 1
-      duration: 0.2898365
+      duration: 0.2948449
       messages: 
       output: 
       stacktrace: 
@@ -24226,45 +24244,19 @@ MonoBehaviour:
       - Uncategorized
       parentId: 1891
       parentUniqueId: Zenject-UnitTests-Editor.dll/Zenject/Tests/[Zenject-UnitTests-Editor][Zenject.Tests.TestValidationSettings][suite]
-    m_ResultText: "CardController_Fight_CorrectlyDamagesOpponent (0.288s)\n---\nZenject.ZenjectException
-      : Unable to resolve 'FieldController.Factory'. Object graph:\n---\nat Zenject.DiContainer.Resolve
-      (Zenject.InjectContext context) [0x001af] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards
-      of Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:1044
-      \r\n  at Zenject.DiContainer.ResolveId (System.Type contractType, System.Object
-      identifier) [0x00012] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards
-      of Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:2433
-      \r\n  at Zenject.DiContainer.Resolve (System.Type contractType) [0x00001] in
-      D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards of Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:2420
-      \r\n  at Zenject.DiContainer.Resolve[TContract] () [0x00001] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards
-      of Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:2415
-      \r\n  at Abraxas.Tests.CardUnitTests.CardController_Fight_CorrectlyDamagesOpponent
-      () [0x00001] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards of Abraxas\\Shards
-      of Abraxas\\Assets\\AbraxasAssets\\Tests\\Cards\\CardUnitTests.cs:179 \r\n 
-      at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
-      at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
-      invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo
-      culture) [0x0006a] in <5d4cbfbeb62e454f98e19b231866113e>:0"
-    m_ResultStacktrace: "  at Zenject.DiContainer.Resolve (Zenject.InjectContext
-      context) [0x001af] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards of
-      Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:1044
-      \r\n  at Zenject.DiContainer.ResolveId (System.Type contractType, System.Object
-      identifier) [0x00012] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards
-      of Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:2433
-      \r\n  at Zenject.DiContainer.Resolve (System.Type contractType) [0x00001] in
-      D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards of Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:2420
-      \r\n  at Zenject.DiContainer.Resolve[TContract] () [0x00001] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards
-      of Abraxas\\Shards of Abraxas\\Assets\\Plugins\\Zenject\\Source\\Main\\DiContainer.cs:2415
-      \r\n  at Abraxas.Tests.CardUnitTests.CardController_Fight_CorrectlyDamagesOpponent
-      () [0x00001] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards of Abraxas\\Shards
-      of Abraxas\\Assets\\AbraxasAssets\\Tests\\Cards\\CardUnitTests.cs:179 \r\n 
-      at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
-      at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
-      invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo
-      culture) [0x0006a] in <5d4cbfbeb62e454f98e19b231866113e>:0 "
+    m_ResultText: "CardController_Combat_Player1MovesCardForward (547.188s)\n---\nExpected:
+      1\r\n  But was:  0\n---\nat Abraxas.Tests.CardUnitTests.CardController_Combat_Player1MovesCardForward
+      () [0x00182] in D:\\Users\\Jax\\Documents\\Work\\Projects\\Shards of Abraxas\\Shards
+      of Abraxas\\Assets\\AbraxasAssets\\Tests\\Cards\\CardUnitTests.cs:299"
+    m_ResultStacktrace: 'at Abraxas.Tests.CardUnitTests.CardController_Combat_Player1MovesCardForward
+      () [0x00182] in D:\Users\Jax\Documents\Work\Projects\Shards of Abraxas\Shards
+      of Abraxas\Assets\AbraxasAssets\Tests\Cards\CardUnitTests.cs:299
+
+'
     m_TestListState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 6247f1ef
-      m_LastClickedID: -269400222
+      m_SelectedIDs: 0549b783
+      m_LastClickedID: -2085140219
       m_ExpandedIDs: ba8a27802076b780c598be82a9cd0a83a239ac84fd4a45858c3b7d85931ee6879daf2e8818ad9f888a0d0289f1fe3b892a6fd689696ce789d69f388ccfebdc8f30e5d190843b6c921cc37192991ddd9205cb62951744ab953e3be89641b6fd97b7ec399878b85998fac7879926d2ca99bb38e09903a4fe9a0dde959c7a9792a0b74ee9a0c5dc25a13a43b4a5b40f83a68ac4e9a6faa707a827ea69a82cecfda80d0a76a965d8b8a9d3e1a6ab2b3ed9ab23b810ac06f7b3ac8b1b2ead06307eaf433b92afac1b46b00158ebb09d1511b1fa5246b1ed832fb266e03db2f15316b38ebe68b4f56aeeb4150d09b8a28625bbec1477bb3b558abbb4ddc3bcbcede6bcc341efbc47bfebbda47a31be97113ebeece050c2b85ecac289b2a7c45d514cc681f0d7c6e881e0c7b8c5a8c9eaedb4c92ed928ca954229caee6d5acaf214afcbc1c4ffcb7a4f13cc1ea08dcc86dee8cde29f36cf09fa37d4b342aad8113b2dd91e3b3cd9bf1392d9ddad9bd9db76b8d9606f95daf3bff2da8c939ddc7d0786ddfc37dddda1fb3fde20fa82de599eacdfd1e0eedf6fb264e0b05f3de1101588e1e9a62ae37cc169e37c9ee8e38193f3e3ddc68ce4643d13e51de324e500f1b4e5073f91e85fb13feb9ba435ec50e340ed149096ed8795a0edff5c44ee6ce072ee37ccc9f071f0baf563a848f633b7bdf7d331c1f78ae82bf8d96a10fa377d7dfd1e2f8afd287c46fe581af0ffc9c8b6007b5d500200025d026294700446c90306829a420797db500aa9b1200be1775d0bca982f0c4f00300ce99ae60e4e9b0d0f7eed1c10675c371098ab6311a6bf9211dc51b2116a7df411013211125b1f75132bc6c113fb7616145d59fd141a7e5a15af854216331c7917905f0e18a378521880227d18b58c411967a081198eff8719d406c61b41cf001cae37371c0031b01c4def011d8c20a120f476cb208adeda20c81b1421a1c1ba237cf7e723f36bba251c5e6226a50ce626fd9e9c27870a612845e99128be0da02962766f2a5dedc92adc1d212b66bf6b2b7adf0a2cb804472c5e1bce2c65bf832d6d272d3043b45a306543b0301a8bb3312e094933892b8534a65aa437ce55e9374c12d9394396d73a5af3703b9cccd23b8abb453df0ea4e3d56aeaf3d9b09ca3e6745c23f346e0c4087e8114197bca5410289c141818fec411f98a042aebc6a4945e5df490265194b3526ff4b1af2164cfc2c484d5efce74ff9bc6151aa565c52d5130153e7577e53b534de534b1ac05442e8725559e2e2553c70bd561fde795789e59357b6030258b9f867587d187c599695665c89ced75cbc033a5d61e1e55f9b35a86048436b62aa77b06578988866a286af66079f4f677102c0698e9ec46d8b21766ee262e66fe93d0670b35dff709dfa0871cc77c9728dc7e772e8f53374e586f0756c921676bcad747658642777fcdc13782be2c0788666bc7a2c4e387b6a8bb47c25a3d07c38d7077d45d3477d91b3197e25e1c27e93d9ee7eb501497fffffff7f
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -24402,9 +24394,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 60}
-    m_SelectedIDs: 166a0000
-    m_LastClickedID: 27158
-    m_ExpandedIDs: 00000000da690000dc690000de690000e0690000e2690000e4690000e6690000e8690000ea690000ec690000ee690000f0690000f2690000f4690000f6690000f8690000fa690000fc690000fe690000006a0000026a0000046a000000ca9a3bffffff7f
+    m_SelectedIDs: 2e6a0000
+    m_LastClickedID: 27182
+    m_ExpandedIDs: 00000000f2690000f4690000f6690000f8690000fa690000fc690000fe690000006a0000026a0000046a0000066a0000086a00000a6a00000c6a00000e6a0000106a0000126a0000146a0000166a0000186a00001a6a00001c6a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -24432,7 +24424,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000da690000dc690000de690000e0690000e2690000e4690000e6690000e8690000ea690000ec690000ee690000f0690000f2690000f4690000f6690000f8690000fa690000fc690000fe690000006a0000026a0000046a0000
+    m_ExpandedIDs: 00000000f2690000f4690000f6690000f8690000fa690000fc690000fe690000006a0000026a0000046a0000066a0000086a00000a6a00000c6a00000e6a0000106a0000126a0000146a0000166a0000186a00001a6a00001c6a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -24459,22 +24451,22 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Unit Tests
-      m_OriginalName: Unit Tests
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 43306
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 5}
     m_CreateAssetUtility:
@@ -25034,7 +25026,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: c8adfeffceadfeffdaadfeff34aefeff8eaefeff94aefeffaeaefeff52b4feff6cb4feff20bbfeff3abbfeffe4c0fefffec0feffbcc7feffd6c7feff8acdfeff90cdfeffa2cdfeff02cefeff62cefeffc2cefeffdccefeffd4d4feffeed4fefffcdcfeff16ddfeff1ce4feff36e4fefff2eafefff8eafeff04ebfeff5eebfeffb8ebfeff60ecfeff7aecfeff6ef2feff88f2feff4ef9feff2a01ffff4408ffff140fffffec14ffffde16ffff2217ffff001effff2a25ffff3a2bfffffa31ffffb838ffff1c41ffff2047ffff284dffff4e54ffffa85bffffae61ffffc669ffff8270ffff3a76fffff27bffffb481ffff1a89ffff208fffff7695ffff7a9bffffaca1fffff6a8ffff68aeffffb0aeffffecb6ffff1ec7ffff12fbffff
+      m_ExpandedIDs: 3690ffff5290ffff4e96ffff6a96ffff629cffff7e9cffff30a2ffff3aa2ffff44a2ffff9ca2fffffaa2ffffa0a3ffff46a4ffffa4a4ffffc0a4ffffbeaaffffdaaaffffd4b0fffff0b0ffffeab6ffff06b7ffff02bdffff1ebdffff18c3ffff34c3ffff3cc9ffff58c9ffff5ad0ffff76d0ffff2ad7ffff46d7ffffd0ddffffdaddffffe4ddffff3cdeffff9adeffff40dfffffe6dffffff0dfffff0ce0ffffdce6fffff8e6ffff76edffff92edffff64f4ffff82f4ffff12fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 

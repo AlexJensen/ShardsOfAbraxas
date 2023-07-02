@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Abraxas.Behaviours.Network
+namespace Abraxas.Network
 {
     public class NetworkCommandLine : MonoBehaviour
     {

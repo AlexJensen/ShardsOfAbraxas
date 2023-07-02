@@ -1,4 +1,4 @@
-﻿using Abraxas.Cell.Factories;
+﻿using Abraxas.Cells.Factories;
 using Abraxas.Cells.Controllers;
 using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
