@@ -307,7 +307,8 @@ namespace Abraxas.Tests
             fieldManager.AddCard(cardController, new Point(0,0));
 
             // Act
-            await cardController.Combat();
+            IEnumerator enumerator = cardController.Combat();
+            while (enumerator.MoveNext()) { }
 
             // Assert
             Assert.AreEqual(1, cardController.FieldPosition.X);
