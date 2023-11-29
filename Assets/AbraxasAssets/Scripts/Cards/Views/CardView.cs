@@ -3,6 +3,7 @@ using Abraxas.Cards.Models;
 using Abraxas.Cells.Views;
 using Abraxas.Events;
 using Abraxas.Stones;
+using Abraxas.Zones.Hands.Controllers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -103,7 +104,7 @@ namespace Abraxas.Cards.Views
             foreach (var (pair, alpha) in from KeyValuePair<StoneType, int> pair in _model.TotalCosts
                                           from Manas.ManaType manaPair in eventData.Mana.ManaTypes
                                           where pair.Key == manaPair.Type
-                                          let alpha = pair.Value <= manaPair.Amount ? "FF" : "44"
+                                          let alpha = pair.Value <= manaPair.Amount || _controller.Zone is not IHandController ? "FF" : "44"
                                           select (pair, alpha))
             {
                 TotalCost += $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneDetails(pair.Key).color)}{alpha}>{pair.Value}";

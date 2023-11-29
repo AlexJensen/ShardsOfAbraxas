@@ -8,12 +8,14 @@ using Abraxas.Zones.Decks.Controllers;
 using Abraxas.Zones.Decks.Models;
 using Abraxas.Zones.Decks.Views;
 using Abraxas.Zones.Factories;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 using Player = Abraxas.Players.Players;
+using Random = UnityEngine.Random;
 
 namespace Abraxas.Zones.Decks.Managers
 {
@@ -68,11 +70,12 @@ namespace Abraxas.Zones.Decks.Managers
 
             for (int i = 0; i < 10; i++)
             {
-                int cost = Random.Range(1, 20);
+                
                 StoneType type = (StoneType)Random.Range(0, 11);
-                int atk = Random.Range(1, 5);
-                int def = Random.Range(1, 5);
-                int mv = Random.Range(1, 5);
+                int atk = GetWeightedRandom(1, 15, 3);
+                int def = GetWeightedRandom(1, 15, 3);
+                int mv = GetWeightedRandom(1, 5, 2);
+                int cost = (atk * 2) + (def * 2) + (mv * 4);
                 int imageIndex = Random.Range(0, 4);
 
                 for (int j = 0; j < 4; j++)
@@ -97,6 +100,16 @@ namespace Abraxas.Zones.Decks.Managers
                 }
             }
             return cardDataList;
+        }
+
+        private int GetWeightedRandom(int min, int max, int biasFactor)
+        {
+            int result = Random.Range(min, max);
+            for (int i = 1; i < biasFactor; i++)
+            {
+                result = Math.Min(result, Random.Range(min, max));
+            }
+            return result;
         }
         #endregion
 

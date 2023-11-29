@@ -11,7 +11,7 @@ namespace Abraxas.Health.Installers
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<HealthManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerHealthManager>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerHealthView>().AsTransient();
             Container.BindInterfacesAndSelfTo<PlayerHealthController>().AsTransient();
             Container.BindInterfacesAndSelfTo<PlayerHealthModel>().AsTransient();

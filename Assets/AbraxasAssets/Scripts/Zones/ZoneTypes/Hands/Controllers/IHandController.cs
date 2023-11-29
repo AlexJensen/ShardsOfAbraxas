@@ -5,5 +5,7 @@ namespace Abraxas.Zones.Hands.Controllers
     public interface IHandController : IZoneController
     {
         int CardPlaceholderSiblingIndex { get; }
+
+        void OnUpdate();
     }
 }

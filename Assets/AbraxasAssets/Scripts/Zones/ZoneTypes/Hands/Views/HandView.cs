@@ -1,6 +1,5 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Views;
-using Abraxas.Zones.Hands.Controllers;
 using Abraxas.Zones.Views;
 using System.Collections;
 using UnityEngine;
@@ -31,9 +30,9 @@ namespace Abraxas.Zones.Hands.Views
             CardPlaceholder.Reset();
         }
 
-        public void RemoveCard(ICardController card)
+        public override void RemoveCardFromHolder(ICardView card)
         {
-            CardPlaceholder.transform.SetSiblingIndex(card.View.Transform.GetSiblingIndex());
+            CardPlaceholder.transform.SetSiblingIndex(card.Transform.GetSiblingIndex());
             CardPlaceholder.gameObject.SetActive(true);
             CardPlaceholder.SnapToMaxHeight();
         }

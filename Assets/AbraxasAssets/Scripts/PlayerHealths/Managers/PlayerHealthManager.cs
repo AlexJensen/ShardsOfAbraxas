@@ -8,7 +8,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Health.Managers
 {
-    public class HealthManager : MonoBehaviour, IHealthManager
+    public class PlayerHealthManager : MonoBehaviour, IPlayerHealthManager
     {
         #region Dependencies
         [Inject]

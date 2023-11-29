@@ -12,7 +12,6 @@ using Abraxas.Stones.Views;
 using System.Collections.Generic;
 using System.Linq;
 using Zenject;
-using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Factories
 {

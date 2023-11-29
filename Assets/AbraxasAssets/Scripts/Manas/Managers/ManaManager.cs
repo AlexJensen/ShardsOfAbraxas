@@ -1,4 +1,6 @@
 using Abraxas.Cards.Controllers;
+using Abraxas.Manas.Controllers;
+using Abraxas.Manas.Views;
 using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,17 +16,19 @@ namespace Abraxas.Manas.Managers
         #region Dependencies
         Mana.Settings _settings;
         [Inject]
-        public void Construct(Mana.Settings settings)
+        void Construct(ManaController.Factory manaFactory, Mana.Settings settings)
         {
             _settings = settings;
-
+            foreach (var manaView in FindObjectsOfType<ManaView>())
+            {
+                _manas.Add(manaFactory.Create(manaView));
+            }
             StartOfTurnMana = _settings.StartingMana;
         }
         #endregion
 
         #region Fields
-        [SerializeField]
-        List<ManaView> _manas;
+        readonly List<IManaController> _manas = new();
 
         int _startOfTurnMana;
         #endregion
@@ -33,7 +37,7 @@ namespace Abraxas.Manas.Managers
         public int StartOfTurnMana
         {
             get => _startOfTurnMana;
-            set => _startOfTurnMana = value;
+            private set => _startOfTurnMana = value;
         }
         #endregion
 
@@ -60,12 +64,12 @@ namespace Abraxas.Manas.Managers
 
         public void InitializeManaFromDeck(IDeckController deck)
         {
-            GetPlayerMana(deck.Player).CreateManaTypesFromDeck();
+            GetPlayerMana(deck.Player).CreateManaTypesFromDeck(deck);
         }
 
-        private ManaView GetPlayerMana(Player player)
+        private IManaController GetPlayerMana(Player player)
         {
-            ManaView playerMana = _manas.Find(x => x.Player == player);
+            IManaController playerMana = _manas.Find(x => x.Player == player);
             return playerMana;
         }
         #endregion

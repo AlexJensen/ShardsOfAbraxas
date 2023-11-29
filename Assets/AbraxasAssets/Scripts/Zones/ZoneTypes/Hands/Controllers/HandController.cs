@@ -1,11 +1,12 @@
-﻿using Abraxas.Zones.Controllers;
+﻿using Abraxas.Cards.Controllers;
+using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Hands.Managers;
 using Abraxas.Zones.Hands.Views;
 using Zenject;
 
 namespace Abraxas.Zones.Hands.Controllers
 {
-    class HandController : ZoneController, IHandController, ITickable
+    class HandController : ZoneController, IHandController
     {
         #region Dependencies
         readonly IHandManager _handManager;
@@ -22,7 +23,7 @@ namespace Abraxas.Zones.Hands.Controllers
         #endregion
 
         #region Methods
-        public void Tick()
+        public void OnUpdate()
         {
             if (View != null)
             {

@@ -39,7 +39,8 @@ using System.Linq;
 using UnityEditor.SceneManagement;
 using Zenject;
 using Player = Abraxas.Players.Players;
-using System.Threading.Tasks;
+
+
 
 namespace Abraxas.Tests
 {
@@ -60,7 +61,7 @@ namespace Abraxas.Tests
             Container.Bind<IZoneManager>().FromMock();
             Container.Bind<IDeckManager>().FromMock();
             Container.Bind<IEventManager>().FromMock();
-            Container.Bind<IHealthManager>().FromMock();
+            Container.Bind<IPlayerHealthManager>().FromMock();
             Container.Bind<IFieldManager>().FromMock();
             Container.Bind<IOverlayManager>().FromMock();
 
@@ -209,8 +210,8 @@ namespace Abraxas.Tests
         public void CardController_PassHomeRow_ModifiesPlayerHealth()
         {
             //Bind
-            Container.Unbind<IHealthManager>();
-            Container.BindInterfacesAndSelfTo<HealthManager>().FromNewComponentOnNewGameObject().AsSingle();
+            Container.Unbind<IPlayerHealthManager>();
+            Container.BindInterfacesAndSelfTo<PlayerHealthManager>().FromNewComponentOnNewGameObject().AsSingle();
 
             Container.BindInterfacesAndSelfTo<PlayerHealthView>().FromNewComponentOnNewGameObject().AsTransient();
             Container.BindInterfacesAndSelfTo<PlayerHealthController>().AsTransient();
@@ -227,7 +228,7 @@ namespace Abraxas.Tests
                     Stats = new(1, 0, 0)
                 }
             };
-            var healthManager = Container.Resolve<IHealthManager>();
+            var healthManager = Container.Resolve<IPlayerHealthManager>();
             var healthFactory = Container.Resolve<PlayerHealthController.Factory>();
             var playerHealthViewMock = new Mock<IPlayerHealthView>();
             var playerHealthController = healthFactory.Create(playerHealthViewMock.Object);
@@ -249,12 +250,12 @@ namespace Abraxas.Tests
             Assert.AreEqual(expectedHealth, player2Health);
 
             // Unbind
-            Container.Unbind<IHealthManager>();
-            Container.Bind<IHealthManager>().FromMock();
+            Container.Unbind<IPlayerHealthManager>();
+            Container.Bind<IPlayerHealthManager>().FromMock();
         }
 
         [Test]
-        public async Task CardController_Combat_Player1MovesCardForward()
+        public void CardController_Combat_Player1MovesCardForward()
         {
             // Bind
             Container.Unbind<IFieldManager>();

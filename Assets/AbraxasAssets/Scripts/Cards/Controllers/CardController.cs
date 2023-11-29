@@ -29,12 +29,12 @@ namespace Abraxas.Cards.Controllers
 
         readonly IZoneManager _zoneManager;
         readonly IEventManager _eventManager;
-        readonly IHealthManager _healthManager;
+        readonly IPlayerHealthManager _healthManager;
         readonly IFieldManager _fieldManager;
         readonly IDeckManager _deckManager;
 
         public CardController(IZoneManager zoneManager, IDeckManager deckManager, IEventManager eventManager,
-                              IHealthManager healthManager, IFieldManager fieldManager)
+                              IPlayerHealthManager healthManager, IFieldManager fieldManager)
         {
             _zoneManager = zoneManager;
             _eventManager = eventManager;

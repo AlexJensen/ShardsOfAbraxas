@@ -1,12 +1,12 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using Zenject;
-using Abraxas.Stones;
-
-using Player = Abraxas.Players.Players;
 using Abraxas.Events;
 using Abraxas.Events.Managers;
+using Abraxas.Manas.Controllers;
+using Abraxas.Stones;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using Zenject;
+using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Manas
 {
@@ -72,7 +72,7 @@ namespace Abraxas.Manas
         }
 
         public Player Player { get => _player; set => _player = value; }
-        public ManaView Mana { get; internal set; }
+        public IManaController Mana { get; internal set; }
         #endregion
 
         #region Methods

@@ -67,7 +67,7 @@ namespace Abraxas.Zones.Views
             card.Transform.SetParent(CardHolder.transform);
             card.Transform.SetSiblingIndex(index);
         }
-        public void RemoveCardFromHolder(ICardView card)
+        public virtual void RemoveCardFromHolder(ICardView card)
         {
             card.Transform.localScale = Vector3.one;
         }

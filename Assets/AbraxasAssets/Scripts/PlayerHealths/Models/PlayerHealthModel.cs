@@ -22,7 +22,6 @@ namespace Abraxas.Health.Models
 
         #region Fields
         int _HP, _maxHP;
-        Player _player;
         #endregion
 
         #region Properties
@@ -31,8 +30,9 @@ namespace Abraxas.Health.Models
             get => _HP;
             set
             {
-                if (_HP != value) OnHealthChanged?.Invoke();
+                if (_HP == value) return;
                 _HP = Math.Min(MaxHP, value);
+                OnHealthChanged?.Invoke();
             }
         }
         public int MaxHP
@@ -40,16 +40,13 @@ namespace Abraxas.Health.Models
             get => _maxHP;
             set
             {
-                if (_maxHP != value) OnMaxHealthChanged?.Invoke();
+                if (_maxHP == value) return;
                 _maxHP = value;
+                OnMaxHealthChanged?.Invoke();
             }
         }
 
-        public Player Player
-        {
-            get => _player;
-            set => _player = value;
-        }
+        public Player Player { get; set; }
         #endregion
 
         #region Methods

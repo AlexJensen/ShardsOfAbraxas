@@ -31,6 +31,13 @@ namespace Abraxas.Zones.Hands.Managers
         #endregion
 
         #region Methods
+        public void Update()
+        {
+            foreach (var hand in _hands)
+            {
+                hand.OnUpdate();
+            }
+        }
         public void RemoveCard(ICardController card)
         {
             GetPlayerHand(card.OriginalOwner).RemoveCard(card);
