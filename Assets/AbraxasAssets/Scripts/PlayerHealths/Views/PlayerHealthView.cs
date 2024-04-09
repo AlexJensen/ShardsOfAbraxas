@@ -60,6 +60,7 @@ namespace Abraxas.Health.Views
             {
                 UpdateHpText(ref _previousHP, _model.HP, _addHPText, HealthChangeAnimationTriggers.AddHPUp, HealthChangeAnimationTriggers.AddHPDown);
                 UpdateHpText(ref _previousMaxHP, _model.MaxHP, _addMaxHPText, HealthChangeAnimationTriggers.AddMaxHPUp, HealthChangeAnimationTriggers.AddMaxHPDown);
+                _healthChanged = false;
             }
         }
 
@@ -72,6 +73,7 @@ namespace Abraxas.Health.Views
                 if (Player == Player.Player1) SetAnimationTrigger(change >= 0 ? animationTriggerUp : animationTriggerDown);
                 if (Player == Player.Player2) SetAnimationTrigger(change >= 0 ? animationTriggerDown : animationTriggerUp);
                 previousValue = currentValue;
+                _healthChanged = true;
             }
         }
 

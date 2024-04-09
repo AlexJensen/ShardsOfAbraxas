@@ -7,10 +7,7 @@ using Abraxas.StackBlocks.Views;
 using Abraxas.StatBlocks.Controllers;
 using Abraxas.StatBlocks.Models;
 using Abraxas.Stones.Controllers;
-using Abraxas.Stones.Models;
-using Abraxas.Stones.Views;
 using System.Collections.Generic;
-using System.Linq;
 using Zenject;
 
 namespace Abraxas.Cards.Factories
@@ -21,11 +18,13 @@ namespace Abraxas.Cards.Factories
         readonly DiContainer _container;
         readonly Card.Settings _cardSettings;
         readonly ICardManager _cardManager;
-        public CardFactory(DiContainer container, Card.Settings cardSettings, ICardManager cardManager)
+        readonly StoneController.Factory _stoneFactory;
+        public CardFactory(DiContainer container, Card.Settings cardSettings, ICardManager cardManager, StoneController.Factory stoneFactory)
         {
             _container = container;
             _cardSettings = cardSettings;
             _cardManager = cardManager;
+            _stoneFactory = stoneFactory;
         }
         #endregion
 
@@ -48,25 +47,19 @@ namespace Abraxas.Cards.Factories
             statBlockController.Initialize(statBlockModel);
             statBlockView.Initialize(statBlockModel, statBlockController);
 
-            List<IStoneModel> stoneModels = new();
+            List<IStoneController> stoneControllers = new();
             if (data.Stones != null)
             {
-                foreach (var (stoneData, stoneModel, stoneController, stoneView) in from stoneData in data.Stones
-                                                                                    let stoneModel = _container.Instantiate<StoneModel>()
-                                                                                    let stoneController = _container.Instantiate<StoneController>()
-                                                                                    let stoneView = _container.InstantiateComponent<StoneView>(gameObject)
-                                                                                    select (stoneData, stoneModel, stoneController, stoneView))
+                foreach (var stoneData in data.Stones)
                 {
-                    stoneModel.Initialize(stoneData);
-                    stoneController.Initialize(stoneModel);
-                    stoneView.Initialize(stoneModel, stoneController);
-                    stoneModels.Add(stoneModel);
+                    var stoneController = _stoneFactory.Create(stoneData.RuntimeStoneData);
+                    stoneControllers.Add(stoneController);
                 }
             }
 
-            model.Initialize(data, statBlockModel, stoneModels);
+            model.Initialize(data, statBlockController, stoneControllers);
             controller.Initialize(model, view);
-            view.Initialize(model, controller);
+            view.Initialize(model);
 
             dragHandler.Initialize(dragListener, controller);
             dragListener.Initialize(dragHandler);

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Data
 {
-    [Serializable]
+	[Serializable]
     public class CardDataListWrapper
     {
-        public List<CardData> CardDataList;
+		public Player Player;
+		public List<CardData> CardDataList;
     }
 }

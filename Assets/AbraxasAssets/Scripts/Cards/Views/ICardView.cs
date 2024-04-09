@@ -1,5 +1,4 @@
-﻿using Abraxas.Cards.Controllers;
-using Abraxas.Cells.Views;
+﻿using Abraxas.Cells.Controllers;
 using Abraxas.Events;
 using System.Collections;
 using System.Drawing;
@@ -11,7 +10,6 @@ namespace Abraxas.Cards.Views
 {
     public interface ICardView
     {
-        ICardController Controller { get; }
         Image Image { get; }
         Transform Transform { get; }
         NetworkObject NetworkObject { get; }
@@ -21,6 +19,6 @@ namespace Abraxas.Cards.Views
         void ChangeScale(PointF pointF, float time);
         void SetCardPositionToMousePosition();
         string GetCostText();
-        IEnumerator MoveToCell(ICellView cell, float moveCardTime);
+        IEnumerator MoveToCell(ICellController cell, float moveCardTime);
     }
 }

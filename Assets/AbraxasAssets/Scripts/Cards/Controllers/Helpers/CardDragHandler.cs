@@ -51,8 +51,8 @@ namespace Abraxas.Cards.Controllers
             {
                 _handManager.CardDragging = _cardController;
                 _handManager.RemoveCard(_cardController);
-                _overlayManager.SetCard(_cardController.View);
-                _cardController.View.ChangeScale(_fieldManager.GetCellDimensions(), _cardAnimationSettings.ScaleCardToOverlayTime);
+                _overlayManager.SetCard(_cardController);
+                _cardController.ChangeScale(_fieldManager.GetCellDimensions(), _cardAnimationSettings.ScaleCardToOverlayTime);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Abraxas.Cards.Controllers
         {
             if (_handManager.CardDragging == _cardController)
             {
-                _cardController.View.SetCardPositionToMousePosition();
+                _cardController.SetCardPositionToMousePosition();
             }
         }
 

@@ -16,6 +16,14 @@ namespace Abraxas.StatBlocks.Controllers
         #region Properties
         public string StatsStr => _model.StatsStr;
         public StoneType StoneType => _model.StoneType;
+
+        public int Cost { get => _model.Cost; set => _model.Cost = value; }
+
+        public int this[StatValues index] 
+        {   
+            get => _model[index]; 
+            set => _model[index] = value; 
+        }
         #endregion
 
     }

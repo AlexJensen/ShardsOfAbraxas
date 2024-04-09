@@ -36,21 +36,21 @@ namespace Abraxas.CardViewers
         public void ShowCardDetails(ICardController card)
         {
             _title.text = card.Title;
-            _cost.text = card.View.GetCostText();
+            _cost.text = card.GetCostText();
             _attack.text = card.StatBlock[StatValues.ATK].ToString();
             _health.text = card.StatBlock[StatValues.DEF].ToString();
             _speed.text = card.StatBlock[StatValues.MV].ToString();
-            _image.sprite = card.View.Image.sprite;
-            _image.transform.localScale = card.View.Image.transform.localScale;
+            _image.sprite = card.Image.sprite;
+            _image.transform.localScale = card.Image.transform.localScale;
 
             for (int i = 0; i < _stones.Count; i++)
             {
-                if (card.Model.Stones.Count > i)
+                if (card.Stones.Count > i)
                 {
                     _stones[i].gameObject.SetActive(true);
-                    _stones[i].Cost.text = card.Model.Stones[i].Cost.ToString();
-                    _stones[i].CostBack.color = _stoneSettings.GetStoneDetails(card.Model.Stones[i].StoneType).color;
-                    _stones[i].Info.text = card.Model.Stones[i].Info;
+                    _stones[i].Cost.text = card.Stones[i].Cost.ToString();
+                    _stones[i].CostBack.color = _stoneSettings.GetStoneTypeDetails(card.Stones[i].StoneType).color;
+                    _stones[i].Info.text = card.Stones[i].Info;
                 }
                 else
                 {

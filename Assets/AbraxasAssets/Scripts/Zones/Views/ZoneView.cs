@@ -1,6 +1,5 @@
 using Abraxas.Cards;
-using Abraxas.Cards.Views;
-using Abraxas.Zones.Controllers;
+using Abraxas.Cards.Controllers;
 using Abraxas.Zones.Models;
 using Abraxas.Zones.Overlays.Managers;
 using System.Collections;
@@ -24,13 +23,10 @@ namespace Abraxas.Zones.Views
             _overlayManager = overlayManager;
         }
 
-        IZoneController _controller;
         IZoneModel _model;
-        public void Initialize<TController, TModel>(TController controller, TModel model)
-            where TController : IZoneController
+        public void Initialize<TModel>(TModel model)
             where TModel : IZoneModel
         {
-            _controller = controller;
             _model = model;
         }
         #endregion
@@ -46,33 +42,30 @@ namespace Abraxas.Zones.Views
         public Transform CardHolder { get => _cardHolder; }
         public Player Player { get => _player; }
         public abstract float MoveCardTime { get; }
-        public IZoneController Controller { get => _controller; set => _controller = value; }
-        public IZoneModel Model { get => _model; set => _model = value; }
         public IOverlayManager OverlayManager { get => _overlayManager; set => _overlayManager = value; }
         public Card.Settings.AnimationSettings AnimationSettings { get => _animationSettings; }
+        protected IZoneModel Model { get => _model;}
         #endregion
 
         #region Methods
-        public virtual IEnumerator MoveCardToZone(ICardView card, int index = 0)
+        public virtual IEnumerator MoveCardToZone(ICardController card, int index = 0)
         {
             OverlayManager.SetCard(card);
             yield return card.RectTransformMover.MoveToFitRectangle(_cardHolder, MoveCardTime);
             AddCardToHolder(card, index);
             OverlayManager.ClearCard(card);
         }
-        public virtual void AddCardToHolder(ICardView card, int index = 0)
+        public virtual void AddCardToHolder(ICardController card, int index = 0)
         {
             card.Transform.localScale = Vector3.zero;
             card.Transform.position = transform.position;
             card.Transform.SetParent(CardHolder.transform);
             card.Transform.SetSiblingIndex(index);
         }
-        public virtual void RemoveCardFromHolder(ICardView card)
+        public virtual void RemoveCardFromHolder(ICardController card)
         {
             card.Transform.localScale = Vector3.one;
         }
-
-        
         #endregion
     }
 }

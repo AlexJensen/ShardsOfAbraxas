@@ -21,7 +21,11 @@ namespace Abraxas.StatBlocks.Models
         #region Properties
         public string StatsStr => _data[StatValues.ATK].ToString() + "/" + _data[StatValues.DEF].ToString() + "/" + _data[StatValues.MV].ToString();
 
-        public StoneType StoneType => _data.StoneType;
+        public StoneType StoneType
+        {
+            get => _data.StoneType;
+            set => _data.StoneType = value;
+        }
         public int Cost
         {
             get

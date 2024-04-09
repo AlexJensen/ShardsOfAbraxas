@@ -2,9 +2,11 @@
 
 namespace Abraxas.StatBlocks.Controllers
 {
-    interface IStatBlockController
+    public interface IStatBlockController
     {
+        int this[StatValues index] { set; get; }
         string StatsStr { get; }
         StoneType StoneType { get; }
+        int Cost { get; set; }
     }
 }

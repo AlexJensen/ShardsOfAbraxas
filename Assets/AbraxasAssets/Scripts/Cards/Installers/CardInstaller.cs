@@ -5,7 +5,6 @@ using Abraxas.Cards.Managers;
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Zenject;
-using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Installers
 {

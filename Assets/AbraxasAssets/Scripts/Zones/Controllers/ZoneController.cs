@@ -15,8 +15,6 @@ namespace Abraxas.Zones.Controllers
         IZoneView _view;
         IZoneModel _model;
 
-        public IZoneView View { get => _view; }
-        protected IZoneModel Model { get => _model; }
         public void Initialize<TView, TModel>(TView view, TModel model)
             where TView : IZoneView
             where TModel : IZoneModel
@@ -30,19 +28,20 @@ namespace Abraxas.Zones.Controllers
 
         #region Properties
         public Player Player => _model.Player;
-
+        protected IZoneView View => _view;
+        protected IZoneModel Model => _model;
         #endregion
 
         #region Methods
         public virtual void AddCard(ICardController card)
         {
             card.Zone = this;
-            Model.AddCard(card);
+            _model.AddCard(card);
         }
 
         public virtual ICardController RemoveCard(ICardController card)
         {
-            _view.RemoveCardFromHolder(card.View);
+            _view.RemoveCardFromHolder(card);
             return _model.RemoveCard(card);
         }
         public virtual ICardController RemoveCard(int index)
@@ -56,13 +55,13 @@ namespace Abraxas.Zones.Controllers
         public virtual IEnumerator MoveCardToZone(ICardController card, int index = 0)
         {
             card.Zone = this;
-            yield return _view.MoveCardToZone(card.View, index);
+            yield return _view.MoveCardToZone(card, index);
             _model.AddCard(card, index);
         }
         public virtual void AddCardToZone(ICardController card, int index = 0)
         {
             card.Zone = this;
-            _view.AddCardToHolder(card.View, index);
+            _view.AddCardToHolder(card, index);
             _model.AddCard(card, index);
         }
         

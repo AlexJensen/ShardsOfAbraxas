@@ -1,8 +1,8 @@
 using Abraxas.Cards.Data;
 using Abraxas.Cells.Controllers;
-using Abraxas.StatBlocks.Models;
+using Abraxas.StatBlocks.Controllers;
 using Abraxas.Stones;
-using Abraxas.Stones.Models;
+using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Controllers;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Models
 {
-    class CardModel : ICardModel {
+	class CardModel : ICardModel {
         #region Events
         public event Action OnTitleChanged;
         public event Action OnOwnerChanged;
@@ -21,7 +21,7 @@ namespace Abraxas.Cards.Models
 
         #region Dependencies
         CardData _data;
-        public void Initialize(CardData data, IStatBlockModel statBlockModel, List<IStoneModel> stones)
+        public void Initialize(CardData data, IStatBlockController statBlockModel, List<IStoneController> stones)
         {
             _data = data;
             _statBlock = statBlockModel;
@@ -30,12 +30,12 @@ namespace Abraxas.Cards.Models
         #endregion
 
         #region Fields
-        List<IStoneModel> _stones = new();
+        List<IStoneController> _stones = new();
         IZoneController _zone;
         ICellController _cell;
         Point _fieldPosition;
         bool _hidden;
-        IStatBlockModel _statBlock;
+        IStatBlockController _statBlock;
         #endregion
 
         #region Properties
@@ -69,13 +69,17 @@ namespace Abraxas.Cards.Models
         public int ImageIndex
         {
             get => _data.ImageIndex;
-            set
-            {
-                _data.ImageIndex = value;
-            }
+            set => _data.ImageIndex = value;
         }
-        public List<IStoneModel> Stones => _stones;
-        public IStatBlockModel StatBlock => _statBlock;
+        public List<IStoneController> Stones {
+            get => _stones;
+            set => _stones = value;
+        }
+        public IStatBlockController StatBlock
+        {
+            get => _statBlock;
+            set => _statBlock = value;
+        }
         public ICellController Cell
         {
             get => _cell;
@@ -105,7 +109,7 @@ namespace Abraxas.Cards.Models
             get
             {
                 Dictionary<StoneType, int> totalCosts = new();
-                foreach (IStoneModel stone in Stones)
+                foreach (IStoneController stone in Stones)
                 {
                     AddCost(totalCosts, stone.StoneType, stone.Cost);
                 }

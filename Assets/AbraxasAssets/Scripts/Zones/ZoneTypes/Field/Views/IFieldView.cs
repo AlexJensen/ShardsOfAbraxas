@@ -1,7 +1,5 @@
 ﻿using Abraxas.Cards.Controllers;
-using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
-using Abraxas.Cells.Views;
 using Abraxas.Zones.Views;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,8 +9,8 @@ namespace Abraxas.Zones.Fields.Views
 {
     public interface IFieldView : IZoneView
     {
-        PointF GetCellDimensions(ICellView cell);
-        IEnumerator MoveCardToCell(ICardView card, ICellView cell);
+        PointF GetCellDimensions(ICellController cell);
+        IEnumerator MoveCardToCell(ICardController card, ICellController cell);
         List<List<ICellController>> GenerateField();
     }
 }

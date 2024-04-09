@@ -2,6 +2,7 @@
 using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
 using System.Drawing;
+using UnityEngine;
 
 namespace Abraxas.Cells.Controllers
 {
@@ -11,6 +12,7 @@ namespace Abraxas.Cells.Controllers
         Players.Players Player { get; }
         Point FieldPosition { get; }
         int CardsOnCell { get; }
+        RectTransform RectTransform { get; }
 
         void AddCard(ICardController card);
         void Initialize(ICellView view, ICellModel model);

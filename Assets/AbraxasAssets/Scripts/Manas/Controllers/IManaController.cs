@@ -1,4 +1,4 @@
-﻿using Abraxas.Cards.Models;
+﻿using Abraxas.Cards.Controllers;
 using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,9 +10,9 @@ namespace Abraxas.Manas.Controllers
         Player Player { get; }
         List<ManaType> ManaTypes { get; }
 
-        bool CanPurchaseCard(ICardModel model);
+        bool CanPurchaseCard(ICardController model);
         void CreateManaTypesFromDeck(IDeckController deck);
         IEnumerator GenerateRatioMana(int amount);
-        void PurchaseCard(ICardModel model);
+        void PurchaseCard(ICardController card);
     }
 }

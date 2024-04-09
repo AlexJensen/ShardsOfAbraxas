@@ -67,7 +67,7 @@ namespace Abraxas.Zones.Fields.Controllers
         public IEnumerator MoveCardToCell(ICardController card, ICellController cell)
         {
             card.Cell?.RemoveCard(card);
-            yield return ((IFieldView)View).MoveCardToCell(card.View, cell.View);
+            yield return ((IFieldView)View).MoveCardToCell(card, cell);
             cell.AddCard(card);
             card.Cell = cell;
         }
@@ -93,7 +93,7 @@ namespace Abraxas.Zones.Fields.Controllers
 
         public PointF GetDefaultCellDimensions()
         {
-            return ((IFieldView)View).GetCellDimensions(((IFieldModel)Model).FieldGrid[0][0].View);
+            return ((IFieldView)View).GetCellDimensions(((IFieldModel)Model).FieldGrid[0][0]);
         }
         #endregion
     }

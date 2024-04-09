@@ -96,7 +96,7 @@ namespace Abraxas.Manas
 
         public void Refresh()
         {
-            Stone.Settings.StoneDetails colorData = _stoneSettings.GetStoneDetails(Type);
+            Stone.Settings.StoneTypeDetails colorData = _stoneSettings.GetStoneTypeDetails(Type);
             _image.color = colorData.color;
             name = colorData.name;
             _amountStr.text = _amount.ToString();

@@ -2,6 +2,7 @@
 using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
 using System.Drawing;
+using UnityEngine;
 using Zenject;
 using Player = Abraxas.Players.Players;
 
@@ -32,13 +33,15 @@ namespace Abraxas.Cells.Controllers
         public Player Player { get => _model.Player; }
         public Point FieldPosition { get => _model.FieldPosition; }
         public int CardsOnCell => _model.CardsOnCell;
+
+        public RectTransform RectTransform => _view.RectTransform;
         #endregion
 
         #region Methods
         public void AddCard(ICardController card)
         {
             _model.AddCard(card);
-            _view.SetChild(card.View.Transform);
+            _view.SetChild(card.Transform);
             card.FieldPosition = FieldPosition;
         }
 

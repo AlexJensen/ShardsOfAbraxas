@@ -1,6 +1,5 @@
 using Abraxas.Cards.Controllers;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,14 +8,14 @@ namespace Abraxas.CardViewers.Managers
     public class CardViewerManager : MonoBehaviour, ICardViewerManager
     {
         #region Constants
-        enum ScreenSide
+        public enum ScreenSide
         {
             LEFT,
             RIGHT
         }
 
         [Serializable]
-        struct Side
+        public struct Side
         {
             public ScreenSide side;
             public RectTransform rectTranform;

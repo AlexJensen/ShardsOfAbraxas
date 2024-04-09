@@ -19,9 +19,9 @@ namespace Abraxas.StackBlocks.Views
             _stoneSettings = stoneSettings;
         }
 
-        IStatBlockModelReader _model;
+        IStatBlockModel _model;
         IStatBlockController _controller;
-        public void Initialize(IStatBlockModelReader model, IStatBlockController controller)
+        public void Initialize(IStatBlockModel model, IStatBlockController controller)
         {
             _model = model;
             _controller = controller;
@@ -45,7 +45,7 @@ namespace Abraxas.StackBlocks.Views
         private void RefreshVisuals()
         {
             _statsText.text = _controller.StatsStr;
-            _statsText.color = _stoneSettings.GetStoneDetails(_controller.StoneType).color;
+            _statsText.color = _stoneSettings.GetStoneTypeDetails(_controller.StoneType).color;
         }
         #endregion
     }

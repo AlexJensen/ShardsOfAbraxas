@@ -7,8 +7,9 @@ using Abraxas.Events;
 using Abraxas.Events.Managers;
 using Abraxas.Health.Managers;
 using Abraxas.StatBlocks;
-using Abraxas.StatBlocks.Models;
+using Abraxas.StatBlocks.Controllers;
 using Abraxas.Stones;
+using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Fields.Managers;
@@ -16,6 +17,7 @@ using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using UnityEngine;
 using Zenject;
 using Player = Abraxas.Players.Players;
 
@@ -63,34 +65,36 @@ namespace Abraxas.Cards.Controllers
         #endregion
 
         #region Properties
-        public ICardModel Model => _model;
-        public ICardView View => _view;
-        public IStatBlockModel StatBlock => _model.StatBlock;
-        public string Title { get => ((ICardModelReader)_model).Title; set => ((ICardModelWriter)_model).Title = value; }
-        public Player Owner { get => ((ICardModelReader)_model).Owner; set => ((ICardModelWriter)_model).Owner = value; }
-        public Player OriginalOwner { get => ((ICardModelReader)_model).OriginalOwner; set => ((ICardModelWriter)_model).OriginalOwner = value; }
+        public IStatBlockController StatBlock => _model.StatBlock;
+        public List<IStoneController> Stones => _model.Stones;
+        public string Title { get => _model.Title; set => _model.Title = value; }
+        public Player Owner { get => _model.Owner; set => _model.Owner = value; }
+        public Player OriginalOwner { get => _model.OriginalOwner; set => _model.OriginalOwner = value; }
         public Dictionary<StoneType, int> TotalCosts { get => _model.TotalCosts;}
-        public Point FieldPosition { get => ((ICardModelReader)_model).FieldPosition; set => ((ICardModelWriter)_model).FieldPosition = value; }
-        public ICellController Cell { get => ((ICardModelReader)_model).Cell; set => ((ICardModelWriter)_model).Cell = value; }
-        public IZoneController Zone { get => ((ICardModelReader)_model).Zone; set => ((ICardModelWriter)_model).Zone = value; }
-        public bool Hidden { get => ((ICardModelReader)_model).Hidden; set => ((ICardModelWriter)_model).Hidden = value; }
+        public Point FieldPosition { get => _model.FieldPosition; set => _model.FieldPosition = value; }
+        public ICellController Cell { get => _model.Cell; set => _model.Cell = value; }
+        public IZoneController Zone { get => _model.Zone; set => _model.Zone = value; }
+        public bool Hidden { get => _model.Hidden; set => _model.Hidden = value; }
+        public Transform Transform => _view.Transform;
+        public UnityEngine.UI.Image Image => _view.Image;
+        public RectTransformMover RectTransformMover => _view.RectTransformMover;
         #endregion
 
         #region Methods
         public IEnumerator PassHomeRow()
         {
-            _healthManager.ModifyPlayerHealth(((ICardModelReader)_model).Owner ==
+            _healthManager.ModifyPlayerHealth(_model.Owner ==
                 Player.Player1 ? Player.Player2 : Player.Player1,
-                -Model.StatBlock[StatValues.ATK]);
+                -_model.StatBlock[StatValues.ATK]);
             yield return _zoneManager.MoveCardFromFieldToDeck(this);
-            _deckManager.ShuffleDeck(((ICardModelReader)_model).Owner);
+            _deckManager.ShuffleDeck(_model.Owner);
         }
         public IEnumerator Fight(ICardController opponent)
         {
             if (opponent.Owner == Owner) yield break;
-            IStatBlockModel collidedStats = opponent.StatBlock;
-            collidedStats[StatValues.DEF] -= Model.StatBlock[StatValues.ATK];
-            Model.StatBlock[StatValues.DEF] -= collidedStats[StatValues.ATK];
+            IStatBlockController collidedStats = opponent.StatBlock;
+            collidedStats[StatValues.DEF] -= _model.StatBlock[StatValues.ATK];
+            _model.StatBlock[StatValues.DEF] -= collidedStats[StatValues.ATK];
 
             yield return Utilities.WaitForCoroutines(
                 opponent.CheckDeath(),
@@ -98,14 +102,34 @@ namespace Abraxas.Cards.Controllers
         }
         public IEnumerator CheckDeath()
         {
-            if (Model.StatBlock[StatValues.DEF] > 0) yield break;
+            if (_model.StatBlock[StatValues.DEF] > 0) yield break;
             yield return _zoneManager.MoveCardFromFieldToGraveyard(this);
         }
         public IEnumerator Combat()
         {
             yield return _fieldManager.CombatMovement(this, new Point(
-                ((ICardModelReader)_model).Owner == Player.Player1 ? Model.StatBlock[StatValues.MV] :
-                ((ICardModelReader)_model).Owner == Player.Player2 ? -Model.StatBlock[StatValues.MV] : 0, 0));
+                _model.Owner == Player.Player1 ? _model.StatBlock[StatValues.MV] :
+                _model.Owner == Player.Player2 ? -_model.StatBlock[StatValues.MV] : 0, 0));
+        }
+
+        public void ChangeScale(PointF pointF, float scaleCardToOverlayTime)
+        {
+            _view.ChangeScale(pointF, scaleCardToOverlayTime);
+        }
+
+        public void SetCardPositionToMousePosition()
+        {
+            _view.SetCardPositionToMousePosition();
+        }
+
+        public string GetCostText()
+        {
+            return _view.GetCostText();
+        }
+
+        public IEnumerator MoveToCell(ICellController cell, float moveCardTime)
+        {
+            yield return _view.MoveToCell(cell, moveCardTime);
         }
         #endregion
 
@@ -117,7 +141,7 @@ namespace Abraxas.Cards.Controllers
                 _view.UpdateCostTextWithCastability(eventData);
             }
             yield break;
-        }
+        }    
         #endregion
     }
 }

@@ -1,3 +1,4 @@
+using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
 using Abraxas.Cells.Views;
@@ -31,13 +32,13 @@ namespace Abraxas.Zones.Fields.Views
         #endregion
 
         #region Methods
-        public PointF GetCellDimensions(ICellView cell)
+        public PointF GetCellDimensions(ICellController cell)
         {
             Vector2 dimensions = cell.RectTransform.rect.size;
             return new PointF(dimensions.x, dimensions.y);
         }
 
-        public IEnumerator MoveCardToCell(ICardView card, ICellView cell)
+        public IEnumerator MoveCardToCell(ICardController card, ICellController cell)
         {
             OverlayManager.SetCard(card);
             yield return card.MoveToCell(cell, MoveCardTime);

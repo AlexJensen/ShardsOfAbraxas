@@ -8,8 +8,8 @@ namespace Abraxas.Zones.Overlays.Managers
     {
         Transform Overlay { get; }
 
-        void SetCard(ICardView card);
-        void ClearCard(ICardView card);
-        bool HasCard(ICardView card);
+        void SetCard(ICardController card);
+        void ClearCard(ICardController card);
+        bool HasCard(ICardController card);
     }
 }

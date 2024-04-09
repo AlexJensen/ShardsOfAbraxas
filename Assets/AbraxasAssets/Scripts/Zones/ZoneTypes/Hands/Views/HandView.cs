@@ -1,5 +1,4 @@
 using Abraxas.Cards.Controllers;
-using Abraxas.Cards.Views;
 using Abraxas.Zones.Views;
 using System.Collections;
 using UnityEngine;
@@ -30,14 +29,14 @@ namespace Abraxas.Zones.Hands.Views
             CardPlaceholder.Reset();
         }
 
-        public override void RemoveCardFromHolder(ICardView card)
+        public override void RemoveCardFromHolder(ICardController card)
         {
             CardPlaceholder.transform.SetSiblingIndex(card.Transform.GetSiblingIndex());
             CardPlaceholder.gameObject.SetActive(true);
             CardPlaceholder.SnapToMaxHeight();
         }
 
-        public override IEnumerator MoveCardToZone(ICardView card, int index = 0)
+        public override IEnumerator MoveCardToZone(ICardController card, int index = 0)
         {
             OverlayManager.SetCard(card);
             CardPlaceholder.gameObject.SetActive(true);
@@ -49,7 +48,7 @@ namespace Abraxas.Zones.Hands.Views
             AddCardAtPlaceholder(card);
         }
 
-        public void AddCardAtPlaceholder(ICardView card)
+        public void AddCardAtPlaceholder(ICardController card)
         {
             OverlayManager.ClearCard(card);
             card.Transform.SetParent(CardPlaceholder.transform.parent);
@@ -63,8 +62,8 @@ namespace Abraxas.Zones.Hands.Views
             foreach (ICardController card in cardList)
             {
                 if (Player == Player.Player1 ?
-                    Input.mousePosition.y > card.View.Transform.position.y :
-                    Input.mousePosition.y < card.View.Transform.position.y)
+                    Input.mousePosition.y > card.Transform.position.y :
+                    Input.mousePosition.y < card.Transform.position.y)
                 {
                     CardPlaceholder.UpdateIndex(cardList.IndexOf(card));
                     break;

@@ -1,4 +1,8 @@
+using Abraxas.Stones.Data;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Abraxas.Core
@@ -24,6 +28,31 @@ namespace Abraxas.Core
             {
                 yield return coroutine;
             }
+        }
+
+        private static Dictionary<string, Type> _stoneDataTypeCache;
+
+        static Utilities()
+        {
+            // Initialize the cache by reflecting over all types implementing IStoneData
+            _stoneDataTypeCache = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(IStoneData).IsAssignableFrom(type) && !type.IsInterface)
+                .ToDictionary(type => type.FullName, type => type);
+        }
+
+        public static string GetTypeId<T>() where T : IStoneData
+        {
+            return typeof(T).FullName;
+        }
+
+        public static T CreateInstance<T>(string typeId)
+        {
+            if (_stoneDataTypeCache.TryGetValue(typeId, out var type))
+            {
+                return (T)Activator.CreateInstance(type);
+            }
+            return default;
         }
     }
 }

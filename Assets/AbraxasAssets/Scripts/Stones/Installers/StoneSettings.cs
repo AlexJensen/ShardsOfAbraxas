@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Abraxas.Stones.Controllers;
+using Abraxas.Stones.Data;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,19 +29,22 @@ namespace Abraxas.Stones
         public class Settings
         {
             [Serializable]
-            public struct StoneDetails
+            public struct StoneTypeDetails
             {
                 public string name;
                 public StoneType type;
                 public Color color;
+                public IStoneController controllerPrefab;
             }
 
-            public List<StoneDetails> stones;
+            public List<StoneTypeDetails> stones;
 
-            public StoneDetails GetStoneDetails(StoneType type)
+            public StoneTypeDetails GetStoneTypeDetails(StoneType type)
             {
                 return stones.Find(t => t.type == type);
             }
+
+            public List<StoneDataSO> stoneData;
         }
         #endregion
     }

@@ -1,19 +1,18 @@
-﻿using Abraxas.Cards.Models;
-using Abraxas.Cards.Views;
-using Abraxas.Cells.Controllers;
-using Abraxas.StatBlocks.Models;
+﻿using Abraxas.Cells.Controllers;
+using Abraxas.StatBlocks.Controllers;
 using Abraxas.Stones;
+using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Controllers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using UnityEngine;
 
 namespace Abraxas.Cards.Controllers
 {
     public interface ICardController
     {
-        ICardModel Model { get; }
-        ICardView View { get; }
+        List<IStoneController> Stones { get; }
         string Title { get; }
         public Dictionary<StoneType, int> TotalCosts { get; }
         IZoneController Zone { get; set; }
@@ -22,11 +21,18 @@ namespace Abraxas.Cards.Controllers
         Players.Players OriginalOwner { get; }
         Point FieldPosition { get; set; }
         ICellController Cell { get; set; }
-        IStatBlockModel StatBlock { get; }
-        
+        IStatBlockController StatBlock { get; }
+        Transform Transform { get; }
+        UnityEngine.UI.Image Image { get; }
+        RectTransformMover RectTransformMover { get; }
+
+        void ChangeScale(PointF pointF, float scaleCardToOverlayTime);
         IEnumerator CheckDeath();
         IEnumerator Combat();
         IEnumerator Fight(ICardController opponent);
+        string GetCostText();
+        IEnumerator MoveToCell(ICellController cell, float moveCardTime);
         IEnumerator PassHomeRow();
+        void SetCardPositionToMousePosition();
     }
 }

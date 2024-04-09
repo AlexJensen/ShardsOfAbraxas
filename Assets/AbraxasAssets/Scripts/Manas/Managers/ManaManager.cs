@@ -49,12 +49,12 @@ namespace Abraxas.Manas.Managers
 
         public bool CanPurchaseCard(ICardController card)
         {
-            return GetPlayerMana(card.OriginalOwner).CanPurchaseCard(card.Model);            
+            return GetPlayerMana(card.OriginalOwner).CanPurchaseCard(card);            
         }
 
         public void PurchaseCard(ICardController card)
         {
-            GetPlayerMana(card.OriginalOwner).PurchaseCard(card.Model);
+            GetPlayerMana(card.OriginalOwner).PurchaseCard(card);
         }
 
         public void IncrementStartOfTurnManaAmount()

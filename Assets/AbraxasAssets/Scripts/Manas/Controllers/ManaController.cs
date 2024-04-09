@@ -1,4 +1,4 @@
-﻿using Abraxas.Cards.Models;
+﻿using Abraxas.Cards.Controllers;
 using Abraxas.Manas.Models;
 using Abraxas.Manas.Views;
 using Abraxas.Zones.Decks.Controllers;
@@ -12,14 +12,11 @@ namespace Abraxas.Manas.Controllers
     class ManaController: IManaController
     {
         #region Dependencies
-
-        IManaView _view;
         IManaModel _model;
 
 
         public void Initialize(IManaView view, IManaModel model)
         {
-            _view = view;
             _model = model;
             model.Player = view.Player;
         }
@@ -35,7 +32,7 @@ namespace Abraxas.Manas.Controllers
         public List<ManaType> ManaTypes { get => _model.ManaTypes; }
         #endregion
 
-        public void PurchaseCard(ICardModel card)
+        public void PurchaseCard(ICardController card)
         {
             foreach (var cost in card.TotalCosts)
             {
@@ -53,7 +50,7 @@ namespace Abraxas.Manas.Controllers
             yield return _model.GenerateRatioMana(amount);
         }
 
-        public bool CanPurchaseCard(ICardModel card)
+        public bool CanPurchaseCard(ICardController card)
         {
             foreach (var _ in from cost in card.TotalCosts
                               let result = ManaTypes.Find(x => x.Type == cost.Key)

@@ -6,7 +6,7 @@ namespace Abraxas.Stones.Models
     public interface IStoneModel
     {
         #region Dependencies
-        void Initialize(StoneData data);
+        void Initialize(IStoneData data);
         #endregion
 
         #region Events

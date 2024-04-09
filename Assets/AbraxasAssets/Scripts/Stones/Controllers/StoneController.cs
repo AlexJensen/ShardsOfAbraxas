@@ -1,16 +1,23 @@
 using Abraxas.Cards.Controllers;
+using Abraxas.Stones.Data;
 using Abraxas.Stones.Models;
+using Zenject;
 
 namespace Abraxas.Stones.Controllers
 {
 
-    class StoneController: IStoneController
+	public class StoneController: IStoneController
     {
         #region Dependencies
-        IStoneModel _model;
+        protected IStoneModel _model;
         public void Initialize(IStoneModel model)
         {
             _model = model;
+        }
+
+        public class Factory : PlaceholderFactory<StoneDataSO, IStoneController>
+        {
+
         }
         #endregion
 

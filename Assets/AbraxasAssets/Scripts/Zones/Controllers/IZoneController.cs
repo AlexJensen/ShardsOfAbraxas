@@ -12,7 +12,6 @@ namespace Abraxas.Zones.Controllers
     public interface IZoneController
     {
         Player Player { get; }
-        IZoneView View { get; }
         Dictionary<StoneType, int> GetTotalCostOfZone();
         ICardController RemoveCard(ICardController card);
         IEnumerator MoveCardToZone(ICardController card, int index = 0);

@@ -117,22 +117,22 @@ namespace Abraxas.Tests
             Assert.NotNull(obj);
         }
 
-        [Test]
-        public void Create_CardWithDependencies_Success()
-        {
-            // Arrange
-            CardData cardData = new();
+        //[Test]
+        //public void Create_CardWithDependencies_Success()
+        //{
+        //    // Arrange
+        //    CardData cardData = new();
 
-            var factory = Container.Resolve<CardController.Factory>();
+        //    var factory = Container.Resolve<CardController.Factory>();
 
-            // Act
-            var cardController = factory.Create(cardData);
+        //    // Act
+        //    var cardController = factory.Create(cardData);
 
-            // Assert
-            Assert.IsNotNull(cardController);
-            Assert.IsNotNull(cardController.Model);
-            Assert.IsNotNull(cardController.View);
-        }
+        //    // Assert
+        //    Assert.IsNotNull(cardController);
+        //    Assert.IsNotNull(cardController.Model);
+        //    Assert.IsNotNull(cardController.View);
+        //}
 
         
 

@@ -1,5 +1,6 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Models;
+using Abraxas.Cells.Controllers;
 using Abraxas.Cells.Views;
 using Abraxas.Events;
 using Abraxas.Stones;
@@ -27,8 +28,7 @@ namespace Abraxas.Cards.Views
         Card.Settings _cardSettings;
         Stone.Settings _stoneSettings;
         Players.Player.Settings _playerSettings;
-        ICardModelReader _model;
-        ICardController _controller;
+        ICardModel _model;
         [Inject]
         public void Construct(Card.Settings cardSettings, Stone.Settings stoneSettings, Players.Player.Settings playerSettings)
         {
@@ -36,10 +36,9 @@ namespace Abraxas.Cards.Views
             _stoneSettings = stoneSettings;
             _playerSettings = playerSettings;
         }
-        public void Initialize(ICardModelReader model, ICardController controller)
+        public void Initialize(ICardModel model)
         {
             _model = model;
-            _controller = controller;
 
             _model.OnTitleChanged += OnTitleChanged;
             _model.OnOwnerChanged += OnOwnerChanged;
@@ -72,7 +71,6 @@ namespace Abraxas.Cards.Views
         #endregion
 
         #region Properties
-        public ICardController Controller { get => _controller; }
         public RectTransformMover RectTransformMover { get => _rectTransformMover != null ? _rectTransformMover :_rectTransformMover = GetComponent<RectTransformMover>(); }
         public Image Image { get => _image; set => _image = value; }
         public Transform Transform => transform;
@@ -81,22 +79,22 @@ namespace Abraxas.Cards.Views
         #region Methods
         public void OnTitleChanged()
         {
-            _titleText.text = _controller.Title;
+            _titleText.text = _model.Title;
         }
         public void OnOwnerChanged()
         {
-            UnityEngine.Color playerColor = _playerSettings.GetPlayerDetails(_controller.Owner).color;
+            UnityEngine.Color playerColor = _playerSettings.GetPlayerDetails(_model.Owner).color;
             _titleText.color = playerColor;
             _cover.color = playerColor;
             _cardBack.color = playerColor;
         }
         public void OnOriginalOwnerChanged()
         {
-            Image.transform.localScale = new Vector3(_controller.OriginalOwner == Player.Player1 ? 1 : -1, 1, 1);
+            Image.transform.localScale = new Vector3(_model.OriginalOwner == Player.Player1 ? 1 : -1, 1, 1);
         }
         public void OnHiddenChanged()
         {
-            _cover.gameObject.SetActive(_controller.Hidden);
+            _cover.gameObject.SetActive(_model.Hidden);
         }
         public void UpdateCostTextWithCastability(ManaModifiedEvent eventData)
         {
@@ -104,18 +102,18 @@ namespace Abraxas.Cards.Views
             foreach (var (pair, alpha) in from KeyValuePair<StoneType, int> pair in _model.TotalCosts
                                           from Manas.ManaType manaPair in eventData.Mana.ManaTypes
                                           where pair.Key == manaPair.Type
-                                          let alpha = pair.Value <= manaPair.Amount || _controller.Zone is not IHandController ? "FF" : "44"
+                                          let alpha = pair.Value <= manaPair.Amount || _model.Zone is not IHandController ? "FF" : "44"
                                           select (pair, alpha))
             {
-                TotalCost += $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneDetails(pair.Key).color)}{alpha}>{pair.Value}";
+                TotalCost += $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneTypeDetails(pair.Key).color)}{alpha}>{pair.Value}";
             }
             _costText.text = TotalCost;
         }
         public string GetCostText()
         {
-            var costStrings = _controller.TotalCosts
+            var costStrings = _model.TotalCosts
                 .Where(pair => pair.Value != 0)
-                .Select(pair => $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneDetails(pair.Key).color)}>{pair.Value}");
+                .Select(pair => $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneTypeDetails(pair.Key).color)}>{pair.Value}");
 
             return string.Join("", costStrings);
         }
@@ -128,7 +126,7 @@ namespace Abraxas.Cards.Views
         {
             RectTransformMover.SetPosition(Input.mousePosition);
         }
-        public IEnumerator MoveToCell(ICellView cell, float moveCardTime)
+        public IEnumerator MoveToCell(ICellController cell, float moveCardTime)
         {
             yield return RectTransformMover.MoveToFitRectangle(cell.RectTransform, moveCardTime);
         }

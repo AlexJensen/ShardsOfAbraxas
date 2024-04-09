@@ -53,7 +53,7 @@ namespace Abraxas.Zones.Models
         {
             Dictionary<StoneType, int> totalCost = new();
             foreach (var manaAmount in from ICardController card in _cardList
-                                       from manaAmount in card.Model.TotalCosts
+                                       from manaAmount in card.TotalCosts
                                        select manaAmount)
             {
                 if (!totalCost.ContainsKey(manaAmount.Key))
@@ -76,9 +76,7 @@ namespace Abraxas.Zones.Models
             {
                 int j = UnityEngine.Random.Range(0, i + 1);
 
-                ICardController temp = _cardList[i];
-                _cardList[i] = _cardList[j];
-                _cardList[j] = temp;
+                (_cardList[j], _cardList[i]) = (_cardList[i], _cardList[j]);
             }
         }
 
