@@ -9,7 +9,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Controllers
 {
-    class ZoneController :IZoneController
+    abstract class ZoneController :IZoneController
     {
         #region Dependencies
         IZoneView _view;

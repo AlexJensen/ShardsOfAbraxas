@@ -1,18 +1,15 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Data;
+using Abraxas.Decks.Scriptable_Objects;
 using Abraxas.Manas;
-using Abraxas.StatBlocks;
-using Abraxas.StatBlocks.Data;
 using Abraxas.Stones;
 using Abraxas.Zones.Decks.Controllers;
 using Abraxas.Zones.Decks.Models;
 using Abraxas.Zones.Decks.Views;
 using Abraxas.Zones.Factories;
 using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using Zenject;
@@ -21,40 +18,38 @@ using Random = UnityEngine.Random;
 
 namespace Abraxas.Zones.Decks.Managers
 {
-	class DeckManager : NetworkBehaviour, IDeckManager
+    class DeckManager : NetworkBehaviour, IDeckManager
 	{
 		#region Dependencies
-		[SerializeField]
-		List<DeckView> _deckViews;
-		readonly List<IDeckController> _decks = new();
+
+
 		CardController.Factory _cardFactory;
-		IManaManager _manaManager;
 		ZoneFactory<IDeckView, DeckController, DeckModel> _deckFactory;
-		Stone.Settings _settings;
 		[Inject]
-		public void Construct(CardController.Factory cardFactory, ZoneFactory<IDeckView, DeckController, DeckModel> deckFactory, IManaManager manaManager, Stone.Settings settings)
+		public void Construct(CardController.Factory cardFactory, ZoneFactory<IDeckView, DeckController, DeckModel> deckFactory)
 		{
 			_cardFactory = cardFactory;
 			_deckFactory = deckFactory;
-			_manaManager = manaManager;
-			_settings = settings;
 		}
-		#endregion
+        #endregion
 
-		#region Fields
-		private int clientAcknowledgments = 0;
+        #region Fields
+        [SerializeField]
+        List<DeckView> _deckViews;
+
+        [SerializeField]
+        private DeckDataSO player1DeckData, player2DeckData;
+
+        readonly List<IDeckController> _decks = new();
+
+        private int clientAcknowledgments = 0;
 		private bool isWaitingForClientAcknowledgments = false;
-		#endregion
 
-		#region Methods
-		public void Start()
-		{
-			if (NetworkManager.Singleton.IsClient)
-			{
-				NetworkManager.Singleton.CustomMessagingManager.RegisterNamedMessageHandler("BuildDecks", OnBuildDecksMessageReceived);
-			}
-		}
-		public Dictionary<StoneType, int> GetDeckCost(Player player)
+        public List<IDeckController> Decks => _decks;
+        #endregion
+
+        #region Methods
+        public Dictionary<StoneType, int> GetDeckCost(Player player)
 		{
 			return GetPlayerDeck(player).GetTotalCostOfZone();
 		}
@@ -69,60 +64,6 @@ namespace Abraxas.Zones.Decks.Managers
 		private IDeckController GetPlayerDeck(Player player)
 		{
 			return _decks.Find(x => x.Player == player);
-		}
-		private List<CardData> GenerateCardDataList(Player player)
-		{
-			List<CardData> cardDataList = new();
-
-			string[] titles = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
-
-			for (int i = 0; i < 10; i++)
-			{
-				StoneType type = (StoneType)Random.Range(0, 11);
-				int atk = GetWeightedRandom(1, 15, 3);
-				int def = GetWeightedRandom(1, 15, 3);
-				int mv = GetWeightedRandom(1, 5, 2);
-				int cost = (atk * 2) + (def * 2) + (mv * 4);
-				int imageIndex = Random.Range(0, 4);
-
-				for (int j = 0; j < 4; j++)
-				{
-					CardData cardData = new()
-					{
-						Title = titles[i],
-						Owner = player,
-						OriginalOwner = player,
-						Stones = new List<StoneWrapper>
-						{
-							new(_settings.stoneData.Find(so => so.name == "Sapphire Effect DrawCardFromLibrary")),
-                            //new(_settings.stoneData.Find(so => so.name == "Garnet Effect DrawCardFromLibrary")),
-                            //new(_settings.stoneData.Find(so => so.name == "Ruby Effect DrawCardFromLibrary")),
-                            //new(_settings.stoneData.Find(so => so.name == "Peridot Effect DrawCardFromLibrary")),
-                        },
-						StatBlock = new StatBlockData
-						{
-							Cost = cost,
-							StoneType = type,
-							[StatValues.ATK] = atk,
-							[StatValues.DEF] = def,
-							[StatValues.MV] = mv
-						},
-						ImageIndex = imageIndex
-					};
-					cardDataList.Add(cardData);
-				}
-			}
-			return cardDataList;
-		}
-
-		private int GetWeightedRandom(int min, int max, int biasFactor)
-		{
-			int result = Random.Range(min, max);
-			for (int i = 1; i < biasFactor; i++)
-			{
-				result = Math.Min(result, Random.Range(min, max));
-			}
-			return result;
 		}
 		#endregion
 
@@ -140,41 +81,52 @@ namespace Abraxas.Zones.Decks.Managers
 			clientAcknowledgments = 0;
 			yield return WaitForClients();
 		}
-		public IEnumerator BuildDecks()
+		public IEnumerator LoadDecks()
 		{
 			if (!IsServer) yield break;
-			yield return BuildDeck(Player.Player1);
-			yield return BuildDeck(Player.Player2);
+			yield return LoadDeck(Player.Player1);
+			yield return LoadDeck(Player.Player2);
 		}
 
-		private IEnumerator BuildDeck(Player player)
+		private IEnumerator LoadDeck(Player player)
 		{
 			var settings = new JsonSerializerSettings
 			{
 				TypeNameHandling = TypeNameHandling.Auto,
 			};
 
-			List<CardData> cardDataList = GenerateCardDataList(player);
-
-			CardDataListWrapper wrapper = new()
-			{
-				Player = player,
-				CardDataList = cardDataList
-			};
-
-			string serializedCardData = JsonConvert.SerializeObject(wrapper, settings);
+            List<CardData> cardDataList = (player == Player.Player1 ? player1DeckData : player2DeckData).cards;
 
 			if (!IsHost)
 			{
-				BuildDeck(player, cardDataList);
-			}
+				BuildDeck(player);
+            }
+			yield return SendInitializeBuildingDeckAndWait(player);
 
-			yield return SendBuildDecksRpcAndWait(player, serializedCardData);
+			foreach (CardData cardData in cardDataList)
+			{
+                string serializedCardData = JsonConvert.SerializeObject(cardData, settings);
+
+                if (!IsHost)
+                {
+                    BuildCard(cardData, player);
+                }
+
+                yield return SendBuildCardRpcAndWait(player,serializedCardData);
+            }
 		}
 
-		private IEnumerator SendBuildDecksRpcAndWait(Player player, string serializedCardData)
+        private IEnumerator SendInitializeBuildingDeckAndWait(Player player)
+        {
+			InitializeBuildingDeckClientRpc(player);
+            yield return WaitForClients();
+        }
+
+
+
+        private IEnumerator SendBuildCardRpcAndWait(Player player, string serializedCardData)
 		{
-			BuildDecksClientRpc(player, serializedCardData);
+			BuildCardClientRpc(player, serializedCardData);
 			yield return WaitForClients();
 		}
 
@@ -186,7 +138,6 @@ namespace Abraxas.Zones.Decks.Managers
 			{
 				yield return null;
 			}
-
 			isWaitingForClientAcknowledgments = false;
 		}
 
@@ -207,61 +158,28 @@ namespace Abraxas.Zones.Decks.Managers
 			AcknowledgeServerRpc();
 		}
 
-		private void OnBuildDecksMessageReceived(ulong senderClientId, FastBufferReader reader)
-		{
-			if (!reader.TryBeginRead(reader.Length)) return;
-
-			int messageLength;
-			reader.ReadValueSafe(out messageLength);
-
-			char[] chars = new char[messageLength];
-			for (int i = 0; i < messageLength; i++)
-			{
-				reader.ReadValueSafe(out chars[i]);
-			}
-
-			string receivedMessage = new string(chars);
-			var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
-			var playerData = JsonConvert.DeserializeObject<dynamic>(receivedMessage, settings);
-
-			Player player = playerData.Player;
-			string serializedCardData = playerData.SerializedData;
-			CardDataListWrapper wrapper = JsonConvert.DeserializeObject<CardDataListWrapper>(serializedCardData, settings);
-
-			BuildDeck(player, wrapper.CardDataList);
+        [ClientRpc]
+        private void InitializeBuildingDeckClientRpc(Player player)
+        {
+			BuildDeck(player);
 			AcknowledgeServerRpc();
-		}
+        }
 
 		[ClientRpc]
-		public void BuildDecksClientRpc(Player player, string serializedCardData)
+		private void BuildCardClientRpc(Player player, string serializedCardData)
 		{
-			var settings = new JsonSerializerSettings
-			{
-				TypeNameHandling = TypeNameHandling.Auto,
-			};
+			var card = (CardData)JsonConvert.DeserializeObject(serializedCardData);
+			BuildCard(card, player);
+            AcknowledgeServerRpc();
+        }
 
-			CardDataListWrapper wrapper = JsonConvert.DeserializeObject<CardDataListWrapper>(serializedCardData, settings);
-			List<CardData> cardDataList = wrapper.CardDataList;
-			BuildDeck(player, cardDataList);
-			AcknowledgeServerRpc();
-		}
-		private void BuildDeck(Player player, List<CardData> cardDataList)
+        private void BuildDeck(Player player)
 		{
 			foreach (var deckView in _deckViews)
 			{
 				var deckController = _deckFactory.Create(deckView);
 				if (player != deckController.Player) continue;
-				_decks.Add(deckController);
-
-				foreach (var cardData in cardDataList)
-				{
-					CardData modifiedCardData = cardData;
-					modifiedCardData.Owner = deckController.Player;
-					modifiedCardData.OriginalOwner = deckController.Player;
-					BuildCard(modifiedCardData, player);
-				}
-
-				_manaManager.InitializeManaFromDeck(deckController);
+				_decks.Add(deckController);		
 			}
 		}
 

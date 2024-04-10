@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEngine;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Data
@@ -10,8 +11,10 @@ namespace Abraxas.Cards.Data
 	public struct CardData : INetworkSerializable
 	{
 		public string Title;
+		[HideInInspector]
 		public Player Owner;
-		public Player OriginalOwner;
+        [HideInInspector]
+        public Player OriginalOwner;
 		public List<StoneWrapper> Stones;
 		public StatBlockData StatBlock;
 		public int ImageIndex;
@@ -30,7 +33,7 @@ namespace Abraxas.Cards.Data
 				Stones = new List<StoneWrapper>(stonesCount);
 				for (int i = 0; i < stonesCount; i++)
 				{
-					StoneWrapper stoneWrapper = new StoneWrapper();
+					StoneWrapper stoneWrapper = new();
 					StoneWrapper.Serialize(serializer, ref stoneWrapper);
 					Stones.Add(stoneWrapper);
 				}

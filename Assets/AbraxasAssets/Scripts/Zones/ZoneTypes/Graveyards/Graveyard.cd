@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Abraxas.Zones.Graveyard.Controllers.GraveyardController">
+    <Position X="3.25" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Controllers\GraveyardController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Graveyards.Installers.GraveyardInstaller">
+    <Position X="8.75" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Installers\GraveyardInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Zones.Graveyards.Managers.GraveyardManager">
+    <Position X="6.5" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAgAAAAAgAAAAAIAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Managers\GraveyardManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_graveyardViews" />
+      <Field Name="_graveyards" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Graveyards.Models.GraveyardModel">
+    <Position X="3.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Models\GraveyardModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Graveyards.Views.GraveyardView">
+    <Position X="3.25" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Views\GraveyardView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Models.ZoneModel" Collapsed="true">
+    <Position X="0.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAIAAAAAAAAQQgAAAAAAAAAAAAAAAABAAAAQAAEQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Models\ZoneModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Controllers.ZoneController" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAQQAAgAAAQAAAAABAAAAACgAIQAAAQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Controllers\ZoneController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Views.ZoneView" Collapsed="true">
+    <Position X="0.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EABAAAAAAAgAwQAAAgAACQQAQAAAAAgAAAgAARAAAgA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Views\ZoneView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Abraxas.Zones.Graveyard.Controllers.IGraveyardController" Collapsed="true">
+    <Position X="3.25" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Controllers\IGraveyardController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Graveyards.IGraveyardManager" Collapsed="true">
+    <Position X="6.5" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Managers\IGraveyardManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Graveyards.Models.IGraveyardModel" Collapsed="true">
+    <Position X="3.25" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Models\IGraveyardModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Graveyards.Views.IGraveyardView" Collapsed="true">
+    <Position X="3.25" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Views\IGraveyardView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Models.IZoneModel" Collapsed="true">
+    <Position X="0.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAQQgAAAAAAAAAAAAAAAABAAAAQAAEQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Models\IZoneModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Controllers.IZoneController" Collapsed="true">
+    <Position X="0.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQQAAAAAAQAAAAAAAAAAAAAAIQAAAQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Controllers\IZoneController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Views.IZoneView" Collapsed="true">
+    <Position X="0.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Views\IZoneView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

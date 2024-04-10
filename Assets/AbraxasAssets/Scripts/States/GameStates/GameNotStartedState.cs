@@ -1,5 +1,6 @@
 ﻿using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
+using Abraxas.Manas;
 using Abraxas.Zones.Decks.Managers;
 using System.Collections;
 using Unity.Netcode;
@@ -15,12 +16,14 @@ namespace Abraxas.GameStates
         readonly NetworkManager _networkManager;
         readonly IGameStateManager _gameStateManager;
         readonly IDeckManager _deckManager;
+        readonly IManaManager _manaManager;
         [Inject]
-        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, IDeckManager deckManager) : base(gameManager, eventManager)
+        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, IDeckManager deckManager, IManaManager manaManager) : base(gameManager, eventManager)
         {
             _gameStateManager = gameStateManager;
             _networkManager = NetworkManager.Singleton;
             _deckManager = deckManager;
+            _manaManager = manaManager;
         }
 
         public class Factory : PlaceholderFactory<GameNotStartedState>
@@ -53,7 +56,8 @@ namespace Abraxas.GameStates
                     yield return null;
                 }
                 Debug.Log($"GameNotStartedState OnEnterState Clients Joined");
-                yield return _deckManager.BuildDecks();
+                yield return _deckManager.LoadDecks();
+                _manaManager.InitializeManaFromDecks(_deckManager.Decks);
                 yield return _deckManager.ShuffleDeck(Player.Player1);
                 yield return _deckManager.ShuffleDeck(Player.Player2);
                 yield return _gameStateManager.BeginNextGameState();

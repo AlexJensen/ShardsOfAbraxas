@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Abraxas.Zones.Hands.Controllers.HandController" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="3.75" Width="2.5" />
+    <AssociationLine Name="_handManager" Type="Abraxas.Zones.Hands.Managers.IHandManager" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.25" Y="4.688" />
+        <Point X="5.625" Y="4.688" />
+        <Point X="5.625" Y="3.625" />
+        <Point X="6.573" Y="3.625" Type="JumpStart" />
+        <Point X="6.739" Y="3.625" Type="JumpEnd" />
+        <Point X="8" Y="3.625" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAEAAAAAEAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Controllers\HandController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_handManager" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Hands.Installers.HandInstaller">
+    <Position X="5.5" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Installers\HandInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Hands.Hand">
+    <Position X="10.5" Y="1" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Abraxas.Hands.Hand.Settings">
+        <NestedTypes>
+          <Struct Name="Abraxas.Hands.Hand.Settings.PlaceholderSettings" Collapsed="true">
+            <TypeIdentifier>
+              <NewMemberFileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Installers\HandSettings.cs</NewMemberFileName>
+            </TypeIdentifier>
+          </Struct>
+        </NestedTypes>
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Installers\HandSettings.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Installers\HandSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Hands.Installers.HandSettingsInstaller">
+    <Position X="7.5" Y="1" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Installers\HandSettingsInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Zones.Hands.Managers.HandManager" BaseTypeListCollapsed="true">
+    <Position X="8" Y="4" Width="1.75" />
+    <AssociationLine Name="_hands" Type="Abraxas.Zones.Hands.Controllers.IHandController" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8" Y="5" />
+        <Point X="6.656" Y="5" />
+        <Point X="6.656" Y="3.346" />
+        <Point X="5.25" Y="3.346" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAACAgAAgAQAAAAAAgAAAAAAAAAAAABAAAIAACA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Managers\HandManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CardDragging" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_handViews" />
+      <Field Name="_hands" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Hands.Models.HandModel" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="1.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Models\HandModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Hands.CardPlaceholder">
+    <Position X="10.5" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAACAgAAAxCIAkAAAAAAAAAAIAACAAAAAAAAAGQI=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Views\Helpers\CardPlaceholder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Zones.Hands.Views.HandView" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="7" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EADAAAAAAAAAAAAAAAFEAQAAAAABAAAAAAAAAQAACEA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Views\HandView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_cardPlaceholder" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Models.ZoneModel" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAIAAAAAAAAQQgAAAAAAAAAAAAAAAABAAAAQAAEQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Models\ZoneModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Controllers.ZoneController" Collapsed="true">
+    <Position X="0.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAQQAAgAAAQAAAAABAAAAACgAIQAAAQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Controllers\ZoneController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Views.ZoneView" Collapsed="true">
+    <Position X="0.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EABAAAAAAAgAwQAAAgAACQQAQAAAAAgAAAgAARAAAgA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Views\ZoneView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Abraxas.Zones.Hands.Controllers.IHandController" Collapsed="true">
+    <Position X="2.75" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Controllers\IHandController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Hands.Managers.IHandManager" Collapsed="true">
+    <Position X="8" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAQAAAAAAgAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Managers\IHandManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Hands.Models.IHandModel" Collapsed="true">
+    <Position X="2.75" Y="1" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Models\IHandModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Hands.Views.IHandView" Collapsed="true">
+    <Position X="2.75" Y="6.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Views\IHandView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Cards.Controllers.ICardController" Collapsed="true">
+    <Position X="7.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAgAQCAgAAIAEAAADBAACAAACAAACAAEAAQAAAEKQQ=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cards\Controllers\ICardController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Models.IZoneModel" Collapsed="true">
+    <Position X="0.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAQQgAAAAAAAAAAAAAAAABAAAAQAAEQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Models\IZoneModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Controllers.IZoneController" Collapsed="true">
+    <Position X="0.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQQAAAAAAQAAAAAAAAAAAAAAIQAAAQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Controllers\IZoneController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Views.IZoneView" Collapsed="true">
+    <Position X="0.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Views\IZoneView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

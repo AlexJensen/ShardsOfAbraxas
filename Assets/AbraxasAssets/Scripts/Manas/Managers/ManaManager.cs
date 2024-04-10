@@ -2,6 +2,7 @@ using Abraxas.Cards.Controllers;
 using Abraxas.Manas.Controllers;
 using Abraxas.Manas.Views;
 using Abraxas.Zones.Decks.Controllers;
+using Abraxas.Zones.Decks.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Abraxas.Manas.Managers
         #region Dependencies
         Mana.Settings _settings;
         [Inject]
-        void Construct(ManaController.Factory manaFactory, Mana.Settings settings)
+        public void Construct(ManaController.Factory manaFactory, Mana.Settings settings)
         {
             _settings = settings;
             foreach (var manaView in FindObjectsOfType<ManaView>())
@@ -65,6 +66,14 @@ namespace Abraxas.Manas.Managers
         public void InitializeManaFromDeck(IDeckController deck)
         {
             GetPlayerMana(deck.Player).CreateManaTypesFromDeck(deck);
+        }
+
+        public void InitializeManaFromDecks(List<IDeckController> decks)
+        {
+            foreach (var deck in decks)
+            {
+                InitializeManaFromDeck(deck);
+            }
         }
 
         private IManaController GetPlayerMana(Player player)
