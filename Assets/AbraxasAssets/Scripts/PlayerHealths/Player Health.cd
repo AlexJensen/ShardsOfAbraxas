@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Abraxas.Health.Controllers.PlayerHealthController" BaseTypeListCollapsed="true">
+    <Position X="5" Y="7.25" Width="2" />
+    <NestedTypes>
+      <Class Name="Abraxas.Health.Controllers.PlayerHealthController.Factory" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Controllers\PlayerHealthController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAgAAEAAAQAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Controllers\PlayerHealthController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_model" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Health.Factories.PlayerHealthFactory" BaseTypeListCollapsed="true">
+    <Position X="11" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Factories\PlayerHealthFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Health.Installers.PlayerHealthInstaller">
+    <Position X="13" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Installers\PlayerHealthInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Health.Managers.PlayerHealthManager" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAgAEEAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Managers\PlayerHealthManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_hps" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Health.Models.PlayerHealthModel" BaseTypeListCollapsed="true">
+    <Position X="5" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAgQAAAAAEGAAAQAAAAAAABAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Models\PlayerHealthModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Health.Views.PlayerHealthView" BaseTypeListCollapsed="true">
+    <Position X="5" Y="10.5" Width="2" />
+    <NestedTypes>
+      <Enum Name="Abraxas.Health.Views.PlayerHealthView.HealthChangeAnimationTriggers" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Views\PlayerHealthView.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAgSAAAAABCAQAAAgAAKAABAAAAAAAAIAAAAQAAwEA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Views\PlayerHealthView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_model" />
+      <Field Name="_player" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Abraxas.Health.Controllers.IPlayerHealthController" Collapsed="true">
+    <Position X="5" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAQAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Controllers\IPlayerHealthController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Health.Managers.IPlayerHealthManager" Collapsed="true">
+    <Position X="8.75" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEEAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Managers\IPlayerHealthManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Health.Models.IPlayerHealthModel" Collapsed="true">
+    <Position X="5" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAQAAAAAEEAAAQAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Models\IPlayerHealthModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Health.Views.IPlayerHealthView" Collapsed="true">
+    <Position X="5" Y="9.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\PlayerHealths\Views\IPlayerHealthView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Abraxas.Players.Players" Collapsed="true">
+    <Position X="9" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAwAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Players\Installers\PlayerSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

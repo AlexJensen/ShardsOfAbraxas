@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Abraxas.Games.Installers.GameInstaller">
+    <Position X="15.75" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Games\Installers\GameInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Games.Game">
+    <Position X="18" Y="3.25" Width="3" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Abraxas.Games.Game.Settings">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\Games\Installers\GameSettings.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Games\Installers\GameSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Games.Installers.GameSettingsInstaller">
+    <Position X="18" Y="6" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Games\Installers\GameSettingsInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Games.Managers.GameManager">
+    <Position X="7.5" Y="4.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACgAgAAQiAAABBAgAAIQAQAKAAAACAAAABA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Games\Managers\GameManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_cardManager" />
+      <Field Name="_gameStateManager" />
+      <Field Name="_manaManager" />
+      <Field Name="_playerManager" />
+      <Field Name="_zoneManager" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Abraxas.Games.Managers.IGameManager" Collapsed="true">
+    <Position X="7.5" Y="4" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAKAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Games\Managers\IGameManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Cards.Managers.ICardManager" Collapsed="true">
+    <Position X="12.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAYAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cards\Managers\ICardManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.GameStates.IGameStateManager" Collapsed="true">
+    <Position X="12.5" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAABAAAgAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\States\Managers\IGameStateManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Manas.IManaManager" Collapsed="true">
+    <Position X="12.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAABAAABAAAAAAAAAAAAAAAAAAAAACAAAEAAgAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Managers\IManaManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Players.Managers.IPlayerManager" Collapsed="true">
+    <Position X="12.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAQAACA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Players\Managers\IPlayerManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Managers.IZoneManager" Collapsed="true">
+    <Position X="12.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAIAAAAAAAAIAAAQAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Managers\IZoneManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

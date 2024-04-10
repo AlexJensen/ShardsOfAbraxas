@@ -1,5 +1,8 @@
-﻿using Abraxas.StatBlocks.Models;
+﻿using Abraxas.StatBlocks.Data;
+using Abraxas.StatBlocks.Models;
+using Abraxas.StatBlocks.Views;
 using Abraxas.Stones;
+using Zenject;
 
 namespace Abraxas.StatBlocks.Controllers
 {
@@ -23,6 +26,11 @@ namespace Abraxas.StatBlocks.Controllers
         {   
             get => _model[index]; 
             set => _model[index] = value; 
+        }
+
+        public class Factory : PlaceholderFactory<StatBlockData, IStatBlockView, IStatBlockController>
+        {
+
         }
         #endregion
 

@@ -40,8 +40,8 @@ namespace Abraxas.CardViewers
             _attack.text = card.StatBlock[StatValues.ATK].ToString();
             _health.text = card.StatBlock[StatValues.DEF].ToString();
             _speed.text = card.StatBlock[StatValues.MV].ToString();
-            _image.sprite = card.Image.sprite;
-            _image.transform.localScale = card.Image.transform.localScale;
+            _image.sprite = card.ImageManipulator.Image.sprite;
+            _image.transform.localScale = card.ImageManipulator.Image.transform.localScale;
 
             for (int i = 0; i < _stones.Count; i++)
             {

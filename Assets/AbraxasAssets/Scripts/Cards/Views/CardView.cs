@@ -1,9 +1,8 @@
-using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Models;
 using Abraxas.Cells.Controllers;
-using Abraxas.Cells.Views;
 using Abraxas.Events;
 using Abraxas.Stones;
+using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Hands.Controllers;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ namespace Abraxas.Cards.Views
     [RequireComponent(typeof(RectTransformMover))]
     [RequireComponent(typeof(CardDragListener))]
     [RequireComponent(typeof(CardMouseOverListener))]
-    internal class CardView : NetworkBehaviour, ICardView
+    class CardView : NetworkBehaviour, ICardView, ITransformManipulator, IImageManipulator
     {
         #region Dependencies
         Card.Settings _cardSettings;

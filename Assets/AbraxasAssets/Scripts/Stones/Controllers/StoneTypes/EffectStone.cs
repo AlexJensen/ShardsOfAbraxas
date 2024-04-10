@@ -1,7 +1,9 @@
+using System.Collections;
+
 namespace Abraxas.Stones.Controllers
 {
     public abstract class EffectStone : StoneController
     {
-        public abstract void TriggerEffect(object[] vals);
+        public abstract IEnumerator TriggerEffect(object[] vals);
     }
 }

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Abraxas.CardViewers.CardViewer">
+    <Position X="6.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAKEAgAAAAAAAAAAAAACEQAAABAAAAAAAAEA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\CardViewers\Views\CardViewer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_stones" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Abraxas.CardViewers.StoneViewer">
+    <Position X="9.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACABAAAAAAAAABAAAAAAAAAAAAAgAEAAACA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\CardViewers\Views\StoneViewer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.CardViewers.Managers.CardViewerManager">
+    <Position X="3.5" Y="1.25" Width="2" />
+    <NestedTypes>
+      <Enum Name="Abraxas.CardViewers.Managers.CardViewerManager.ScreenSide" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\CardViewers\Managers\CardViewerManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Struct Name="Abraxas.CardViewers.Managers.CardViewerManager.Side" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\CardViewers\Managers\CardViewerManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EAAAAAQQAAAAAAgAAAABAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\CardViewers\Managers\CardViewerManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_cardViewer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.CardViewers.Installers.CardViewerInstaller">
+    <Position X="12.25" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\CardViewers\Installers\CardViewerInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Abraxas.CardViewers.ICardViewerManager" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\CardViewers\Managers\ICardViewerManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

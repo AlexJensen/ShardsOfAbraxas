@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Alphabetical">
+  <Class Name="Abraxas.Manas.Views.ManaView" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="10" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAQAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Views\ManaView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_player" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Manas.ManaType">
+    <Position X="9" Y="4" Width="1.75" />
+    <NestedTypes>
+      <Enum Name="Abraxas.Manas.ManaType.ManaChangeAnimationTriggers" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\Manas\Types\ManaType.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Class Name="Abraxas.Manas.ManaType.Factory" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\Manas\Types\ManaType.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAACQAAAABAgAQAAAAAKAKACCAAQAAAIQBAIQACAEA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Types\ManaType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_player" />
+      <Field Name="_eventManager" />
+      <Field Name="_type" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Abraxas.Manas.Models.ManaModel" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAEAAIAQAAEAAAAAAAEACEAAAAICAAQUAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Models\ManaModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_controller" />
+      <Field Name="_view" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_manaTypes" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Manas.Managers.ManaManager" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.75" Width="2.75" />
+    <AssociationLine Name="_manas" Type="Abraxas.Manas.Controllers.IManaController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.5" Y="2.844" />
+        <Point X="11.875" Y="2.844" />
+        <Point X="11.875" Y="5.812" />
+        <Point X="12.25" Y="5.812" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.475" Y="0.008" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AgACAABAAABAgAAAgAAAQAAAAgAAAAAACAAAEAAgAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Managers\ManaManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_manas" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Manas.Installers.ManaSettingsInstaller">
+    <Position X="15.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Installers\ManaSettingsInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Manas.Mana">
+    <Position X="17.5" Y="2.25" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Abraxas.Manas.Mana.Settings">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\Manas\Installers\ManaSettings.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Installers\ManaSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Manas.Installers.ManaInstaller">
+    <Position X="15.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Installers\ManaInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Manas.Factories.ManaFactory" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Factories\ManaFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Abraxas.Manas.Controllers.ManaController" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="6.25" Width="2.25" />
+    <NestedTypes>
+      <Class Name="Abraxas.Manas.Controllers.ManaController.Factory" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\Manas\Controllers\ManaController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BAACAAAAAAAAAQAAAgAAAAAAAACAAAAAAAAAQQAgAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Controllers\ManaController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_model" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Abraxas.Manas.Views.IManaView" Collapsed="true">
+    <Position X="12.25" Y="9.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Views\IManaView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Manas.Models.IManaModel" Collapsed="true">
+    <Position X="12.25" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAEAAAAAAAAAAAAAAAAACAAAAAAAAAQQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Models\IManaModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Manas.IManaManager" Collapsed="true">
+    <Position X="5.75" Y="1" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAABAAABAAAAAAAAAAAAAAAAAAAAACAAAEAAgAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Managers\IManaManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Manas.Controllers.IManaController" Collapsed="true">
+    <Position X="12.25" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAACAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAQQAgAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Manas\Controllers\IManaController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Events.Managers.IEventManager" Collapsed="true">
+    <Position X="6.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAIAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Events\Managers\IEventManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Abraxas.Players.Players" Collapsed="true">
+    <Position X="9.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAwAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Players\Installers\PlayerSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Abraxas.Stones.StoneType" Collapsed="true">
+    <Position X="6.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQEAAAIAAAAAAQACAACCAAIAQAAAAAAIAARA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Stones\Installers\StoneSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

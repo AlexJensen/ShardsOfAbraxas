@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Abraxas.Zones.Controllers.ZoneController">
+    <Position X="2.75" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAQQAAgAAAQAAAAABAAAAACgAIQAAAQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Controllers\ZoneController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_model" />
+      <Field Name="_view" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Factories.ZoneFactory&lt;TView, TController, TModel&gt;">
+    <Position X="6.75" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Factories\ZoneFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Abraxas.Zones.ZoneInstaller">
+    <Position X="8.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Installers\ZoneInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Zones.Managers.ZoneManager">
+    <Position X="10" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAABAAAAYAAAAAABAIAAAQAAABEAAAEAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Managers\ZoneManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_deckManager" />
+      <Field Name="_fieldManager" />
+      <Field Name="_graveyardManager" />
+      <Field Name="_handManager" />
+      <Field Name="_playerManager" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Models.ZoneModel">
+    <Position X="2.75" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABAIAAAAAAAAQQgAAAAAAAAAAAAAAAABAAAAQAAEQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Models\ZoneModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_cardList" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Zones.Views.ZoneView">
+    <Position X="2.75" Y="9" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EABAAAAAAAgAwQAAAgAACQQAQAAAAAgAAAgAARAAAgA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Views\ZoneView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_model" />
+      <Field Name="_overlayManager" />
+      <Field Name="_player" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Abraxas.Zones.Controllers.IZoneController" Collapsed="true">
+    <Position X="2.75" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQQAAAAAAQAAAAAAAAAAAAAAIQAAAQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Controllers\IZoneController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Managers.IZoneManager" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAIAAAAAAAAIAAAQAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Managers\IZoneManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Models.IZoneModel" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAQQgAAAAAAAAAAAAAAAABAAAAQAAEQA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Models\IZoneModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Views.IZoneView" Collapsed="true">
+    <Position X="2.75" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\Views\IZoneView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Overlays.Managers.IOverlayManager" Collapsed="true">
+    <Position X="7" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAgEAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Overlays\Managers\IOverlayManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Cards.Controllers.ICardController" Collapsed="true">
+    <Position X="6" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAgAQCAgAAIAEAAABBAAAQAACAAADAAEAAQAAAEKQQ=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cards\Controllers\ICardController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Decks.Managers.IDeckManager" Collapsed="true">
+    <Position X="13.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAQAAAAAAAAAAAAABAEAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Decks\Managers\IDeckManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Fields.Managers.IFieldManager" Collapsed="true">
+    <Position X="13.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIIAgAAAQAAAQAAAAAAAAAQAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Field\Managers\IFieldManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Graveyards.IGraveyardManager" Collapsed="true">
+    <Position X="13.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Graveyards\Managers\IGraveyardManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Zones.Hands.Managers.IHandManager" Collapsed="true">
+    <Position X="13.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAQAAAAAAgAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Hands\Managers\IHandManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Players.Managers.IPlayerManager" Collapsed="true">
+    <Position X="10" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAQAACA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Players\Managers\IPlayerManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Abraxas.Players.Players" Collapsed="true">
+    <Position X="7" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAwAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Players\Installers\PlayerSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

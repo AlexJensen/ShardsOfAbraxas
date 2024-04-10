@@ -57,14 +57,14 @@ namespace Abraxas.Zones.Views
         }
         public virtual void AddCardToHolder(ICardController card, int index = 0)
         {
-            card.Transform.localScale = Vector3.zero;
-            card.Transform.position = transform.position;
-            card.Transform.SetParent(CardHolder.transform);
-            card.Transform.SetSiblingIndex(index);
+            card.TransformManipulator.Transform.localScale = Vector3.zero;
+            card.TransformManipulator.Transform.position = transform.position;
+            card.TransformManipulator.Transform.SetParent(CardHolder.transform);
+            card.TransformManipulator.Transform.SetSiblingIndex(index);
         }
         public virtual void RemoveCardFromHolder(ICardController card)
         {
-            card.Transform.localScale = Vector3.one;
+            card.TransformManipulator.Transform.localScale = Vector3.one;
         }
         #endregion
     }

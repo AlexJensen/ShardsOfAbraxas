@@ -4,7 +4,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Manas.Views
 {
-    public class ManaView : MonoBehaviour, IManaView
+    class ManaView : MonoBehaviour, IManaView
     {
 
         #region Fields

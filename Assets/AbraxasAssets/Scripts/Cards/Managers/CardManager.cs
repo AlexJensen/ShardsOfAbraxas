@@ -4,7 +4,7 @@ using Unity.Netcode;
 
 namespace Abraxas.Cards.Managers
 {
-    internal class CardManager : NetworkBehaviour, ICardManager
+    class CardManager : NetworkBehaviour, ICardManager
     {
         #region Fields
         readonly List<ICardController> _cards = new();

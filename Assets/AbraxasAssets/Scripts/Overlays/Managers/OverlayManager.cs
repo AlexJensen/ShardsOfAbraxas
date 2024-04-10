@@ -19,7 +19,7 @@ namespace Abraxas.Zones.Overlays.Managers
         #region Methods
         public void SetCard(ICardController card)
         {
-            card.Transform.SetParent(Overlay.transform);
+            card.TransformManipulator.Transform.SetParent(Overlay.transform);
             Cards.Add(card);
         }
 

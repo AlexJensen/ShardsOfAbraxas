@@ -41,7 +41,7 @@ namespace Abraxas.Cells.Controllers
         public void AddCard(ICardController card)
         {
             _model.AddCard(card);
-            _view.SetChild(card.Transform);
+            _view.SetChild(card.TransformManipulator.Transform);
             card.FieldPosition = FieldPosition;
         }
 

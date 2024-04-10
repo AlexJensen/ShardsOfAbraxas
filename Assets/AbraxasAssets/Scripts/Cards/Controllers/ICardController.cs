@@ -2,11 +2,11 @@
 using Abraxas.StatBlocks.Controllers;
 using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
+using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Controllers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using UnityEngine;
 
 namespace Abraxas.Cards.Controllers
 {
@@ -22,8 +22,8 @@ namespace Abraxas.Cards.Controllers
         Point FieldPosition { get; set; }
         ICellController Cell { get; set; }
         IStatBlockController StatBlock { get; }
-        Transform Transform { get; }
-        UnityEngine.UI.Image Image { get; }
+        ITransformManipulator TransformManipulator { get; }
+        IImageManipulator ImageManipulator { get; }
         RectTransformMover RectTransformMover { get; }
 
         void ChangeScale(PointF pointF, float scaleCardToOverlayTime);

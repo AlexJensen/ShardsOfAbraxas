@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Abraxas.Cells.Controllers.CellController">
+    <Position X="6.75" Y="5.75" Width="2" />
+    <NestedTypes>
+      <Class Name="Abraxas.Cells.Controllers.CellController.Factory" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\Cells\Controllers\CellController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <AssociationLine Name="_model" Type="Abraxas.Cells.Models.ICellModel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="7.375" />
+        <Point X="9.125" Y="7.375" />
+        <Point X="9.125" Y="2" />
+        <Point X="8.75" Y="2" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAIAAABAAAAQQAAgAAAAAAgAABAAAAACAQAQABAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Controllers\CellController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_model" />
+      <Field Name="_view" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Cells.Factories.CellFactory">
+    <Position X="10.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Factories\CellFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Abraxas.Cells.Installers.CellInstaller">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Installers\CellInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Cells.Cell">
+    <Position X="14" Y="1.75" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Abraxas.Cells.Cell.Settings">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\AbraxasAssets\Scripts\Cells\Installers\CellSettings.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Installers\CellSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Cells.Installers.CellSettingsInstaller">
+    <Position X="10.5" Y="3.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Installers\CellSettingsInstaller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Abraxas.Cells.Models.CellModel">
+    <Position X="6.75" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAQAAAAAAABAgAAAAAAAAAAQAQABAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Models\CellModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_cards" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Abraxas.Cells.Views.CellView">
+    <Position X="6.75" Y="9.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABQCAwQAAAAAgCAAAAQAAAAAQAAAQAUAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Views\CellView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_controller" />
+      <Field Name="_player" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Abraxas.Cells.Controllers.ICellController" Collapsed="true">
+    <Position X="6.75" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAABAAAAQQAAAAAAAAAgAABAAAAAAAQAQABAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Controllers\ICellController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Cells.Models.ICellModel" Collapsed="true">
+    <Position X="6.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAQAAAAAAAAAgAAAAAAAAAAQAQABAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Models\ICellModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Cells.Views.ICellView" Collapsed="true">
+    <Position X="6.75" Y="9" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABQAAAQAAAAAgAAAAAAAAAAAAAAAQAQAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cells\Views\ICellView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Abraxas.Cards.Controllers.ICardController" Collapsed="true">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAgAQCAgAAIAEAAABBAAAQAACAAADAAEAAQAAAEKQQ=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Cards\Controllers\ICardController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Abraxas.Players.Players" Collapsed="true">
+    <Position X="9.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAwAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Players\Installers\PlayerSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

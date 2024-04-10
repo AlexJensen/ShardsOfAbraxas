@@ -5,7 +5,6 @@ using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Abraxas.StackBlocks.Views;
 using Abraxas.StatBlocks.Controllers;
-using Abraxas.StatBlocks.Models;
 using Abraxas.Stones.Controllers;
 using System.Collections.Generic;
 using Zenject;
@@ -19,12 +18,14 @@ namespace Abraxas.Cards.Factories
         readonly Card.Settings _cardSettings;
         readonly ICardManager _cardManager;
         readonly StoneController.Factory _stoneFactory;
-        public CardFactory(DiContainer container, Card.Settings cardSettings, ICardManager cardManager, StoneController.Factory stoneFactory)
+        readonly StatBlockController.Factory _statBlockFactory;
+        public CardFactory(DiContainer container, Card.Settings cardSettings, ICardManager cardManager, StoneController.Factory stoneFactory, StatBlockController.Factory statBlockFactory)
         {
             _container = container;
             _cardSettings = cardSettings;
             _cardManager = cardManager;
             _stoneFactory = stoneFactory;
+            _statBlockFactory = statBlockFactory;
         }
         #endregion
 
@@ -39,13 +40,9 @@ namespace Abraxas.Cards.Factories
             var model = _container.Instantiate<CardModel>();
             var dragHandler = _container.Instantiate<CardDragHandler>();
             var mouseOverHandler = _container.Instantiate<CardMouseOverHandler>();
-            var statBlockModel = _container.Instantiate<StatBlockModel>();
-            var statBlockController = _container.Instantiate<StatBlockController>();
-            var statBlockView = gameObject.GetComponent<StatBlockView>();
 
-            statBlockModel.Initialize(data.StatBlock);
-            statBlockController.Initialize(statBlockModel);
-            statBlockView.Initialize(statBlockModel, statBlockController);
+            var statBlockView = gameObject.GetComponent<StatBlockView>();
+            var statBlockController = _statBlockFactory.Create(data.StatBlock, statBlockView);
 
             List<IStoneController> stoneControllers = new();
             if (data.Stones != null)

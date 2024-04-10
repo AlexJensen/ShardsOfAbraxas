@@ -8,11 +8,11 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Health.Managers
 {
-    public class PlayerHealthManager : MonoBehaviour, IPlayerHealthManager
+    class PlayerHealthManager : MonoBehaviour, IPlayerHealthManager
     {
         #region Dependencies
         [Inject]
-        void Construct(PlayerHealthController.Factory healthFactory)
+        public void Construct(PlayerHealthController.Factory healthFactory)
         {
             foreach (var cellView in FindObjectsOfType<PlayerHealthView>())
             {

@@ -166,7 +166,7 @@ namespace Abraxas.Zones.Decks.Managers
 
 			if (!IsHost)
 			{
-				BuildDeck(cardDataList, player);
+				BuildDeck(player, cardDataList);
 			}
 
 			yield return SendBuildDecksRpcAndWait(player, serializedCardData);
@@ -228,7 +228,7 @@ namespace Abraxas.Zones.Decks.Managers
 			string serializedCardData = playerData.SerializedData;
 			CardDataListWrapper wrapper = JsonConvert.DeserializeObject<CardDataListWrapper>(serializedCardData, settings);
 
-			BuildDeck(wrapper.CardDataList, player);
+			BuildDeck(player, wrapper.CardDataList);
 			AcknowledgeServerRpc();
 		}
 
@@ -242,10 +242,10 @@ namespace Abraxas.Zones.Decks.Managers
 
 			CardDataListWrapper wrapper = JsonConvert.DeserializeObject<CardDataListWrapper>(serializedCardData, settings);
 			List<CardData> cardDataList = wrapper.CardDataList;
-			BuildDeck(cardDataList, player);
+			BuildDeck(player, cardDataList);
 			AcknowledgeServerRpc();
 		}
-		private void BuildDeck(List<CardData> cardDataList, Player player)
+		private void BuildDeck(Player player, List<CardData> cardDataList)
 		{
 			foreach (var deckView in _deckViews)
 			{

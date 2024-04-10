@@ -10,6 +10,7 @@ using Abraxas.StatBlocks;
 using Abraxas.StatBlocks.Controllers;
 using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
+using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Fields.Managers;
@@ -17,13 +18,12 @@ using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using UnityEngine;
 using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Controllers
 {
-    internal class CardController : ICardController, IGameEventListener<ManaModifiedEvent>
+    class CardController : ICardController, IGameEventListener<ManaModifiedEvent>
     {
         #region Dependencies
         ICardModel _model;
@@ -75,8 +75,9 @@ namespace Abraxas.Cards.Controllers
         public ICellController Cell { get => _model.Cell; set => _model.Cell = value; }
         public IZoneController Zone { get => _model.Zone; set => _model.Zone = value; }
         public bool Hidden { get => _model.Hidden; set => _model.Hidden = value; }
-        public Transform Transform => _view.Transform;
-        public UnityEngine.UI.Image Image => _view.Image;
+        public ITransformManipulator TransformManipulator => (ITransformManipulator)_view;
+
+        public IImageManipulator ImageManipulator => (IImageManipulator)_view;
         public RectTransformMover RectTransformMover => _view.RectTransformMover;
         #endregion
 

@@ -1,12 +1,15 @@
 ﻿using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
+using Abraxas.Zones.Managers;
 using System;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using Zenject;
 
 namespace Abraxas.Stones.Types
 {
-	[Serializable]
+    [Serializable]
     public struct Effect_DrawCardFromLibraryData : IStoneData
     {
         [SerializeField]
@@ -39,9 +42,16 @@ namespace Abraxas.Stones.Types
 
     public class Effect_DrawCardFromLibrary : EffectStone
     {
-        public override void TriggerEffect(object[] vals)
+        readonly IZoneManager _zoneManager;
+
+        [Inject]
+        public Effect_DrawCardFromLibrary(IZoneManager zoneManager)
         {
-            throw new NotImplementedException();
+            _zoneManager = zoneManager;
+        }
+        public override IEnumerator TriggerEffect(object[] vals)
+        {
+            yield return _zoneManager.MoveCardsFromDeckToHand(Card.Owner, 1);
         }
     }
 

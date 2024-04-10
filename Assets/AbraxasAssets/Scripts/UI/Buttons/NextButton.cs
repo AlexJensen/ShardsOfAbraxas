@@ -17,7 +17,6 @@ namespace Abraxas.UI
     public class NextButton : MonoBehaviour, IGameEventListener<GameStateEnteredEvent>
     {
         #region Settings
-
         [Serializable]
         public class Settings
         {
