@@ -9,6 +9,19 @@ using Zenject;
 
 namespace Abraxas.Stones.Types
 {
+    [CreateAssetMenu(fileName = "New Effect DrawCardFromLibrary", menuName = "Abraxas/StoneData/Effects/Draw Card From Library")]
+    [Serializable]
+    public class EffectDrawCardFromLibraryDataSO : StoneDataSO
+    {
+        [SerializeField]
+        Effect_DrawCardFromLibraryData _data = new()
+        {
+            Info = "Draw a card."
+        };
+        public override IStoneData Data { get => _data; set => _data = (Effect_DrawCardFromLibraryData)value; }
+        public override Type ControllerType { get; set; } = typeof(Effect_DrawCardFromLibrary);
+    }
+
     [Serializable]
     public struct Effect_DrawCardFromLibraryData : IStoneData
     {
@@ -55,16 +68,5 @@ namespace Abraxas.Stones.Types
         }
     }
 
-    [CreateAssetMenu(fileName = "New Effect DrawCardFromLibrary", menuName = "Abraxas/StoneData/Effects/Draw Card From Library")]
-    [Serializable]
-    public class EffectDrawCardFromLibraryDataSO : StoneDataSO
-    {
-        [SerializeField]
-		Effect_DrawCardFromLibraryData _data = new()
-        {
-            Info = "Draw a card."
-        };
-        public override IStoneData Data { get => _data; set => _data = (Effect_DrawCardFromLibraryData)value; }
-        public override Type ControllerType { get; set; } = typeof(Effect_DrawCardFromLibrary);
-    }
+    
 }

@@ -57,7 +57,6 @@ namespace Abraxas.GameStates
                 }
                 Debug.Log($"GameNotStartedState OnEnterState Clients Joined");
                 yield return _deckManager.LoadDecks();
-                _manaManager.InitializeManaFromDecks(_deckManager.Decks);
                 yield return _deckManager.ShuffleDeck(Player.Player1);
                 yield return _deckManager.ShuffleDeck(Player.Player2);
                 yield return _gameStateManager.BeginNextGameState();
@@ -68,6 +67,9 @@ namespace Abraxas.GameStates
         {
             Debug.Log($"GameNotStartedState OnExitState {_networkManager.IsServer}");
             yield return base.OnExitState();
+            _manaManager.InitializeManaFromDecks(_deckManager.Decks);
+            yield return _deckManager.ShuffleDeck(Player.Player1);
+            yield return _deckManager.ShuffleDeck(Player.Player2);
             yield return gameManager.StartGame();
         }
         #endregion

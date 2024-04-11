@@ -25,12 +25,9 @@
   <Class Name="Abraxas.Zones.Decks.Managers.DeckManager">
     <Position X="6.5" Y="1.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgAQOIAgAQAgAAAFBAABAAwBCEAAAgAIQEAASE=</HashCode>
+      <HashCode>AAIAAAgAQMAEgQRAAAAAFBAABAAgBAICAAgAIQFACAE=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Decks\Managers\DeckManager.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_manaManager" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Field Name="_deckViews" />
       <Field Name="_decks" />
@@ -87,7 +84,7 @@
   <Interface Name="Abraxas.Zones.Decks.Managers.IDeckManager" Collapsed="true">
     <Position X="6.5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgAAAAAAAQAAAAAAAAAAAAABAEAAAAAAQAAAAA=</HashCode>
+      <HashCode>AAIAAAgAAAAAAAQAAAAAAAAAAAAABAACAAAAAQAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Decks\Managers\IDeckManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -103,13 +100,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Decks\Views\IDeckView.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Abraxas.Manas.IManaManager" Collapsed="true">
-    <Position X="10.75" Y="3.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAABAAABAAAAAAAAAAAAAAAAAAAAACAAAEAAgAAA=</HashCode>
-      <FileName>Assets\AbraxasAssets\Scripts\Manas\Managers\IManaManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.Zones.Models.IZoneModel" Collapsed="true">

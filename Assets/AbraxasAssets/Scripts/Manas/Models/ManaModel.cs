@@ -13,7 +13,7 @@ namespace Abraxas.Manas.Models
     class ManaModel : IManaModel
     {
         #region Dependencies
-        ManaType.Factory _typeFactory;
+        readonly ManaType.Factory _typeFactory;
         IManaView _view;
         IManaController _controller;
         public ManaModel(ManaType.Factory typeFactory)

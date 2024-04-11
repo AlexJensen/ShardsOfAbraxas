@@ -118,7 +118,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>IAAhAQCAgAAIAUQAAhBBAAQAACIAADAAECAQEAAmKQQ=</HashCode>
+      <HashCode>IAAhAQCAgAAIAUQAAjBBACAAACIAACAAECAQEAAmKQQ=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Controllers\CardController.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -132,40 +132,10 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Abraxas.Cards.Data.CardDataListWrapper">
-    <Position X="8.5" Y="3.75" Width="1.75" />
-    <AssociationLine Name="Player" Type="Abraxas.Players.Players" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="10.25" Y="4.276" />
-        <Point X="10.625" Y="4.276" />
-        <Point X="10.625" Y="3.875" />
-        <Point X="11.25" Y="3.875" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="CardDataList" Type="Abraxas.Cards.Data.CardData" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="9.5" Y="4.618" />
-        <Point X="9.5" Y="4.97" />
-        <Point X="12.852" Y="4.97" />
-        <Point X="12.852" Y="5.375" />
-        <Point X="14.5" Y="5.375" />
-      </Path>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
-      <FileName>Assets\AbraxasAssets\Scripts\Cards\Data\CardDataListWrapper.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="Player" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Field Name="CardDataList" />
-    </ShowAsCollectionAssociation>
-  </Class>
   <Class Name="Abraxas.Cards.Factories.CardFactory" BaseTypeListCollapsed="true">
     <Position X="20.5" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABIAAAAAACAAAAAAAEAAAAAACAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAABIAAAgAACAAAAAAAEAAAAAACAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Factories\CardFactory.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -299,8 +269,8 @@
     <Position X="14.5" Y="20.75" Width="2.5" />
     <AssociationLine Name="_model" Type="Abraxas.Cards.Models.ICardModel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="14.5" Y="21.312" />
-        <Point X="14.029" Y="21.312" />
+        <Point X="14.5" Y="21.42" />
+        <Point X="14.029" Y="21.42" />
         <Point X="14.029" Y="6.75" />
         <Point X="14.5" Y="6.75" />
       </Path>
@@ -314,17 +284,12 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="_model" />
-      <Field Name="_cover" />
-      <Field Name="_cardBack" />
-      <Field Name="_titleText" />
-      <Field Name="_costText" />
-      <Field Name="_image" />
       <Field Name="_rectTransformMover" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="Abraxas.RectTransformMover" Collapsed="true">
-    <Position X="18.25" Y="23" Width="1.75" />
+    <Position X="18.75" Y="23" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAgAAAAAAAAAAAAAAAgAgAQAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\UI\Helpers\RectTransformMover.cs</FileName>
@@ -334,17 +299,8 @@
     <Position X="17.5" Y="3.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAACAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\StoneData.cs</FileName>
+      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\StoneWrapper.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="UnityEngine.UI.Image" Collapsed="true">
-    <Position X="18.25" Y="21" Width="1.5" />
-    <TypeIdentifier />
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="TMPro.TMP_Text" Collapsed="true">
-    <Position X="18.25" Y="22" Width="1.5" />
-    <TypeIdentifier />
   </Class>
   <Struct Name="Abraxas.Cards.Data.CardData" BaseTypeListCollapsed="true">
     <Position X="14.5" Y="4.5" Width="2.5" />
@@ -352,15 +308,16 @@
       <Path>
         <Point X="14.5" Y="4.938" />
         <Point X="14.125" Y="4.938" />
-        <Point X="14.125" Y="4.625" />
-        <Point X="12.75" Y="4.625" />
+        <Point X="14.125" Y="5.125" />
+        <Point X="12.5" Y="5.125" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="OriginalOwner" Type="Abraxas.Players.Players" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="14.589" Y="4.5" />
-        <Point X="14.589" Y="4.312" />
-        <Point X="12.75" Y="4.312" />
+        <Point X="14.5" Y="4.688" />
+        <Point X="14.25" Y="4.688" />
+        <Point X="14.25" Y="4.812" />
+        <Point X="12.5" Y="4.812" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="Stones" Type="StoneWrapper" FixedFromPoint="true" FixedToPoint="true">
@@ -409,7 +366,7 @@
   <Interface Name="Abraxas.Cards.Controllers.ICardController" Collapsed="true">
     <Position X="14.5" Y="12.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>IAAgAQCAgAAIAEAAABBAAAQAACAAADAAEAAQAAAEKQQ=</HashCode>
+      <HashCode>IAAgAQCAgAAIAEAAADBAACAAACAAACAAEAAQAAAEKQQ=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Controllers\ICardController.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -465,7 +422,7 @@
   <Interface Name="Abraxas.Zones.Decks.Managers.IDeckManager" Collapsed="true">
     <Position X="18.5" Y="15" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgAAAAAAAQAAAAAAAAAAAAABAEAAAAAAQAAAAA=</HashCode>
+      <HashCode>AAIAAAgAAAAAAAQAAAAAAAAAAAAABAACAAAAAQAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Decks\Managers\IDeckManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -514,7 +471,7 @@
   <Interface Name="Abraxas.Manas.IManaManager" Collapsed="true">
     <Position X="6.75" Y="14.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAABAAABAAAAAAAAAAAAAAAAAAAAACAAAEAAgAAA=</HashCode>
+      <HashCode>AAACAABAAABAAAAAAAAAAAAAAAAAAAAACAEAEAAgAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Manas\Managers\IManaManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -540,14 +497,14 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.CardViewers.ICardViewerManager" Collapsed="true">
-    <Position X="2.25" Y="16.75" Width="2" />
+    <Position X="5.75" Y="10.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\CardViewers\Managers\ICardViewerManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="Abraxas.Players.Players">
-    <Position X="11.25" Y="3.5" Width="1.5" />
+    <Position X="11" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAwAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Players\Installers\PlayerSettings.cs</FileName>

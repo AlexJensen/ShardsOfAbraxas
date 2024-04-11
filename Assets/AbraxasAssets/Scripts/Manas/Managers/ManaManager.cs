@@ -2,7 +2,6 @@ using Abraxas.Cards.Controllers;
 using Abraxas.Manas.Controllers;
 using Abraxas.Manas.Views;
 using Abraxas.Zones.Decks.Controllers;
-using Abraxas.Zones.Decks.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

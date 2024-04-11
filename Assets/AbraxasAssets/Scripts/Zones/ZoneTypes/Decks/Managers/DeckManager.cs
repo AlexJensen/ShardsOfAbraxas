@@ -45,6 +45,11 @@ namespace Abraxas.Zones.Decks.Managers
         private int clientAcknowledgments = 0;
 		private bool isWaitingForClientAcknowledgments = false;
 
+        readonly JsonSerializerSettings _settings = new()
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+        };
+
         public List<IDeckController> Decks => _decks;
         #endregion
 
@@ -88,33 +93,53 @@ namespace Abraxas.Zones.Decks.Managers
 			yield return LoadDeck(Player.Player2);
 		}
 
-		private IEnumerator LoadDeck(Player player)
-		{
-			var settings = new JsonSerializerSettings
-			{
-				TypeNameHandling = TypeNameHandling.Auto,
-			};
-
+        private IEnumerator LoadDeck(Player player)
+        {
             List<CardData> cardDataList = (player == Player.Player1 ? player1DeckData : player2DeckData).cards;
+            List<List<CardData>> batches = new();
+            List<CardData> currentBatch = new();
+            int batchSizeBytes = 0;
 
-			if (!IsHost)
-			{
-				BuildDeck(player);
+            if (!IsHost)
+            {
+                BuildDeck(player);
             }
-			yield return SendInitializeBuildingDeckAndWait(player);
+            yield return SendInitializeBuildingDeckAndWait(player);
 
-			foreach (CardData cardData in cardDataList)
-			{
-                string serializedCardData = JsonConvert.SerializeObject(cardData, settings);
+            foreach (CardData cardData in cardDataList)
+            {
+                string serializedCardData = JsonConvert.SerializeObject(cardData, _settings);
+                byte[] cardDataBytes = System.Text.Encoding.UTF8.GetBytes(serializedCardData);
 
-                if (!IsHost)
+                if (batchSizeBytes + cardDataBytes.Length > 6144)
                 {
-                    BuildCard(cardData, player);
+                    batches.Add(new List<CardData>(currentBatch));
+                    currentBatch.Clear();
+                    batchSizeBytes = 0;
                 }
 
-                yield return SendBuildCardRpcAndWait(player,serializedCardData);
+                currentBatch.Add(cardData);
+                batchSizeBytes += cardDataBytes.Length;
             }
-		}
+
+            if (currentBatch.Count > 0)
+            {
+                batches.Add(currentBatch);
+            }
+
+            foreach (var batch in batches)
+            {
+                string serializedBatch = JsonConvert.SerializeObject(batch, _settings);
+                if (!IsHost)
+                {
+                    foreach (var cardData in batch)
+                    {
+                        BuildCard(cardData, player);
+                    }
+                }
+                yield return SendBuildCardsBatchRpcAndWait(player, serializedBatch);
+            }
+        }
 
         private IEnumerator SendInitializeBuildingDeckAndWait(Player player)
         {
@@ -122,13 +147,11 @@ namespace Abraxas.Zones.Decks.Managers
             yield return WaitForClients();
         }
 
-
-
-        private IEnumerator SendBuildCardRpcAndWait(Player player, string serializedCardData)
-		{
-			BuildCardClientRpc(player, serializedCardData);
-			yield return WaitForClients();
-		}
+        private IEnumerator SendBuildCardsBatchRpcAndWait(Player player, string serializedBatch)
+        {
+            BuildCardsBatchClientRpc(player, serializedBatch);
+            yield return WaitForClients();
+        }
 
 		private IEnumerator WaitForClients()
 		{
@@ -165,11 +188,14 @@ namespace Abraxas.Zones.Decks.Managers
 			AcknowledgeServerRpc();
         }
 
-		[ClientRpc]
-		private void BuildCardClientRpc(Player player, string serializedCardData)
-		{
-			var card = (CardData)JsonConvert.DeserializeObject(serializedCardData);
-			BuildCard(card, player);
+        [ClientRpc]
+        private void BuildCardsBatchClientRpc(Player player, string serializedBatch)
+        {
+            var cardsBatch = JsonConvert.DeserializeObject<List<CardData>>(serializedBatch, _settings);
+            foreach (var cardData in cardsBatch)
+            {
+                BuildCard(cardData, player);
+            }
             AcknowledgeServerRpc();
         }
 
@@ -177,21 +203,31 @@ namespace Abraxas.Zones.Decks.Managers
 		{
 			foreach (var deckView in _deckViews)
 			{
-				var deckController = _deckFactory.Create(deckView);
-				if (player != deckController.Player) continue;
-				_decks.Add(deckController);		
+				if (player != deckView.Player) continue;
+                var deckController = _deckFactory.Create(deckView);
+                _decks.Add(deckController);		
 			}
 		}
 
-		private void BuildCard(CardData cardData, Player player)
-		{
-			var deckController = GetPlayerDeck(player);
-			if (deckController == null) return;
+        private void BuildCard(CardData cardData, Player player)
+        {
+            var deckController = GetPlayerDeck(player);
+            if (deckController == null) return;
 
-			var cardController = _cardFactory.Create(cardData);
-			deckController.AddCardToZone(cardController);
-		}
-		#endregion
-		#endregion
-	}
+            var modifiedCardData = new CardData()
+            {
+                Title = cardData.Title,
+                Owner = player,
+                OriginalOwner = player,
+                Stones = new List<StoneWrapper>(cardData.Stones),
+                StatBlock = cardData.StatBlock,
+                ImageIndex = cardData.ImageIndex
+            };
+
+            var cardController = _cardFactory.Create(modifiedCardData);
+            deckController.AddCardToZone(cardController);
+        }
+        #endregion
+        #endregion
+    }
 }
