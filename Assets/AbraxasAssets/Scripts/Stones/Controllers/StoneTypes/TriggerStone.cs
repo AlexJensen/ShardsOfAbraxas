@@ -1,19 +1,20 @@
 using Abraxas.Stones.Controllers;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Abraxas.Stones
 {
     public abstract class TriggerStone : StoneController
     {
-        [SerializeField]
-        List<EffectStone> _effects;
+        List<EffectStone> _effects = new();
 
-        public void InvokeTrigger(params object[] vals)
+        public List<EffectStone> Effects { get => _effects; set => _effects = value; }
+
+        public IEnumerator InvokeTrigger(params object[] vals)
         {
             foreach (EffectStone effect in _effects)
             {
-                effect.TriggerEffect(vals);
+                yield return effect.TriggerEffect(vals);
             }
         }
     }

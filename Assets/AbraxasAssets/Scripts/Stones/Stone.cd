@@ -1,33 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Abraxas.Stones.Controllers.EffectStone">
-    <Position X="13" Y="8" Width="1.5" />
+    <Position X="9" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Controllers\StoneTypes\EffectStone.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Abraxas.Stones.PassiveStone">
-    <Position X="8.25" Y="8" Width="1.5" />
+    <Position X="11" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Controllers\StoneTypes\PassiveStone.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Abraxas.Stones.TriggerStone">
-    <Position X="10.5" Y="8" Width="1.5" />
+    <Position X="13" Y="9.5" Width="1.5" />
     <AssociationLine Name="_effects" Type="Abraxas.Stones.Controllers.EffectStone" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="10.5" Y="8.688" />
-        <Point X="10.125" Y="8.688" />
-        <Point X="10.125" Y="9.608" />
-        <Point X="12.625" Y="9.608" />
-        <Point X="12.625" Y="8.616" />
-        <Point X="13" Y="8.616" />
+        <Point X="13" Y="10.188" />
+        <Point X="12.76" Y="10.188" />
+        <Point X="12.76" Y="10.973" />
+        <Point X="9.833" Y="10.973" Type="JumpStart" />
+        <Point X="9.667" Y="10.973" Type="JumpEnd" />
+        <Point X="8.76" Y="10.973" />
+        <Point X="8.76" Y="10.116" />
+        <Point X="9" Y="10.116" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAQAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAACAAAAAAAAAAQAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Controllers\StoneTypes\TriggerStone.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -35,7 +37,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Abraxas.Stones.Controllers.StoneController">
-    <Position X="10.25" Y="5" Width="2" />
+    <Position X="10.25" Y="5" Width="1.5" />
     <NestedTypes>
       <Class Name="Abraxas.Stones.Controllers.StoneController.Factory" Collapsed="true">
         <TypeIdentifier>
@@ -44,35 +46,22 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AABgAAAAAAAAAQAAAgAAABAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AABgAAAAAAAAAQAAAAAAABAAAAAAAAAAAAkAAEAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Controllers\StoneController.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_model" />
-    </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="StoneData">
-    <Position X="2.5" Y="7.25" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\StoneData.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="RuntimeStoneData" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="Abraxas.Stones.Data.StoneDataSO">
-    <Position X="0.5" Y="10.75" Width="2.75" />
+    <Position X="1.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\ScriptableObjects\StoneDataSO.cs</FileName>
+      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\StoneDataSO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Abraxas.Stones.Factories.StoneFactory" BaseTypeListCollapsed="true">
-    <Position X="16.25" Y="5.75" Width="2.5" />
+    <Position X="17.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAgAAAACAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Factories\StoneFactory.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -85,7 +74,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Abraxas.Stones.Stone">
-    <Position X="16.25" Y="0.5" Width="2.5" />
+    <Position X="16.25" Y="0.5" Width="2.75" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -120,6 +109,15 @@
   </Class>
   <Class Name="Abraxas.Stones.Models.StoneModel" BaseTypeListCollapsed="true">
     <Position X="10.25" Y="1.25" Width="2" />
+    <AssociationLine Name="_data" Type="Abraxas.Stones.Data.IStoneData" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.25" Y="1.688" />
+        <Point X="10.01" Y="1.688" />
+        <Point X="10.01" Y="0.26" />
+        <Point X="2.562" Y="0.26" />
+        <Point X="2.562" Y="0.5" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAgAAAABAAAAYACAAAAABAAAAAAAACAAAAAAEAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Models\StoneModel.cs</FileName>
@@ -129,21 +127,57 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Abraxas.Stones.Types.Effect_DrawCardFromLibrary">
-    <Position X="4" Y="12.5" Width="2.25" />
+  <Class Name="Abraxas.Stones.Types.EffectDrawCardFromLibraryDataSO">
+    <Position X="1.5" Y="5.25" Width="2.75" />
+    <AssociationLine Name="Data" Type="Abraxas.Stones.Data.IStoneData" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.625" Y="5.25" />
+        <Point X="3.625" Y="0.938" />
+        <Point X="3.25" Y="0.938" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIBAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\Effects\EffectDrawCardFromLibraryDataSO.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_data" />
+      <Property Name="Data" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Abraxas.Stones.Controllers.Effect_DrawCardFromLibrary">
+    <Position X="8.75" Y="12.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\ScriptableObjects\EffectDrawCardFromLibraryDataSO.cs</FileName>
+      <FileName>Assets\AbraxasAssets\Scripts\Stones\Controllers\StoneTypes\Effects\Effect_DrawCardFromLibrary.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="_zoneManager" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Abraxas.Stones.Types.EffectDrawCardFromLibraryDataSO">
-    <Position X="0.5" Y="12.5" Width="2.75" />
+  <Class Name="Abraxas.Stones.Controllers.Trigger_StartOfTurn">
+    <Position X="13.5" Y="12" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Stones\Controllers\StoneTypes\Trigger\Trigger_StartOfTurn.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_eventManager" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Abraxas.Stones.Types.TriggerStartOfTurnDataSO">
+    <Position X="5" Y="5.25" Width="2" />
+    <AssociationLine Name="Data" Type="Abraxas.Stones.Data.IStoneData" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6" Y="5.25" />
+        <Point X="6" Y="0.688" />
+        <Point X="3.25" Y="0.688" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAIBAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\ScriptableObjects\EffectDrawCardFromLibraryDataSO.cs</FileName>
+      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\Triggers\TriggerStartOfTurnDataSO.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="_data" />
@@ -151,10 +185,21 @@
     </ShowAsAssociation>
   </Class>
   <Struct Name="Abraxas.Stones.Types.Effect_DrawCardFromLibraryData" BaseTypeListCollapsed="true">
-    <Position X="0.5" Y="14.25" Width="2.75" />
+    <Position X="1.5" Y="7" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAAAAAAAAAAAAAARAAAAAQAAAAQAAAAEAAIAA=</HashCode>
-      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\ScriptableObjects\EffectDrawCardFromLibraryDataSO.cs</FileName>
+      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\Effects\EffectDrawCardFromLibraryDataSO.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="stoneType" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="Abraxas.Stones.Types.Trigger_StartOfTurnData">
+    <Position X="5" Y="7" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAARAAAAAQAAAAQAAAAEAAIAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\Triggers\TriggerStartOfTurnDataSO.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="stoneType" />
@@ -162,35 +207,42 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Struct>
   <Interface Name="Abraxas.Stones.Controllers.IStoneController" Collapsed="true">
-    <Position X="10.25" Y="4.25" Width="2" />
+    <Position X="10.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAQAAAAAAABAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AABgAAAAAAAAAQAAAAAAABAAAAAAAAAAAAEAAEAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Controllers\IStoneController.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.Stones.Data.IStoneData" Collapsed="true">
-    <Position X="0.5" Y="10" Width="2.75" />
+    <Position X="1.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAEAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\IStoneData.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.Stones.Models.IStoneModel" Collapsed="true">
-    <Position X="10.25" Y="0.5" Width="2" />
+    <Position X="10.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAAAAAAYACAAAAABAAAAAAAACAAAAAAEAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Models\IStoneModel.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.Zones.Managers.IZoneManager" Collapsed="true">
-    <Position X="7.25" Y="12.75" Width="1.5" />
+    <Position X="6.75" Y="12.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAAAAAAAIAAAAAAAAIAAAQAAABAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Zones\Managers\IZoneManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Interface Name="Abraxas.Events.Managers.IEventManager" Collapsed="true">
+    <Position X="11.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAIAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Assets\AbraxasAssets\Scripts\Events\Managers\IEventManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Enum Name="Abraxas.Stones.StoneType">
-    <Position X="16.25" Y="8.25" Width="2.5" />
+    <Position X="3.5" Y="12" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAQEAAAIAAAAAAQACAACCAAIAQAAAAAAIAARA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Installers\StoneSettings.cs</FileName>

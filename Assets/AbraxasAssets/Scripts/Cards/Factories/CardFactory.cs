@@ -5,9 +5,12 @@ using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Abraxas.StackBlocks.Views;
 using Abraxas.StatBlocks.Controllers;
+using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
+using Abraxas.Stones.Data;
 using System.Collections.Generic;
 using Zenject;
+using System.Linq;
 
 namespace Abraxas.Cards.Factories
 {
@@ -47,16 +50,39 @@ namespace Abraxas.Cards.Factories
             List<IStoneController> stoneControllers = new();
             if (data.Stones != null)
             {
-                foreach (var stoneData in data.Stones)
+                foreach (var stoneController in from stoneData in data.Stones
+                                                let stoneController = _stoneFactory.Create(stoneData.RuntimeStoneData)
+                                                select stoneController)
                 {
-                    var stoneController = _stoneFactory.Create(stoneData.RuntimeStoneData);
+                    stoneController.Card = controller;
                     stoneControllers.Add(stoneController);
+                    stoneController.Index = stoneControllers.IndexOf(stoneController);
                 }
             }
 
             model.Initialize(data, statBlockController, stoneControllers);
             controller.Initialize(model, view);
             view.Initialize(model);
+
+            foreach (var (triggerStoneController, stoneData) in
+                from TriggerStone triggerStoneController
+                in stoneControllers.OfType<TriggerStone>()
+                let validIndexes = new List<int>()
+                from stoneData in
+                    from stoneData in data.Stones
+                    where stoneData.Index == triggerStoneController.Index
+                    let triggerStoneData = stoneData.RuntimeStoneData as TriggerStoneDataSO
+                    where triggerStoneData != null
+                    select stoneData
+                select (triggerStoneController, stoneData))
+            {
+                triggerStoneController.Effects.AddRange(
+                from index in stoneData.ConnectionIndexes
+                where index >= 0 && index < stoneControllers.Count
+                let effectStone = stoneControllers[index] as EffectStone
+                where effectStone != null
+                select effectStone);
+            }
 
             dragHandler.Initialize(dragListener, controller);
             dragListener.Initialize(dragHandler);

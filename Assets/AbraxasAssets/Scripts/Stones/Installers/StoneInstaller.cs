@@ -2,6 +2,7 @@ using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Factories;
 using Abraxas.Stones.Models;
+using Abraxas.Stones.Types;
 using Zenject;
 
 namespace Abraxas.Cards.Installers
@@ -14,6 +15,9 @@ namespace Abraxas.Cards.Installers
             Container.BindInterfacesAndSelfTo<StoneController>().AsTransient();
             Container.BindInterfacesAndSelfTo<StoneModel>().AsTransient();
             Container.BindFactory<StoneDataSO, IStoneController, StoneController.Factory>().FromFactory<StoneFactory>();
+
+            Container.BindInterfacesAndSelfTo<Trigger_StartOfTurn>().AsTransient();
+            Container.BindInterfacesAndSelfTo<Effect_DrawCardFromLibrary>().AsTransient();
         }
     }
         #endregion

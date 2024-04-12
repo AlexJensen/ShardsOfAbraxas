@@ -9,10 +9,11 @@ namespace Abraxas.Stones.Controllers
 	public class StoneController: IStoneController
     {
         #region Dependencies
-        protected IStoneModel _model;
+        protected IStoneModel Model;
+        
         public void Initialize(IStoneModel model)
         {
-            _model = model;
+            Model = model;
         }
 
         public class Factory : PlaceholderFactory<StoneDataSO, IStoneController>
@@ -23,21 +24,22 @@ namespace Abraxas.Stones.Controllers
 
         #region Properties
         public ICardController Card { get; set; }
+        public int Index { get; set; }
 
         public int Cost
         {
-            get => _model.Cost;
-            set => _model.Cost = value;
+            get => Model.Cost;
+            set => Model.Cost = value;
         }
         public string Info
         {
-            get => _model.Info;
-            set => _model.Info = value;
+            get => Model.Info;
+            set => Model.Info = value;
         }
         public StoneType StoneType
         { 
-            get => _model.StoneType;
-            set => _model.StoneType = value;
+            get => Model.StoneType;
+            set => Model.StoneType = value;
         }
         #endregion
     }

@@ -34,7 +34,6 @@ namespace Abraxas.Stones
                 public string name;
                 public StoneType type;
                 public Color color;
-                public IStoneController controllerPrefab;
             }
 
             public List<StoneTypeDetails> stones;
@@ -43,8 +42,6 @@ namespace Abraxas.Stones
             {
                 return stones.Find(t => t.type == type);
             }
-
-            public List<StoneDataSO> stoneData;
         }
         #endregion
     }

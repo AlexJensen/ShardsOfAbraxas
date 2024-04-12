@@ -47,10 +47,11 @@ namespace Abraxas.Core
         }
 
         public static T CreateInstance<T>(string typeId)
+            where T : ScriptableObject
         {
             if (_stoneDataTypeCache.TryGetValue(typeId, out var type))
             {
-                return (T)Activator.CreateInstance(type);
+                return (T)ScriptableObject.CreateInstance(type);
             }
             return default;
         }

@@ -9,26 +9,22 @@ namespace Abraxas.Stones.Factories
     class StoneFactory : IFactory<StoneDataSO, IStoneController>
 	{
 		private readonly DiContainer _container;
-		private readonly Stone.Settings _settings;
 
-		public StoneFactory(DiContainer container, Stone.Settings settings)
+		public StoneFactory(DiContainer container)
 		{
 			_container = container;
-			_settings = settings;
 		}
 
 		public IStoneController Create(StoneDataSO dataSO)
 		{
-			StoneDataSO matchingDataSO = _settings.stoneData.Find(so => so.name == dataSO.name);
-
-			if (matchingDataSO != null)
+			if (dataSO != null)
 			{
-				var controllerType = matchingDataSO.ControllerType;
+				var controllerType = dataSO.ControllerType;
 				if (controllerType != null && typeof(IStoneController).IsAssignableFrom(controllerType))
 				{
 					var controller = (IStoneController)_container.Instantiate(controllerType);
 					var model = _container.Instantiate<StoneModel>();
-					model.Initialize(matchingDataSO.Data);
+					model.Initialize(dataSO.Data);
 					controller.Initialize(model);
 					return controller;
 				}

@@ -1,6 +1,7 @@
 ﻿using Abraxas.Core;
 using Abraxas.Stones.Data;
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 
 [Serializable]
@@ -8,14 +9,22 @@ public class StoneWrapper
 {
 	public StoneDataSO RuntimeStoneData;
 
+	public List<int> ConnectionIndexes;
+
 	public StoneWrapper() { }
 
 	public StoneWrapper(StoneDataSO stoneData)
 	{
 		RuntimeStoneData = stoneData;
+		if (stoneData is TriggerStoneDataSO triggerStoneData)
+		{
+			triggerStoneData.Indexes = ConnectionIndexes;
+		}
 	}
 
-	public static void Serialize<T>(BufferSerializer<T> serializer, ref StoneWrapper wrapper) where T : IReaderWriter
+    public int Index { get; internal set; }
+
+    public static void Serialize<T>(BufferSerializer<T> serializer, ref StoneWrapper wrapper) where T : IReaderWriter
 	{
 		string typeId = string.Empty;
 		if (!serializer.IsReader)
