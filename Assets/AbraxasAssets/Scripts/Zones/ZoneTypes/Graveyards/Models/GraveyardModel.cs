@@ -1,10 +1,12 @@
-﻿using Abraxas.Zones.Models;
-using Player = Abraxas.Players.Players;
+﻿using Abraxas.Random.Managers;
+using Abraxas.Zones.Models;
 
 namespace Abraxas.Zones.Graveyards.Models
 {
-    class GraveyardModel : ZoneModel, IGraveyardModel
-    {
-
-    }
+	class GraveyardModel : ZoneModel, IGraveyardModel
+	{
+		public GraveyardModel(IRandomManager randomManager) : base(randomManager)
+		{
+		}
+	}
 }

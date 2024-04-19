@@ -305,7 +305,7 @@ namespace Abraxas.Tests
 
             var cardFactory = Container.Resolve<CardController.Factory>();
             var cardController = cardFactory.Create(cardData);
-            fieldManager.AddCard(cardController, new Point(0,0));
+            fieldManager.AddCard(cardController);
 
             // Act
             IEnumerator enumerator = cardController.Combat();

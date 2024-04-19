@@ -1,6 +1,7 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Zones.Views;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
 using Player = Abraxas.Players.Players;
@@ -18,7 +19,7 @@ namespace Abraxas.Zones.Hands.Views
         public CardPlaceholder CardPlaceholder => _cardPlaceholder = _cardPlaceholder != null ? _cardPlaceholder : GetComponentInChildren<CardPlaceholder>();
 
 
-        public override float MoveCardTime { get => AnimationSettings.MoveCardToHandTime; }
+        public override float MoveCardTime { get => NetworkManager.Singleton.IsServer ? 0 : AnimationSettings.MoveCardToHandTime; }
 
         public int CardPlaceholderSiblingIndex => CardPlaceholder.transform.GetSiblingIndex();
         #endregion
@@ -43,7 +44,7 @@ namespace Abraxas.Zones.Hands.Views
             CardPlaceholder.transform.SetSiblingIndex(index);
             cardReturningToPlaceholder = true;
             yield return CardPlaceholder.ScaleToMaxSize();
-            yield return card.RectTransformMover.MoveToFitRectangle(CardPlaceholder.CardPlaceholderRect, MoveCardTime);
+            yield return card.RectTransformMover.MoveToFitRectangle(CardPlaceholder.CardPlaceholderRect, NetworkManager.Singleton.IsServer ? 0 : MoveCardTime);
             cardReturningToPlaceholder = false;
             AddCardAtPlaceholder(card);
         }
@@ -75,6 +76,11 @@ namespace Abraxas.Zones.Hands.Views
                 }
             }
             CardPlaceholder.UpdatePosition();
+        }
+
+        public override void AddCardToHolder(ICardController card, int index = 0)
+        {
+            
         }
 
         public void HidePlaceholder()

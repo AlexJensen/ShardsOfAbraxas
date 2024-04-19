@@ -6,8 +6,8 @@ namespace Abraxas.Events.Managers
 {
     public interface IEventManager
     {
-        void AddListener<T>(Type eventType, IGameEventListener<T> listener);
-        IEnumerator RaiseEvent<T>(Type eventType, T eventData);
-        void RemoveListener<T>(Type eventType, IGameEventListener<T> listener);
+        void AddListener<T>(Type type, IGameEventListener<T> listener);
+        IEnumerator RaiseEvent<T>(Type type, T eventData);
+        void RemoveListener<T>(Type type, IGameEventListener<T> listener);
     }
 }

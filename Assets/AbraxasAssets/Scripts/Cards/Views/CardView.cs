@@ -95,11 +95,11 @@ namespace Abraxas.Cards.Views
         {
             _cover.gameObject.SetActive(_model.Hidden);
         }
-        public void UpdateCostTextWithCastability(ManaModifiedEvent eventData)
+        public void UpdateCostTextWithCastability(List<Manas.ManaType> manaTypes)
         {
             string TotalCost = "";
             foreach (var (pair, alpha) in from KeyValuePair<StoneType, int> pair in _model.TotalCosts
-                                          from Manas.ManaType manaPair in eventData.Mana.ManaTypes
+                                          from Manas.ManaType manaPair in manaTypes
                                           where pair.Key == manaPair.Type
                                           let alpha = pair.Value <= manaPair.Amount || _model.Zone is not IHandController ? "FF" : "44"
                                           select (pair, alpha))

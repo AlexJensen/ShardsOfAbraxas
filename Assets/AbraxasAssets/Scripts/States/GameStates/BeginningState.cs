@@ -30,7 +30,6 @@ namespace Abraxas.GameStates
         public override IEnumerator OnEnterState()
         {
             yield return base.OnEnterState();
-            yield return new WaitForSeconds(.1f);
             yield return _gameStateManager.BeginNextGameState();
         }
         public override IEnumerator OnExitState()

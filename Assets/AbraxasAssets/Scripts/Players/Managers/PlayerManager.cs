@@ -1,17 +1,16 @@
+using Abraxas.Network.Managers;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace Abraxas.Players.Managers
 {
-    public class PlayerManager : NetworkBehaviour, IPlayerManager
+    public class PlayerManager : NetworkedManager, IPlayerManager
     {
         #region Fields
         readonly NetworkVariable<Players> _activePlayer = new(Players.Player1);
         Players _localPlayer;
 
-        private int clientAcknowledgments = 0;
-        private bool isWaitingForClientAcknowledgments = false;
         #endregion
 
         #region Properties
@@ -43,27 +42,13 @@ namespace Abraxas.Players.Managers
         {
             Debug.Log($"SetActivePlayer: {player}");
             if (IsHost) _localPlayer = player;
-            clientAcknowledgments = 0;
-            isWaitingForClientAcknowledgments = true;
-            _activePlayer.Value = player;
-
-            while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count)
-            {
-                yield return null;
-            }
-            isWaitingForClientAcknowledgments = false;
+			_activePlayer.Value = player;
+            yield return WaitForClients();
         }
 
         public void RegisterLocalPlayer(Players player)
         {
             _localPlayer = player;
-        }
-
-        [ServerRpc(RequireOwnership = false)]
-        private void AcknowledgeServerRpc()
-        {
-            if (!isWaitingForClientAcknowledgments) return;
-            clientAcknowledgments++;
         }
         #endregion
     }

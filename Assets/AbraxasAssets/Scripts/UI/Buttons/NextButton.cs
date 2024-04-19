@@ -98,7 +98,7 @@ namespace Abraxas.UI
         public void NextButtonPressed()
         {
             _button.interactable = false;
-            StartCoroutine( _gameStateManager.RequestNextGameState());
+            _gameStateManager.RequestNextGameState();
         }
 
         public IEnumerator OnEventRaised(GameStateEnteredEvent eventData)
@@ -112,6 +112,11 @@ namespace Abraxas.UI
                 _button.interactable = false;
             }
             yield break;
+        }
+
+        public bool ShouldReceiveEvent(GameStateEnteredEvent eventData)
+        {
+            return true;
         }
         #endregion
     }

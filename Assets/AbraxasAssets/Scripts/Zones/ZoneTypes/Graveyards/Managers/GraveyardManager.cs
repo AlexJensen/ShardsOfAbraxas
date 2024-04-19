@@ -11,14 +11,14 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Graveyards.Managers
 {
-    public class GraveyardManager : MonoBehaviour, IGraveyardManager
+	class GraveyardManager : MonoBehaviour, IGraveyardManager
     {
         #region Dependencies
         [SerializeField]
         List<GraveyardView> _graveyardViews;
-        List<IGraveyardController> _graveyards = new();
+		readonly List<IGraveyardController> _graveyards = new();
         [Inject]
-        void Construct(ZoneFactory<IGraveyardView, GraveyardController, GraveyardModel> graveyardFactory)
+        public void Construct(ZoneFactory<IGraveyardView, GraveyardController, GraveyardModel> graveyardFactory)
         {
             foreach (var deckView in _graveyardViews)
             {

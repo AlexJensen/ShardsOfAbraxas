@@ -1,10 +1,10 @@
 ﻿using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
 using Abraxas.Manas;
+using Abraxas.Random.Managers;
 using Abraxas.Zones.Decks.Managers;
 using System.Collections;
 using Unity.Netcode;
-using UnityEngine;
 using Zenject;
 
 using Player = Abraxas.Players.Players;
@@ -17,13 +17,15 @@ namespace Abraxas.GameStates
         readonly IGameStateManager _gameStateManager;
         readonly IDeckManager _deckManager;
         readonly IManaManager _manaManager;
+        readonly IRandomManager _randomManager;
         [Inject]
-        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, IDeckManager deckManager, IManaManager manaManager) : base(gameManager, eventManager)
+        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, IDeckManager deckManager, IManaManager manaManager, IRandomManager randomManager) : base(gameManager, eventManager)
         {
             _gameStateManager = gameStateManager;
             _networkManager = NetworkManager.Singleton;
             _deckManager = deckManager;
             _manaManager = manaManager;
+            _randomManager = randomManager;
         }
 
         public class Factory : PlaceholderFactory<GameNotStartedState>
@@ -43,19 +45,18 @@ namespace Abraxas.GameStates
 
         public override IEnumerator OnEnterState()
         {
-            if (_networkManager.IsHost)
+			yield return base.OnEnterState();
+			if (_networkManager.IsHost)
             {
-                yield return base.OnEnterState();
                 yield return _gameStateManager.BeginNextGameState();
             }
             else if(_networkManager.IsServer)
             {
-                Debug.Log($"GameNotStartedState OnEnterState {_networkManager.IsServer}");
                 while (_networkManager.ConnectedClients.Count != 2)
                 {
                     yield return null;
                 }
-                Debug.Log($"GameNotStartedState OnEnterState Clients Joined");
+                yield return _randomManager.InitializeRandomSeed();
                 yield return _deckManager.LoadDecks();
                 yield return _deckManager.ShuffleDeck(Player.Player1);
                 yield return _deckManager.ShuffleDeck(Player.Player2);
@@ -65,11 +66,8 @@ namespace Abraxas.GameStates
 
         public override IEnumerator OnExitState()
         {
-            Debug.Log($"GameNotStartedState OnExitState {_networkManager.IsServer}");
-            yield return base.OnExitState();
+			yield return base.OnExitState();
             _manaManager.InitializeManaFromDecks(_deckManager.Decks);
-            yield return _deckManager.ShuffleDeck(Player.Player1);
-            yield return _deckManager.ShuffleDeck(Player.Player2);
             yield return gameManager.StartGame();
         }
         #endregion

@@ -1,5 +1,6 @@
 ﻿using Abraxas.Hands;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -60,12 +61,12 @@ namespace Abraxas.Zones.Hands
                         CardPlaceholderLayout.transform.SetSiblingIndex(_newIndex);
                         _currentIndex = _newIndex;
                         gameObject.SetActive(true);
-                        StartCoroutine(ScalePlaceholder(_settings.maxScale, _settings.scaleToMaxSizeTime));
+                        StartCoroutine(ScalePlaceholder(_settings.maxScale, NetworkManager.Singleton.IsServer? 0 : _settings.scaleToMaxSizeTime));
                     }
                     else if (!_expanding)
                     {
                         _retracting = true;
-                        StartCoroutine(ScalePlaceholder(_settings.minScale, _settings.scaleToMaxSizeTime));
+                        StartCoroutine(ScalePlaceholder(_settings.minScale, NetworkManager.Singleton.IsServer ? 0 : _settings.scaleToMaxSizeTime));
                     }
                 }
             }
@@ -86,17 +87,18 @@ namespace Abraxas.Zones.Hands
             else if (!_expanding && !_retracting)
             {
                 _retracting = true;
-                StartCoroutine(ScalePlaceholder(_settings.minScale, _settings.scaleToMaxSizeTime));
+                StartCoroutine(ScalePlaceholder(_settings.minScale, NetworkManager.Singleton.IsServer ? 0 : _settings.scaleToMaxSizeTime));
             }
         }
 
         public IEnumerator ScaleToMaxSize()
         {
-            yield return ScalePlaceholder(_settings.maxScale, _settings.scaleToMaxSizeTime);
+            yield return ScalePlaceholder(_settings.maxScale, NetworkManager.Singleton.IsServer ? 0 : _settings.scaleToMaxSizeTime);
         }
 
         IEnumerator ScalePlaceholder(float height, float time)
         {
+            if (time == 0) yield break;
             float origHeight = CardPlaceholderLayout.preferredHeight;
             float lerpIncrement = 1 / time;
             float lerpProgress = 0;

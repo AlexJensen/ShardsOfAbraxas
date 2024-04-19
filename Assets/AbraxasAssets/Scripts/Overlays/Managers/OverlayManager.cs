@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Abraxas.Zones.Overlays.Managers
 {
-    public class OverlayManager : MonoBehaviour, IOverlayManager
+	public class OverlayManager : MonoBehaviour, IOverlayManager
     {
         #region Fields
         [SerializeField]

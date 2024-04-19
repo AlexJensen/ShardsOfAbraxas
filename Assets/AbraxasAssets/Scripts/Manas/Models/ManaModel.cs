@@ -1,5 +1,6 @@
 ﻿using Abraxas.Manas.Controllers;
 using Abraxas.Manas.Views;
+using Abraxas.Random.Managers;
 using Abraxas.Stones;
 using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
@@ -13,12 +14,14 @@ namespace Abraxas.Manas.Models
     class ManaModel : IManaModel
     {
         #region Dependencies
+        readonly IRandomManager _randomManager;
         readonly ManaType.Factory _typeFactory;
         IManaView _view;
         IManaController _controller;
-        public ManaModel(ManaType.Factory typeFactory)
+        public ManaModel(IRandomManager randomManager, ManaType.Factory typeFactory)
         {
             _typeFactory = typeFactory;
+            _randomManager = randomManager;
         }
 
         public void Initialize(IManaView view, IManaController controller)
@@ -71,7 +74,7 @@ namespace Abraxas.Manas.Models
         {
             for (int i = 0; i < amount; i++)
             {
-                int num = Random.Range(0, _totalDeckCost);
+                int num = _randomManager.Range(0, _totalDeckCost);
                 foreach (KeyValuePair<StoneType, int> manaAmount in _deckCosts)
                 {
                     if (manaAmount.Value < num)

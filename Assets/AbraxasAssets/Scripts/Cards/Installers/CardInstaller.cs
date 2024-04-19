@@ -22,7 +22,7 @@ namespace Abraxas.Cards.Installers
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<CardManager>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<CardManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<CardView>().AsTransient();
             Container.BindInterfacesAndSelfTo<CardController>().AsTransient();
             Container.BindInterfacesAndSelfTo<CardModel>().AsTransient();

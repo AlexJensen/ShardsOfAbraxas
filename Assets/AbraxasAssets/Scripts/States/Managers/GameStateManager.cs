@@ -1,3 +1,4 @@
+using Abraxas.Network.Managers;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -6,7 +7,7 @@ using Zenject;
 namespace Abraxas.GameStates.Managers
 {
 
-    public class GameStateManager : NetworkBehaviour, IGameStateManager
+    public class GameStateManager : NetworkedManager, IGameStateManager
     {
         #region Dependencies
         IGameStateFactory _stateFactory;
@@ -20,8 +21,6 @@ namespace Abraxas.GameStates.Managers
 
         #region Fields
         GameState _state = null;
-        private int clientAcknowledgments = 0;
-        private bool isWaitingForClientAcknowledgments = false;
         private bool isWaitingForServer = true;
 
         public GameState State { get => _state; }
@@ -31,18 +30,15 @@ namespace Abraxas.GameStates.Managers
         public IEnumerator BeginNextGameState()
         {
             if (!IsServer) yield break;
-            Debug.Log($"BeginNextGameState;");
             yield return SwitchGameStateTo(State.NextState());
         }
-        public IEnumerator RequestNextGameState()
+        public void RequestNextGameState()
         {
-            Debug.Log($"RequestNextGameState;");
-            if (!IsClient) yield break;
+            if (!IsClient) return;
             SetGameStateServerRpc(State.NextState());
         }
         public IEnumerator InitializeState(GameStates state)
         {
-            Debug.Log($"InitializeState; {state}");
             _state = _stateFactory.CreateState(state);
             yield return null;
             yield return State?.OnEnterState();
@@ -52,27 +48,20 @@ namespace Abraxas.GameStates.Managers
         {
             if (!IsClient)
             {
-                Debug.Log($"Server: State?.OnExitState(); {_state.CurrentState}");
-                isWaitingForClientAcknowledgments = true;
-                clientAcknowledgments = 0;
-                SetGameStateClientRpc(state);
-                while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count) yield return null;
-                isWaitingForClientAcknowledgments = false;
-                yield return State?.OnExitState();
-                _state = _stateFactory.CreateState(state);
-                Debug.Log($"Server: State?.OnEnterState(); {_state.CurrentState}");
-                yield return State?.OnEnterState();
-                clientAcknowledgments = 0;
+				SetGameStateClientRpc(state);
+                yield return WaitForClients();
+
+				yield return State?.OnExitState();
+				_state = _stateFactory.CreateState(state);
+				yield return State?.OnEnterState();
                 AdvanceGameStateClientRpc();
-                
             }
             else
             {
-                Debug.Log($"Client: State?.OnExitState(); {_state.CurrentState}");
                 yield return State?.OnExitState();
                 _state = _stateFactory.CreateState(state);
-                Debug.Log($"Client: State?.OnEnterState();{_state.CurrentState}");
                 yield return State?.OnEnterState();
+
                 isWaitingForServer = true;
                 AcknowledgeServerRpc();
                 while (isWaitingForServer) yield return null;
@@ -88,25 +77,16 @@ namespace Abraxas.GameStates.Managers
             Debug.Log($"SetGameStateServerRpc {state}");
             StartCoroutine(SwitchGameStateTo(state));
         }
-        [ServerRpc(RequireOwnership = false)]
-        private void AcknowledgeServerRpc()
-        {
-            if (!isWaitingForClientAcknowledgments) return;
-            Debug.Log($"AcknowledgeServerRpc {clientAcknowledgments} + 1");
-            clientAcknowledgments++;
-        }
         #endregion
         #region Client Side
         [ClientRpc]
         private void SetGameStateClientRpc(GameStates state)
         {
-            Debug.Log($"SetGameStateClientRpc {state}");
             StartCoroutine(SwitchGameStateTo(state));
         }
         [ClientRpc]
         private void AdvanceGameStateClientRpc()
         {
-            Debug.Log($"AdvanceGameStateClientRpc");
             isWaitingForServer = false;
         }
 

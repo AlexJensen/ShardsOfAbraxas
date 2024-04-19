@@ -35,7 +35,6 @@ namespace Abraxas.GameStates
             yield return base.OnEnterState();
             yield return _fieldManager.StartCombat();
             yield return _gameStateManager.BeginNextGameState();
-
         }
 
         public override IEnumerator OnExitState()

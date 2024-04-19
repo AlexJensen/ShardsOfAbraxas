@@ -1,4 +1,5 @@
 ﻿using Abraxas.Cards.Controllers;
+using Abraxas.Random.Managers;
 using Abraxas.Stones;
 using Abraxas.Zones.Views;
 using System.Collections.Generic;
@@ -10,6 +11,11 @@ namespace Abraxas.Zones.Models
     abstract class ZoneModel :IZoneModel
     {
         #region Dependencies
+        readonly IRandomManager _randomManager;
+        public ZoneModel(IRandomManager randomManager)
+        {
+            _randomManager = randomManager;
+        }
         public virtual void Initialize<TView>(TView view) where TView : IZoneView
         {
 
@@ -31,17 +37,15 @@ namespace Abraxas.Zones.Models
             _cardList.Insert(index, card);
         }
 
-        public ICardController RemoveCard(ICardController card)
+        public void RemoveCard(ICardController card)
         {
             _cardList.Remove(card);
-            return card;
         }
 
-        public ICardController RemoveCard(int index)
+        public void RemoveCard(int index)
         {
             ICardController card = _cardList[index];
             _cardList.Remove(card);
-            return card;
         }
 
         public IEnumerable<ICardController> GetCardsForPlayer(Player player)
@@ -74,7 +78,7 @@ namespace Abraxas.Zones.Models
             int count = _cardList.Count;
             for (int i = count - 1; i > 0; i--)
             {
-                int j = UnityEngine.Random.Range(0, i + 1);
+                int j = _randomManager.Range(0, i + 1);
 
                 (_cardList[j], _cardList[i]) = (_cardList[i], _cardList[j]);
             }

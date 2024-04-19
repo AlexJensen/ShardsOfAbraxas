@@ -9,7 +9,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Controllers
 {
-    abstract class ZoneController :IZoneController
+    abstract class ZoneController : IZoneController
     {
         #region Dependencies
         IZoneView _view;
@@ -33,20 +33,15 @@ namespace Abraxas.Zones.Controllers
         #endregion
 
         #region Methods
-        public virtual void AddCard(ICardController card)
-        {
-            card.Zone = this;
-            _model.AddCard(card);
-        }
-
-        public virtual ICardController RemoveCard(ICardController card)
+        public virtual void RemoveCard(ICardController card)
         {
             _view.RemoveCardFromHolder(card);
-            return _model.RemoveCard(card);
+            _model.RemoveCard(card);
         }
-        public virtual ICardController RemoveCard(int index)
+
+        public virtual ICardController PeekCard(int index)
         {
-            return RemoveCard(_model.CardList[index]);
+            return _model.CardList[index];
         }
         public Dictionary<StoneType, int> GetTotalCostOfZone()
         {
@@ -54,11 +49,10 @@ namespace Abraxas.Zones.Controllers
         }
         public virtual IEnumerator MoveCardToZone(ICardController card, int index = 0)
         {
-            card.Zone = this;
             yield return _view.MoveCardToZone(card, index);
-            _model.AddCard(card, index);
+            AddCard(card, index);
         }
-        public virtual void AddCardToZone(ICardController card, int index = 0)
+        public virtual void AddCard(ICardController card, int index = 0)
         {
             card.Zone = this;
             _view.AddCardToHolder(card, index);

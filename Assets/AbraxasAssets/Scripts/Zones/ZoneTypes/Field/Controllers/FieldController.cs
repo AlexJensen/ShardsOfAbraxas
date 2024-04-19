@@ -64,7 +64,7 @@ namespace Abraxas.Zones.Fields.Controllers
             }
         }
 
-        public IEnumerator MoveCardToCell(ICardController card, ICellController cell)
+        private IEnumerator MoveCardToCell(ICardController card, ICellController cell)
         {
             card.Cell?.RemoveCard(card);
             yield return ((IFieldView)View).MoveCardToCell(card, cell);
@@ -74,21 +74,22 @@ namespace Abraxas.Zones.Fields.Controllers
 
         public IEnumerator MoveCardToCell(ICardController card, Point fieldPos)
         {
-            yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[fieldPos.Y][fieldPos.X]);
+			card.FieldPosition = fieldPos;
+			yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[fieldPos.Y][fieldPos.X]);
+            AddCard(card);
         }
 
-        public override ICardController RemoveCard(ICardController card)
+        public override void RemoveCard(ICardController card)
         {
             card.Cell?.RemoveCard(card);
             card.Cell = null;
-            return Model.RemoveCard(card);
+            Model.RemoveCard(card);
         }
 
-        public void AddCard(ICardController card, Point fieldPos)
+        public override void AddCard(ICardController card, int index = 0)
         {
-            card.Zone = this;
-            card.FieldPosition = fieldPos;
-            Model.AddCard(card);
+			card.Hidden = false;
+            base.AddCard(card, index);
         }
 
         public PointF GetDefaultCellDimensions()

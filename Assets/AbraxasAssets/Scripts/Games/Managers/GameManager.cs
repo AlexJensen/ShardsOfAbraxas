@@ -4,6 +4,8 @@ using Abraxas.Core;
 using Abraxas.GameStates;
 using Abraxas.Manas;
 using Abraxas.Players.Managers;
+using Abraxas.Network.Managers;
+using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Drawing;
@@ -12,10 +14,11 @@ using UnityEngine;
 using Zenject;
 using Player = Abraxas.Players.Players;
 using State = Abraxas.GameStates.GameStates;
+using Abraxas.Random.Managers;
 
 namespace Abraxas.Games.Managers
 {
-    public class GameManager : NetworkBehaviour, IGameManager
+    public class GameManager : NetworkedManager, IGameManager
     {
         #region Settings
         Game.Settings _settings;
@@ -29,11 +32,13 @@ namespace Abraxas.Games.Managers
 
         // Zones
         IZoneManager _zoneManager;
+        IDeckManager _deckManager;
 
         [Inject]
         public void Construct(Game.Settings settings,
                        IGameStateManager gameStateManager,
                        IZoneManager zoneManager,
+                       IDeckManager deckManager,
                        IPlayerManager playerManager,
                        IManaManager manaManager,
                        ICardManager cardManager)
@@ -41,6 +46,7 @@ namespace Abraxas.Games.Managers
             _settings = settings;
             _gameStateManager = gameStateManager;
             _zoneManager = zoneManager;
+            _deckManager = deckManager;
             _playerManager = playerManager;
             _manaManager = manaManager;
             _cardManager = cardManager;
@@ -60,24 +66,36 @@ namespace Abraxas.Games.Managers
             }
             yield return _gameStateManager.InitializeState(State.GameNotStarted);
         }
+
         public IEnumerator StartGame()
         {
-            yield return Utilities.WaitForCoroutines(_zoneManager.MoveCardsFromDeckToHand(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
-                                                     _zoneManager.MoveCardsFromDeckToHand(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
+            yield return Utilities.WaitForCoroutines(DrawCard(Player.Player1, _settings.Player1CardsToDrawAtStartOfGame),
+                                                     DrawCard(Player.Player2, _settings.Player2CardsToDrawAtStartOfGame));
         }
+
+        public IEnumerator DrawCard(Player player, int amount = 1, int index = 0)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                yield return _zoneManager.MoveCardFromDeckToHand(_deckManager.PeekCard(player, index), player);
+			}
+        }
+
         public IEnumerator DrawStartOfTurnCardsForActivePlayer()
         {
-            yield return _zoneManager.MoveCardsFromDeckToHand(_playerManager.ActivePlayer, _settings.CardsToDrawAtStartOfTurn);
+            yield return DrawCard(_playerManager.ActivePlayer, _settings.CardsToDrawAtStartOfTurn);
         }
         public IEnumerator GenerateStartOfTurnManaForActivePlayer()
         {
             yield return _manaManager.GenerateManaFromDeckRatio(_playerManager.ActivePlayer, _manaManager.StartOfTurnMana);
             _manaManager.IncrementStartOfTurnManaAmount();
         }
-        #endregion
+		#endregion
 
-        #region Server Methods
-        public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
+		#region Server Methods
+		
+
+		public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
         {
             if (!IsClient) return;
             int cardNetworkObjectId = _cardManager.GetCardIndex(card);
@@ -108,6 +126,8 @@ namespace Abraxas.Games.Managers
             _manaManager.PurchaseCard(card);
             StartCoroutine(_zoneManager.MoveCardFromHandToCell(card, new Point(fieldPosition.x, fieldPosition.y)));
         }
+
+
         #endregion
     }
 }

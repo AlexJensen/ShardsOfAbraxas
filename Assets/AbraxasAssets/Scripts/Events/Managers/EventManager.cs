@@ -1,49 +1,59 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
+using System.Linq;
+using UnityEngine;
 
 namespace Abraxas.Events.Managers
 {
-    public class EventManager : NetworkBehaviour, IEventManager
+    public class EventManager : MonoBehaviour, IEventManager
     {
-        #region Fields
-        readonly Dictionary<Type, HashSet<object>> _eventListeners = new();
-        #endregion
+        private readonly Dictionary<Type, List<IGameEventListenerBase>> _eventListeners = new();
 
-        #region Methods
-        public void AddListener<T>(Type eventType, IGameEventListener<T> listener)
+        public void AddListener<T>(Type type, IGameEventListener<T> listener)
         {
+            Type eventType = typeof(T);
             if (!_eventListeners.TryGetValue(eventType, out var listeners))
             {
-                listeners = new HashSet<object>();
-                _eventListeners[eventType] = listeners;
+                listeners = new List<IGameEventListenerBase>();
+                _eventListeners.Add(eventType, listeners);
             }
             listeners.Add(listener);
         }
 
-        public void RemoveListener<T>(Type eventType, IGameEventListener<T> listener)
+        public void RemoveListener<T>(Type type, IGameEventListener<T> listener)
         {
-            if (_eventListeners.ContainsKey(eventType))
+            Type eventType = typeof(T);
+            if (_eventListeners.TryGetValue(eventType, out var listeners))
             {
-                _eventListeners[eventType].Remove(listener);
+                listeners.Remove(listener);
             }
         }
 
-        public IEnumerator RaiseEvent<T>(Type eventType, T eventData)
+        public IEnumerator RaiseEvent<T>(Type type, T eventData)
         {
-            if (_eventListeners.TryGetValue(eventType, out var listeners))
+            if (_eventListeners.TryGetValue(type, out var listeners))
             {
-                var listenersCopy = new HashSet<object>(listeners);
-                foreach (var listener in listenersCopy)
+                foreach (IGameEventListener<T> listener in listeners.Cast<IGameEventListener<T>>())
                 {
-                    if (listener is IGameEventListener<T> gameEventListener)
+                    if (listener.ShouldReceiveEvent(eventData))
                     {
-                        yield return gameEventListener.OnEventRaised(eventData);
+                        IEnumerator routine = listener.OnEventRaised(eventData);
+                        while (routine.MoveNext())
+                        {
+                            object current = routine.Current;
+                            if (current != null)
+                            {
+                                yield return current;
+                            }
+                        }
                     }
                 }
             }
         }
-        #endregion
     }
+
+    public interface IGameEventListenerBase { }
+
+    
 }

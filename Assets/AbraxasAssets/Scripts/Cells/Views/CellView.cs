@@ -1,4 +1,5 @@
 using Abraxas.Cells.Controllers;
+using Abraxas.Random.Managers;
 using System.Drawing;
 using UnityEngine;
 using Zenject;
@@ -10,10 +11,12 @@ namespace Abraxas.Cells.Views
     {
         #region Dependencies
         ICellController _controller;
+        IRandomManager _randomManager;
         Cell.Settings _cellSettings;
         [Inject]
-        public void Construct(Cell.Settings cellSettings)
+        public void Construct(IRandomManager randomManager, Cell.Settings cellSettings)
         {
+            _randomManager = randomManager;
             _cellSettings = cellSettings;
         }
 
@@ -21,7 +24,7 @@ namespace Abraxas.Cells.Views
         {
             _controller = controller;
 
-            _cellBack.sprite = _cellSettings.cellBackTextures[Random.Range(0, _cellSettings.cellBackTextures.Length)];
+           // _cellBack.sprite = _cellSettings.cellBackTextures[_randomManager.Range(0, _cellSettings.cellBackTextures.Length)];
         }
         #endregion
 

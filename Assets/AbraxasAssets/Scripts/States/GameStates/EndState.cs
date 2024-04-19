@@ -40,7 +40,6 @@ namespace Abraxas.GameStates
             if (_networkManager.IsServer)
             {
                 yield return _playerManager.SetActivePlayer(_playerManager.ActivePlayer == Players.Players.Player1 ? Players.Players.Player2 : Players.Players.Player1);
-                yield return new WaitForSeconds(.1f);
                 yield return _gameStateManager.BeginNextGameState();
             }
         }

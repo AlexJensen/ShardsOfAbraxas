@@ -12,10 +12,11 @@ namespace Abraxas.Zones.Decks.Managers
     {
         List<IDeckController> Decks { get; }
 
-        ICardController RemoveCard(Player player, int index);
+        void RemoveCard(Player player, ICardController card);
         IEnumerator ShuffleDeck(Player player);
         IEnumerator MoveCardToDeck(Player player, ICardController card);
         Dictionary<StoneType, int> GetDeckCost(Player player);
         IEnumerator LoadDecks();
-    }
+		ICardController PeekCard(Player player, int index);
+	}
 }

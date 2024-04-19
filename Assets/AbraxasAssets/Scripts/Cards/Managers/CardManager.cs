@@ -1,10 +1,9 @@
 using Abraxas.Cards.Controllers;
 using System.Collections.Generic;
-using Unity.Netcode;
 
 namespace Abraxas.Cards.Managers
 {
-    class CardManager : NetworkBehaviour, ICardManager
+	class CardManager : ICardManager
     {
         #region Fields
         readonly List<ICardController> _cards = new();

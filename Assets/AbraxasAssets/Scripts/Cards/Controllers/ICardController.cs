@@ -16,6 +16,7 @@ namespace Abraxas.Cards.Controllers
         string Title { get; }
         public Dictionary<StoneType, int> TotalCosts { get; }
         IZoneController Zone { get; set; }
+        IZoneController PreviousZone { get; set; }
         bool Hidden { get; set; }
         Players.Players Owner { get; }
         Players.Players OriginalOwner { get; }

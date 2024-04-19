@@ -1,7 +1,8 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Data;
 using Abraxas.Decks.Scriptable_Objects;
-using Abraxas.Manas;
+using Abraxas.Network.Managers;
+using Abraxas.Random.Managers;
 using Abraxas.Stones;
 using Abraxas.Zones.Decks.Controllers;
 using Abraxas.Zones.Decks.Models;
@@ -14,20 +15,19 @@ using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 using Player = Abraxas.Players.Players;
-using Random = UnityEngine.Random;
 
 namespace Abraxas.Zones.Decks.Managers
 {
-    class DeckManager : NetworkBehaviour, IDeckManager
+	class DeckManager : NetworkedManager, IDeckManager
 	{
-		#region Dependencies
-
-
+        #region Dependencies
+        IRandomManager _randomManager;
 		CardController.Factory _cardFactory;
 		ZoneFactory<IDeckView, DeckController, DeckModel> _deckFactory;
 		[Inject]
-		public void Construct(CardController.Factory cardFactory, ZoneFactory<IDeckView, DeckController, DeckModel> deckFactory)
+		public void Construct(IRandomManager randomManager, CardController.Factory cardFactory, ZoneFactory<IDeckView, DeckController, DeckModel> deckFactory)
 		{
+            _randomManager = randomManager;
 			_cardFactory = cardFactory;
 			_deckFactory = deckFactory;
 		}
@@ -41,9 +41,6 @@ namespace Abraxas.Zones.Decks.Managers
         private DeckDataSO player1DeckData, player2DeckData;
 
         readonly List<IDeckController> _decks = new();
-
-        private int clientAcknowledgments = 0;
-		private bool isWaitingForClientAcknowledgments = false;
 
         readonly JsonSerializerSettings _settings = new()
         {
@@ -62,9 +59,13 @@ namespace Abraxas.Zones.Decks.Managers
 		{
 			yield return GetPlayerDeck(player).MoveCardToZone(card);
 		}
-		public ICardController RemoveCard(Player player, int index)
+		public void RemoveCard(Player player, ICardController card)
 		{
-			return GetPlayerDeck(player).RemoveCard(index);
+			GetPlayerDeck(player).RemoveCard(card);
+		}
+		public ICardController PeekCard(Player player, int index)
+		{
+			return GetPlayerDeck(player).PeekCard(index);
 		}
 		private IDeckController GetPlayerDeck(Player player)
 		{
@@ -77,20 +78,15 @@ namespace Abraxas.Zones.Decks.Managers
 		public IEnumerator ShuffleDeck(Player player)
 		{
 			if (!IsServer) yield break;
-			int randomSeed = Random.Range(int.MinValue, int.MaxValue);
-			Random.InitState(randomSeed);
 			if (!IsHost) GetPlayerDeck(player).Shuffle();
-			ShuffleDeckClientRpc(player, randomSeed);
-
-			isWaitingForClientAcknowledgments = true;
-			clientAcknowledgments = 0;
+			ShuffleDeckClientRpc(player);
 			yield return WaitForClients();
 		}
 		public IEnumerator LoadDecks()
 		{
 			if (!IsServer) yield break;
-			yield return LoadDeck(Player.Player1);
-			yield return LoadDeck(Player.Player2);
+            yield return LoadDeck(Player.Player1);
+            yield return LoadDeck(Player.Player2);
 		}
 
         private IEnumerator LoadDeck(Player player)
@@ -152,31 +148,12 @@ namespace Abraxas.Zones.Decks.Managers
             BuildCardsBatchClientRpc(player, serializedBatch);
             yield return WaitForClients();
         }
-
-		private IEnumerator WaitForClients()
-		{
-			isWaitingForClientAcknowledgments = true;
-			clientAcknowledgments = 0;
-			while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count)
-			{
-				yield return null;
-			}
-			isWaitingForClientAcknowledgments = false;
-		}
-
-		[ServerRpc(RequireOwnership = false)]
-		private void AcknowledgeServerRpc()
-		{
-			if (!isWaitingForClientAcknowledgments) return;
-			clientAcknowledgments++;
-		}
 		#endregion
 
 		#region Client Side
 		[ClientRpc]
-		private void ShuffleDeckClientRpc(Player player, int seed)
+		private void ShuffleDeckClientRpc(Player player)
 		{
-			Random.InitState(seed);
 			GetPlayerDeck(player).Shuffle();
 			AcknowledgeServerRpc();
 		}
@@ -225,9 +202,9 @@ namespace Abraxas.Zones.Decks.Managers
             };
 
             var cardController = _cardFactory.Create(modifiedCardData);
-            deckController.AddCardToZone(cardController);
+            deckController.AddCard(cardController);
         }
-        #endregion
-        #endregion
-    }
+		#endregion
+		#endregion
+	}
 }

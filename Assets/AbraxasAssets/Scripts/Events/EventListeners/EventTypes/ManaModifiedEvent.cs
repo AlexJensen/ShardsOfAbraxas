@@ -1,9 +1,8 @@
-﻿using Abraxas.Manas;
-using Abraxas.Manas.Controllers;
+﻿using Abraxas.Manas.Controllers;
 
 namespace Abraxas.Events
 {
-    public class ManaModifiedEvent
+	public class ManaModifiedEvent
     {
         #region Properties
         public IManaController Mana { get; }

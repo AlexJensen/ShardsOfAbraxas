@@ -1,21 +1,21 @@
-﻿using Abraxas.Zones.Managers;
+﻿using Abraxas.Games.Managers;
 using System.Collections;
 using Zenject;
 
 namespace Abraxas.Stones.Controllers
 {
-    public class Effect_DrawCardFromLibrary : EffectStone
+	public class Effect_DrawCardFromLibrary : EffectStone
     {
-        readonly IZoneManager _zoneManager;
+        readonly IGameManager _gameManager;
 
         [Inject]
-        public Effect_DrawCardFromLibrary(IZoneManager zoneManager)
+        public Effect_DrawCardFromLibrary(IGameManager gameManager)
         {
-            _zoneManager = zoneManager;
+            _gameManager = gameManager;
         }
-        public override IEnumerator TriggerEffect(object[] vals)
+        protected override IEnumerator PerformEffect(object[] vals)
         {
-            yield return _zoneManager.MoveCardsFromDeckToHand(Card.Owner, 1);
+            yield return _gameManager.DrawCard(Card.Owner);
         }
     }
 }

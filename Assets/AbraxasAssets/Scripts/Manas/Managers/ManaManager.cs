@@ -1,6 +1,7 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Manas.Controllers;
 using Abraxas.Manas.Views;
+using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Manas.Managers
 {
-    class ManaManager : MonoBehaviour, IManaManager
+	class ManaManager : MonoBehaviour, IManaManager
     {
         #region Dependencies
         Mana.Settings _settings;
@@ -57,6 +58,16 @@ namespace Abraxas.Manas.Managers
             GetPlayerMana(card.OriginalOwner).PurchaseCard(card);
         }
 
+        public bool CanPurchaseStoneActivation(IStoneController stone)
+        {
+            return GetPlayerMana(stone.Card.OriginalOwner).CanPurchaseStone(stone);
+        }
+
+        public void PuchaseStoneActivation(IStoneController stone)
+        {
+            GetPlayerMana(stone.Card.OriginalOwner).PurchaseStone(stone);
+        }
+
         public void IncrementStartOfTurnManaAmount()
         {
             StartOfTurnMana += _settings.ManaPerTurnIncrement;
@@ -80,6 +91,8 @@ namespace Abraxas.Manas.Managers
             IManaController playerMana = _manas.Find(x => x.Player == player);
             return playerMana;
         }
+
+      
         #endregion
     }
 }

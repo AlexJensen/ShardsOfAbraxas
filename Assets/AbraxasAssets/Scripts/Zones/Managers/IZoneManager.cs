@@ -1,17 +1,18 @@
 ﻿using Abraxas.Cards.Controllers;
 using System.Collections;
 using System.Drawing;
+using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Managers
 {
     public interface IZoneManager
     {
         #region Methods
-        IEnumerator MoveCardFromFieldToDeck(ICardController card);
-        IEnumerator MoveCardFromFieldToGraveyard(ICardController card);
+        IEnumerator MoveCardFromFieldToDeck(ICardController card, Player player);
+        IEnumerator MoveCardFromFieldToGraveyard(ICardController card, Player player);
         IEnumerator MoveCardFromHandToCell(ICardController card, Point fieldPosition);
-        IEnumerator MoveCardsFromDeckToGraveyard(Players.Players player, int amount, int index = 0);
-        IEnumerator MoveCardsFromDeckToHand(Players.Players player, int amount, int index = 0);
+        IEnumerator MoveCardFromDeckToGraveyard(ICardController card, Player player);
+        IEnumerator MoveCardFromDeckToHand(ICardController card, Player player);
         #endregion
     }
 }

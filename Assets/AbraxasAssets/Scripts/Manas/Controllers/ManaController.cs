@@ -1,6 +1,7 @@
 ﻿using Abraxas.Cards.Controllers;
 using Abraxas.Manas.Models;
 using Abraxas.Manas.Views;
+using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,6 +62,17 @@ namespace Abraxas.Manas.Controllers
             }
 
             return true;
+        }
+
+        public bool CanPurchaseStone(IStoneController stone)
+        {
+            return ManaTypes.Find(x => x.Type == stone.StoneType).Amount >= stone.Cost;          
+        }
+
+        public void PurchaseStone(IStoneController stone)
+        {
+            ManaType result = ManaTypes.Find(x => x.Type == stone.StoneType);
+            result.Amount -= stone.Cost;
         }
     }
 }

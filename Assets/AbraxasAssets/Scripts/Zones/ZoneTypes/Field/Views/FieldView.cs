@@ -1,19 +1,19 @@
 using Abraxas.Cards.Controllers;
-using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
 using Abraxas.Cells.Views;
 using Abraxas.Zones.Views;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Abraxas.Zones.Fields.Views
 {
-    public class FieldView : ZoneView, IFieldView
+	public class FieldView : ZoneView, IFieldView
     {
         #region Properties
-        public override float MoveCardTime => AnimationSettings.MoveCardToFieldTime;
+        public override float MoveCardTime => NetworkManager.Singleton.IsServer ? 0 : AnimationSettings.MoveCardToFieldTime;
 
         public List<List<ICellController>> GenerateField()
         {
@@ -44,6 +44,11 @@ namespace Abraxas.Zones.Fields.Views
             yield return card.MoveToCell(cell, MoveCardTime);
             OverlayManager.ClearCard(card);
         }
-        #endregion
-    }
+
+		public override void AddCardToHolder(ICardController card, int index = 0)
+		{
+			//
+		}
+		#endregion
+	}
 }

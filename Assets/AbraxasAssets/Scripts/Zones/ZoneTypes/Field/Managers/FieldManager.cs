@@ -12,13 +12,13 @@ using Zenject;
 
 namespace Abraxas.Zones.Fields.Managers
 {
-    public class FieldManager : MonoBehaviour, IFieldManager
+	class FieldManager : MonoBehaviour, IFieldManager
     {
         #region Dependencies
         IFieldController _field;
 
         [Inject]
-        void Construct(ZoneFactory<IFieldView, FieldController, FieldModel> fieldFactory, CellController.Factory cellFactory)
+        public void Construct(ZoneFactory<IFieldView, FieldController, FieldModel> fieldFactory, CellController.Factory cellFactory)
         {
             foreach (var cellView in FindObjectsOfType<CellView>())
             {
@@ -31,10 +31,9 @@ namespace Abraxas.Zones.Fields.Managers
         #endregion
 
         #region Methods
-        public void AddCard(ICardController card, Point fieldPos)
+        public void AddCard(ICardController card)
         {
-            card.Zone = _field;
-            _field.AddCard(card, fieldPos);
+            _field.AddCard(card);
         }
         public void RemoveCard(ICardController card)
         {

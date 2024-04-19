@@ -43,6 +43,7 @@ namespace Abraxas
 
         public IEnumerator MoveToFitRectangle(RectTransform rectTransform, float time)
         {
+            if (time == 0) yield break;
             yield return StartCoroutine(Utilities.WaitForCoroutines(
                 ChangeScaleEnumerator(rectTransform.rect.size, time),
                 MoveToEnumerator(rectTransform.position, time)));

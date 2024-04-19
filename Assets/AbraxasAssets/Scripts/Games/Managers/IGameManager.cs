@@ -12,5 +12,6 @@ namespace Abraxas.Games.Managers
         IEnumerator DrawStartOfTurnCardsForActivePlayer();
         IEnumerator GenerateStartOfTurnManaForActivePlayer();
         void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition);
-    }
+		IEnumerator DrawCard(Player player, int amount = 1, int index = 0);
+	}
 }

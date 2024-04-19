@@ -7,7 +7,7 @@ namespace Abraxas.GameStates
     {
         GameState State { get; }
         IEnumerator BeginNextGameState();
-        IEnumerator RequestNextGameState();
+        void RequestNextGameState();
         IEnumerator InitializeState(GameStates gameNotStarted);
     }
 }

@@ -16,8 +16,8 @@ namespace Abraxas.Zones.Models
 
         #region Methods
         void AddCard(ICardController card, int index = 0);
-        ICardController RemoveCard(int index);
-        ICardController RemoveCard(ICardController card);
+        void RemoveCard(int index);
+        void RemoveCard(ICardController card);
         IEnumerable<ICardController> GetCardsForPlayer(Player player);
         Dictionary<StoneType, int> GetTotalCostOfZone();
         void Shuffle();

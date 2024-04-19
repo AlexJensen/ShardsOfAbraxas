@@ -14,6 +14,7 @@ namespace Abraxas.Cards
 
             public AnimationSettings animationSettings;
             public List<Sprite> images;
+            
             [Serializable]
             public struct AnimationSettings
             {
