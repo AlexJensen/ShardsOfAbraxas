@@ -4,7 +4,10 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Health.Models
 {
-    class  PlayerHealthModel : IPlayerHealthModel
+    /// <summary>
+    /// PlayerHealthModel is a class that contains all data to represent a health gameobject.
+    /// </summary>
+    class PlayerHealthModel : IPlayerHealthModel
     {
         #region Events
         public event Action OnHealthChanged;

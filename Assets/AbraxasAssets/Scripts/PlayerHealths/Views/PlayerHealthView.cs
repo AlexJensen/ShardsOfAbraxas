@@ -1,12 +1,13 @@
-using Abraxas.Health.Controllers;
 using Abraxas.Health.Models;
 using TMPro;
 using UnityEngine;
-using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Health.Views
 {
+    /// <summary>
+    /// PlayerHealthView is a MonoBehaviour that displays the player's health.
+    /// </summary>
     [RequireComponent(typeof(Animator))]
     class PlayerHealthView : MonoBehaviour, IPlayerHealthView
     {
@@ -80,7 +81,7 @@ namespace Abraxas.Health.Views
         private void Refresh()
         {
             if (_HPText != null)
-            _HPText.text = $"{_model.HP + "/" + _model.MaxHP}";
+                _HPText.text = $"{_model.HP + "/" + _model.MaxHP}";
         }
 
         private void SetAnimationTrigger(HealthChangeAnimationTriggers trigger)

@@ -12,6 +12,11 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Manas.Managers
 {
+
+    /// <summary>
+    /// ManaManager is a class for managing player mana.
+    /// </summary>
+
 	class ManaManager : MonoBehaviour, IManaManager
     {
         #region Dependencies
@@ -22,24 +27,16 @@ namespace Abraxas.Manas.Managers
             _settings = settings;
             foreach (var manaView in FindObjectsOfType<ManaView>())
             {
-                _manas.Add(manaFactory.Create(manaView));
+
+                var manaController = manaFactory.Create(manaView);
+                manaController.StartOfTurnMana = _settings.StartingMana;
+                _manas.Add(manaController);
             }
-            StartOfTurnMana = _settings.StartingMana;
         }
         #endregion
 
         #region Fields
         readonly List<IManaController> _manas = new();
-
-        int _startOfTurnMana;
-        #endregion
-
-        #region Properties
-        public int StartOfTurnMana
-        {
-            get => _startOfTurnMana;
-            private set => _startOfTurnMana = value;
-        }
         #endregion
 
         #region Methods
@@ -50,12 +47,16 @@ namespace Abraxas.Manas.Managers
 
         public bool CanPurchaseCard(ICardController card)
         {
-            return GetPlayerMana(card.OriginalOwner).CanPurchaseCard(card);            
+
+            return GetPlayerMana(card.OriginalOwner).CanPurchaseCard(card);
+
         }
 
         public void PurchaseCard(ICardController card)
         {
             GetPlayerMana(card.OriginalOwner).PurchaseCard(card);
+
+
         }
 
         public bool CanPurchaseStoneActivation(IStoneController stone)
@@ -68,9 +69,9 @@ namespace Abraxas.Manas.Managers
             GetPlayerMana(stone.Card.OriginalOwner).PurchaseStone(stone);
         }
 
-        public void IncrementStartOfTurnManaAmount()
+        public void IncrementStartOfTurnManaAmount(Player player)
         {
-            StartOfTurnMana += _settings.ManaPerTurnIncrement;
+            GetPlayerMana(player).StartOfTurnMana += _settings.ManaPerTurnIncrement;
         }
 
         public void InitializeManaFromDeck(IDeckController deck)
@@ -84,6 +85,11 @@ namespace Abraxas.Manas.Managers
             {
                 InitializeManaFromDeck(deck);
             }
+        }
+
+        public int GetStartOfTurnMana(Player player)
+        {
+            return GetPlayerMana(player).StartOfTurnMana;
         }
 
         private IManaController GetPlayerMana(Player player)

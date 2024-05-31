@@ -2,6 +2,9 @@
 using Player = Abraxas.Players.Players;
 namespace Abraxas.Health.Models
 {
+    /// <summary>
+    /// IPlayerHealthModel is an interface for the PlayerHealthModel class.
+    /// </summary>
     public interface IPlayerHealthModel
     {
         event Action OnHealthChanged;

@@ -12,7 +12,8 @@ using Zenject;
 
 namespace Abraxas.Zones.Fields.Managers
 {
-	class FieldManager : MonoBehaviour, IFieldManager
+
+    class FieldManager : MonoBehaviour, IFieldManager
     {
         #region Dependencies
         IFieldController _field;
@@ -31,10 +32,7 @@ namespace Abraxas.Zones.Fields.Managers
         #endregion
 
         #region Methods
-        public void AddCard(ICardController card)
-        {
-            _field.AddCard(card);
-        }
+
         public void RemoveCard(ICardController card)
         {
             _field.RemoveCard(card);

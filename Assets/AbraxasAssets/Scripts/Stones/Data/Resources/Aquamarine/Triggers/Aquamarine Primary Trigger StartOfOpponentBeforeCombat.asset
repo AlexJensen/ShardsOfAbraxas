@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
+<<<<<<< Updated upstream
   m_Script: {fileID: 11500000, guid: 6955c475303f04b40ad4354dfab8eacd, type: 3}
   m_Name: Aquamarine Primary Trigger StartOfOpponentBeforeCombat
   m_EditorClassIdentifier: 
@@ -17,3 +18,44 @@ MonoBehaviour:
     cost: 1
     info: 'At the start of your opponent''s first main phase:'
     stoneType: 2
+=======
+  m_Script: {fileID: 11500000, guid: a5b97918aec3e6c42947d32df1d7307c, type: 3}
+  m_Name: Aquamarine Primary Trigger StartOfOpponentBeforeCombat
+  m_EditorClassIdentifier: 
+  Indexes: 
+  _conditions:
+  - {fileID: 8435316609789108787}
+  - {fileID: 2620432533841121890}
+  _data:
+    cost: 3
+    info: 'At the start of the before combat phase:'
+    stoneType: 2
+--- !u!114 &2620432533841121890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d849d6771d96d94f9b08df480c7fffb, type: 3}
+  m_Name: StartOfStateCondition
+  m_EditorClassIdentifier: 
+  IsTrigger: 1
+  _state: 2
+--- !u!114 &8435316609789108787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f602ac79d7675545b9c3b5f93d8915c, type: 3}
+  m_Name: IsActivePlayerCondition
+  m_EditorClassIdentifier: 
+  IsTrigger: 0
+  _playerType: 1
+>>>>>>> Stashed changes

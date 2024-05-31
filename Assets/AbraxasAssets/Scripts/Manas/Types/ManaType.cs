@@ -10,6 +10,9 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Manas
 {
+    /// <summary>
+    /// ManaType is a MonoBehaviour that visually represents one of the mana types on the mana bar.
+    /// </summary>
     [RequireComponent(typeof(Image))]
     public class ManaType : MonoBehaviour
     {

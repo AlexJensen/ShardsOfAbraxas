@@ -4,13 +4,9 @@ using UnityEngine;
 
 namespace Abraxas.Players
 {
-    [Serializable]
-    public enum Players
-    {
-        Player1,
-        Player2,
-        Neutral
-    }
+    /// <summary>
+    /// Player is a static class that contains serializable settings for players.
+    /// </summary>
     public static class Player
     {
         #region Settings
@@ -34,5 +30,14 @@ namespace Abraxas.Players
             }
         }
         #endregion
+    }
+
+
+    [Serializable]
+    public enum Players
+    {
+        Player1,
+        Player2,
+        Neutral
     }
 }

@@ -10,6 +10,9 @@ using Zenject;
 using Player = Abraxas.Players.Players;
 namespace Abraxas.GameStates
 {
+    /// <summary>
+    /// GameNotStartedState is a state that represents the game before it has started and is used to wait until both players have connected.
+    /// </summary>
     public class GameNotStartedState : GameState
     {
         #region Dependencies
@@ -45,12 +48,14 @@ namespace Abraxas.GameStates
 
         public override IEnumerator OnEnterState()
         {
-			yield return base.OnEnterState();
-			if (_networkManager.IsHost)
+
+            yield return base.OnEnterState();
+            if (_networkManager.IsHost)
+
             {
                 yield return _gameStateManager.BeginNextGameState();
             }
-            else if(_networkManager.IsServer)
+            else if (_networkManager.IsServer)
             {
                 while (_networkManager.ConnectedClients.Count != 2)
                 {
@@ -66,7 +71,9 @@ namespace Abraxas.GameStates
 
         public override IEnumerator OnExitState()
         {
-			yield return base.OnExitState();
+
+            yield return base.OnExitState();
+
             _manaManager.InitializeManaFromDecks(_deckManager.Decks);
             yield return gameManager.StartGame();
         }

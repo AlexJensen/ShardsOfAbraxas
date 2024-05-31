@@ -14,7 +14,10 @@ namespace Abraxas.Core
                 {
                     GameObject runnerObject = new("CoroutineRunner");
                     instance = runnerObject.AddComponent<CoroutineRunner>();
-                    DontDestroyOnLoad(runnerObject);
+                    if (Application.isPlaying)
+                    {
+                        DontDestroyOnLoad(runnerObject);
+                    }
                 }
                 return instance;
             }

@@ -10,7 +10,6 @@ namespace Abraxas.Zones.Fields.Managers
     {
         void RemoveCard(ICardController card);
         IEnumerator MoveCardToCell(ICardController card, Point fieldPosition);
-        void AddCard(ICardController card);
         PointF GetCellDimensions();
         IEnumerator StartCombat();
         IEnumerator CombatMovement(ICardController card, Point movement);

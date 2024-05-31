@@ -1,6 +1,7 @@
 using Abraxas.Cards.Models;
 using Abraxas.Cells.Controllers;
-using Abraxas.Events;
+
+using Abraxas.StatBlocks;
 using Abraxas.Stones;
 using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Hands.Controllers;
@@ -24,16 +25,18 @@ namespace Abraxas.Cards.Views
     class CardView : NetworkBehaviour, ICardView, ITransformManipulator, IImageManipulator
     {
         #region Dependencies
-        Card.Settings _cardSettings;
         Stone.Settings _stoneSettings;
         Players.Player.Settings _playerSettings;
+
+        Statblock.Settings _statblockSettings;
+
         ICardModel _model;
         [Inject]
-        public void Construct(Card.Settings cardSettings, Stone.Settings stoneSettings, Players.Player.Settings playerSettings)
+        public void Construct(Stone.Settings stoneSettings, Players.Player.Settings playerSettings, Statblock.Settings statblockSettings)
         {
-            _cardSettings = cardSettings;
             _stoneSettings = stoneSettings;
             _playerSettings = playerSettings;
+            _statblockSettings = statblockSettings;
         }
         public void Initialize(ICardModel model)
         {
@@ -48,7 +51,8 @@ namespace Abraxas.Cards.Views
             OnOriginalOwnerChanged();
             OnHiddenChanged();
 
-            _image.sprite = _cardSettings.images[_model.ImageIndex];
+
+            _image.sprite = _statblockSettings.GetSprite(_model.StatBlock.Stats);
         }
         public override void OnDestroy()
         {
@@ -70,7 +74,9 @@ namespace Abraxas.Cards.Views
         #endregion
 
         #region Properties
-        public RectTransformMover RectTransformMover { get => _rectTransformMover != null ? _rectTransformMover :_rectTransformMover = GetComponent<RectTransformMover>(); }
+
+        public RectTransformMover RectTransformMover { get => _rectTransformMover != null ? _rectTransformMover : _rectTransformMover = GetComponent<RectTransformMover>(); }
+
         public Image Image { get => _image; set => _image = value; }
         public Transform Transform => transform;
         #endregion
@@ -116,7 +122,7 @@ namespace Abraxas.Cards.Views
 
             return string.Join("", costStrings);
         }
-        
+
         public void ChangeScale(PointF scale, float time)
         {
             StartCoroutine(RectTransformMover.ChangeScaleEnumerator(new Vector2(scale.X, scale.Y), time));

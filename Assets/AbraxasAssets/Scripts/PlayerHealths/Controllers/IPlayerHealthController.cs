@@ -2,6 +2,9 @@
 
 namespace Abraxas.Health.Controllers
 {
+    /// <summary>
+    /// IPlayerHealthController is an interface for controlling player health.
+    /// </summary>
     public interface IPlayerHealthController
     {
         int HP { get; set; }

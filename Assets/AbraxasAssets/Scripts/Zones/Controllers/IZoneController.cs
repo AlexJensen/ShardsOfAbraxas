@@ -20,6 +20,7 @@ namespace Abraxas.Zones.Controllers
             where TView : IZoneView
             where TModel : IZoneModel;
         void AddCard(ICardController card, int index = 0);
-		ICardController PeekCard(int index);
-	}
+
+        ICardController PeekCard(int index);
+    }
 }

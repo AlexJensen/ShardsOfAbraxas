@@ -19,6 +19,7 @@ namespace Abraxas.Stones.Models
         int Cost { get; set; }
         string Info { get; set; }
         StoneType StoneType { get; set; }
+        IStoneData Data { get; set; }
         #endregion
 
 

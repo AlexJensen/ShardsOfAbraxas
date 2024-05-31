@@ -7,6 +7,10 @@ using Zenject;
 namespace Abraxas.GameStates.Managers
 {
 
+    /// <summary>
+    /// GameStateManager is a NetworkedManager that manages the current game state.
+    /// </summary>
+
     public class GameStateManager : NetworkedManager, IGameStateManager
     {
         #region Dependencies
@@ -48,12 +52,14 @@ namespace Abraxas.GameStates.Managers
         {
             if (!IsClient)
             {
-				SetGameStateClientRpc(state);
+
+                SetGameStateClientRpc(state);
                 yield return WaitForClients();
 
-				yield return State?.OnExitState();
-				_state = _stateFactory.CreateState(state);
-				yield return State?.OnEnterState();
+                yield return State?.OnExitState();
+                _state = _stateFactory.CreateState(state);
+                yield return State?.OnEnterState();
+
                 AdvanceGameStateClientRpc();
             }
             else

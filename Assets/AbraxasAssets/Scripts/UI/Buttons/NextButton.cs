@@ -1,16 +1,16 @@
 using Abraxas.Events;
+using Abraxas.Events.Managers;
 using Abraxas.GameStates;
+using Abraxas.Players;
 using Abraxas.Players.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-using System.Linq;
-using Abraxas.Players;
-using Abraxas.Events.Managers;
 
 namespace Abraxas.UI
 {

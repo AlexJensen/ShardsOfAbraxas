@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Abraxas.Network
 {
+    /// <summary>
+    /// NetworkCommandLine is a class that starts the network manager client or server based on command line arguments.
+    /// </summary>
     public class NetworkCommandLine : MonoBehaviour
     {
         NetworkManager _netManager;

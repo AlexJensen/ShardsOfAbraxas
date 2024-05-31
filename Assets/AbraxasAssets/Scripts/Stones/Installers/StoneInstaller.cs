@@ -1,8 +1,10 @@
+
+using Abraxas.Events;
 using Abraxas.Stones.Controllers;
+using Abraxas.Stones.Controllers.StoneTypes.Conditions;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Factories;
 using Abraxas.Stones.Models;
-using Abraxas.Stones.Types;
 using Zenject;
 
 namespace Abraxas.Cards.Installers
@@ -16,9 +18,12 @@ namespace Abraxas.Cards.Installers
             Container.BindInterfacesAndSelfTo<StoneModel>().AsTransient();
             Container.BindFactory<StoneDataSO, IStoneController, StoneController.Factory>().FromFactory<StoneFactory>();
 
-            Container.BindInterfacesAndSelfTo<Trigger_StartOfTurn>().AsTransient();
-            Container.BindInterfacesAndSelfTo<Effect_DrawCardFromLibrary>().AsTransient();
+
+            Container.Bind<Condition<GameStateEnteredEvent>>().To<StartOfStateCondition>().AsSingle();
+            Container.Bind<Condition<object>>().To<IsActivePlayerCondition>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<Effect_DrawCardFromDeck>().AsTransient();
         }
     }
-        #endregion
+    #endregion
 }

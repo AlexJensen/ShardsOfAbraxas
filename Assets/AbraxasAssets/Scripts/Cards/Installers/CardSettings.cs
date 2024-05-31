@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Abraxas.Cards
 {
+    /// <summary>
+    /// Card is a static class that contains settings for cards.
+    /// </summary>
     public static class Card
     {
         #region Settings
@@ -14,7 +17,7 @@ namespace Abraxas.Cards
 
             public AnimationSettings animationSettings;
             public List<Sprite> images;
-            
+
             [Serializable]
             public struct AnimationSettings
             {

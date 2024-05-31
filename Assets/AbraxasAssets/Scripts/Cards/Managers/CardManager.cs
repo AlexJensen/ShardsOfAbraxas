@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Abraxas.Cards.Managers
 {
+
+    /// <summary>
+    /// CardManager is a manager class that maintains a network synced index of all created cards during a game.
+    /// </summary>
 	class CardManager : ICardManager
     {
         #region Fields

@@ -5,6 +5,9 @@ using System.Collections;
 
 namespace Abraxas.GameStates
 {
+    /// <summary>
+    /// GameState is an abstract class for managing game states.
+    /// </summary>
     public abstract class GameState
     {
         #region Dependencies

@@ -5,6 +5,9 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Health.Controllers
 {
+    /// <summary>
+    /// PlayerHealthController facilitates communication between the player health model and view.
+    /// </summary>
     class PlayerHealthController : IPlayerHealthController
     {
         #region Dependencies

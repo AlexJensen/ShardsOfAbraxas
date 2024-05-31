@@ -10,7 +10,11 @@ using Zenject;
 using Player = Abraxas.Players.Players;
 namespace Abraxas.Manas.Controllers
 {
-    class ManaController: IManaController
+
+    /// <summary>
+    /// ManaController is a class that contains all data to represent a mana gameobject.
+    /// </summary>
+    class ManaController : IManaController
     {
         #region Dependencies
         IManaModel _model;
@@ -31,6 +35,10 @@ namespace Abraxas.Manas.Controllers
         #region Properties
         public Player Player { get => _model.Player; }
         public List<ManaType> ManaTypes { get => _model.ManaTypes; }
+
+
+        public int StartOfTurnMana { get => _model.StartOfTurnMana; set => _model.StartOfTurnMana = value; }
+
         #endregion
 
         public void PurchaseCard(ICardController card)
@@ -66,7 +74,8 @@ namespace Abraxas.Manas.Controllers
 
         public bool CanPurchaseStone(IStoneController stone)
         {
-            return ManaTypes.Find(x => x.Type == stone.StoneType).Amount >= stone.Cost;          
+
+            return ManaTypes.Find(x => x.Type == stone.StoneType).Amount >= stone.Cost;
         }
 
         public void PurchaseStone(IStoneController stone)

@@ -8,6 +8,9 @@ using Zenject;
 
 namespace Abraxas.Cards.Installers
 {
+    /// <summary>
+    /// CardInstaller is a Unity-Specific installer for the card system.
+    /// </summary>
     public class CardInstaller : MonoInstaller<CardInstaller>
     {
         #region Bindings
@@ -18,6 +21,9 @@ namespace Abraxas.Cards.Installers
         #endregion
     }
 
+    /// <summary>
+    /// CardBaseInstaller is a generic installer for the card system used for unit testing.
+    /// </summary>
     public class CardBaseInstaller : Installer<CardBaseInstaller>
     {
         public override void InstallBindings()

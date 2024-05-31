@@ -61,7 +61,8 @@ namespace Abraxas.Zones.Hands
                         CardPlaceholderLayout.transform.SetSiblingIndex(_newIndex);
                         _currentIndex = _newIndex;
                         gameObject.SetActive(true);
-                        StartCoroutine(ScalePlaceholder(_settings.maxScale, NetworkManager.Singleton.IsServer? 0 : _settings.scaleToMaxSizeTime));
+
+                        StartCoroutine(ScalePlaceholder(_settings.maxScale, NetworkManager.Singleton.IsServer ? 0 : _settings.scaleToMaxSizeTime));
                     }
                     else if (!_expanding)
                     {

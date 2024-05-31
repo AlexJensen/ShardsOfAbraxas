@@ -1,5 +1,5 @@
-﻿using Abraxas.Cells.Factories;
-using Abraxas.Cells.Controllers;
+﻿using Abraxas.Cells.Controllers;
+using Abraxas.Cells.Factories;
 using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
 using Zenject;
@@ -15,7 +15,7 @@ namespace Abraxas.Cells.Installers
             Container.BindInterfacesAndSelfTo<CellController>().AsTransient();
             Container.BindInterfacesAndSelfTo<CellModel>().AsTransient();
 
-            Container.BindFactory<ICellView, ICellController, CellController.Factory>().FromFactory<CellFactory>();    
+            Container.BindFactory<ICellView, ICellController, CellController.Factory>().FromFactory<CellFactory>();
         }
         #endregion
     }

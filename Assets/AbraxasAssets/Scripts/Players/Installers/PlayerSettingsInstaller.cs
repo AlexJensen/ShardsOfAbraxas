@@ -3,6 +3,9 @@ using Zenject;
 
 namespace Abraxas.Players.Installers
 {
+    /// <summary>
+    /// PlayerSettingsInstaller is a ScriptableObjectInstaller that installs PlayerSettings into the Zenject container.
+    /// </summary>
     [CreateAssetMenu(fileName = "PlayerSettings", menuName = "Abraxas/Player Settings")]
     class PlayerSettingsInstaller : ScriptableObjectInstaller<PlayerSettingsInstaller>
     {

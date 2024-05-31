@@ -1,11 +1,13 @@
 ﻿using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
 using System.Collections;
-using UnityEngine;
 using Zenject;
 
 namespace Abraxas.GameStates
 {
+    /// <summary>
+    /// BeginningState is the start of the turn.
+    /// </summary>
     public class BeginningState : GameState
     {
         #region Dependencies
@@ -15,7 +17,7 @@ namespace Abraxas.GameStates
         {
             _gameStateManager = gameStateManager;
         }
-        public class Factory : PlaceholderFactory<BeginningState>{}
+        public class Factory : PlaceholderFactory<BeginningState> { }
         #endregion
 
         #region Properties

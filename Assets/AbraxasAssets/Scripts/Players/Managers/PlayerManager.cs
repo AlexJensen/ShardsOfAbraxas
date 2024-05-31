@@ -5,6 +5,11 @@ using UnityEngine;
 
 namespace Abraxas.Players.Managers
 {
+
+    /// <summary>
+    /// PlayerManager is a class for managing players.
+    /// </summary>
+
     public class PlayerManager : NetworkedManager, IPlayerManager
     {
         #region Fields
@@ -42,7 +47,8 @@ namespace Abraxas.Players.Managers
         {
             Debug.Log($"SetActivePlayer: {player}");
             if (IsHost) _localPlayer = player;
-			_activePlayer.Value = player;
+
+            _activePlayer.Value = player;
             yield return WaitForClients();
         }
 

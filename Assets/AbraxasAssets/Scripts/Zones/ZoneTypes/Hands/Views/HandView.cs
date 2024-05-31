@@ -80,7 +80,7 @@ namespace Abraxas.Zones.Hands.Views
 
         public override void AddCardToHolder(ICardController card, int index = 0)
         {
-            
+
         }
 
         public void HidePlaceholder()

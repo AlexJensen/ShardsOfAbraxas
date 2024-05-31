@@ -3,8 +3,10 @@ using Abraxas.Cards.Managers;
 using Abraxas.Core;
 using Abraxas.GameStates;
 using Abraxas.Manas;
-using Abraxas.Players.Managers;
 using Abraxas.Network.Managers;
+using Abraxas.Players.Managers;
+
+
 using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Managers;
 using System.Collections;
@@ -78,7 +80,9 @@ namespace Abraxas.Games.Managers
             for (int i = 0; i < amount; i++)
             {
                 yield return _zoneManager.MoveCardFromDeckToHand(_deckManager.PeekCard(player, index), player);
-			}
+
+            }
+
         }
 
         public IEnumerator DrawStartOfTurnCardsForActivePlayer()
@@ -87,15 +91,16 @@ namespace Abraxas.Games.Managers
         }
         public IEnumerator GenerateStartOfTurnManaForActivePlayer()
         {
-            yield return _manaManager.GenerateManaFromDeckRatio(_playerManager.ActivePlayer, _manaManager.StartOfTurnMana);
-            _manaManager.IncrementStartOfTurnManaAmount();
+            yield return _manaManager.GenerateManaFromDeckRatio(_playerManager.ActivePlayer, _manaManager.GetStartOfTurnMana(_playerManager.ActivePlayer));
+            _manaManager.IncrementStartOfTurnManaAmount(_playerManager.ActivePlayer);
         }
 		#endregion
 
-		#region Server Methods
-		
 
-		public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
+        #region Server Methods
+
+
+        public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
         {
             if (!IsClient) return;
             int cardNetworkObjectId = _cardManager.GetCardIndex(card);

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+
+﻿using UnityEngine;
 
 namespace Abraxas.Manas.Views
 {
+    /// <summary>
+    /// IManaView is an interface for mana views.
+    /// </summary>
     interface IManaView
     {
         Players.Players Player { get; }

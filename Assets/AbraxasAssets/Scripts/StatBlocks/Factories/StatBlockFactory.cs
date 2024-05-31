@@ -7,6 +7,11 @@ using Zenject;
 
 namespace Abraxas.StatBlocks.Factories
 {
+
+    /// <summary>
+    /// StatBlockFactory is a factory for creating stat blocks.
+    /// </summary>
+
     class StatBlockFactory : IFactory<StatBlockData, IStatBlockView, IStatBlockController>
     {
         #region Dependencies

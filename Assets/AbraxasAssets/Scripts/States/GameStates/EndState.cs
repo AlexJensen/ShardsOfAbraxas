@@ -3,11 +3,13 @@ using Abraxas.Games.Managers;
 using Abraxas.Players.Managers;
 using System.Collections;
 using Unity.Netcode;
-using UnityEngine;
 using Zenject;
 
 namespace Abraxas.GameStates
 {
+    /// <summary>
+    /// EndState is the end of the turn.
+    /// </summary>
     public class EndState : GameState
     {
         #region Dependencies
@@ -15,13 +17,13 @@ namespace Abraxas.GameStates
         readonly IPlayerManager _playerManager;
         readonly NetworkManager _networkManager;
         [Inject]
-        public EndState(IGameManager gameManager, IGameStateManager gameStateManager, IPlayerManager playerManager, IEventManager eventManager) : base (gameManager, eventManager)
+        public EndState(IGameManager gameManager, IGameStateManager gameStateManager, IPlayerManager playerManager, IEventManager eventManager) : base(gameManager, eventManager)
         {
             _gameStateManager = gameStateManager;
             _playerManager = playerManager;
             _networkManager = NetworkManager.Singleton;
         }
-        public class Factory : PlaceholderFactory<EndState>{}
+        public class Factory : PlaceholderFactory<EndState> { }
         #endregion
 
         #region Properties

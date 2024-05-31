@@ -9,11 +9,15 @@ using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
 using System.Collections.Generic;
-using Zenject;
 using System.Linq;
+using Zenject;
+
 
 namespace Abraxas.Cards.Factories
 {
+    /// <summary>
+    /// CardFactory is a factory class for creating cards.
+    /// </summary>
     class CardFactory : IFactory<CardData, ICardController>
     {
         #region Dependencies

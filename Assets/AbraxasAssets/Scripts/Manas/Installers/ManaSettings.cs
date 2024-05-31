@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Abraxas.Manas
 {
+    /// <summary>
+    /// Mana is a static class that contains serializable settings for mana.
+    /// </summary>
     public static class Mana
     {
         #region Settings

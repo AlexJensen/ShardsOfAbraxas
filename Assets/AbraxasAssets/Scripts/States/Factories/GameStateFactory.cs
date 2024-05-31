@@ -2,6 +2,9 @@ using ModestTree;
 
 namespace Abraxas.GameStates.Factories
 {
+    /// <summary>
+    /// GameStateFactory is a factory for creating game states.
+    /// </summary>
     public class GameStateFactory : IGameStateFactory
     {
         readonly GameNotStartedState.Factory _gameNotStartedFactory;

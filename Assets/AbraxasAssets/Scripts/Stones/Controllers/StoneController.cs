@@ -6,12 +6,13 @@ using Zenject;
 namespace Abraxas.Stones.Controllers
 {
 
-	public class StoneController: IStoneController
+
+    public class StoneController : IStoneController
     {
         #region Dependencies
         protected IStoneModel Model;
-        
-        public void Initialize(IStoneModel model)
+
+        public virtual void Initialize(IStoneModel model)
         {
             Model = model;
         }
@@ -37,7 +38,8 @@ namespace Abraxas.Stones.Controllers
             set => Model.Info = value;
         }
         public StoneType StoneType
-        { 
+
+        {
             get => Model.StoneType;
             set => Model.StoneType = value;
         }

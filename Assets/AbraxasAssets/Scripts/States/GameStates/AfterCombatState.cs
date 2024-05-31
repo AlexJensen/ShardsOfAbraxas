@@ -5,12 +5,15 @@ using Zenject;
 
 namespace Abraxas.GameStates
 {
+    /// <summary>
+    /// AfterCombatState is the second main phase state that directly follows combat.
+    /// </summary>
     public class AfterCombatState : GameState
     {
         #region Dependencies
         [Inject]
-        public AfterCombatState(IGameManager gameManager, IEventManager eventManager) : base(gameManager, eventManager){}
-        public class Factory : PlaceholderFactory<AfterCombatState>{}
+        public AfterCombatState(IGameManager gameManager, IEventManager eventManager) : base(gameManager, eventManager) { }
+        public class Factory : PlaceholderFactory<AfterCombatState> { }
         #endregion
 
         #region Properties

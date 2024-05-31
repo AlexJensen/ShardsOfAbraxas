@@ -2,15 +2,20 @@
 using Abraxas.Stones;
 using System;
 
+using System.Numerics;
+using UnityEngine;
+
 namespace Abraxas.StatBlocks.Models
 {
+    /// <summary>
+    /// IStatBlockModel is an interface for the StatBlockModel class.
+    /// </summary>
     public interface IStatBlockModel
     {
-        int this[StatValues index] { set; get; }
-
         string StatsStr { get; }
         StoneType StoneType { get; set; }
         int Cost { get; set; }
+        StatData Stats { get; set; }
 
         event Action OnStatsChanged;
 

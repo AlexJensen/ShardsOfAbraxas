@@ -2,6 +2,9 @@
 
 namespace Abraxas.Cards.Controllers
 {
+    /// <summary>
+    /// CardMouseOverHandler is a controller-level class for handling card mouse over events.
+    /// </summary>
     class CardMouseOverHandler : ICardMouseOverHandler
     {
         #region Dependencies

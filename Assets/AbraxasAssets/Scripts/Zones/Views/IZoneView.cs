@@ -1,6 +1,4 @@
 ﻿using Abraxas.Cards.Controllers;
-using Abraxas.Cards.Views;
-using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Models;
 using System.Collections;
 

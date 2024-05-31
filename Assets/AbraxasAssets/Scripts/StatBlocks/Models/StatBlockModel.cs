@@ -1,9 +1,14 @@
 ﻿using Abraxas.StatBlocks.Data;
 using Abraxas.Stones;
+using NSubstitute.Routing.Handlers;
 using System;
+using UnityEngine;
 
 namespace Abraxas.StatBlocks.Models
 {
+    /// <summary>
+    /// StatBlockModel contains all data that makes up a stat block.
+    /// </summary>
     class StatBlockModel : IStatBlockModel
     {
         #region Events
@@ -19,7 +24,7 @@ namespace Abraxas.StatBlocks.Models
         #endregion
 
         #region Properties
-        public string StatsStr => _data[StatValues.ATK].ToString() + "/" + _data[StatValues.DEF].ToString() + "/" + _data[StatValues.MV].ToString();
+        public string StatsStr => _data.Stats.ATK.ToString() + "/" + _data.Stats.DEF.ToString() + "/" + _data.Stats.SPD.ToString()+ "/" + _data.Stats.RNG.ToString();
 
         public StoneType StoneType
         {
@@ -39,15 +44,7 @@ namespace Abraxas.StatBlocks.Models
             }
         }
 
-        public int this[StatValues index]
-        {
-            get => _data[index];
-            set
-            {
-                _data[index] = value;
-                OnStatsChanged.Invoke();
-            }
-        }
+        public StatData Stats { get => _data.Stats; set => _data.Stats = value; }
         #endregion
     }
 }

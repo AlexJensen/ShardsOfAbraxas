@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace Abraxas.Players
 {
-    public class PlayerInstance: NetworkBehaviour
+    /// <summary>
+    /// PlayerInstance is a NetworkBehaviour that represents a player in the game.
+    /// </summary>
+    public class PlayerInstance : NetworkBehaviour
     {
 
 

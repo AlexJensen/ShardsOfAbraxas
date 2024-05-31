@@ -10,6 +10,9 @@ using System.Drawing;
 
 namespace Abraxas.Cards.Controllers
 {
+    /// <summary>
+    /// ICardController is an interface for Card Controllers.
+    /// </summary>
     public interface ICardController
     {
         List<IStoneController> Stones { get; }
@@ -20,7 +23,6 @@ namespace Abraxas.Cards.Controllers
         bool Hidden { get; set; }
         Players.Players Owner { get; }
         Players.Players OriginalOwner { get; }
-        Point FieldPosition { get; set; }
         ICellController Cell { get; set; }
         IStatBlockController StatBlock { get; }
         ITransformManipulator TransformManipulator { get; }

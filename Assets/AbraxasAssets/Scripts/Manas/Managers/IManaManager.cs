@@ -7,16 +7,19 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Manas
 {
+    /// <summary>
+    /// IManaManager is an interface for the ManaManager class.
+    /// </summary>
     public interface IManaManager
     {
-        int StartOfTurnMana { get; }
         IEnumerator GenerateManaFromDeckRatio(Player player, int startOfTurnMana);
         bool CanPurchaseCard(ICardController card);
         void PurchaseCard(ICardController card);
         bool CanPurchaseStoneActivation(IStoneController stone);
         void PuchaseStoneActivation(IStoneController stone);
-        void IncrementStartOfTurnManaAmount();
+        void IncrementStartOfTurnManaAmount(Player player);
         void InitializeManaFromDeck(IDeckController deck);
         void InitializeManaFromDecks(List<IDeckController> decks);
+        int GetStartOfTurnMana(Player player);
     }
 }

@@ -1,5 +1,7 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cells.Views;
+using Abraxas.Core;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,7 +23,7 @@ namespace Abraxas.Cards.Views
         #region Fields
         Canvas _canvas;
         GraphicRaycaster _graphicRaycaster;
-        PointerEventData lastPointerData;
+        PointerEventData _lastPointerData;
         #endregion
 
         #region Properties
@@ -42,24 +44,39 @@ namespace Abraxas.Cards.Views
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            lastPointerData = eventData;
+            _lastPointerData = eventData;
             _dragHandler.OnEndDrag();
         }
 
         public void DetermineLastDragRaycast()
         {
             List<RaycastResult> results = new();
-            GraphicRaycaster.Raycast(lastPointerData, results);
+            GraphicRaycaster.Raycast(_lastPointerData, results);
             foreach (var hit in results)
             {
-                ICellView cell = hit.gameObject.GetComponent<ICellView>();
-                if (cell != null)
+                if (hit.gameObject.TryGetComponent<ICellView>(out var cell))
                 {
-                    StartCoroutine(_dragHandler.OnCardDraggedOverCell(cell.Controller));
+                    if (Application.isPlaying)
+                    {
+                        StartCoroutine(_dragHandler.OnCardDraggedOverCell(cell.Controller));
+                    }
+                    else
+                    {
+                        var enumerator = _dragHandler.OnCardDraggedOverCell(cell.Controller);
+                        Utilities.RunCoroutineToCompletion(enumerator);
+                    }
                     return;
                 }
             }
-            StartCoroutine(_dragHandler.ReturnFromOverlayToHand());
+            if (Application.isPlaying)
+            {
+                StartCoroutine(_dragHandler.ReturnFromOverlayToHand());
+            }
+            else
+            {
+                var enumerator = _dragHandler.ReturnFromOverlayToHand();
+                Utilities.RunCoroutineToCompletion(enumerator);
+            }
         }
         #endregion
     }

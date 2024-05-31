@@ -20,9 +20,9 @@ namespace Abraxas.Cards.Models
         public Dictionary<StoneType, int> TotalCosts { get; }
         public IZoneController Zone { get; set; }
         public bool Hidden { get; set; }
-        Point FieldPosition { get; set; }
+
         ICellController Cell { get; set; }
-        int ImageIndex { get; set; }
+
 
         event Action OnTitleChanged;
         event Action OnOwnerChanged;

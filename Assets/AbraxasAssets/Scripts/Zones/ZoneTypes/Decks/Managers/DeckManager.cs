@@ -18,19 +18,19 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Decks.Managers
 {
-	class DeckManager : NetworkedManager, IDeckManager
-	{
+
+    class DeckManager : NetworkedManager, IDeckManager
+    {
         #region Dependencies
-        IRandomManager _randomManager;
-		CardController.Factory _cardFactory;
-		ZoneFactory<IDeckView, DeckController, DeckModel> _deckFactory;
-		[Inject]
-		public void Construct(IRandomManager randomManager, CardController.Factory cardFactory, ZoneFactory<IDeckView, DeckController, DeckModel> deckFactory)
-		{
-            _randomManager = randomManager;
-			_cardFactory = cardFactory;
-			_deckFactory = deckFactory;
-		}
+        CardController.Factory _cardFactory;
+        ZoneFactory<IDeckView, DeckController, DeckModel> _deckFactory;
+        [Inject]
+        public void Construct(CardController.Factory cardFactory, ZoneFactory<IDeckView, DeckController, DeckModel> deckFactory)
+        {
+            _cardFactory = cardFactory;
+            _deckFactory = deckFactory;
+        }
+
         #endregion
 
         #region Fields
@@ -52,42 +52,44 @@ namespace Abraxas.Zones.Decks.Managers
 
         #region Methods
         public Dictionary<StoneType, int> GetDeckCost(Player player)
-		{
-			return GetPlayerDeck(player).GetTotalCostOfZone();
-		}
-		public IEnumerator MoveCardToDeck(Player player, ICardController card)
-		{
-			yield return GetPlayerDeck(player).MoveCardToZone(card);
-		}
-		public void RemoveCard(Player player, ICardController card)
-		{
-			GetPlayerDeck(player).RemoveCard(card);
-		}
-		public ICardController PeekCard(Player player, int index)
-		{
-			return GetPlayerDeck(player).PeekCard(index);
-		}
-		private IDeckController GetPlayerDeck(Player player)
-		{
-			return _decks.Find(x => x.Player == player);
-		}
-		#endregion
 
-		#region Server Methods
-		#region Server Side
-		public IEnumerator ShuffleDeck(Player player)
-		{
-			if (!IsServer) yield break;
-			if (!IsHost) GetPlayerDeck(player).Shuffle();
-			ShuffleDeckClientRpc(player);
-			yield return WaitForClients();
-		}
-		public IEnumerator LoadDecks()
-		{
-			if (!IsServer) yield break;
+        {
+            return GetPlayerDeck(player).GetTotalCostOfZone();
+        }
+        public IEnumerator MoveCardToDeck(Player player, ICardController card)
+        {
+            yield return GetPlayerDeck(player).MoveCardToZone(card);
+        }
+
+        public void RemoveCard(Player player, ICardController card)
+        {
+            GetPlayerDeck(player).RemoveCard(card);
+        }
+        public ICardController PeekCard(Player player, int index)
+        {
+            return GetPlayerDeck(player).PeekCard(index);
+        }
+        private IDeckController GetPlayerDeck(Player player)
+        {
+            return _decks.Find(x => x.Player == player);
+        }
+        #endregion
+
+        #region Server Methods
+        #region Server Side
+        public IEnumerator ShuffleDeck(Player player)
+        {
+            if (!IsServer) yield break;
+            if (!IsHost) GetPlayerDeck(player).Shuffle();
+            ShuffleDeckClientRpc(player);
+            yield return WaitForClients();
+        }
+        public IEnumerator LoadDecks()
+        {
+            if (!IsServer) yield break;
             yield return LoadDeck(Player.Player1);
             yield return LoadDeck(Player.Player2);
-		}
+        }
 
         private IEnumerator LoadDeck(Player player)
         {
@@ -106,6 +108,7 @@ namespace Abraxas.Zones.Decks.Managers
             {
                 string serializedCardData = JsonConvert.SerializeObject(cardData, _settings);
                 byte[] cardDataBytes = System.Text.Encoding.UTF8.GetBytes(serializedCardData);
+
 
                 if (batchSizeBytes + cardDataBytes.Length > 6144)
                 {
@@ -139,7 +142,7 @@ namespace Abraxas.Zones.Decks.Managers
 
         private IEnumerator SendInitializeBuildingDeckAndWait(Player player)
         {
-			InitializeBuildingDeckClientRpc(player);
+            InitializeBuildingDeckClientRpc(player);
             yield return WaitForClients();
         }
 
@@ -148,7 +151,9 @@ namespace Abraxas.Zones.Decks.Managers
             BuildCardsBatchClientRpc(player, serializedBatch);
             yield return WaitForClients();
         }
-		#endregion
+        #endregion
+
+        
 
 		#region Client Side
 		[ClientRpc]
@@ -198,13 +203,17 @@ namespace Abraxas.Zones.Decks.Managers
                 OriginalOwner = player,
                 Stones = new List<StoneWrapper>(cardData.Stones),
                 StatBlock = cardData.StatBlock,
-                ImageIndex = cardData.ImageIndex
+
             };
 
             var cardController = _cardFactory.Create(modifiedCardData);
             deckController.AddCard(cardController);
         }
-		#endregion
-		#endregion
-	}
+
+
+
+        #endregion
+        #endregion
+    }
+
 }

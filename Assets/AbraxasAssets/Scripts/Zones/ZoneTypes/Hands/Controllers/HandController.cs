@@ -9,7 +9,8 @@ using Unity.Netcode;
 
 namespace Abraxas.Zones.Hands.Controllers
 {
-	class HandController : ZoneController, IHandController
+
+    class HandController : ZoneController, IHandController
     {
         #region Dependencies
         readonly IPlayerManager _playerManager;
@@ -27,7 +28,8 @@ namespace Abraxas.Zones.Hands.Controllers
         public int CardPlaceholderSiblingIndex => ((IHandView)View).CardPlaceholderSiblingIndex;
 		#endregion
 
-		#region Methods
+
+        #region Methods
         public override IEnumerator MoveCardToZone(ICardController card, int index = 0)
         {
             if (!NetworkManager.Singleton.IsServer) card.Hidden = card.Owner != _playerManager.LocalPlayer && card.PreviousZone is DeckController;

@@ -8,7 +8,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Models
 {
-    abstract class ZoneModel :IZoneModel
+    abstract class ZoneModel : IZoneModel
     {
         #region Dependencies
         readonly IRandomManager _randomManager;

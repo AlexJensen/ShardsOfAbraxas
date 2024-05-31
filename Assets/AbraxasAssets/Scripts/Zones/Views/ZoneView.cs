@@ -44,7 +44,7 @@ namespace Abraxas.Zones.Views
         public abstract float MoveCardTime { get; }
         public IOverlayManager OverlayManager { get => _overlayManager; set => _overlayManager = value; }
         public Card.Settings.AnimationSettings AnimationSettings { get => _animationSettings; }
-        protected IZoneModel Model { get => _model;}
+        protected IZoneModel Model { get => _model; }
         #endregion
 
         #region Methods

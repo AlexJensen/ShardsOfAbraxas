@@ -54,6 +54,4 @@ namespace Abraxas.Events.Managers
     }
 
     public interface IGameEventListenerBase { }
-
-    
 }

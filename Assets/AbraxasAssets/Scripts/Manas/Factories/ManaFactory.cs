@@ -5,6 +5,10 @@ using Zenject;
 
 namespace Abraxas.Manas.Factories
 {
+
+    /// <summary>
+    /// ManaFactory is a Zenject factory for creating mana gameobjects from views.
+    /// </summary>
     class ManaFactory : IFactory<IManaView, IManaController>
     {
         readonly DiContainer _container;

@@ -6,9 +6,13 @@ using Zenject;
 
 namespace Abraxas.Manas.Installers
 {
+    /// <summary>
+    /// ManaInstaller is a Unity-Specific Zenject installer for the mana system.
+    /// </summary>
     class ManaInstaller : MonoInstaller
     {
-        [Inject] private readonly Mana.Settings _manaSettings;
+        [Inject]
+        public readonly Mana.Settings _manaSettings;
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<ManaManager>().FromComponentInHierarchy().AsSingle();

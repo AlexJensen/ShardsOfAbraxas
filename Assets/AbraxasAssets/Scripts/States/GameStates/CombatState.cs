@@ -6,6 +6,9 @@ using Zenject;
 
 namespace Abraxas.GameStates
 {
+    /// <summary>
+    /// CombatState is the state where cards move and combat occurs between two players.
+    /// </summary>
     public class CombatState : GameState
     {
         #region Dependency Injections
@@ -17,7 +20,7 @@ namespace Abraxas.GameStates
             _gameStateManager = gameStateManager;
             _fieldManager = fieldManager;
         }
-        public class Factory : PlaceholderFactory<CombatState>{}
+        public class Factory : PlaceholderFactory<CombatState> { }
         #endregion
 
         #region Properties

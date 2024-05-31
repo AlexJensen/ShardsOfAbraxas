@@ -4,7 +4,6 @@ namespace Abraxas.Zones.Decks.Controllers
 {
 	public interface IDeckController : IZoneController
     {
-		
-		void Shuffle();
+        void Shuffle();
     }
 }

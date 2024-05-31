@@ -5,7 +5,10 @@ using Zenject;
 
 namespace Abraxas.States.Installers
 {
-    class GameStateInstaller : MonoInstaller 
+    /// <summary>
+    /// GameStateInstaller is a Zenject installer for the game state system.
+    /// </summary>
+    class GameStateInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {

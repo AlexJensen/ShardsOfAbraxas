@@ -57,7 +57,8 @@ namespace Abraxas.Zones.Controllers
             card.Zone = this;
             _view.AddCardToHolder(card, index);
             _model.AddCard(card, index);
-        }   
+
+        }
         #endregion
 
     }

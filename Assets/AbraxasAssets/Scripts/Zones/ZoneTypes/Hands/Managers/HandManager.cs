@@ -11,7 +11,8 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Hands.Managers
 {
-	class HandManager : MonoBehaviour, IHandManager
+
+    class HandManager : MonoBehaviour, IHandManager
     {
         #region Dependencies
         [SerializeField]

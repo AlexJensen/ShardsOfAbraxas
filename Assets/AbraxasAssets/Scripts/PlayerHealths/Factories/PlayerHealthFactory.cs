@@ -5,6 +5,9 @@ using Zenject;
 
 namespace Abraxas.Health.Factories
 {
+    /// <summary>
+    /// PlayerHealthFactory is a Zenject factory for creating player health controllers.
+    /// </summary>
     class PlayerHealthFactory : IFactory<IPlayerHealthView, IPlayerHealthController>
     {
         readonly DiContainer _container;

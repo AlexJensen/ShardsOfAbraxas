@@ -1,29 +1,21 @@
 ﻿using Abraxas.Stones;
 using System;
 using Unity.Netcode;
-using UnityEngine;
-
 namespace Abraxas.StatBlocks.Data
 {
+    /// <summary>
+    /// StatBlockData is a serializable struct that contains all data to represent a stat block.
+    /// </summary>
     [Serializable]
     public struct StatBlockData : INetworkSerializable
     {
         #region Fields
-        public Vector3Int Stats;
+        public StatData Stats;
         public int Cost;
         public StoneType StoneType;
         #endregion
 
         #region Properties
-        public int this[StatValues index]
-        {
-            get => Stats[(int)index];
-            set
-            {
-                Stats[(int)index] = value;
-            }
-        }
-
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref Stats);
@@ -32,4 +24,53 @@ namespace Abraxas.StatBlocks.Data
         }
         #endregion
     }
+
+    [Serializable]
+    public struct StatData :INetworkSerializable
+    {
+        public int ATK;
+        public int DEF;
+        public int SPD;
+        public int RNG;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref ATK);
+            serializer.SerializeValue(ref DEF);
+            serializer.SerializeValue(ref SPD);
+            serializer.SerializeValue(ref RNG);
+        }
+
+        public static StatData operator +(StatData a, StatData b)
+        {
+            return new StatData
+            {
+                ATK = a.ATK + b.ATK,
+                DEF = a.DEF + b.DEF,
+                SPD = a.SPD + b.SPD,
+                RNG = a.RNG + b.RNG
+            };
+        }
+
+        public static StatData operator -(StatData a, StatData b)
+        {
+            return new StatData
+            {
+                ATK = a.ATK - b.ATK,
+                DEF = a.DEF - b.DEF,
+                SPD = a.SPD - b.SPD,
+                RNG = a.RNG - b.RNG
+            };
+        }
+        public bool Equals(StatData other)
+        {
+            return ATK.Equals(other.ATK) &&
+                DEF.Equals(other.DEF) &&
+                SPD.Equals(other.SPD) &&
+                RNG.Equals(other.RNG);
+        }
+    }
+
+
+
 }

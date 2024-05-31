@@ -6,12 +6,12 @@ using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Controllers;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Models
 {
-	class CardModel : ICardModel {
+    class CardModel : ICardModel
+    {
         #region Events
         public event Action OnTitleChanged;
         public event Action OnOwnerChanged;
@@ -33,7 +33,6 @@ namespace Abraxas.Cards.Models
         List<IStoneController> _stones = new();
         IZoneController _zone;
         ICellController _cell;
-        Point _fieldPosition;
         bool _hidden;
         IStatBlockController _statBlock;
         #endregion
@@ -66,12 +65,9 @@ namespace Abraxas.Cards.Models
                 _data.OriginalOwner = value;
             }
         }
-        public int ImageIndex
+
+        public List<IStoneController> Stones
         {
-            get => _data.ImageIndex;
-            set => _data.ImageIndex = value;
-        }
-        public List<IStoneController> Stones {
             get => _stones;
             set => _stones = value;
         }
@@ -84,11 +80,6 @@ namespace Abraxas.Cards.Models
         {
             get => _cell;
             set => _cell = value;
-        }
-        public Point FieldPosition
-        {
-            get => _fieldPosition;
-            set => _fieldPosition = value;
         }
         public IZoneController Zone
         {

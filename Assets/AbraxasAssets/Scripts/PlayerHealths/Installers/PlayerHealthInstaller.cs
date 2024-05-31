@@ -7,6 +7,9 @@ using Zenject;
 
 namespace Abraxas.Health.Installers
 {
+    /// <summary>
+    /// PlayerHealthInstaller is a Unity-Specific Zenject installer for the player health system.
+    /// </summary>
     class PlayerHealthInstaller : MonoInstaller
     {
         public override void InstallBindings()

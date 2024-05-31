@@ -37,9 +37,11 @@ namespace Abraxas.CardViewers
         {
             _title.text = card.Title;
             _cost.text = card.GetCostText();
-            _attack.text = card.StatBlock[StatValues.ATK].ToString();
-            _health.text = card.StatBlock[StatValues.DEF].ToString();
-            _speed.text = card.StatBlock[StatValues.MV].ToString();
+
+            _attack.text = card.StatBlock.Stats.ATK.ToString();
+            _health.text = card.StatBlock.Stats.DEF.ToString();
+            _speed.text = card.StatBlock.Stats.SPD.ToString();
+
             _image.sprite = card.ImageManipulator.Image.sprite;
             _image.transform.localScale = card.ImageManipulator.Image.transform.localScale;
 

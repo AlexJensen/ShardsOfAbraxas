@@ -11,6 +11,9 @@ using System.Collections;
 
 namespace Abraxas.Cards.Controllers
 {
+    /// <summary>
+    /// CardDragHandler is a controller-level class for handling card dragging events.
+    /// </summary>
     class CardDragHandler : ICardDragHandler
     {
         #region Dependencies
@@ -25,8 +28,7 @@ namespace Abraxas.Cards.Controllers
         readonly IFieldManager _fieldManager;
         readonly IManaManager _manaManager;
         public CardDragHandler(Card.Settings overlaySettings, IGameManager gameManager, IOverlayManager overlayManager, IPlayerManager playerManager,
-                               IHandManager handManager, IFieldManager fieldManager,
-                               IManaManager manaManager)
+                               IHandManager handManager, IFieldManager fieldManager, IManaManager manaManager)
         {
             _cardAnimationSettings = overlaySettings.animationSettings;
             _overlayManager = overlayManager;

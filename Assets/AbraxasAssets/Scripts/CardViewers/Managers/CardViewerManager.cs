@@ -33,7 +33,7 @@ namespace Abraxas.CardViewers.Managers
         #endregion
 
         #region Properties
-        RectTransform CardDetailRect { get =>  _cardDetailRect != null ? _cardDetailRect : _cardDetailRect = (RectTransform)_cardViewer.transform; }
+        RectTransform CardDetailRect { get => _cardDetailRect != null ? _cardDetailRect : _cardDetailRect = (RectTransform)_cardViewer.transform; }
         #endregion
 
         #region Methods

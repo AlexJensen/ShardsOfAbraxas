@@ -3,10 +3,11 @@ using Abraxas.Zones.Models;
 
 namespace Abraxas.Zones.Hands.Models
 {
-	class HandModel : ZoneModel, IHandModel
-	{
-		public HandModel(IRandomManager randomManager) : base(randomManager)
-		{
-		}
-	}
+
+    class HandModel : ZoneModel, IHandModel
+    {
+        public HandModel(IRandomManager randomManager) : base(randomManager)
+        {
+        }
+    }
 }

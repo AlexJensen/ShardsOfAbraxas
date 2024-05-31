@@ -1,9 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using Zenject;
-using ModestTree;
-
-#if UNITY_EDITOR && !UNITY_WEBPLAYER
+﻿#if UNITY_EDITOR && !UNITY_WEBPLAYER
 using Moq;
 #endif
 

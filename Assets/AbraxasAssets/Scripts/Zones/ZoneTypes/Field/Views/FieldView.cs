@@ -45,10 +45,10 @@ namespace Abraxas.Zones.Fields.Views
             OverlayManager.ClearCard(card);
         }
 
-		public override void AddCardToHolder(ICardController card, int index = 0)
-		{
-			//
-		}
-		#endregion
-	}
+        public override void AddCardToHolder(ICardController card, int index = 0)
+        {
+            //
+        }
+        #endregion
+    }
 }

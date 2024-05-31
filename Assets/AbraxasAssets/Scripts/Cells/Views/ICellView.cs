@@ -1,7 +1,7 @@
 ﻿using Abraxas.Cells.Controllers;
 using System.Drawing;
-using Player = Abraxas.Players.Players;
 using UnityEngine;
+using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cells.Views
 {

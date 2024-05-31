@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a008d60f1ffc5e54195f4bcb9effa69c, type: 3}
+  m_Name: CardSettings
+  m_EditorClassIdentifier: 
+  CardSettings:
+    cardPrefab: {fileID: 2608983517655110011, guid: b2241abfffcce154a81f9cb206f01644, type: 3}
+    animationSettings:
+      MoveCardToFieldTime: 0.2
+      MoveCardToDeckTime: 0.2
+      MoveCardToGraveyardTime: 0.2
+      MoveCardToHandTime: 0.2
+      MoveCardFromCellToCellOnFieldTime: 0.2
+      ScaleCardToOverlayTime: 0.2
+    images:
+    - {fileID: 1488897388, guid: 783252ab1a30d924a9ef5d6c5aec2d9b, type: 3}
+    - {fileID: 696196610, guid: 783252ab1a30d924a9ef5d6c5aec2d9b, type: 3}
+    - {fileID: -1543106169, guid: 783252ab1a30d924a9ef5d6c5aec2d9b, type: 3}
+    - {fileID: -1383519174, guid: 783252ab1a30d924a9ef5d6c5aec2d9b, type: 3}

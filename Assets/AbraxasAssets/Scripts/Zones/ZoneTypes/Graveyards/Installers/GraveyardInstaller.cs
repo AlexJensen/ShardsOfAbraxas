@@ -8,7 +8,7 @@ using Zenject;
 
 namespace Abraxas.Graveyards.Installers
 {
-    class GraveyardInstaller :Installer<GraveyardInstaller>
+    class GraveyardInstaller : Installer<GraveyardInstaller>
     {
         public override void InstallBindings()
         {

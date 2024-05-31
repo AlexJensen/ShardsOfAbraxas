@@ -1,16 +1,14 @@
 using Abraxas.Cards.Controllers;
-using Abraxas.Zones.Fields.Views;
 using Abraxas.Cells.Controllers;
+using Abraxas.Players.Managers;
+using Abraxas.Zones.Controllers;
+using Abraxas.Zones.Fields.Models;
+using Abraxas.Zones.Fields.Views;
 using System;
 using System.Collections;
-using System.Linq;
 using System.Drawing;
-
+using System.Linq;
 using Player = Abraxas.Players.Players;
-using Abraxas.Zones.Controllers;
-using Abraxas.Players.Managers;
-using Abraxas.Zones.Fields.Models;
-using Zenject;
 
 namespace Abraxas.Zones.Fields.Controllers
 {
@@ -36,23 +34,23 @@ namespace Abraxas.Zones.Fields.Controllers
         public IEnumerator CombatMovement(ICardController card, Point movement)
         {
             Point destination = new(
-                Math.Clamp(card.FieldPosition.X + movement.X, 0, ((IFieldModel)Model).FieldGrid[0].Count - 1),
-                Math.Clamp(card.FieldPosition.Y + movement.Y, 0, ((IFieldModel)Model).FieldGrid.Count - 1));
+                Math.Clamp(card.Cell.FieldPosition.X + movement.X, 0, ((IFieldModel)Model).FieldGrid[0].Count - 1),
+                Math.Clamp(card.Cell.FieldPosition.Y + movement.Y, 0, ((IFieldModel)Model).FieldGrid.Count - 1));
 
             ICardController collided = null;
             var FieldGrid = ((IFieldModel)Model).FieldGrid;
 
-            for (int i = card.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
+            for (int i = card.Cell.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
             {
-                if (FieldGrid[card.FieldPosition.Y][i].CardsOnCell <= 0) continue;
+                if (FieldGrid[card.Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
                 destination.X = i - Math.Sign(movement.X);
-                collided = FieldGrid[card.FieldPosition.Y][i].GetCardAtIndex(0);
+                collided = FieldGrid[card.Cell.FieldPosition.Y][i].GetCardAtIndex(0);
                 break;
             }
-            
-            if (destination != card.FieldPosition)
+
+            if (destination != card.Cell.FieldPosition)
             {
-                yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[destination.Y][destination.X]);            
+                yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[destination.Y][destination.X]);
             }
             if (FieldGrid[destination.Y][destination.X].Player != card.Owner && FieldGrid[destination.Y][destination.X].Player != Player.Neutral)
             {
@@ -69,14 +67,12 @@ namespace Abraxas.Zones.Fields.Controllers
             card.Cell?.RemoveCard(card);
             yield return ((IFieldView)View).MoveCardToCell(card, cell);
             cell.AddCard(card);
-            card.Cell = cell;
+            AddCard(card);
         }
 
         public IEnumerator MoveCardToCell(ICardController card, Point fieldPos)
         {
-			card.FieldPosition = fieldPos;
 			yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[fieldPos.Y][fieldPos.X]);
-            AddCard(card);
         }
 
         public override void RemoveCard(ICardController card)
@@ -88,7 +84,7 @@ namespace Abraxas.Zones.Fields.Controllers
 
         public override void AddCard(ICardController card, int index = 0)
         {
-			card.Hidden = false;
+            card.Hidden = false;
             base.AddCard(card, index);
         }
 

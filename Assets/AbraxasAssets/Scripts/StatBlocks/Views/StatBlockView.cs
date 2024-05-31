@@ -9,6 +9,9 @@ using Zenject;
 
 namespace Abraxas.StackBlocks.Views
 {
+    /// <summary>
+    /// StatBlockView is a MonoBehaviour that displays the stats of a stat block.
+    /// </summary>
     class StatBlockView : NetworkBehaviour, IStatBlockView
     {
         #region Dependencies

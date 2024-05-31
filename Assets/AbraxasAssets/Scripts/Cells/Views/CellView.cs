@@ -24,7 +24,11 @@ namespace Abraxas.Cells.Views
         {
             _controller = controller;
 
-           // _cellBack.sprite = _cellSettings.cellBackTextures[_randomManager.Range(0, _cellSettings.cellBackTextures.Length)];
+
+            if (_cellBack != null)
+            {
+                _cellBack.sprite = _cellSettings.cellBackTextures[_randomManager.Range(0, _cellSettings.cellBackTextures.Length)];
+            }
         }
         #endregion
 

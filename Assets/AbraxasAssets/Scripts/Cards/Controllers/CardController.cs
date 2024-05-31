@@ -6,8 +6,10 @@ using Abraxas.Core;
 using Abraxas.Events;
 using Abraxas.Events.Managers;
 using Abraxas.Health.Managers;
-using Abraxas.StatBlocks;
+
 using Abraxas.StatBlocks.Controllers;
+using Abraxas.StatBlocks.Data;
+
 using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
 using Abraxas.Unity.Interfaces;
@@ -23,6 +25,9 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Controllers
 {
+    /// <summary>
+    /// CardController facilitates communication between the card gameobject's model, view, managers, and other controllers.
+    /// </summary>
     class CardController : ICardController, IGameEventListener<ManaModifiedEvent>,
                                             IGameEventListener<CardChangedZonesEvent>
 
@@ -53,14 +58,18 @@ namespace Abraxas.Cards.Controllers
             _view = view;
 
             _eventManager.AddListener(typeof(ManaModifiedEvent), this as IGameEventListener<ManaModifiedEvent>);
-			_eventManager.AddListener(typeof(CardChangedZonesEvent), this as IGameEventListener<CardChangedZonesEvent>);
-		}
+
+            _eventManager.AddListener(typeof(CardChangedZonesEvent), this as IGameEventListener<CardChangedZonesEvent>);
+        }
+
 
         public void OnDestroy()
         {
             _eventManager.RemoveListener(typeof(ManaModifiedEvent), this as IGameEventListener<ManaModifiedEvent>);
-			_eventManager.RemoveListener(typeof(CardChangedZonesEvent), this as IGameEventListener<CardChangedZonesEvent>);
-		}
+
+            _eventManager.RemoveListener(typeof(CardChangedZonesEvent), this as IGameEventListener<CardChangedZonesEvent>);
+        }
+
 
         public class Factory : PlaceholderFactory<CardData, ICardController>
         {
@@ -74,18 +83,19 @@ namespace Abraxas.Cards.Controllers
         public string Title { get => _model.Title; set => _model.Title = value; }
         public Player Owner { get => _model.Owner; set => _model.Owner = value; }
         public Player OriginalOwner { get => _model.OriginalOwner; set => _model.OriginalOwner = value; }
-        public Dictionary<StoneType, int> TotalCosts { get => _model.TotalCosts;}
-        public Point FieldPosition { get => _model.FieldPosition; set => _model.FieldPosition = value; }
+
+        public Dictionary<StoneType, int> TotalCosts { get => _model.TotalCosts; }
         public ICellController Cell { get => _model.Cell; set => _model.Cell = value; }
         public IZoneController Zone
-		{
-			get => _model.Zone; set
-			{
+        {
+            get => _model.Zone; set
+            {
                 PreviousZone = Zone;
-				_model.Zone = value;
-			}
-		}
-		public IZoneController PreviousZone { get; set; }
+                _model.Zone = value;
+            }
+        }
+        public IZoneController PreviousZone { get; set; }
+
         public bool Hidden { get => _model.Hidden; set => _model.Hidden = value; }
         public ITransformManipulator TransformManipulator => (ITransformManipulator)_view;
 
@@ -98,16 +108,27 @@ namespace Abraxas.Cards.Controllers
         {
             _healthManager.ModifyPlayerHealth(_model.Owner ==
                 Player.Player1 ? Player.Player2 : Player.Player1,
-                -_model.StatBlock[StatValues.ATK]);
+
+                -_model.StatBlock.Stats.ATK);
+
             yield return _zoneManager.MoveCardFromFieldToDeck(this, Owner);
             _deckManager.ShuffleDeck(_model.Owner);
         }
         public IEnumerator Fight(ICardController opponent)
         {
             if (opponent.Owner == Owner) yield break;
-            IStatBlockController collidedStats = opponent.StatBlock;
-            collidedStats[StatValues.DEF] -= _model.StatBlock[StatValues.ATK];
-            _model.StatBlock[StatValues.DEF] -= collidedStats[StatValues.ATK];
+
+            IStatBlockController collided = opponent.StatBlock;
+
+            StatData collidedStats = collided.Stats;
+            StatData stats = _model.StatBlock.Stats;
+
+            collidedStats.DEF -= _model.StatBlock.Stats.ATK;
+            stats.DEF -= collidedStats.ATK;
+
+            collided.Stats = collidedStats;
+            _model.StatBlock.Stats = stats;
+
 
             yield return Utilities.WaitForCoroutines(
                 opponent.CheckDeath(),
@@ -115,14 +136,18 @@ namespace Abraxas.Cards.Controllers
         }
         public IEnumerator CheckDeath()
         {
-            if (_model.StatBlock[StatValues.DEF] > 0) yield break;
+
+            if (_model.StatBlock.Stats.DEF > 0) yield break;
+
             yield return _zoneManager.MoveCardFromFieldToGraveyard(this, Owner);
         }
         public IEnumerator Combat()
         {
             yield return _fieldManager.CombatMovement(this, new Point(
-                _model.Owner == Player.Player1 ? _model.StatBlock[StatValues.MV] :
-                _model.Owner == Player.Player2 ? -_model.StatBlock[StatValues.MV] : 0, 0));
+
+                _model.Owner == Player.Player1 ? _model.StatBlock.Stats.SPD :
+                _model.Owner == Player.Player2 ? -_model.StatBlock.Stats.SPD : 0, 0));
+
         }
 
         public void ChangeScale(PointF pointF, float scaleCardToOverlayTime)
@@ -149,23 +174,22 @@ namespace Abraxas.Cards.Controllers
         #region Delegate Methods
         public IEnumerator OnEventRaised(ManaModifiedEvent eventData)
         {
-            if (eventData.Mana.Player == Owner && eventData.Mana.ManaTypes != null)
-            {
-                _lastManas = eventData.Mana.ManaTypes;
-                _view.UpdateCostTextWithCastability(eventData.Mana.ManaTypes);
-            }
+            _lastManas = eventData.Mana.ManaTypes;
+            _view.UpdateCostTextWithCastability(eventData.Mana.ManaTypes);
             yield break;
         }
 
         List<Manas.ManaType> _lastManas;
-		public IEnumerator OnEventRaised(CardChangedZonesEvent eventData)
-		{
+        public IEnumerator OnEventRaised(CardChangedZonesEvent eventData)
+        {
             if (_lastManas != null)
             {
+
                 _view.UpdateCostTextWithCastability(_lastManas);
+
             }
             yield break;
-		}
+        }
 
         public bool ShouldReceiveEvent(ManaModifiedEvent eventData)
         {

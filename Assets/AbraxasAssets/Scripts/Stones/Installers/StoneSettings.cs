@@ -38,7 +38,8 @@ namespace Abraxas.Stones
 
             public List<StoneTypeDetails> stones;
 
-            public StoneTypeDetails GetStoneTypeDetails(StoneType type)
+
+            public virtual StoneTypeDetails GetStoneTypeDetails(StoneType type)
             {
                 return stones.Find(t => t.type == type);
             }

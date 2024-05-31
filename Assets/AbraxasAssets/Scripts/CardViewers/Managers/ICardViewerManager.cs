@@ -1,5 +1,4 @@
 using Abraxas.Cards.Controllers;
-using System.Collections;
 
 namespace Abraxas.CardViewers
 {

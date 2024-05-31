@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace Abraxas.Zones.Overlays.Managers
 {
+
+    /// <summary>
+    /// OverlayManager is a class that manages the overlay zone.
+    /// </summary>
 	public class OverlayManager : MonoBehaviour, IOverlayManager
     {
         #region Fields
@@ -13,7 +17,9 @@ namespace Abraxas.Zones.Overlays.Managers
 
         #region Properties
         public Transform Overlay { get => _overlay; }
-        List<ICardController> Cards { get;} = new();
+
+        List<ICardController> Cards { get; } = new();
+
         #endregion
 
         #region Methods

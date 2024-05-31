@@ -5,13 +5,16 @@ using Zenject;
 
 namespace Abraxas.GameStates
 {
+    /// <summary>
+    /// BeforeCombatState is the first main phase state before combat.
+    /// </summary>
     public class BeforeCombatState : GameState
     {
         #region Dependencies
         [Inject]
-        public BeforeCombatState(IGameManager gameManager, IEventManager eventManager) : base(gameManager, eventManager) {}
+        public BeforeCombatState(IGameManager gameManager, IEventManager eventManager) : base(gameManager, eventManager) { }
 
-        public class Factory : PlaceholderFactory<BeforeCombatState>{}
+        public class Factory : PlaceholderFactory<BeforeCombatState> { }
         #endregion
 
         #region Properties

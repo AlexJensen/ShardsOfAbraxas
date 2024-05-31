@@ -17,6 +17,7 @@ namespace Abraxas.Zones.Decks.Managers
         IEnumerator MoveCardToDeck(Player player, ICardController card);
         Dictionary<StoneType, int> GetDeckCost(Player player);
         IEnumerator LoadDecks();
-		ICardController PeekCard(Player player, int index);
-	}
+
+        ICardController PeekCard(Player player, int index);
+    }
 }

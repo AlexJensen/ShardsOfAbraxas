@@ -8,6 +8,10 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Health.Managers
 {
+    /// <summary>
+    /// PlayerHealthManager is a manager for player health.
+    /// </summary>
+
 	class PlayerHealthManager : MonoBehaviour, IPlayerHealthManager
     {
         #region Dependencies
@@ -38,7 +42,8 @@ namespace Abraxas.Health.Managers
             }
 
             IPlayerHealthController playerHP = _hps.Find(x => x.Player == player) ?? throw new ArgumentException($"No health value found for player {player}.");
-			return playerHP;
+
+            return playerHP;
         }
         public void AddPlayerHealth(IPlayerHealthController playerHealthController)
         {

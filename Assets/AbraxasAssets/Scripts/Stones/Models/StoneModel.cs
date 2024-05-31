@@ -15,20 +15,21 @@ namespace Abraxas.Stones.Models
         IStoneData _data;
         public void Initialize(IStoneData data)
         {
-            _data = data;
+            Data = data;
         }
         #endregion
 
         #region Properties
+        public IStoneData Data { get => _data; set => _data = value; }
         public int Cost
         {
             get
             {
-                return _data.Cost;
+                return Data.Cost;
             }
-            set 
+            set
             {
-                _data.Cost = value;
+                Data.Cost = value;
                 OnCostChanged.Invoke();
             }
         }
@@ -36,11 +37,11 @@ namespace Abraxas.Stones.Models
         {
             get
             {
-                return _data.Info;
+                return Data.Info;
             }
             set
             {
-                _data.Info = value;
+                Data.Info = value;
                 OnInfoChanged.Invoke();
             }
         }
@@ -48,11 +49,11 @@ namespace Abraxas.Stones.Models
         {
             get
             {
-                return _data.StoneType;
+                return Data.StoneType;
             }
             set
             {
-                _data.StoneType = value;
+                Data.StoneType = value;
                 OnStoneTypeChanged.Invoke();
             }
         }
