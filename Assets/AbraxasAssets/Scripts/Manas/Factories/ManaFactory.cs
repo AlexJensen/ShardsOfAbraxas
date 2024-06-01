@@ -24,6 +24,7 @@ namespace Abraxas.Manas.Factories
 
             controller.Initialize(view, model);
             model.Initialize(view, controller);
+            view.Initialize(model);
             return controller;
         }
     }

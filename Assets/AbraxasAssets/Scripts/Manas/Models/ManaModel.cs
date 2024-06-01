@@ -57,7 +57,6 @@ namespace Abraxas.Manas.Models
                 _startOfTurnMana = value;
             }
         }
-
         #endregion
 
         #region Fields

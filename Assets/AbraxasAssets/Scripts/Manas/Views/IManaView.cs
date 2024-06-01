@@ -1,5 +1,6 @@
 
-﻿using UnityEngine;
+using Abraxas.Manas.Models;
+using UnityEngine;
 
 namespace Abraxas.Manas.Views
 {
@@ -10,5 +11,7 @@ namespace Abraxas.Manas.Views
     {
         Players.Players Player { get; }
         Transform Transform { get; }
+
+        void Initialize(IManaModel model);
     }
 }

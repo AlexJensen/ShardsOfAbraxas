@@ -23,7 +23,7 @@ namespace Abraxas.CardViewers
 
         #region Fields
         [SerializeField]
-        TMP_Text _title, _cost, _attack, _health, _speed;
+        TMP_Text _title, _cost, _attack, _health, _speed, _range;
 
         [SerializeField]
         Image _image;
@@ -41,6 +41,7 @@ namespace Abraxas.CardViewers
             _attack.text = card.StatBlock.Stats.ATK.ToString();
             _health.text = card.StatBlock.Stats.DEF.ToString();
             _speed.text = card.StatBlock.Stats.SPD.ToString();
+            _range.text = card.StatBlock.Stats.RNG.ToString();
 
             _image.sprite = card.ImageManipulator.Image.sprite;
             _image.transform.localScale = card.ImageManipulator.Image.transform.localScale;

@@ -1,5 +1,5 @@
 ﻿using Abraxas.Zones.Decks.Controllers;
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,6 +14,8 @@ namespace Abraxas.Manas.Models
         List<ManaType> ManaTypes { get; }
         int TotalDeckCost { get; }
         int StartOfTurnMana { get; set; }
+
+        event Action OnStartOfTurnManaChanged;
 
         void CreateManaTypesFromDeck(IDeckController deck);
         IEnumerator GenerateRatioMana(int amount);
