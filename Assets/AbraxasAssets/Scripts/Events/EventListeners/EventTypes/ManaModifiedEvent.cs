@@ -2,7 +2,7 @@
 
 namespace Abraxas.Events
 {
-	public class ManaModifiedEvent
+	public class ManaModifiedEvent : IEvent
     {
         #region Properties
         public IManaController Mana { get; }

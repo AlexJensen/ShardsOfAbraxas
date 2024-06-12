@@ -1,14 +1,14 @@
-﻿using Abraxas.Cards.Controllers;
-using Abraxas.Events.Managers;
+﻿using Abraxas.Events.Managers;
+using System;
 
 namespace Abraxas.Stones.Controllers.StoneTypes.Conditions
 {
-    public interface ICondition<T>
+    public interface ICondition
     {
-        void Initialize(IStoneController stoneController);
+        void Initialize(TriggerStone stoneController, ICondition condition);
         void SubscribeToEvents();
         void UnsubscribeFromEvents();
-        bool IsMet(ICardController card, T eventData);
+        bool IsMet();
         void Construct(IEventManager eventManager);
     }
 }

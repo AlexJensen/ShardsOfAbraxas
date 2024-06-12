@@ -6,7 +6,7 @@ namespace Abraxas.Manas.Installers
     /// <summary>
     /// ManaSettingsInstaller is a ScriptableObjectInstaller that installs ManaSettings into the Zenject container.
     /// </summary>
-    [CreateAssetMenu(fileName = "ManaSettings", menuName = "Abraxas/Mana Settings")]
+    [CreateAssetMenu(fileName = "ManaSettings", menuName = "Abraxas/Settings/Mana Settings")]
     class ManaSettingsInstaller : ScriptableObjectInstaller<ManaSettingsInstaller>
     {
         public Mana.Settings ManaSettings;

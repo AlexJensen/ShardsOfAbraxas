@@ -1,17 +1,19 @@
-﻿using Abraxas.Cards.Controllers;
+﻿using Abraxas.Events;
 using Abraxas.Events.Managers;
+using System;
 using System.Collections;
 using UnityEngine;
 using Zenject;
 
 namespace Abraxas.Stones.Controllers.StoneTypes.Conditions
 {
-    public abstract class Condition<T> : ScriptableObject, ICondition<T>
+    [Serializable]
+    public abstract class Condition<T> : ScriptableObject, ICondition, IGameEventListener<T>
+        where T : IEvent
     {
-        protected IStoneController StoneController;
+        protected IStoneController Stone;
         protected IEventManager EventManager;
 
-        [SerializeField]
         public bool IsTrigger = false;
 
         [Inject]
@@ -20,27 +22,39 @@ namespace Abraxas.Stones.Controllers.StoneTypes.Conditions
             EventManager = eventManager;
         }
 
-        public void Initialize(IStoneController stoneController)
+        public virtual void Initialize(TriggerStone stone, ICondition condition)
         {
-            StoneController = stoneController;
+            Stone = stone;
+            IsTrigger = ((Condition<T>)condition).IsTrigger;
             SubscribeToEvents();
+            stone.Conditions.Add(this);
         }
 
-        public virtual void SubscribeToEvents()
+        ~Condition()
         {
-
+            UnsubscribeFromEvents();
         }
 
-        public virtual void UnsubscribeFromEvents()
+        public void SubscribeToEvents()
         {
-
+            EventManager.AddListener(typeof(T), this);
         }
 
-        public abstract bool IsMet(ICardController card, T eventData);
-
-        protected IEnumerator NotifyTriggerStone()
+        public void UnsubscribeFromEvents()
         {
-            yield return ((TriggerStone)StoneController).CheckConditions();
+            EventManager.RemoveListener(typeof(T), this);
+        }
+
+        public abstract bool IsMet();
+
+        public IEnumerator OnEventRaised(T eventData)
+        {
+           if (IsTrigger) yield return ((TriggerStone)Stone).CheckConditions();
+        }
+
+        public virtual bool ShouldReceiveEvent(T eventData)
+        {
+            return IsMet();
         }
     }
 }

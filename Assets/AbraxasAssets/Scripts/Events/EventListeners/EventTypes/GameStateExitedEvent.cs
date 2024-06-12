@@ -2,7 +2,7 @@
 
 namespace Abraxas.Events
 {
-    public class GameStateExitedEvent
+    public class GameStateExitedEvent : IEvent
     {
         #region Properties
         public GameState State { get; }

@@ -24,6 +24,7 @@ namespace Abraxas.Zones.Models
 
         #region Fields
         readonly List<ICardController> _cardList = new();
+        public abstract ZoneType Type { get; }
         #endregion
 
         #region Properties

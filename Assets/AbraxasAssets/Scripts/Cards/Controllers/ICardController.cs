@@ -32,10 +32,12 @@ namespace Abraxas.Cards.Controllers
         void ChangeScale(PointF pointF, float scaleCardToOverlayTime);
         IEnumerator CheckDeath();
         IEnumerator Combat();
+        bool DeterminePlayability();
         IEnumerator Fight(ICardController opponent);
         string GetCostText();
         IEnumerator MoveToCell(ICellController cell, float moveCardTime);
         IEnumerator PassHomeRow();
         void SetCardPositionToMousePosition();
+        void SetToInitialScale();
     }
 }

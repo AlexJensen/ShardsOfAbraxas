@@ -1,4 +1,5 @@
 using Abraxas.Core;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,11 +7,20 @@ namespace Abraxas
 {
     public class RectTransformMover : MonoBehaviour
     {
+        #region Fields
+        Vector2 _originalSize;
+        #endregion
+
         #region Properties
         public RectTransform RectTransform => (RectTransform)transform;
         #endregion
 
         #region Methods
+
+        public void Awake()
+        {
+            _originalSize = RectTransform.rect.size;
+        }
         public IEnumerator ChangeScaleEnumerator(Vector2 size, float time)
         {
             Vector2 origSize = RectTransform.rect.size;
@@ -52,6 +62,12 @@ namespace Abraxas
         public void SetPosition(Vector3 position)
         {
             RectTransform.position = position;
+        }
+
+        internal void SetToInitialScale()
+        {
+            RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _originalSize.x);
+            RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _originalSize.y);
         }
         #endregion
     }

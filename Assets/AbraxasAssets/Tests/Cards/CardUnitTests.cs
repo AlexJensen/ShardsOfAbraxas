@@ -14,6 +14,7 @@ using Abraxas.Core;
 using Abraxas.Events;
 using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
+using Abraxas.GameStates;
 using Abraxas.Health.Controllers;
 using Abraxas.Health.Factories;
 using Abraxas.Health.Managers;
@@ -410,6 +411,8 @@ namespace Abraxas.Tests
             var eventManagerMock = new Mock<IEventManager>();
 
             var cardController = new CardController(
+                Container.Resolve<IPlayerManager>(),
+                Container.Resolve<IGameStateManager>(),
                 Container.Resolve<IZoneManager>(),
                 Container.Resolve<IDeckManager>(),
                 eventManagerMock.Object,
@@ -439,6 +442,8 @@ namespace Abraxas.Tests
             var eventManagerMock = new Mock<IEventManager>();
 
             var cardController = new CardController(
+                Container.Resolve<IPlayerManager>(),
+                Container.Resolve<IGameStateManager>(),
                 Container.Resolve<IZoneManager>(),
                 Container.Resolve<IDeckManager>(),
                 eventManagerMock.Object,
@@ -488,6 +493,8 @@ namespace Abraxas.Tests
             var statblockSettingsMock = new Mock<Statblock.Settings>();
 
             var cardController = new CardController(
+                Container.Resolve<IPlayerManager>(),
+                Container.Resolve<IGameStateManager>(),
                 Container.Resolve<IZoneManager>(),
                 Container.Resolve<IDeckManager>(),
                 Container.Resolve<IEventManager>(),

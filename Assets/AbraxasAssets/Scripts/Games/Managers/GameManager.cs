@@ -80,9 +80,7 @@ namespace Abraxas.Games.Managers
             for (int i = 0; i < amount; i++)
             {
                 yield return _zoneManager.MoveCardFromDeckToHand(_deckManager.PeekCard(player, index), player);
-
             }
-
         }
 
         public IEnumerator DrawStartOfTurnCardsForActivePlayer()

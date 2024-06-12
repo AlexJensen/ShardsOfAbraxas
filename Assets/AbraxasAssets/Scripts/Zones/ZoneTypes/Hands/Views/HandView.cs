@@ -19,7 +19,7 @@ namespace Abraxas.Zones.Hands.Views
         public CardPlaceholder CardPlaceholder => _cardPlaceholder = _cardPlaceholder != null ? _cardPlaceholder : GetComponentInChildren<CardPlaceholder>();
 
 
-        public override float MoveCardTime { get => NetworkManager.Singleton.IsServer ? 0 : AnimationSettings.MoveCardToHandTime; }
+        protected override float MoveCardTime { get => NetworkManager.Singleton.IsServer ? 0 : AnimationSettings.MoveCardToHandTime; }
 
         public int CardPlaceholderSiblingIndex => CardPlaceholder.transform.GetSiblingIndex();
         #endregion

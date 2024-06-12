@@ -1,0 +1,25 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement>
+        <ui:Label text="Deck Editor"/>
+        <ui:Button text="Create New Deck" name="create-deck-button"/>
+        <ui:ListView name="deck-list-view"/>
+        <ui:VisualElement name="card-list-container">
+            <ui:Label text="Cards"/>
+            <ui:Button text="Add Card" name="add-card-button"/>
+            <ui:ListView name="card-list-view"/>
+            <ui:VisualElement name="card-details-container">
+                <ui:Label text="Card Details"/>
+                <ui:TextField name="card-title-field" label="Title"/>
+                <ui:EnumField name="card-stone-type-field" label="Stone Type"/>
+                <ui:IntegerField name="card-cost-field" label="Cost"/>
+                <ui:IntegerField name="card-atk-field" label="Attack"/>
+                <ui:IntegerField name="card-def-field" label="Defense"/>
+                <ui:IntegerField name="card-spd-field" label="Speed"/>
+                <ui:IntegerField name="card-rng-field" label="Range"/>
+                <ui:Label text="Stones"/>
+                <ui:Button text="Add Stone" name="add-stone-button"/>
+                <ui:ListView name="stone-list-view"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

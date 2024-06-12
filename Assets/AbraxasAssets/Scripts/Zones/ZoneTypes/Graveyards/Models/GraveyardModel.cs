@@ -9,5 +9,7 @@ namespace Abraxas.Zones.Graveyards.Models
         public GraveyardModel(IRandomManager randomManager) : base(randomManager)
         {
         }
+
+        public override ZoneType Type => ZoneType.Graveyard;
     }
 }

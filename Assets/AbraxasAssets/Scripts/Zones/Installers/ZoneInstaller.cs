@@ -5,7 +5,7 @@ using Abraxas.Hands.Installers;
 using Abraxas.Zones.Managers;
 using Zenject;
 
-namespace Abraxas.Zones
+namespace Abraxas.Zones.Installers
 {
     public class ZoneInstaller : MonoInstaller
     {

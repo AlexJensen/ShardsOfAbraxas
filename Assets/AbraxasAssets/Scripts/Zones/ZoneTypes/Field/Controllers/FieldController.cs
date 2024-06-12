@@ -33,6 +33,7 @@ namespace Abraxas.Zones.Fields.Controllers
 
         public IEnumerator CombatMovement(ICardController card, Point movement)
         {
+            if (card.Zone != this) yield break;
             Point destination = new(
                 Math.Clamp(card.Cell.FieldPosition.X + movement.X, 0, ((IFieldModel)Model).FieldGrid[0].Count - 1),
                 Math.Clamp(card.Cell.FieldPosition.Y + movement.Y, 0, ((IFieldModel)Model).FieldGrid.Count - 1));
@@ -67,7 +68,7 @@ namespace Abraxas.Zones.Fields.Controllers
             card.Cell?.RemoveCard(card);
             yield return ((IFieldView)View).MoveCardToCell(card, cell);
             cell.AddCard(card);
-            AddCard(card);
+           
         }
 
         public IEnumerator MoveCardToCell(ICardController card, Point fieldPos)

@@ -25,6 +25,8 @@ namespace Abraxas.Zones.Fields.Models
 
 		#region Properties
 		public List<List<ICellController>> FieldGrid { get => _fieldGrid; }
+
+        public override ZoneType Type => ZoneType.Field;
         #endregion
     }
 }

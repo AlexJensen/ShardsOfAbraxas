@@ -16,7 +16,6 @@ namespace Abraxas.Cards
             public GameObject cardPrefab;
 
             public AnimationSettings animationSettings;
-            public List<Sprite> images;
 
             [Serializable]
             public struct AnimationSettings

@@ -14,49 +14,33 @@ namespace Abraxas.Stones
     {
         #region Dependencies
         IManaManager _manaManager;
-
-
         [Inject]
         public void Construct(IManaManager manaManger)
         {
             _manaManager = manaManger;
         }
-
-
         public override void Initialize(IStoneModel model)
         {
             base.Initialize(model);
         }
-
         #endregion
 
         #region Fields
         List<EffectStone> _effects = new();
-
-        List<ICondition<object>> _conditions = new();
-
+        List<ICondition> _conditions = new();
         #endregion
 
         #region Properties
         public List<EffectStone> Effects { get => _effects; set => _effects = value; }
+        public List<ICondition> Conditions { get => _conditions; set => _conditions = value; }
         #endregion
 
         #region Methods
-
-        public void InitializeConditions(List<ICondition<object>> conditions)
-        {
-            foreach (var condition in conditions)
-            {
-                condition.Initialize(this);
-                _conditions.Add(condition);
-            }
-        }
-
         public IEnumerator CheckConditions()
         {
-            foreach (var condition in _conditions)
+            foreach (var condition in Conditions)
             {
-                if (!condition.IsMet(Card, null))
+                if (!condition.IsMet())
                 {
                     yield break;
                 }

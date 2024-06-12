@@ -28,6 +28,9 @@ namespace Abraxas.Zones.Controllers
 
         #region Properties
         public Player Player => _model.Player;
+        public ZoneType Type => _model.Type;
+
+        public int TotalCardsInZone => _model.CardList.Count;
         protected IZoneView View => _view;
         protected IZoneModel Model => _model;
         #endregion
@@ -43,6 +46,8 @@ namespace Abraxas.Zones.Controllers
         {
             return _model.CardList[index];
         }
+
+
         public Dictionary<StoneType, int> GetTotalCostOfZone()
         {
             return _model.GetTotalCostOfZone();

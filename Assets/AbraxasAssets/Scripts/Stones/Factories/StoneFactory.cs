@@ -1,11 +1,13 @@
 
-﻿using Abraxas.Events.Managers;
+using Abraxas.Events;
+using Abraxas.Events.Managers;
 using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Controllers.StoneTypes.Conditions;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Models;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Zenject;
 
 namespace Abraxas.Stones.Factories
@@ -36,14 +38,14 @@ namespace Abraxas.Stones.Factories
                         var triggerDataSO = dataSO as TriggerStoneDataSO;
                         if (triggerDataSO != null)
                         {
-                            var conditions = new List<ICondition<object>>();
+                            var conditions = new List<ICondition>();
                             foreach (var condition in triggerDataSO.Conditions)
                             {
-                                var instantiatedCondition = (ICondition<object>)_container.Instantiate(condition.GetType());
+                                var instantiatedCondition = (ICondition)_container.Instantiate(condition.GetType());
                                 instantiatedCondition.Construct(_container.Resolve<IEventManager>());
+                                instantiatedCondition.Initialize(triggerStone, (ICondition)condition);
                                 conditions.Add(instantiatedCondition);
                             }
-                            triggerStone.InitializeConditions(conditions);
                         }
                     }
 

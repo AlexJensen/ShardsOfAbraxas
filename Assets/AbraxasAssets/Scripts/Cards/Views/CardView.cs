@@ -1,10 +1,8 @@
 using Abraxas.Cards.Models;
 using Abraxas.Cells.Controllers;
-
 using Abraxas.StatBlocks;
 using Abraxas.Stones;
 using Abraxas.Unity.Interfaces;
-using Abraxas.Zones.Hands.Controllers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,10 +25,11 @@ namespace Abraxas.Cards.Views
         #region Dependencies
         Stone.Settings _stoneSettings;
         Players.Player.Settings _playerSettings;
-
         Statblock.Settings _statblockSettings;
 
         ICardModel _model;
+
+
         [Inject]
         public void Construct(Stone.Settings stoneSettings, Players.Player.Settings playerSettings, Statblock.Settings statblockSettings)
         {
@@ -38,6 +37,7 @@ namespace Abraxas.Cards.Views
             _playerSettings = playerSettings;
             _statblockSettings = statblockSettings;
         }
+
         public void Initialize(ICardModel model)
         {
             _model = model;
@@ -51,9 +51,9 @@ namespace Abraxas.Cards.Views
             OnOriginalOwnerChanged();
             OnHiddenChanged();
 
-
             _image.sprite = _statblockSettings.GetSprite(_model.StatBlock.Stats);
         }
+
         public override void OnDestroy()
         {
             _model.OnTitleChanged -= OnTitleChanged;
@@ -70,12 +70,14 @@ namespace Abraxas.Cards.Views
         TMP_Text _titleText, _costText;
         [SerializeField]
         Image _image;
+        [SerializeField]
+        GameObject _highlight;
         RectTransformMover _rectTransformMover;
+
         #endregion
 
         #region Properties
-
-        public RectTransformMover RectTransformMover { get => _rectTransformMover != null ? _rectTransformMover : _rectTransformMover = GetComponent<RectTransformMover>(); }
+        public RectTransformMover RectTransformMover => _rectTransformMover = _rectTransformMover != null ? _rectTransformMover : GetComponent<RectTransformMover>();
 
         public Image Image { get => _image; set => _image = value; }
         public Transform Transform => transform;
@@ -86,6 +88,7 @@ namespace Abraxas.Cards.Views
         {
             _titleText.text = _model.Title;
         }
+
         public void OnOwnerChanged()
         {
             UnityEngine.Color playerColor = _playerSettings.GetPlayerDetails(_model.Owner).color;
@@ -93,27 +96,44 @@ namespace Abraxas.Cards.Views
             _cover.color = playerColor;
             _cardBack.color = playerColor;
         }
+
         public void OnOriginalOwnerChanged()
         {
             Image.transform.localScale = new Vector3(_model.OriginalOwner == Player.Player1 ? 1 : -1, 1, 1);
         }
+
         public void OnHiddenChanged()
         {
             _cover.gameObject.SetActive(_model.Hidden);
         }
-        public void UpdateCostTextWithCastability(List<Manas.ManaType> manaTypes)
+
+        public void UpdateCostText(string totalCost)
         {
-            string TotalCost = "";
-            foreach (var (pair, alpha) in from KeyValuePair<StoneType, int> pair in _model.TotalCosts
-                                          from Manas.ManaType manaPair in manaTypes
-                                          where pair.Key == manaPair.Type
-                                          let alpha = pair.Value <= manaPair.Amount || _model.Zone is not IHandController ? "FF" : "44"
-                                          select (pair, alpha))
-            {
-                TotalCost += $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneTypeDetails(pair.Key).color)}{alpha}>{pair.Value}";
-            }
-            _costText.text = TotalCost;
+            _costText.text = totalCost;
         }
+
+        public void SetHighlight(bool isPlayable)
+        {
+            _highlight.SetActive(isPlayable);
+        }
+
+        public void UpdateCostTextWithManaTypes(List<Manas.ManaType> manaTypes, Dictionary<StoneType, int> totalCosts, bool isPlayable)
+        {
+            string totalCost = "";
+            foreach (var (pair, manaPair) in from pair in totalCosts
+                                             let manaPair = manaTypes.FirstOrDefault(m => m.Type == pair.Key)
+                                             select (pair, manaPair))
+            {
+                if (manaPair != null)
+                {
+                    string alpha = pair.Value <= manaPair.Amount ? "FF" : "44";
+                    totalCost += $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneTypeDetails(pair.Key).color)}{alpha}>{pair.Value}";
+                }
+            }
+            UpdateCostText(totalCost);
+            SetHighlight(isPlayable);
+        }
+
         public string GetCostText()
         {
             var costStrings = _model.TotalCosts
@@ -127,13 +147,20 @@ namespace Abraxas.Cards.Views
         {
             StartCoroutine(RectTransformMover.ChangeScaleEnumerator(new Vector2(scale.X, scale.Y), time));
         }
+
         public void SetCardPositionToMousePosition()
         {
             RectTransformMover.SetPosition(Input.mousePosition);
         }
+
         public IEnumerator MoveToCell(ICellController cell, float moveCardTime)
         {
             yield return RectTransformMover.MoveToFitRectangle(cell.RectTransform, moveCardTime);
+        }
+
+        public void SetToInitialScale()
+        {
+            RectTransformMover.SetToInitialScale();
         }
         #endregion
     }

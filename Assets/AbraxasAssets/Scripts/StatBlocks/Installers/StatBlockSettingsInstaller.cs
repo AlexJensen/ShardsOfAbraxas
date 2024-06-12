@@ -10,7 +10,7 @@ namespace Abraxas.StatBlocks.Installers
     /// <summary>
     /// CardSettingsInstaller is a Zenject installer for card settings.
     /// </summary>
-    [CreateAssetMenu(fileName = "StatblockSettings", menuName = "Abraxas/Statblock Settings")]
+    [CreateAssetMenu(fileName = "StatblockSettings", menuName = "Abraxas/Settings/Statblock Settings")]
     class StatBlockSettingsInstaller : ScriptableObjectInstaller<StatBlockSettingsInstaller>
     {
         public Statblock.Settings StatblockSettings;

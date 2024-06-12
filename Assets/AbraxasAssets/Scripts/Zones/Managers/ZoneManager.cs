@@ -39,24 +39,27 @@ namespace Abraxas.Zones.Managers
         public IEnumerator MoveCardFromDeckToHand(ICardController card, Player player)
         {
             yield return MoveCard(card, _deckManager.RemoveCard, _handManager.MoveCardToHand, player);
+            yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
         }
 
         public IEnumerator MoveCardFromDeckToGraveyard(ICardController card, Player player)
         {
             yield return MoveCard(card, _deckManager.RemoveCard, _graveyardManager.MoveCardToGraveyard, player);
+            yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
         }
 
         public IEnumerator MoveCardFromHandToCell(ICardController card, Point fieldPosition)
         {
             _handManager.RemoveCard(card);
             yield return _fieldManager.MoveCardToCell(card, fieldPosition);
+            _fieldManager.AddCard(card);
             yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
         }
 
-        public IEnumerator MoveCardFromFieldToDeck(ICardController card, Player player)
+        public IEnumerator MoveCardFromFieldToDeck(ICardController card, Player player, int index = 0, bool reverse = false)
         {
             _fieldManager.RemoveCard(card);
-            yield return _deckManager.MoveCardToDeck(card.Owner, card);
+            yield return _deckManager.MoveCardToDeck(card.Owner, card, index, reverse);
             yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
         }
 

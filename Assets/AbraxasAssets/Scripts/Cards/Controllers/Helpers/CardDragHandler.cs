@@ -76,7 +76,7 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator OnCardDraggedOverCell(ICellController cell)
         {
-            if (_handManager.CardDragging == _cardController && _cardController.OriginalOwner == _playerManager.ActivePlayer)
+            if (_handManager.CardDragging == _cardController && _cardController.DeterminePlayability())
             {
                 if (cell.CardsOnCell == 0 && cell.Player == _cardController.Owner && _manaManager.CanPurchaseCard(_cardController))
                 {

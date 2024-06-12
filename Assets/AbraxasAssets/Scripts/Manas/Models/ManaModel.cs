@@ -23,30 +23,11 @@ namespace Abraxas.Manas.Models
         public event Action OnStartOfTurnManaChanged;
         #endregion
 
-        #region Dependencies
-        readonly IRandomManager _randomManager;
-        readonly ManaType.Factory _typeFactory;
-        IManaView _view;
-        IManaController _controller;
-        public ManaModel(IRandomManager randomManager, ManaType.Factory typeFactory)
-        {
-            _typeFactory = typeFactory;
-            _randomManager = randomManager;
-        }
-
-        public void Initialize(IManaView view, IManaController controller)
-        {
-            _view = view;
-            _controller = controller;
-        }
-        #endregion
-
         #region Properties
         public Player Player { get; set; }
         public List<ManaType> ManaTypes { get => _manaTypes; set => _manaTypes = value; }
         public Dictionary<StoneType, int> DeckCosts { get => _deckCosts; set => _deckCosts = value; }
-        public int TotalDeckCost { get => _totalDeckCost; }
-
+        public int TotalDeckCost { get => _totalDeckCost; set => _totalDeckCost = value; }
 
         public int StartOfTurnMana
         {
@@ -63,55 +44,7 @@ namespace Abraxas.Manas.Models
         List<ManaType> _manaTypes;
         Dictionary<StoneType, int> _deckCosts;
         int _totalDeckCost = 0;
-
         int _startOfTurnMana = 0;
-        #endregion
-
-        #region Methods
-        public void CreateManaTypesFromDeck(IDeckController deck)
-        {
-            _deckCosts = deck.GetTotalCostOfZone();
-            _manaTypes = _deckCosts
-                .Where(manaAmount => manaAmount.Value > 0)
-                .Select(manaAmount =>
-                {
-                    ManaType manaType = _typeFactory.Create().GetComponent<ManaType>();
-                    manaType.transform.SetParent(_view.Transform);
-                    manaType.Mana = _controller;
-                    manaType.Type = manaAmount.Key;
-                    manaType.Amount = 0;
-                    manaType.Player = Player;
-                    _totalDeckCost += manaAmount.Value;
-                    return manaType;
-                })
-                .OrderBy(manaType => manaType.Type)
-                .ToList();
-
-            for (int i = 0; i < _manaTypes.Count; i++)
-            {
-                ManaTypes[i].transform.SetSiblingIndex(i);
-            }
-        }
-
-        public IEnumerator GenerateRatioMana(int amount)
-        {
-            for (int i = 0; i < amount; i++)
-            {
-                int num = _randomManager.Range(0, _totalDeckCost);
-                foreach (KeyValuePair<StoneType, int> manaAmount in _deckCosts)
-                {
-                    if (manaAmount.Value < num)
-                    {
-                        num -= manaAmount.Value;
-                        continue;
-                    }
-                    ManaType manaType = ManaTypes.Find(x => x.Type == manaAmount.Key);
-                    manaType.Amount += 1;
-                    break;
-                }
-            }
-            yield break;
-        }
         #endregion
     }
 }

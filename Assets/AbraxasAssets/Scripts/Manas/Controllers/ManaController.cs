@@ -1,6 +1,10 @@
 ﻿using Abraxas.Cards.Controllers;
+using Abraxas.Events;
+using Abraxas.Events.Managers;
 using Abraxas.Manas.Models;
 using Abraxas.Manas.Views;
+using Abraxas.Random.Managers;
+using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
@@ -18,11 +22,22 @@ namespace Abraxas.Manas.Controllers
     {
         #region Dependencies
         IManaModel _model;
+        IManaView _view;
 
-
+        readonly IRandomManager _randomManager;
+        readonly IEventManager _eventManager;
+        readonly ManaType.Factory _typeFactory;
+        [Inject]
+        public ManaController(IRandomManager randomManager, IEventManager eventManager, ManaType.Factory typeFactory)
+        {
+            _randomManager = randomManager;
+            _eventManager = eventManager;
+            _typeFactory = typeFactory;
+        }
         public void Initialize(IManaView view, IManaModel model)
         {
             _model = model;
+            _view = view;
             model.Player = view.Player;
         }
 
@@ -35,8 +50,6 @@ namespace Abraxas.Manas.Controllers
         #region Properties
         public Player Player { get => _model.Player; }
         public List<ManaType> ManaTypes { get => _model.ManaTypes; }
-
-
         public int StartOfTurnMana { get => _model.StartOfTurnMana; set => _model.StartOfTurnMana = value; }
 
         #endregion
@@ -48,15 +61,55 @@ namespace Abraxas.Manas.Controllers
                 ManaType result = ManaTypes.Find(x => x.Type == cost.Key);
                 result.Amount -= cost.Value;
             }
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(this)));
         }
 
         public void CreateManaTypesFromDeck(IDeckController deck)
         {
-            _model.CreateManaTypesFromDeck(deck);
+            _model.DeckCosts = deck.GetTotalCostOfZone();
+            _model.ManaTypes = _model.DeckCosts
+                .Where(manaAmount => manaAmount.Value > 0)
+                .Select(manaAmount =>
+                {
+                    ManaType manaType = _typeFactory.Create().GetComponent<ManaType>();
+                    manaType.transform.SetParent(_view.Transform);
+                    manaType.Mana = this;
+                    manaType.Player = Player;
+                    manaType.Initialize();
+                    manaType.Type = manaAmount.Key;
+                    manaType.Amount = 0;
+
+                    _model.TotalDeckCost += manaAmount.Value;
+                    return manaType;
+                })
+                .OrderBy(manaType => manaType.Type)
+                .ToList();
+
+            for (int i = 0; i < _model.ManaTypes.Count; i++)
+            {
+                ManaTypes[i].transform.SetSiblingIndex(i);
+            }
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(this)));
         }
         public IEnumerator GenerateRatioMana(int amount)
         {
-            yield return _model.GenerateRatioMana(amount);
+            for (int i = 0; i < amount; i++)
+            {
+                int num = _randomManager.Range(0, _model.TotalDeckCost);
+                foreach (KeyValuePair<StoneType, int> manaAmount in _model.DeckCosts)
+                {
+                    if (manaAmount.Value < num)
+                    {
+                        num -= manaAmount.Value;
+                        continue;
+                    }
+                    ManaType manaType = ManaTypes.Find(x => x.Type == manaAmount.Key);
+                    manaType.Amount += 1;
+                    break;
+                }
+            }
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(this)));
+            yield break;
         }
 
         public bool CanPurchaseCard(ICardController card)
@@ -82,6 +135,7 @@ namespace Abraxas.Manas.Controllers
         {
             ManaType result = ManaTypes.Find(x => x.Type == stone.StoneType);
             result.Amount -= stone.Cost;
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(this)));
         }
     }
 }

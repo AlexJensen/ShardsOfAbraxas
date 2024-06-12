@@ -2,6 +2,7 @@ using Abraxas.Events;
 using Abraxas.Events.Managers;
 using Abraxas.Manas.Controllers;
 using Abraxas.Stones;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,12 +27,10 @@ namespace Abraxas.Manas
 
         #region Dependencies
         Stone.Settings _stoneSettings;
-        IEventManager _eventManager;
         [Inject]
-        public void Construct(Stone.Settings stoneSettings, IEventManager eventManager)
+        public void Construct(Stone.Settings stoneSettings)
         {
             _stoneSettings = stoneSettings;
-            _eventManager = eventManager;
         }
 
         public class Factory : PlaceholderFactory<ManaType>
@@ -79,10 +78,12 @@ namespace Abraxas.Manas
         #endregion
 
         #region Methods
-        private void Awake()
+        public void Initialize()
         {
             _image = GetComponent<Image>();
             _animator = GetComponent<Animator>();
+
+            Refresh();
         }
 
         private void LateUpdate()
@@ -102,8 +103,7 @@ namespace Abraxas.Manas
             Stone.Settings.StoneTypeDetails colorData = _stoneSettings.GetStoneTypeDetails(Type);
             _image.color = colorData.color;
             name = colorData.name;
-            _amountStr.text = _amount.ToString();
-            StartCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(Mana)));
+            _amountStr.text = _amount.ToString();  
         }
 
         public void SetAnimationTrigger(ManaChangeAnimationTriggers trigger)

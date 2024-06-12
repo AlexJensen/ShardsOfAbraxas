@@ -40,11 +40,17 @@ namespace Abraxas.StatBlocks.Models
             set
             {
                 _data.Cost = value;
-                OnStatsChanged.Invoke();
             }
         }
 
-        public StatData Stats { get => _data.Stats; set => _data.Stats = value; }
+        public StatData Stats
+        {
+            get => _data.Stats; set
+            {
+                _data.Stats = value;
+                OnStatsChanged.Invoke();
+            }
+        }
         #endregion
     }
 }

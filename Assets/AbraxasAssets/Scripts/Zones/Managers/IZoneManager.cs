@@ -8,7 +8,7 @@ namespace Abraxas.Zones.Managers
     public interface IZoneManager
     {
         #region Methods
-        IEnumerator MoveCardFromFieldToDeck(ICardController card, Player player);
+        IEnumerator MoveCardFromFieldToDeck(ICardController card, Player player, int index = 0, bool reverse = false);
         IEnumerator MoveCardFromFieldToGraveyard(ICardController card, Player player);
         IEnumerator MoveCardFromHandToCell(ICardController card, Point fieldPosition);
         IEnumerator MoveCardFromDeckToGraveyard(ICardController card, Player player);

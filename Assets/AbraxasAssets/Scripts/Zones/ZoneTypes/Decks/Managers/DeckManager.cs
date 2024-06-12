@@ -11,6 +11,7 @@ using Abraxas.Zones.Factories;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using Zenject;
@@ -56,9 +57,10 @@ namespace Abraxas.Zones.Decks.Managers
         {
             return GetPlayerDeck(player).GetTotalCostOfZone();
         }
-        public IEnumerator MoveCardToDeck(Player player, ICardController card)
+        public IEnumerator MoveCardToDeck(Player player, ICardController card, int index = 0, bool reverse = false)
         {
-            yield return GetPlayerDeck(player).MoveCardToZone(card);
+            var deck = GetPlayerDeck(player);
+            yield return deck.MoveCardToZone(card, reverse? deck.TotalCardsInZone - index: index);
         }
 
         public void RemoveCard(Player player, ICardController card)
@@ -93,7 +95,7 @@ namespace Abraxas.Zones.Decks.Managers
 
         private IEnumerator LoadDeck(Player player)
         {
-            List<CardData> cardDataList = (player == Player.Player1 ? player1DeckData : player2DeckData).cards;
+            List<ScriptableObject> cardDataList = (player == Player.Player1 ? player1DeckData : player2DeckData).Cards;
             List<List<CardData>> batches = new();
             List<CardData> currentBatch = new();
             int batchSizeBytes = 0;
@@ -104,7 +106,7 @@ namespace Abraxas.Zones.Decks.Managers
             }
             yield return SendInitializeBuildingDeckAndWait(player);
 
-            foreach (CardData cardData in cardDataList)
+            foreach (CardDataSO cardData in cardDataList.Cast<CardDataSO>())
             {
                 string serializedCardData = JsonConvert.SerializeObject(cardData, _settings);
                 byte[] cardDataBytes = System.Text.Encoding.UTF8.GetBytes(serializedCardData);
@@ -117,7 +119,7 @@ namespace Abraxas.Zones.Decks.Managers
                     batchSizeBytes = 0;
                 }
 
-                currentBatch.Add(cardData);
+                currentBatch.Add(cardData.Data);
                 batchSizeBytes += cardDataBytes.Length;
             }
 

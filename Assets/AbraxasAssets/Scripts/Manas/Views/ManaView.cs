@@ -1,5 +1,6 @@
 
 using Abraxas.Manas.Models;
+using System.Collections;
 using TMPro;
 
 using UnityEngine;
@@ -46,6 +47,10 @@ namespace Abraxas.Manas.Views
         #endregion
 
         #region Methods
+        public void StartManaEventCoroutine(IEnumerator eventInvoke)
+        {
+            StartCoroutine(eventInvoke);
+        }
         private void RefreshVisuals()
         {
             _manaPerTurnText.text = _model.StartOfTurnMana >= 0? "+" + _model.StartOfTurnMana.ToString(): _model.StartOfTurnMana.ToString();

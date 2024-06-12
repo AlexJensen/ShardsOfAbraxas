@@ -1,0 +1,275 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9027507659957944647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: X
+  m_EditorClassIdentifier: 
+  _data:
+    Title: X
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 4
+        DEF: 4
+        SPD: 1
+        RNG: 0
+      Cost: 8
+      StoneType: 1
+--- !u!114 &-7721316625011008946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: IV
+  m_EditorClassIdentifier: 
+  _data:
+    Title: IV
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 1
+        DEF: 1
+        SPD: 1
+        RNG: 0
+      Cost: 12
+      StoneType: 0
+--- !u!114 &-4674650787924052793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: I
+  m_EditorClassIdentifier: 
+  _data:
+    Title: I
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 2
+        DEF: 3
+        SPD: 1
+        RNG: 0
+      Cost: 14
+      StoneType: 7
+--- !u!114 &-742372626426630810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: III
+  m_EditorClassIdentifier: 
+  _data:
+    Title: III
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 1
+        DEF: 1
+        SPD: 1
+        RNG: 0
+      Cost: 12
+      StoneType: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0c8f3f862c408499dd66a647457715, type: 3}
+  m_Name: New Deck
+  m_EditorClassIdentifier: 
+  _cards:
+  - {fileID: -4674650787924052793}
+  - {fileID: 6692055761109850324}
+  - {fileID: -742372626426630810}
+  - {fileID: -7721316625011008946}
+  - {fileID: 5719267190643103414}
+  - {fileID: 4466098690554453886}
+  - {fileID: 8405575482774010545}
+  - {fileID: 3745996447698227802}
+  - {fileID: -9027507659957944647}
+  - {fileID: 2130299945416319228}
+--- !u!114 &2130299945416319228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: New Card
+  m_EditorClassIdentifier: 
+  _data:
+    Title: VIII
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 3
+        DEF: 1
+        SPD: 1
+        RNG: 0
+      Cost: 0
+      StoneType: 7
+--- !u!114 &3745996447698227802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: IX
+  m_EditorClassIdentifier: 
+  _data:
+    Title: IX
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 1
+        DEF: 3
+        SPD: 2
+        RNG: 0
+      Cost: 12
+      StoneType: 0
+--- !u!114 &4466098690554453886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: VI
+  m_EditorClassIdentifier: 
+  _data:
+    Title: VI
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 3
+        DEF: 2
+        SPD: 1
+        RNG: 0
+      Cost: 12
+      StoneType: 3
+--- !u!114 &5719267190643103414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: V
+  m_EditorClassIdentifier: 
+  _data:
+    Title: V
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 5
+        DEF: 5
+        SPD: 6
+        RNG: 0
+      Cost: 0
+      StoneType: 0
+--- !u!114 &6692055761109850324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: II
+  m_EditorClassIdentifier: 
+  _data:
+    Title: II
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 2
+        DEF: 2
+        SPD: 1
+        RNG: 0
+      Cost: 12
+      StoneType: 5
+--- !u!114 &8405575482774010545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: VII
+  m_EditorClassIdentifier: 
+  _data:
+    Title: VII
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        ATK: 3
+        DEF: 2
+        SPD: 1
+        RNG: 0
+      Cost: 8
+      StoneType: 0

@@ -1,4 +1,6 @@
 ﻿using Abraxas.Cells.Controllers;
+using Abraxas.Manas;
+using Abraxas.Stones;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,11 +16,13 @@ namespace Abraxas.Cards.Views
         Transform Transform { get; }
         NetworkObject NetworkObject { get; }
         RectTransformMover RectTransformMover { get; }
-
-        void UpdateCostTextWithCastability(List<Manas.ManaType> manaTypes);
         void ChangeScale(PointF pointF, float time);
         void SetCardPositionToMousePosition();
         string GetCostText();
         IEnumerator MoveToCell(ICellController cell, float moveCardTime);
+        void UpdateCostText(string totalCost);
+        void SetHighlight(bool isPlayable);
+        void UpdateCostTextWithManaTypes(List<ManaType> manaTypes, Dictionary<StoneType, int> totalCosts, bool isPlayable);
+        void SetToInitialScale();
     }
 }

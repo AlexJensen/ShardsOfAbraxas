@@ -3,7 +3,7 @@ using Zenject;
 
 namespace Abraxas.Hands.Installers
 {
-    [CreateAssetMenu(fileName = "HandSettings", menuName = "Abraxas/Hand Settings")]
+    [CreateAssetMenu(fileName = "HandSettings", menuName = "Abraxas/Settings/Hand Settings")]
     class HandSettingsInstaller : ScriptableObjectInstaller<HandSettingsInstaller>
     {
         public Hand.Settings HandSettings;

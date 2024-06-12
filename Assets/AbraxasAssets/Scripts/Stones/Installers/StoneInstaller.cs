@@ -18,9 +18,10 @@ namespace Abraxas.Cards.Installers
             Container.BindInterfacesAndSelfTo<StoneModel>().AsTransient();
             Container.BindFactory<StoneDataSO, IStoneController, StoneController.Factory>().FromFactory<StoneFactory>();
 
-
-            Container.Bind<Condition<GameStateEnteredEvent>>().To<StartOfStateCondition>().AsSingle();
-            Container.Bind<Condition<object>>().To<IsActivePlayerCondition>().AsSingle();
+            Container.Bind<Condition<GameStateEnteredEvent>>().To<IsCurrentStateCondition>().AsSingle();
+            Container.Bind<Condition<ActivePlayerChangedEvent>>().To<IsActivePlayerCondition>().AsSingle();
+            Container.Bind<Condition<CardChangedZonesEvent>>().To<WasThisCardInZonePreviouslyCondition>().AsSingle();
+            Container.Bind<Condition<CardChangedZonesEvent>>().To<IsThisCardInZoneCondition>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<Effect_DrawCardFromDeck>().AsTransient();
         }

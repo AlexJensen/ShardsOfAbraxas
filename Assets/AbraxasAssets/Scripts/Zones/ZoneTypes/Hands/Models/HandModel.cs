@@ -9,5 +9,7 @@ namespace Abraxas.Zones.Hands.Models
         public HandModel(IRandomManager randomManager) : base(randomManager)
         {
         }
+
+        public override ZoneType Type => ZoneType.Hand;
     }
 }

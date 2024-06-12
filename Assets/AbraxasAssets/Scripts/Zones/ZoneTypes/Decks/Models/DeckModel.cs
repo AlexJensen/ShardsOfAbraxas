@@ -9,5 +9,16 @@ namespace Abraxas.Zones.Decks.Models
         public DeckModel(IRandomManager randomManager) : base(randomManager)
         {
         }
+
+        public override ZoneType Type => ZoneType.Deck;
+
+        public override void Shuffle()
+        {
+            foreach (var card in CardList)
+            {
+                card.Hidden = true;
+            }
+            base.Shuffle();
+        }
     }
 }

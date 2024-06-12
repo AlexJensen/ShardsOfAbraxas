@@ -77,6 +77,7 @@ namespace Abraxas.Manas.Managers
         public void InitializeManaFromDeck(IDeckController deck)
         {
             GetPlayerMana(deck.Player).CreateManaTypesFromDeck(deck);
+            GetPlayerMana(deck.Player).GenerateRatioMana(0);
         }
 
         public void InitializeManaFromDecks(List<IDeckController> decks)

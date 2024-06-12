@@ -3,7 +3,7 @@
 namespace Abraxas.Events
 {
 
-    public class CardChangedZonesEvent
+    public class CardChangedZonesEvent :IEvent
     {
         #region Properties
         public ICardController Card { get; set; }

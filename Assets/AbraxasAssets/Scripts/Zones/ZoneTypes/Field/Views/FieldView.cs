@@ -13,7 +13,7 @@ namespace Abraxas.Zones.Fields.Views
 	public class FieldView : ZoneView, IFieldView
     {
         #region Properties
-        public override float MoveCardTime => NetworkManager.Singleton.IsServer ? 0 : AnimationSettings.MoveCardToFieldTime;
+        protected override float MoveCardTime => NetworkManager.Singleton.IsServer ? 0 : AnimationSettings.MoveCardToFieldTime;
 
         public List<List<ICellController>> GenerateField()
         {

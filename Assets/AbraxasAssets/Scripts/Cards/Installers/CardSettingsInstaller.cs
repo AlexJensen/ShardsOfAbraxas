@@ -6,7 +6,7 @@ namespace Abraxas.Cards.Installers
     /// <summary>
     /// CardSettingsInstaller is a Zenject installer for card settings.
     /// </summary>
-    [CreateAssetMenu(fileName = "CardSettings", menuName = "Abraxas/Card Settings")]
+    [CreateAssetMenu(fileName = "CardSettings", menuName = "Abraxas/Settings/Card Settings")]
     class CardSettingsInstaller : ScriptableObjectInstaller<CardSettingsInstaller>
     {
         public Card.Settings CardSettings;

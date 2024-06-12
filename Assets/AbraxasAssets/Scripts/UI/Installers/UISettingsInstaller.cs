@@ -3,7 +3,7 @@ using Zenject;
 
 namespace Abraxas.UI.Installers
 {
-    [CreateAssetMenu(fileName = "UISettings", menuName = "Abraxas/UI Settings")]
+    [CreateAssetMenu(fileName = "UISettings", menuName = "Abraxas/Settings/UI Settings")]
     class UISettingsInstaller : ScriptableObjectInstaller<UISettingsInstaller>
     {
         public NextButton.Settings NextButtonSettings;

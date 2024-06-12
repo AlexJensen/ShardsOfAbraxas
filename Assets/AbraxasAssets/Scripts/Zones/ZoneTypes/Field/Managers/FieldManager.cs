@@ -49,6 +49,12 @@ namespace Abraxas.Zones.Fields.Managers
         {
             yield return _field.MoveCardToCell(card, fieldPos);
         }
+
+        public void AddCard(ICardController card)
+        {
+            _field.AddCard(card);
+        }
+
         public PointF GetCellDimensions()
         {
             return _field.GetDefaultCellDimensions();

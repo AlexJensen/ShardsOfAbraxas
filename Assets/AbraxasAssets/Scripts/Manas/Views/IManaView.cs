@@ -1,5 +1,6 @@
 
 using Abraxas.Manas.Models;
+using System.Collections;
 using UnityEngine;
 
 namespace Abraxas.Manas.Views
@@ -13,5 +14,6 @@ namespace Abraxas.Manas.Views
         Transform Transform { get; }
 
         void Initialize(IManaModel model);
+        void StartManaEventCoroutine(IEnumerator eventInvoke);
     }
 }

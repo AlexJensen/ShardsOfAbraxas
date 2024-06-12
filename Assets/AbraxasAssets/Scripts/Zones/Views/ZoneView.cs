@@ -33,7 +33,7 @@ namespace Abraxas.Zones.Views
 
         #region Fields
         [SerializeField]
-        RectTransform _cardHolder;
+        RectTransform _cardHolder, _cardMoveTo;
         [SerializeField]
         Player _player;
         #endregion
@@ -41,9 +41,12 @@ namespace Abraxas.Zones.Views
         #region Properties
         public Transform CardHolder { get => _cardHolder; }
         public Player Player { get => _player; }
-        public abstract float MoveCardTime { get; }
-        public IOverlayManager OverlayManager { get => _overlayManager; set => _overlayManager = value; }
+        
+        
         public Card.Settings.AnimationSettings AnimationSettings { get => _animationSettings; }
+
+        protected abstract float MoveCardTime { get; }
+        protected IOverlayManager OverlayManager { get => _overlayManager; set => _overlayManager = value; }
         protected IZoneModel Model { get => _model; }
         #endregion
 
@@ -51,20 +54,19 @@ namespace Abraxas.Zones.Views
         public virtual IEnumerator MoveCardToZone(ICardController card, int index = 0)
         {
             OverlayManager.SetCard(card);
-            yield return card.RectTransformMover.MoveToFitRectangle(_cardHolder, MoveCardTime);
+            yield return card.RectTransformMover.MoveToFitRectangle(_cardMoveTo, MoveCardTime);
             AddCardToHolder(card, index);
             OverlayManager.ClearCard(card);
         }
         public virtual void AddCardToHolder(ICardController card, int index = 0)
         {
-            card.TransformManipulator.Transform.localScale = Vector3.zero;
-            card.TransformManipulator.Transform.position = transform.position;
             card.TransformManipulator.Transform.SetParent(CardHolder.transform);
             card.TransformManipulator.Transform.SetSiblingIndex(index);
+            card.SetToInitialScale();
         }
         public virtual void RemoveCardFromHolder(ICardController card)
         {
-            card.TransformManipulator.Transform.localScale = Vector3.one;
+            card.TransformManipulator.Transform.position = _cardMoveTo.position;
         }
         #endregion
     }
