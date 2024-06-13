@@ -124,7 +124,6 @@ namespace Abraxas.Cards.Controllers
                 -StatBlock.Stats.ATK);
 
             yield return _zoneManager.MoveCardFromFieldToDeck(this, Owner, 0, true);
-            _deckManager.ShuffleDeck(Owner);
         }
 
         public IEnumerator Fight(ICardController opponent)

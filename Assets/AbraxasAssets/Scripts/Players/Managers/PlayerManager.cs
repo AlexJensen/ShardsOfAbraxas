@@ -1,7 +1,10 @@
+using Abraxas.Events;
+using Abraxas.Events.Managers;
 using Abraxas.Network.Managers;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using Zenject;
 
 namespace Abraxas.Players.Managers
 {
@@ -12,6 +15,17 @@ namespace Abraxas.Players.Managers
 
     public class PlayerManager : NetworkedManager, IPlayerManager
     {
+
+        #region Dependencies
+        IEventManager _eventManager;
+        [Inject]
+        void Construct(IEventManager eventManager)
+        {
+            _eventManager = eventManager;
+        }
+
+        #endregion
+
         #region Fields
         readonly NetworkVariable<Players> _activePlayer = new(Players.Player1);
         Players _localPlayer;
@@ -39,6 +53,17 @@ namespace Abraxas.Players.Managers
             if (IsClient)
             {
                 Debug.Log($"OnActivePlayerChanged: {previous} -> {current}");
+                
+            }
+            StartCoroutine(ChangeActivePlayer(current));
+        }
+
+        private IEnumerator ChangeActivePlayer(Players player)
+        {
+            yield return _eventManager.RaiseEvent(typeof(ActivePlayerChangedEvent), new ActivePlayerChangedEvent(player));
+
+            if (IsClient)
+            {
                 AcknowledgeServerRpc();
             }
         }
@@ -49,6 +74,7 @@ namespace Abraxas.Players.Managers
             if (IsHost) _localPlayer = player;
 
             _activePlayer.Value = player;
+            
             yield return WaitForClients();
         }
 
