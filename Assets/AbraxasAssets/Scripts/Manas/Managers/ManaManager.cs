@@ -55,8 +55,6 @@ namespace Abraxas.Manas.Managers
         public void PurchaseCard(ICardController card)
         {
             GetPlayerMana(card.OriginalOwner).PurchaseCard(card);
-
-
         }
 
         public bool CanPurchaseStoneActivation(IStoneController stone)

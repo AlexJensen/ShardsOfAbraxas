@@ -6,6 +6,7 @@ using Abraxas.Zones.Fields.Models;
 using Abraxas.Zones.Fields.Views;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Player = Abraxas.Players.Players;
@@ -53,13 +54,39 @@ namespace Abraxas.Zones.Fields.Controllers
             {
                 yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[destination.Y][destination.X]);
             }
-            if (FieldGrid[destination.Y][destination.X].Player != card.Owner && FieldGrid[destination.Y][destination.X].Player != Player.Neutral)
-            {
-                yield return card.PassHomeRow();
-            }
             if (collided != null)
             {
                 yield return card.Fight(collided);
+            }
+            else if (FieldGrid[destination.Y][destination.X].Player != card.Owner && FieldGrid[destination.Y][destination.X].Player != Player.Neutral)
+            {
+                yield return card.PassHomeRow();
+            }
+            else if (card.StatBlock.Stats.RNG > 0)
+            {
+                yield return CheckRangedAttack(card, movement, FieldGrid);
+            }
+
+        }
+
+        private IEnumerator CheckRangedAttack(ICardController card, Point movement, List<List<ICellController>> FieldGrid)
+        {
+            Point destination = new(
+                            Math.Clamp(card.Cell.FieldPosition.X + (card.StatBlock.Stats.RNG * Math.Sign(movement.X)), 0, ((IFieldModel)Model).FieldGrid[0].Count - 1),
+                            card.Cell.FieldPosition.Y);
+            ICardController collided = null;
+
+            for (int i = card.Cell.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
+            {
+                if (i > FieldGrid[0].Count - 1 || i < 0) break;
+                if (FieldGrid[card.Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
+                destination.X = i - Math.Sign(movement.X);
+                collided = FieldGrid[card.Cell.FieldPosition.Y][i].GetCardAtIndex(0);
+                break;
+            }
+            if (collided != null)
+            {
+                yield return card.RangedAttack(collided);
             }
         }
 

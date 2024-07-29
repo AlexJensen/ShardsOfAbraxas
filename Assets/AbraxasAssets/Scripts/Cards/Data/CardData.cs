@@ -19,7 +19,7 @@ namespace Abraxas.Cards.Data
         public Player Owner;
         [HideInInspector]
         public Player OriginalOwner;
-        public List<StoneWrapper> Stones;
+        public List<StoneConnector> Stones;
         public StatBlockData StatBlock;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -33,11 +33,11 @@ namespace Abraxas.Cards.Data
 
             if (serializer.IsReader)
             {
-                Stones = new List<StoneWrapper>(stonesCount);
+                Stones = new List<StoneConnector>(stonesCount);
                 for (int i = 0; i < stonesCount; i++)
                 {
-                    StoneWrapper stoneWrapper = new();
-                    StoneWrapper.Serialize(serializer, ref stoneWrapper);
+                    StoneConnector stoneWrapper = new();
+                    StoneConnector.Serialize(serializer, ref stoneWrapper);
                     Stones.Add(stoneWrapper);
                 }
             }
@@ -45,8 +45,8 @@ namespace Abraxas.Cards.Data
             {
                 foreach (var stoneWrapper in Stones)
                 {
-                    StoneWrapper tempStone = stoneWrapper;
-                    StoneWrapper.Serialize(serializer, ref tempStone);
+                    StoneConnector tempStone = stoneWrapper;
+                    StoneConnector.Serialize(serializer, ref tempStone);
                 }
             }
 

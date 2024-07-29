@@ -61,7 +61,7 @@ namespace Abraxas.Manas.Controllers
                 ManaType result = ManaTypes.Find(x => x.Type == cost.Key);
                 result.Amount -= cost.Value;
             }
-            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(this)));
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
         }
 
         public void CreateManaTypesFromDeck(IDeckController deck)
@@ -89,7 +89,7 @@ namespace Abraxas.Manas.Controllers
             {
                 ManaTypes[i].transform.SetSiblingIndex(i);
             }
-            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(this)));
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
         }
         public IEnumerator GenerateRatioMana(int amount)
         {
@@ -108,7 +108,7 @@ namespace Abraxas.Manas.Controllers
                     break;
                 }
             }
-            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(this)));
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
             yield break;
         }
 
@@ -135,7 +135,7 @@ namespace Abraxas.Manas.Controllers
         {
             ManaType result = ManaTypes.Find(x => x.Type == stone.StoneType);
             result.Amount -= stone.Cost;
-            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(ManaModifiedEvent), new ManaModifiedEvent(this)));
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
         }
     }
 }

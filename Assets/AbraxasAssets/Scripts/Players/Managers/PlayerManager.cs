@@ -19,7 +19,7 @@ namespace Abraxas.Players.Managers
         #region Dependencies
         IEventManager _eventManager;
         [Inject]
-        void Construct(IEventManager eventManager)
+        public void Construct(IEventManager eventManager)
         {
             _eventManager = eventManager;
         }
@@ -60,7 +60,7 @@ namespace Abraxas.Players.Managers
 
         private IEnumerator ChangeActivePlayer(Players player)
         {
-            yield return _eventManager.RaiseEvent(typeof(ActivePlayerChangedEvent), new ActivePlayerChangedEvent(player));
+            yield return _eventManager.RaiseEvent(typeof(Event_ActivePlayerChanged), new Event_ActivePlayerChanged(player));
 
             if (IsClient)
             {
@@ -70,6 +70,7 @@ namespace Abraxas.Players.Managers
 
         public IEnumerator SetActivePlayer(Players player)
         {
+            if (!IsServer) yield break;
             Debug.Log($"SetActivePlayer: {player}");
             if (IsHost) _localPlayer = player;
 

@@ -2,7 +2,6 @@
 using Abraxas.Games.Managers;
 using Abraxas.Players.Managers;
 using System.Collections;
-using Unity.Netcode;
 using Zenject;
 
 namespace Abraxas.GameStates
@@ -15,13 +14,11 @@ namespace Abraxas.GameStates
         #region Dependencies
         readonly IGameStateManager _gameStateManager;
         readonly IPlayerManager _playerManager;
-        readonly NetworkManager _networkManager;
         [Inject]
         public EndState(IGameManager gameManager, IGameStateManager gameStateManager, IPlayerManager playerManager, IEventManager eventManager) : base(gameManager, eventManager)
         {
             _gameStateManager = gameStateManager;
             _playerManager = playerManager;
-            _networkManager = NetworkManager.Singleton;
         }
         public class Factory : PlaceholderFactory<EndState> { }
         #endregion
@@ -39,11 +36,8 @@ namespace Abraxas.GameStates
         public override IEnumerator OnEnterState()
         {
             yield return base.OnEnterState();
-            if (_networkManager.IsServer)
-            {
-                yield return _playerManager.SetActivePlayer(_playerManager.ActivePlayer == Players.Players.Player1 ? Players.Players.Player2 : Players.Players.Player1);
-                yield return _gameStateManager.BeginNextGameState();
-            }
+            yield return _playerManager.SetActivePlayer(_playerManager.ActivePlayer == Players.Players.Player1 ? Players.Players.Player2 : Players.Players.Player1);
+            yield return _gameStateManager.BeginNextGameState();
         }
 
         public override IEnumerator OnExitState()

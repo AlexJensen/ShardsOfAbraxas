@@ -13,6 +13,7 @@ namespace Abraxas.StatBlocks
         [Serializable]
         public class Settings
         {
+            public StatData StatMultiplier;
             public List<StatBlockCombination> statBlocks;
 
             [Serializable]
@@ -26,9 +27,10 @@ namespace Abraxas.StatBlocks
 
             public Sprite GetSprite(StatData stats)
             {
+                StatData adjustedStats = stats / StatMultiplier;
                 foreach (var combination in statBlocks)
                 {
-                    if (combination.Stats.Equals(stats))
+                    if (combination.Stats.Equals(adjustedStats))
                     {
                         return combination.Sprite;
                     }

@@ -39,13 +39,13 @@ namespace Abraxas.Zones.Managers
         public IEnumerator MoveCardFromDeckToHand(ICardController card, Player player)
         {
             yield return MoveCard(card, _deckManager.RemoveCard, _handManager.MoveCardToHand, player);
-            yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
+            yield return _eventManager.RaiseEvent(typeof(Event_CardChangedZones), new Event_CardChangedZones(card));
         }
 
         public IEnumerator MoveCardFromDeckToGraveyard(ICardController card, Player player)
         {
             yield return MoveCard(card, _deckManager.RemoveCard, _graveyardManager.MoveCardToGraveyard, player);
-            yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
+            yield return _eventManager.RaiseEvent(typeof(Event_CardChangedZones), new Event_CardChangedZones(card));
         }
 
         public IEnumerator MoveCardFromHandToCell(ICardController card, Point fieldPosition)
@@ -53,21 +53,21 @@ namespace Abraxas.Zones.Managers
             _handManager.RemoveCard(card);
             yield return _fieldManager.MoveCardToCell(card, fieldPosition);
             _fieldManager.AddCard(card);
-            yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
+            yield return _eventManager.RaiseEvent(typeof(Event_CardChangedZones), new Event_CardChangedZones(card));
         }
 
         public IEnumerator MoveCardFromFieldToDeck(ICardController card, Player player, int index = 0, bool reverse = false)
         {
             _fieldManager.RemoveCard(card);
             yield return _deckManager.MoveCardToDeck(card.Owner, card, index, reverse);
-            yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
+            yield return _eventManager.RaiseEvent(typeof(Event_CardChangedZones), new Event_CardChangedZones(card));
         }
 
         public IEnumerator MoveCardFromFieldToGraveyard(ICardController card, Player player)
         {
             _fieldManager.RemoveCard(card);
             yield return _graveyardManager.MoveCardToGraveyard(player, card);
-            yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
+            yield return _eventManager.RaiseEvent(typeof(Event_CardChangedZones), new Event_CardChangedZones(card));
         }
 
         private IEnumerator MoveCard(ICardController card, Action<Player, ICardController> removeMethod,
@@ -75,7 +75,7 @@ namespace Abraxas.Zones.Managers
         {
             removeMethod(player, card);
             yield return addMethod(player, card);
-            yield return _eventManager.RaiseEvent(typeof(CardChangedZonesEvent), new CardChangedZonesEvent(card));
+            yield return _eventManager.RaiseEvent(typeof(Event_CardChangedZones), new Event_CardChangedZones(card));
         }
         #endregion
     }

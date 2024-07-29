@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: StatblockSettings
   m_EditorClassIdentifier: 
   StatblockSettings:
+    StatMultiplier:
+      ATK: 2
+      DEF: 2
+      SPD: 2
+      RNG: 2
     statBlocks:
     - Title: 0 0 0 0
       Stats:
@@ -524,252 +529,252 @@ MonoBehaviour:
         DEF: 0
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 947435310, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 0 1 2 0
       Stats:
         ATK: 0
         DEF: 1
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -1720220609, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 0 2 2 0
       Stats:
         ATK: 0
         DEF: 2
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -1995608696, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 0 3 2 0
       Stats:
         ATK: 0
         DEF: 3
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -2019958894, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 0 4 2 0
       Stats:
         ATK: 0
         DEF: 4
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -1332706975, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 0 5 2 0
       Stats:
         ATK: 0
         DEF: 5
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 309688385, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 1 0 2 0
       Stats:
         ATK: 1
         DEF: 0
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -1397840216, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 1 1 2 0
       Stats:
         ATK: 1
         DEF: 1
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 513555074, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 1 2 2 0
       Stats:
         ATK: 1
         DEF: 2
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -1713273196, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 1 3 2 0
       Stats:
         ATK: 1
         DEF: 3
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 2049246202, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 1 4 2 0
       Stats:
         ATK: 1
         DEF: 4
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -62488658, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 1 5 2 0
       Stats:
         ATK: 1
         DEF: 5
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1523094598, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 2 0 2 0
       Stats:
         ATK: 2
         DEF: 0
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -2057294015, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 2 1 2 0
       Stats:
         ATK: 2
         DEF: 1
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -1469930177, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 2 2 2 0
       Stats:
         ATK: 2
         DEF: 2
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 554853695, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 2 3 2 0
       Stats:
         ATK: 2
         DEF: 3
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1358894686, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 2 4 2 0
       Stats:
         ATK: 2
         DEF: 4
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 434691678, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 2 5 2 0
       Stats:
         ATK: 2
         DEF: 5
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -982545465, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 3 0 2 0
       Stats:
         ATK: 3
         DEF: 0
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -1311181150, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 3 1 2 0
       Stats:
         ATK: 3
         DEF: 1
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1121406290, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 3 2 2 0
       Stats:
         ATK: 3
         DEF: 2
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1968909489, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 3 3 2 0
       Stats:
         ATK: 3
         DEF: 3
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1285329578, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 3 4 2 0
       Stats:
         ATK: 3
         DEF: 4
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -1298106139, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 3 5 2 0
       Stats:
         ATK: 3
         DEF: 5
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -1636002997, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 4 0 2 0
       Stats:
         ATK: 4
         DEF: 0
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 720559688, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 4 1 2 0
       Stats:
         ATK: 4
         DEF: 1
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -615339741, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 4 2 2 0
       Stats:
         ATK: 4
         DEF: 2
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1159571058, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 4 3 2 0
       Stats:
         ATK: 4
         DEF: 3
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1349602058, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 4 4 2 0
       Stats:
         ATK: 4
         DEF: 4
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -81653752, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 4 5 2 0
       Stats:
         ATK: 4
         DEF: 5
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1342491281, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 5 0 2 0
       Stats:
         ATK: 5
         DEF: 0
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1318223349, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 5 1 2 0
       Stats:
         ATK: 5
         DEF: 1
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 58355354, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 5 2 2 0
       Stats:
         ATK: 5
         DEF: 2
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 1223433650, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 5 3 2 0
       Stats:
         ATK: 5
         DEF: 3
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -682698807, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 5 4 2 0
       Stats:
         ATK: 5
         DEF: 4
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: 620094069, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 5 5 2 0
       Stats:
         ATK: 5
         DEF: 5
         SPD: 2
         RNG: 0
-      Sprite: {fileID: 0}
+      Sprite: {fileID: -810700761, guid: 509c083b1c5874149aad46f95254fc61, type: 3}
     - Title: 0 0 0 1
       Stats:
         ATK: 0

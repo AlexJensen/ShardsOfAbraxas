@@ -816,7 +816,24 @@ PlayerSettings:
   webGLMemoryGeometricGrowthStep: 0.2
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Android: GSA_TIMELINE
+    EmbeddedLinux: GSA_TIMELINE
+    GameCoreScarlett: GSA_TIMELINE
+    GameCoreXboxOne: GSA_TIMELINE
+    LinuxHeadlessSimulation: GSA_TIMELINE
+    Nintendo Switch: GSA_TIMELINE
+    PS4: GSA_TIMELINE
+    PS5: GSA_TIMELINE
+    QNX: GSA_TIMELINE
+    Stadia: GSA_TIMELINE
+    Standalone: GSA_TIMELINE
+    VisionOS: GSA_TIMELINE
+    WebGL: GSA_TIMELINE
+    Windows Store Apps: GSA_TIMELINE
+    XboxOne: GSA_TIMELINE
+    iPhone: GSA_TIMELINE
+    tvOS: GSA_TIMELINE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

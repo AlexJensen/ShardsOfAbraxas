@@ -2,7 +2,6 @@ using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Data;
 using Abraxas.Decks.Scriptable_Objects;
 using Abraxas.Network.Managers;
-using Abraxas.Random.Managers;
 using Abraxas.Stones;
 using Abraxas.Zones.Decks.Controllers;
 using Abraxas.Zones.Decks.Models;
@@ -95,7 +94,7 @@ namespace Abraxas.Zones.Decks.Managers
 
         private IEnumerator LoadDeck(Player player)
         {
-            List<ScriptableObject> cardDataList = (player == Player.Player1 ? player1DeckData : player2DeckData).Cards;
+            List<CardDataSO> cardDataList = (player == Player.Player1 ? player1DeckData : player2DeckData).Cards;
             List<List<CardData>> batches = new();
             List<CardData> currentBatch = new();
             int batchSizeBytes = 0;
@@ -203,7 +202,7 @@ namespace Abraxas.Zones.Decks.Managers
                 Title = cardData.Title,
                 Owner = player,
                 OriginalOwner = player,
-                Stones = new List<StoneWrapper>(cardData.Stones),
+                Stones = new List<StoneConnector>(cardData.Stones),
                 StatBlock = cardData.StatBlock,
 
             };

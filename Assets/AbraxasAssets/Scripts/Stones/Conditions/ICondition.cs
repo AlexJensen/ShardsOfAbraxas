@@ -1,11 +1,11 @@
 ﻿using Abraxas.Events.Managers;
-using System;
+using Abraxas.Stones.Controllers;
 
-namespace Abraxas.Stones.Controllers.StoneTypes.Conditions
+namespace Abraxas.Stones.Conditions
 {
     public interface ICondition
     {
-        void Initialize(TriggerStone stoneController, ICondition condition);
+        void Initialize(IStoneController stoneController, ICondition condition);
         void SubscribeToEvents();
         void UnsubscribeFromEvents();
         bool IsMet();

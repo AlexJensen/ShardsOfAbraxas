@@ -1,0 +1,20 @@
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" stylesheet="Assets/AbraxasAssets/Editor/StyleSheets/EditorStyle.uss">
+    <ui:VisualElement>
+        <ui:Label text="Card Editor"/>
+        <ui:Button text="Create New Card" name="create-card-button"/>
+        <ui:Button text="Copy Card" name="copy-card-button"/>
+        <ui:ListView name="card-list-view"/>
+        <ui:VisualElement name="card-details-container">
+            <ui:Label text="Card Details"/>
+            <ui:TextField name="card-title-field" label="Title"/>
+            <ui:EnumField name="card-stone-type-field" label="Stone Type"/>
+            <ui:IntegerField name="card-cost-field" label="Cost"/>
+            <ui:IntegerField name="card-atk-field" label="Attack"/>
+            <ui:IntegerField name="card-def-field" label="Defense"/>
+            <ui:IntegerField name="card-spd-field" label="Speed"/>
+            <ui:IntegerField name="card-rng-field" label="Range"/>
+            <ui:VisualElement name="stone-editor-container"> 
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -17,12 +17,8 @@ namespace Abraxas.Stones.Controllers
             Model = model;
         }
 
-        public class Factory : PlaceholderFactory<StoneDataSO, IStoneController>
-        {
-
-        }
+        public class Factory : PlaceholderFactory<StoneSO, IStoneController> { }
         #endregion
-
         #region Properties
         public ICardController Card { get; set; }
         public int Index { get; set; }
@@ -37,11 +33,7 @@ namespace Abraxas.Stones.Controllers
             get => Model.Info;
             set => Model.Info = value;
         }
-        public StoneType StoneType
-
-        {
-            get => Model.StoneType;
-            set => Model.StoneType = value;
+        public StoneType StoneType {get => Model.StoneType; set => Model.StoneType = value;
         }
         #endregion
     }

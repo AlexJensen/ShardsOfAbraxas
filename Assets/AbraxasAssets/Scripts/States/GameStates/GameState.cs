@@ -27,11 +27,11 @@ namespace Abraxas.GameStates
         #region Methods
         public virtual IEnumerator OnEnterState()
         {
-            yield return eventManager.RaiseEvent(typeof(GameStateEnteredEvent), new GameStateEnteredEvent(this));
+            yield return eventManager.RaiseEvent(typeof(Event_GameStateEntered), new Event_GameStateEntered(this));
         }
         public virtual IEnumerator OnExitState()
         {
-            yield return eventManager.RaiseEvent(typeof(GameStateExitedEvent), new GameStateExitedEvent(this));
+            yield return eventManager.RaiseEvent(typeof(Event_GameStateExited), new Event_GameStateExited(this));
         }
         public abstract GameStates NextState();
         #endregion

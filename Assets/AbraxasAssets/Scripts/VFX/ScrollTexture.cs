@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Zenject;
 
 [RequireComponent(typeof(Image))]
-public class TextureScroller : MonoBehaviour, IGameEventListener<ActivePlayerChangedEvent>
+public class TextureScroller : MonoBehaviour, IGameEventListener<Event_ActivePlayerChanged>
 {
     public float scrollSpeed = 0.5f;
     private Image image;
@@ -19,7 +19,7 @@ public class TextureScroller : MonoBehaviour, IGameEventListener<ActivePlayerCha
     public void Construct(IEventManager eventManager)
     {
         _eventManager = eventManager;
-        eventManager.AddListener(typeof(ActivePlayerChangedEvent), this);
+        eventManager.AddListener(typeof(Event_ActivePlayerChanged), this);
     }
 
     void Awake()
@@ -45,16 +45,16 @@ public class TextureScroller : MonoBehaviour, IGameEventListener<ActivePlayerCha
         {
             Destroy(instanceMaterial);
         }
-        _eventManager.RemoveListener(typeof(ActivePlayerChangedEvent), this);
+        _eventManager.RemoveListener(typeof(Event_ActivePlayerChanged), this);
     }
 
-    public IEnumerator OnEventRaised(ActivePlayerChangedEvent eventData)
+    public IEnumerator OnEventRaised(Event_ActivePlayerChanged eventData)
     {
-        isPlayer1 = eventData.Player == Players.Player1;
+        isPlayer1 = eventData.Data == Players.Player1;
         yield break;
     }
 
-    public bool ShouldReceiveEvent(ActivePlayerChangedEvent eventData)
+    public bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData)
     {
         return true;
     }

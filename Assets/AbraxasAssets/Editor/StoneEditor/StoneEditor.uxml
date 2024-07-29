@@ -1,0 +1,11 @@
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" stylesheet="Assets/AbraxasAssets/Editor/StyleSheets/EditorStyle.uss">
+    <ui:VisualElement>
+        <ui:Label text="Stone Editor"/>
+        <ui:Button text="Add New Stone" name="add-stone-button"/>
+        <ui:Button text="Copy Selected Stone" name="copy-stone-button"/>
+        <ui:ListView name="stone-list-view"/>
+        <ui:VisualElement name="stone-details-container">
+            
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

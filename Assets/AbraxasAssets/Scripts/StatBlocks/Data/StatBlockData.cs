@@ -52,6 +52,28 @@ namespace Abraxas.StatBlocks.Data
             };
         }
 
+        public static StatData operator *(StatData a, StatData b)
+        {
+            return new StatData
+            {
+                ATK = a.ATK * b.ATK,
+                DEF = a.DEF * b.DEF,
+                SPD = a.SPD * b.SPD,
+                RNG = a.RNG * b.RNG
+            };
+        }
+
+        public static StatData operator /(StatData a, StatData b)
+        {
+            return new StatData
+            {
+                ATK = (int)Math.Ceiling((float)a.ATK / b.ATK),
+                DEF = (int)Math.Ceiling((float)a.DEF / b.DEF),
+                SPD = (int)Math.Ceiling((float)a.SPD / b.SPD),
+                RNG = (int)Math.Ceiling((float)a.RNG / b.RNG)
+            };
+        }
+
         public static StatData operator -(StatData a, StatData b)
         {
             return new StatData

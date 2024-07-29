@@ -1,0 +1,96 @@
+﻿/* General Layout Styles */
+.visual-element {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Section Titles */
+.label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Buttons */
+.button {
+    background-color: #4078c0;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px 0;
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #305f8a;
+}
+
+/* List Views */
+.list-view {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    height: 100px; /* Set a fixed height for list views */
+    overflow-y: auto; /* Enable scrolling */
+}
+
+/* Text Fields */
+.text-field {
+    margin-bottom: 5px;
+    width: 100%; /* Ensure full width */
+}
+
+/* Enum Fields, Integer Fields */
+.enum-field, .integer-field {
+    margin-bottom: 5px;
+    width: 100%; /* Ensure full width */
+}
+
+/* Specific Adjustments for Deck, Card, and Stone Editors */
+.deck-details-container, .card-details-container, .stone-editor-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.deck-details-container, .card-details-container, .stone-editor-container {
+    border-top: 2px solid #eee;
+    padding-top: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Additional Styling for Title Labels */
+.deck-details-container .label,
+.card-details-container .label,
+.stone-editor-container .label {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Flex container for label and field pairs */
+.field-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.field-container .label {
+    flex-basis: 30%;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.field-container .text-field,
+.field-container .enum-field,
+.field-container .integer-field {
+    flex-basis: 70%;
+    margin: 0;
+}

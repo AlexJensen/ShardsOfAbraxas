@@ -105,7 +105,7 @@
     </AssociationLine>
     <AssociationLine Name="_view" Type="Abraxas.Cards.Views.ICardView">
       <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
-        <Position X="0.151" Y="0.046" Height="0.182" Width="0.654" />
+        <Position X="0.046" Y="0.151" Height="0.182" Width="0.654" />
       </MemberNameLabel>
     </AssociationLine>
     <AssociationLine Name="_fieldManager" Type="Abraxas.Zones.Fields.Managers.IFieldManager" FixedFromPoint="true" FixedToPoint="true">
@@ -118,7 +118,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>IAAhAQCAgAAIAUQAAjBBACAAACIAACAAECAQEAAmKQQ=</HashCode>
+      <HashCode>IAAhCQCAgAwIAUQAAjBBADAADCIAACCAFCAAAQAmKQQ=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Controllers\CardController.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -128,7 +128,6 @@
       <Field Name="_eventManager" />
       <Field Name="_healthManager" />
       <Field Name="_fieldManager" />
-      <Field Name="_deckManager" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -221,7 +220,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAgAACABCCAAUABABBBAoAIACAEAAAAEAAQAAAEYCA=</HashCode>
+      <HashCode>AAAgAACABCCAAUABABBBAoAAACAEAAAAEAAAAAAEICA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Models\CardModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -246,7 +245,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAQACABAAAYAQAAJAEAAAAAAAACAAAAAAAAAAIAA=</HashCode>
+      <HashCode>AAAAAQACABAAAYAAAAJAEgAAAAAAACAAAAAAAAAAIAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Views\Helpers\CardDragListener.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -266,11 +265,11 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Abraxas.Cards.Views.CardView" BaseTypeListCollapsed="true">
-    <Position X="14.5" Y="20.75" Width="2.5" />
+    <Position X="14.5" Y="22.5" Width="2.5" />
     <AssociationLine Name="_model" Type="Abraxas.Cards.Models.ICardModel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="14.5" Y="21.42" />
-        <Point X="14.029" Y="21.42" />
+        <Point X="14.5" Y="23.17" />
+        <Point X="14.029" Y="23.17" />
         <Point X="14.029" Y="6.75" />
         <Point X="14.5" Y="6.75" />
       </Path>
@@ -279,7 +278,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAEBAQAAhACAgUIEAgABAgQABAAEQBAABAAACAAACQA=</HashCode>
+      <HashCode>AAABAQAAhACAgUAEAgABAgQABBAEQBSADAAACAAECQI=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Views\CardView.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -291,14 +290,14 @@
   <Class Name="Abraxas.RectTransformMover" Collapsed="true">
     <Position X="18.75" Y="23" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAABAAgAAAAAAAAAAAAAAAgAgAQAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAABAAgAAAAAAAAAAAAAAAgAgCQAAAAAAAAAFA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\UI\Helpers\RectTransformMover.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="StoneWrapper" Collapsed="true">
     <Position X="17.5" Y="3.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAABCAAAAAAAAAAAAAAAAAAAACAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Data\StoneWrapper.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -328,7 +327,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAACAAAAAAEAAAAAAAQAAACAAAAAAEAAAAAAAYAA=</HashCode>
+      <HashCode>AAAAAACAAAAAAEAAAAAAAQAAACAAAAAAEAAAAAAAIAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Data\CardData.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -344,7 +343,7 @@
   <Struct Name="Abraxas.StatBlocks.Data.StatBlockData" Collapsed="true">
     <Position X="18.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABAgAAAAAAAAAAAACAAAARAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ABAgAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\StatBlocks\Data\StatBlockData.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -366,7 +365,7 @@
   <Interface Name="Abraxas.Cards.Controllers.ICardController" Collapsed="true">
     <Position X="14.5" Y="12.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>IAAgAQCAgAAIAEAAADBAACAAACAAACAAEAAQAAAEKQQ=</HashCode>
+      <HashCode>IAAgAQCAgAAIAEAAADBAACAACCAAACCAFAAAAQAEKQQ=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Controllers\ICardController.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -380,7 +379,7 @@
   <Interface Name="Abraxas.Cards.Models.ICardModel" Collapsed="true">
     <Position X="14.5" Y="6.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAACAAACAAEAAABBBAgAAACAEAAAAEAAQAAAEYAA=</HashCode>
+      <HashCode>AAAgAACAAACAAEAAABBBAgAAACAEAAAAEAAAAAAEIAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Models\ICardModel.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -392,37 +391,37 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.Cards.Views.ICardView" Collapsed="true">
-    <Position X="14.5" Y="20" Width="2.5" />
+    <Position X="14.5" Y="21.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAQQAgAAAAEAAAAAAAAQAAAAAABAAAAAAAAAACQA=</HashCode>
+      <HashCode>AAAAAQQAgAAAAEAAAAAAAAQAABAAABSACAAAAAAACQA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Cards\Views\ICardView.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.StatBlocks.Controllers.IStatBlockController" Collapsed="true">
     <Position X="18" Y="9.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAgBAAAAAAAAAAACAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ABAgBAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\StatBlocks\Controllers\IStatBlockController.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.Stones.Controllers.IStoneController" Collapsed="true">
     <Position X="18" Y="11.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAQAAAAAAABAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AABgAAAAAAAAAQAAAAAAABAAAAAAAAAAAAEAAEAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Stones\Controllers\IStoneController.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.Zones.Controllers.IZoneController" Collapsed="true">
     <Position X="18" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAQQAAAAAAQAAAAAAAAAAAAAAIQAAAQA=</HashCode>
+      <HashCode>AIAAIAAAAAAAAQQAAAAAAQAAAAAAAAAAAQAAAQACAQA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Zones\Controllers\IZoneController.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.Zones.Decks.Managers.IDeckManager" Collapsed="true">
     <Position X="18.5" Y="15" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAAAgAAAAAAAQAAAAAAAAAAAAABAACAAAAAQAAAAA=</HashCode>
+      <HashCode>AIIAAAgAAAAAAAQAAAAAAAAAAAAABAACAAAAAQAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Zones\ZoneTypes\Decks\Managers\IDeckManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -450,14 +449,14 @@
   <Interface Name="Abraxas.Zones.Managers.IZoneManager" Collapsed="true">
     <Position X="18.5" Y="14.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAAAAAAAIAAAAAAAAIAAAQAAABAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAIAAAAAQABAQAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Zones\Managers\IZoneManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Abraxas.Games.Managers.IGameManager" Collapsed="true">
     <Position X="6.75" Y="15.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAKAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAgEAAAAAAKAAAAAAAAAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Games\Managers\IGameManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -471,7 +470,7 @@
   <Interface Name="Abraxas.Manas.IManaManager" Collapsed="true">
     <Position X="6.75" Y="14.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAABAAABAAAAAAAAAAAAAAAAAAAAACAEAEAAgAAA=</HashCode>
+      <HashCode>AAACAABAAAAAAAAAAAAAAAAAAAAACAAACAEAEEAgAAA=</HashCode>
       <FileName>Assets\AbraxasAssets\Scripts\Manas\Managers\IManaManager.cs</FileName>
     </TypeIdentifier>
   </Interface>

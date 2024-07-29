@@ -8,6 +8,7 @@ using Abraxas.StatBlocks.Controllers;
 using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
+using Abraxas.Stones.Triggers;
 using System.Collections.Generic;
 using System.Linq;
 using Zenject;
@@ -75,7 +76,7 @@ namespace Abraxas.Cards.Factories
                 from stoneData in
                     from stoneData in data.Stones
                     where stoneData.Index == triggerStoneController.Index
-                    let triggerStoneData = stoneData.RuntimeStoneData as TriggerStoneDataSO
+                    let triggerStoneData = stoneData.RuntimeStoneData as TriggerSO
                     where triggerStoneData != null
                     select stoneData
                 select (triggerStoneController, stoneData))

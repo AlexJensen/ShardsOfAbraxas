@@ -13,9 +13,9 @@ namespace Abraxas.Stones.Models
 
         #region Dependencies
         IStoneData _data;
-        public void Initialize(IStoneData data)
+        public void Initialize(StoneSO data)
         {
-            Data = data;
+            Data = data.Data;
         }
         #endregion
 

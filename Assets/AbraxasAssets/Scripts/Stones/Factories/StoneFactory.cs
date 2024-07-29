@@ -1,18 +1,17 @@
-
 using Abraxas.Events;
-using Abraxas.Events.Managers;
+using Abraxas.Stones.Conditions;
 using Abraxas.Stones.Controllers;
-using Abraxas.Stones.Controllers.StoneTypes.Conditions;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Models;
+using Abraxas.Stones.Targets;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Reflection;
 using Zenject;
 
 namespace Abraxas.Stones.Factories
 {
-    class StoneFactory : IFactory<StoneDataSO, IStoneController>
+    class StoneFactory : IFactory<StoneSO, IStoneController>
     {
         private readonly DiContainer _container;
 
@@ -21,45 +20,71 @@ namespace Abraxas.Stones.Factories
             _container = container;
         }
 
-        public IStoneController Create(StoneDataSO dataSO)
+        public IStoneController Create(StoneSO dataSO)
         {
-            if (dataSO != null)
+            if (dataSO == null)
             {
-                var controllerType = dataSO.ControllerType;
-                if (controllerType != null && typeof(IStoneController).IsAssignableFrom(controllerType))
-                {
-                    var controller = (IStoneController)_container.Instantiate(controllerType);
-                    var model = _container.Instantiate<StoneModel>();
-                    model.Initialize(dataSO.Data);
-                    controller.Initialize(model);
+                throw new ArgumentNullException(nameof(dataSO), "StoneSO cannot be null.");
+            }
 
-                    if (controller is TriggerStone triggerStone)
-                    {
-                        var triggerDataSO = dataSO as TriggerStoneDataSO;
-                        if (triggerDataSO != null)
-                        {
-                            var conditions = new List<ICondition>();
-                            foreach (var condition in triggerDataSO.Conditions)
-                            {
-                                var instantiatedCondition = (ICondition)_container.Instantiate(condition.GetType());
-                                instantiatedCondition.Construct(_container.Resolve<IEventManager>());
-                                instantiatedCondition.Initialize(triggerStone, (ICondition)condition);
-                                conditions.Add(instantiatedCondition);
-                            }
-                        }
-                    }
+            var controllerType = dataSO.ControllerType;
+            if (controllerType == null || !typeof(IStoneController).IsAssignableFrom(controllerType))
+            {
+                throw new InvalidOperationException($"Controller type '{controllerType}' is not assignable to IStoneController.");
+            }
 
-                    return controller;
-                }
-                else
+            var controller = (IStoneController)_container.Instantiate(controllerType);
+            var model = _container.Instantiate<StoneModel>();
+            model.Initialize(dataSO);
+            controller.Initialize(model);
+
+            // Set the target if the controller implements ITargetable
+            SetTargetIfTargetable(controller, dataSO);
+
+            // Initialize conditions if the controller has any
+            InitializeConditionsIfPresent(controller, dataSO);
+
+            return controller;
+        }
+
+        private void SetTargetIfTargetable(IStoneController controller, StoneSO dataSO)
+        {
+            if (controller is ITargetable<object> targetableController)
+            {
+                var targetField = FindFieldByType(dataSO.GetType(), typeof(TargetSO<>));
+                if (targetField != null)
                 {
-                    throw new InvalidOperationException($"Controller type '{controllerType}' is not assignable to IStoneController.");
+                    targetableController.Target = (TargetSO<object>)targetField.GetValue(dataSO);
                 }
             }
-            else
+        }
+
+        // ...
+
+        private void InitializeConditionsIfPresent(IStoneController controller, StoneSO dataSO)
+        {
+            if (controller is IConditional conditionableController)
             {
-                throw new InvalidOperationException($"No matching StoneDataSO found for IStoneData type '{dataSO.GetType()}'.");
+                var conditionField = FindFieldByType(dataSO.GetType(), typeof(ConditionSO<>));
+                if (conditionField != null)
+                {
+                    var conditionSO = (ConditionSO<IEventBase>)conditionField.GetValue(dataSO);
+                    conditionableController.Conditions = new List<ICondition> { conditionSO };
+                    conditionSO.Initialize(controller, conditionSO );
+                }
             }
+        }
+
+        private FieldInfo FindFieldByType(Type type, Type fieldType)
+        {
+            foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            {
+                if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == fieldType)
+                {
+                    return field;
+                }
+            }
+            return null;
         }
     }
 }

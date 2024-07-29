@@ -14,7 +14,7 @@ using Zenject;
 
 namespace Abraxas.UI
 {
-    public class NextButton : MonoBehaviour, IGameEventListener<GameStateEnteredEvent>
+    public class NextButton : MonoBehaviour, IGameEventListener<Event_GameStateEntered>
     {
         #region Settings
         [Serializable]
@@ -72,7 +72,7 @@ namespace Abraxas.UI
             _eventManager = eventManager;
             _playerManager = playerManager;
 
-            _eventManager.AddListener(typeof(GameStateEnteredEvent), this);
+            _eventManager.AddListener(typeof(Event_GameStateEntered), this);
         }
         #endregion
 
@@ -92,7 +92,7 @@ namespace Abraxas.UI
 
         private void OnDestroy()
         {
-            _eventManager.RemoveListener(typeof(GameStateEnteredEvent), this);
+            _eventManager.RemoveListener(typeof(Event_GameStateEntered), this);
         }
 
         public void NextButtonPressed()
@@ -101,9 +101,9 @@ namespace Abraxas.UI
             _gameStateManager.RequestNextGameState();
         }
 
-        public IEnumerator OnEventRaised(GameStateEnteredEvent eventData)
+        public IEnumerator OnEventRaised(Event_GameStateEntered eventData)
         {
-            GameState state = eventData.State;
+            GameState state = eventData.Data;
             _button.interactable = _buttonSettings.GetInteractable(state.CurrentState);
             _buttonStr.text = _buttonSettings.GetText(state.CurrentState);
             _image.color = _playerSettings.GetPlayerDetails(_playerManager.ActivePlayer).color;
@@ -114,7 +114,7 @@ namespace Abraxas.UI
             yield break;
         }
 
-        public bool ShouldReceiveEvent(GameStateEnteredEvent eventData)
+        public bool ShouldReceiveEvent(Event_GameStateEntered eventData)
         {
             return true;
         }

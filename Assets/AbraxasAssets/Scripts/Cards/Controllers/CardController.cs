@@ -10,11 +10,12 @@ using Abraxas.Health.Managers;
 using Abraxas.Players.Managers;
 using Abraxas.StatBlocks.Controllers;
 using Abraxas.StatBlocks.Data;
+using Abraxas.StatusEffects;
+using Abraxas.StatusEffects.Types;
 using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
 using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Controllers;
-using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Fields.Controllers;
 using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Hands.Controllers;
@@ -31,10 +32,10 @@ namespace Abraxas.Cards.Controllers
     /// <summary>
     /// CardController facilitates communication between the card model, card view, all managers, and any other controllers.
     /// </summary>
-    class CardController : ICardController, IGameEventListener<ManaModifiedEvent>,
-                                            IGameEventListener<CardChangedZonesEvent>,
-                                            IGameEventListener<GameStateEnteredEvent>,
-                                            IGameEventListener<ActivePlayerChangedEvent>
+    class CardController : ICardController, IGameEventListener<Event_ManaModified>,
+                                            IGameEventListener<Event_CardChangedZones>,
+                                            IGameEventListener<Event_GameStateEntered>,
+                                            IGameEventListener<Event_ActivePlayerChanged>
     {
         #region Dependencies
         ICardModel _model;
@@ -46,9 +47,8 @@ namespace Abraxas.Cards.Controllers
         readonly IEventManager _eventManager;
         readonly IPlayerHealthManager _healthManager;
         readonly IFieldManager _fieldManager;
-        readonly IDeckManager _deckManager;
 
-        public CardController(IPlayerManager playerManager, IGameStateManager gameStateManager, IZoneManager zoneManager, IDeckManager deckManager, IEventManager eventManager, IPlayerHealthManager healthManager, IFieldManager fieldManager)
+        public CardController(IPlayerManager playerManager, IGameStateManager gameStateManager, IZoneManager zoneManager, IEventManager eventManager, IPlayerHealthManager healthManager, IFieldManager fieldManager)
         {
             _playerManager = playerManager;
             _gameStateManager = gameStateManager;
@@ -56,7 +56,6 @@ namespace Abraxas.Cards.Controllers
             _eventManager = eventManager;
             _healthManager = healthManager;
             _fieldManager = fieldManager;
-            _deckManager = deckManager;
         }
 
         public void Initialize(ICardModel model, ICardView view)
@@ -64,18 +63,18 @@ namespace Abraxas.Cards.Controllers
             _model = model;
             _view = view;
 
-            _eventManager.AddListener(typeof(ManaModifiedEvent), this as IGameEventListener<ManaModifiedEvent>);
-            _eventManager.AddListener(typeof(CardChangedZonesEvent), this as IGameEventListener<CardChangedZonesEvent>);
-            _eventManager.AddListener(typeof(GameStateEnteredEvent), this as IGameEventListener<GameStateEnteredEvent>);
-            _eventManager.AddListener(typeof(ActivePlayerChangedEvent), this as IGameEventListener<ActivePlayerChangedEvent>);
+            _eventManager.AddListener(typeof(Event_ManaModified), this as IGameEventListener<Event_ManaModified>);
+            _eventManager.AddListener(typeof(Event_CardChangedZones), this as IGameEventListener<Event_CardChangedZones>);
+            _eventManager.AddListener(typeof(Event_GameStateEntered), this as IGameEventListener<Event_GameStateEntered>);
+            _eventManager.AddListener(typeof(Event_ActivePlayerChanged), this as IGameEventListener<Event_ActivePlayerChanged>);
         }
 
         public void OnDestroy()
         {
-            _eventManager.RemoveListener(typeof(ManaModifiedEvent), this as IGameEventListener<ManaModifiedEvent>);
-            _eventManager.RemoveListener(typeof(CardChangedZonesEvent), this as IGameEventListener<CardChangedZonesEvent>);
-            _eventManager.RemoveListener(typeof(GameStateEnteredEvent), this as IGameEventListener<GameStateEnteredEvent>);
-            _eventManager.RemoveListener(typeof(ActivePlayerChangedEvent), this as IGameEventListener<ActivePlayerChangedEvent>);
+            _eventManager.RemoveListener(typeof(Event_ManaModified), this as IGameEventListener<Event_ManaModified>);
+            _eventManager.RemoveListener(typeof(Event_CardChangedZones), this as IGameEventListener<Event_CardChangedZones>);
+            _eventManager.RemoveListener(typeof(Event_GameStateEntered), this as IGameEventListener<Event_GameStateEntered>);
+            _eventManager.RemoveListener(typeof(Event_ActivePlayerChanged), this as IGameEventListener<Event_ActivePlayerChanged>);
         }
 
         public class Factory : PlaceholderFactory<CardData, ICardController>
@@ -85,7 +84,10 @@ namespace Abraxas.Cards.Controllers
         #endregion
 
         #region Fields
-        List<Manas.ManaType> _lastManas;
+        List<Manas.ManaType> _lastManas = new();
+        List<IStatusEffect> _activeStatusEffects = new();
+        List<IStatusEffect> _markedForRemoval = new();
+        List<CardControllerDecorator> _decorators = new();
         #endregion
 
         #region Properties
@@ -147,6 +149,54 @@ namespace Abraxas.Cards.Controllers
                 CheckDeath());
         }
 
+        public void ApplyStatusEffect(IStatusEffect effect)
+        {
+            _activeStatusEffects.Add(effect);
+            effect.ApplyEffect(this);
+
+            var decorator = (CardControllerDecorator)effect.GetDecorator(this);
+            if (decorator != null)
+            {
+                _decorators.Add(decorator);
+            }
+        }
+
+        public bool HasStatusEffect<T>() where T : IStatusEffect
+        {
+            return _activeStatusEffects.Any(e => e is T);
+        }
+
+        public void RemoveStatusEffect<T>() where T : IStatusEffect
+        {
+            _activeStatusEffects.RemoveAll(e => e is T);
+            _decorators.RemoveAll(d => d.GetType() == typeof(T).GetMethod("GetDecorator").ReturnType);
+        }
+
+        public void MarkStatusEffectForRemoval<T>() where T : IStatusEffect
+        {
+            var effect = _activeStatusEffects.FirstOrDefault(e => e is T);
+            if (effect != null)
+            {
+                _markedForRemoval.Add(effect);
+            }
+        }
+
+        public IEnumerator RangedAttack(ICardController opponent)
+        {
+            if (opponent.Owner == Owner) yield break;
+
+            IStatBlockController collided = opponent.StatBlock;
+
+            StatData collidedStats = collided.Stats;
+
+            collidedStats.DEF -= StatBlock.Stats.ATK;
+
+            collided.Stats = collidedStats;
+
+            yield return Utilities.WaitForCoroutines(
+                               opponent.CheckDeath());
+        }
+
         public IEnumerator CheckDeath()
         {
 
@@ -157,9 +207,41 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator Combat()
         {
-            yield return _fieldManager.CombatMovement(this, new Point(
-            Owner == Player.Player1 ? StatBlock.Stats.SPD :
-            Owner == Player.Player2 ? -StatBlock.Stats.SPD : 0, 0));
+            bool shouldContinue = true;
+
+            foreach (var decorator in _decorators)
+            {
+                var enumerator = decorator.Combat();
+                while (enumerator.MoveNext())
+                {
+                    if (enumerator.Current is bool result && !result)
+                    {
+                        shouldContinue = false;
+                        break;
+                    }
+                    yield return enumerator.Current;
+                }
+
+                if (!shouldContinue)
+                {
+                    break;
+                }
+            }
+
+            // Remove marked status effects after the loop
+            foreach (var effect in _markedForRemoval)
+            {
+                _activeStatusEffects.Remove(effect);
+                _decorators.RemoveAll(d => d.GetType() == effect.GetDecorator(this).GetType());
+            }
+            _markedForRemoval.Clear();
+
+            if (shouldContinue)
+            {
+                yield return _fieldManager.CombatMovement(this, new Point(
+                    Owner == Player.Player1 ? StatBlock.Stats.SPD :
+                    Owner == Player.Player2 ? -StatBlock.Stats.SPD : 0, 0));
+            }
         }
 
         public void ChangeScale(PointF pointF, float scaleCardToOverlayTime)
@@ -214,20 +296,25 @@ namespace Abraxas.Cards.Controllers
         #endregion
 
         #region Delegate Methods
-        public IEnumerator OnEventRaised(ManaModifiedEvent eventData)
+        public IEnumerator OnEventRaised(Event_ManaModified eventData)
         {
-            _lastManas = eventData.Mana.ManaTypes;
+            _lastManas = eventData.Data.ManaTypes;
             UpdatePlayabilityAndCostText();
             yield break;
         }
 
-        public bool ShouldReceiveEvent(ManaModifiedEvent eventData)
+        public bool ShouldReceiveEvent(Event_ManaModified eventData)
         {
-            return eventData.Mana.Player == Owner && eventData.Mana.ManaTypes != null;
+            return eventData.Data.Player == Owner && eventData.Data.ManaTypes != null;
         }
 
-        public IEnumerator OnEventRaised(CardChangedZonesEvent eventData)
+        public IEnumerator OnEventRaised(Event_CardChangedZones eventData)
         {
+            if (Zone is IFieldController)
+            {
+                var summoningSickness = new StatusEffect_SummoningSickness();
+                ApplyStatusEffect(summoningSickness);
+            }
             if (_lastManas != null)
             {
                 UpdatePlayabilityAndCostText();
@@ -235,13 +322,18 @@ namespace Abraxas.Cards.Controllers
             yield break;
         }
 
-        public bool ShouldReceiveEvent(CardChangedZonesEvent eventData)
+        public bool ShouldReceiveEvent(Event_CardChangedZones eventData)
         {
-            return eventData.Card == this;
+            return eventData.Data == this;
         }
 
-        public IEnumerator OnEventRaised(GameStateEnteredEvent eventData)
+        public IEnumerator OnEventRaised(Event_GameStateEntered eventData)
         {
+            if (_gameStateManager.State is EndState)
+            {
+                RemoveStatusEffect<StatusEffect_SummoningSickness>();
+            }
+
             if (_lastManas != null)
             {
                 UpdatePlayabilityAndCostText();
@@ -249,12 +341,12 @@ namespace Abraxas.Cards.Controllers
             yield break;
         }
 
-        public bool ShouldReceiveEvent(GameStateEnteredEvent eventData)
+        public bool ShouldReceiveEvent(Event_GameStateEntered eventData)
         {
             return true;
         }
 
-        public IEnumerator OnEventRaised(ActivePlayerChangedEvent eventData)
+        public IEnumerator OnEventRaised(Event_ActivePlayerChanged eventData)
         {
             if (_lastManas != null)
             {
@@ -263,7 +355,7 @@ namespace Abraxas.Cards.Controllers
             yield break;
         }
 
-        public bool ShouldReceiveEvent(ActivePlayerChangedEvent eventData)
+        public bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData)
         {
             return true;
         }

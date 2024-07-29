@@ -86,7 +86,7 @@ namespace Abraxas.Tests
             Container.BindInterfacesAndSelfTo<CardModel>().AsTransient();
 
             Container.BindFactory<CardData, ICardController, CardController.Factory>().FromFactory<CardFactory>();
-            Container.BindFactory<StoneDataSO, IStoneController, StoneController.Factory>().FromFactory<StoneFactory>();
+            Container.BindFactory<StoneSO, IStoneController, StoneController.Factory>().FromFactory<StoneFactory>();
             Container.BindFactory<StatBlockData, IStatBlockView, IStatBlockController, StatBlockController.Factory>().FromFactory<StatBlockFactory>();
         }
     }
@@ -414,7 +414,6 @@ namespace Abraxas.Tests
                 Container.Resolve<IPlayerManager>(),
                 Container.Resolve<IGameStateManager>(),
                 Container.Resolve<IZoneManager>(),
-                Container.Resolve<IDeckManager>(),
                 eventManagerMock.Object,
                 Container.Resolve<IPlayerHealthManager>(),
                 Container.Resolve<IFieldManager>());
@@ -423,8 +422,8 @@ namespace Abraxas.Tests
             cardController.Initialize(modelMock.Object, viewMock.Object);
 
             // Assert
-            eventManagerMock.Verify(em => em.AddListener<ManaModifiedEvent>(typeof(ManaModifiedEvent), cardController), Times.Once);
-            eventManagerMock.Verify(em => em.AddListener<CardChangedZonesEvent>(typeof(CardChangedZonesEvent), cardController), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener<Event_ManaModified>(typeof(Event_ManaModified), cardController), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener<Event_CardChangedZones>(typeof(Event_CardChangedZones), cardController), Times.Once);
 
             var modelField = typeof(CardController).GetField("_model", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var viewField = typeof(CardController).GetField("_view", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -445,7 +444,6 @@ namespace Abraxas.Tests
                 Container.Resolve<IPlayerManager>(),
                 Container.Resolve<IGameStateManager>(),
                 Container.Resolve<IZoneManager>(),
-                Container.Resolve<IDeckManager>(),
                 eventManagerMock.Object,
                 Container.Resolve<IPlayerHealthManager>(),
                 Container.Resolve<IFieldManager>());
@@ -455,10 +453,10 @@ namespace Abraxas.Tests
             cardController.OnDestroy();
 
             // Assert
-            eventManagerMock.Verify(em => em.AddListener<ManaModifiedEvent>(typeof(ManaModifiedEvent), cardController), Times.Once);
-            eventManagerMock.Verify(em => em.AddListener<CardChangedZonesEvent>(typeof(CardChangedZonesEvent), cardController), Times.Once);
-            eventManagerMock.Verify(em => em.RemoveListener<ManaModifiedEvent>(typeof(ManaModifiedEvent), cardController), Times.Once);
-            eventManagerMock.Verify(em => em.RemoveListener<CardChangedZonesEvent>(typeof(CardChangedZonesEvent), cardController), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener<Event_ManaModified>(typeof(Event_ManaModified), cardController), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener<Event_CardChangedZones>(typeof(Event_CardChangedZones), cardController), Times.Once);
+            eventManagerMock.Verify(em => em.RemoveListener<Event_ManaModified>(typeof(Event_ManaModified), cardController), Times.Once);
+            eventManagerMock.Verify(em => em.RemoveListener<Event_CardChangedZones>(typeof(Event_CardChangedZones), cardController), Times.Once);
         }
 
 
@@ -496,7 +494,6 @@ namespace Abraxas.Tests
                 Container.Resolve<IPlayerManager>(),
                 Container.Resolve<IGameStateManager>(),
                 Container.Resolve<IZoneManager>(),
-                Container.Resolve<IDeckManager>(),
                 Container.Resolve<IEventManager>(),
                 Container.Resolve<IPlayerHealthManager>(),
                 Container.Resolve<IFieldManager>());
