@@ -416,7 +416,8 @@ namespace Abraxas.Tests
                 Container.Resolve<IZoneManager>(),
                 eventManagerMock.Object,
                 Container.Resolve<IPlayerHealthManager>(),
-                Container.Resolve<IFieldManager>());
+                Container.Resolve<IFieldManager>(),
+                Container);
 
             // Act
             cardController.Initialize(modelMock.Object, viewMock.Object);
@@ -446,7 +447,8 @@ namespace Abraxas.Tests
                 Container.Resolve<IZoneManager>(),
                 eventManagerMock.Object,
                 Container.Resolve<IPlayerHealthManager>(),
-                Container.Resolve<IFieldManager>());
+                Container.Resolve<IFieldManager>(),
+                Container);
 
             // Act
             cardController.Initialize(modelMock.Object, viewMock.Object);
@@ -496,7 +498,8 @@ namespace Abraxas.Tests
                 Container.Resolve<IZoneManager>(),
                 Container.Resolve<IEventManager>(),
                 Container.Resolve<IPlayerHealthManager>(),
-                Container.Resolve<IFieldManager>());
+                Container.Resolve<IFieldManager>(),
+                Container);
 
             cardController.Initialize(modelMock.Object, viewMock.Object);
 

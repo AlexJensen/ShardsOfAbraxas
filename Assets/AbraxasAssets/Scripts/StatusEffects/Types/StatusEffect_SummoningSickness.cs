@@ -1,4 +1,7 @@
 ﻿using Abraxas.Cards.Controllers;
+using Abraxas.Cards.Models;
+using Abraxas.Cards.Views;
+using Zenject;
 
 namespace Abraxas.StatusEffects.Types
 {
@@ -9,9 +12,9 @@ namespace Abraxas.StatusEffects.Types
             
         }
 
-        public override ICardController GetDecorator(ICardController card)
+        public override ICardController GetDecorator(ICardController card, ICardModel model, ICardView view, DiContainer container)
         {
-            return new SummoningSicknessDecorator(card);
+            return container.Instantiate<SummoningSicknessDecorator>(new object[] { card, model, view });
         }
     }
 }

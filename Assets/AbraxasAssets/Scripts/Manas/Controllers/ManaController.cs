@@ -56,11 +56,13 @@ namespace Abraxas.Manas.Controllers
 
         public void PurchaseCard(ICardController card)
         {
-            foreach (var cost in card.TotalCosts)
+            foreach (var (cost, result) in from cost in card.TotalCosts
+                                           let result = ManaTypes.Find(x => x.Type == cost.Key)
+                                           select (cost, result))
             {
-                ManaType result = ManaTypes.Find(x => x.Type == cost.Key);
                 result.Amount -= cost.Value;
             }
+
             _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
         }
 
@@ -96,7 +98,7 @@ namespace Abraxas.Manas.Controllers
             for (int i = 0; i < amount; i++)
             {
                 int num = _randomManager.Range(0, _model.TotalDeckCost);
-                foreach (KeyValuePair<StoneType, int> manaAmount in _model.DeckCosts)
+                foreach (var manaAmount in _model.DeckCosts)
                 {
                     if (manaAmount.Value < num)
                     {

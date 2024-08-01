@@ -34,18 +34,17 @@ namespace Abraxas.Events.Managers
         {
             if (_eventListeners.TryGetValue(type, out var listeners))
             {
-                foreach (IGameEventListener<T> listener in listeners.Cast<IGameEventListener<T>>())
+                foreach (var routine in from IGameEventListener<T> listener in listeners.Cast<IGameEventListener<T>>()
+                                        where listener.ShouldReceiveEvent(eventData)
+                                        let routine = listener.OnEventRaised(eventData)
+                                        select routine)
                 {
-                    if (listener.ShouldReceiveEvent(eventData))
+                    while (routine.MoveNext())
                     {
-                        IEnumerator routine = listener.OnEventRaised(eventData);
-                        while (routine.MoveNext())
+                        object current = routine.Current;
+                        if (current != null)
                         {
-                            object current = routine.Current;
-                            if (current != null)
-                            {
-                                yield return current;
-                            }
+                            yield return current;
                         }
                     }
                 }

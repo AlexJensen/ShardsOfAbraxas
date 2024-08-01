@@ -104,13 +104,11 @@ namespace Abraxas.Zones.Decks.Managers
                 BuildDeck(player);
             }
             yield return SendInitializeBuildingDeckAndWait(player);
-
-            foreach (CardDataSO cardData in cardDataList.Cast<CardDataSO>())
+            foreach (var (cardData, cardDataBytes) in from CardDataSO cardData in cardDataList.Cast<CardDataSO>()
+                                                      let serializedCardData = JsonConvert.SerializeObject(cardData, _settings)
+                                                      let cardDataBytes = System.Text.Encoding.UTF8.GetBytes(serializedCardData)
+                                                      select (cardData, cardDataBytes))
             {
-                string serializedCardData = JsonConvert.SerializeObject(cardData, _settings);
-                byte[] cardDataBytes = System.Text.Encoding.UTF8.GetBytes(serializedCardData);
-
-
                 if (batchSizeBytes + cardDataBytes.Length > 6144)
                 {
                     batches.Add(new List<CardData>(currentBatch));
@@ -127,9 +125,10 @@ namespace Abraxas.Zones.Decks.Managers
                 batches.Add(currentBatch);
             }
 
-            foreach (var batch in batches)
+            foreach (var (batch, serializedBatch) in from batch in batches
+                                                     let serializedBatch = JsonConvert.SerializeObject(batch, _settings)
+                                                     select (batch, serializedBatch))
             {
-                string serializedBatch = JsonConvert.SerializeObject(batch, _settings);
                 if (!IsHost)
                 {
                     foreach (var cardData in batch)
@@ -137,6 +136,7 @@ namespace Abraxas.Zones.Decks.Managers
                         BuildCard(cardData, player);
                     }
                 }
+
                 yield return SendBuildCardsBatchRpcAndWait(player, serializedBatch);
             }
         }
