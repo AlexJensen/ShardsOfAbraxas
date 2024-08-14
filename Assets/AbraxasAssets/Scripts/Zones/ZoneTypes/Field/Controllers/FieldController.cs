@@ -1,5 +1,6 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cells.Controllers;
+using Abraxas.Events;
 using Abraxas.Players.Managers;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Fields.Models;
@@ -17,6 +18,7 @@ namespace Abraxas.Zones.Fields.Controllers
     {
         #region Dependencies
         readonly IPlayerManager _playerManager;
+
         public FieldController(IPlayerManager playerManager)
         {
             _playerManager = playerManager;
@@ -52,7 +54,7 @@ namespace Abraxas.Zones.Fields.Controllers
 
             if (destination != card.Cell.FieldPosition)
             {
-                yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[destination.Y][destination.X]);
+                yield return MoveCardToCell(card, FieldGrid[destination.Y][destination.X]);
             }
             if (collided != null)
             {
@@ -71,6 +73,7 @@ namespace Abraxas.Zones.Fields.Controllers
 
         private IEnumerator CheckRangedAttack(ICardController card, Point movement, List<List<ICellController>> FieldGrid)
         {
+            if (card.Zone != this) yield break;
             Point destination = new(
                             Math.Clamp(card.Cell.FieldPosition.X + (card.StatBlock.Stats.RNG * Math.Sign(movement.X)), 0, ((IFieldModel)Model).FieldGrid[0].Count - 1),
                             card.Cell.FieldPosition.Y);
@@ -95,12 +98,12 @@ namespace Abraxas.Zones.Fields.Controllers
             card.Cell?.RemoveCard(card);
             yield return ((IFieldView)View).MoveCardToCell(card, cell);
             cell.AddCard(card);
-           
+
         }
 
         public IEnumerator MoveCardToCell(ICardController card, Point fieldPos)
         {
-			yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[fieldPos.Y][fieldPos.X]);
+            yield return MoveCardToCell(card, ((IFieldModel)Model).FieldGrid[fieldPos.Y][fieldPos.X]);
         }
 
         public override void RemoveCard(ICardController card)
@@ -119,6 +122,12 @@ namespace Abraxas.Zones.Fields.Controllers
         public PointF GetDefaultCellDimensions()
         {
             return ((IFieldView)View).GetCellDimensions(((IFieldModel)Model).FieldGrid[0][0]);
+        }
+
+        public override IEnumerator OnEventRaised(Event_LocalPlayerChanged eventData)
+        {
+            ((IFieldModel)Model).GenerateField();
+            return base.OnEventRaised(eventData);
         }
         #endregion
     }

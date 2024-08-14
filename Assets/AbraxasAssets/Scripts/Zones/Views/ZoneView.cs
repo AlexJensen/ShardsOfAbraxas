@@ -1,5 +1,7 @@
 using Abraxas.Cards;
 using Abraxas.Cards.Controllers;
+using Abraxas.Players.Managers;
+using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Models;
 using Abraxas.Zones.Overlays.Managers;
 using System.Collections;
@@ -15,19 +17,29 @@ namespace Abraxas.Zones.Views
     {
         #region Dependencies
         IOverlayManager _overlayManager;
+        IPlayerManager _playerManager;
         Card.Settings.AnimationSettings _animationSettings;
         [Inject]
-        public void Construct(Card.Settings cardSettings, IOverlayManager overlayManager)
+        public void Construct(Card.Settings cardSettings, IOverlayManager overlayManager, IPlayerManager playerManager)
         {
             _animationSettings = cardSettings.animationSettings;
             _overlayManager = overlayManager;
+            _playerManager = playerManager;
         }
 
         IZoneModel _model;
-        public void Initialize<TModel>(TModel model)
+        IZoneController _controller;
+        public void Initialize<TModel, TController>(TModel model, TController controller)
             where TModel : IZoneModel
+            where TController : IZoneController
         {
+            _controller = controller;
             _model = model;
+        }
+
+        public void OnDestroy()
+        {
+            _controller?.OnDestroy();
         }
         #endregion
 
@@ -40,9 +52,9 @@ namespace Abraxas.Zones.Views
 
         #region Properties
         public Transform CardHolder { get => _cardHolder; }
-        public Player Player { get => _player; }
-        
-        
+        public Player Player => _playerManager.LocalPlayer == Player.Player1 ? _player : (_player == Player.Player1 ? Player.Player2 : Player.Player1);
+
+
         public Card.Settings.AnimationSettings AnimationSettings { get => _animationSettings; }
 
         protected abstract float MoveCardTime { get; }

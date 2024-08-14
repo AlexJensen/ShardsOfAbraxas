@@ -23,7 +23,7 @@ namespace Abraxas.Manas.Factories
             var model = _container.Instantiate<ManaModel>();
 
             controller.Initialize(view, model);
-            view.Initialize(model);
+            view.Initialize(model, controller);
             return controller;
         }
     }

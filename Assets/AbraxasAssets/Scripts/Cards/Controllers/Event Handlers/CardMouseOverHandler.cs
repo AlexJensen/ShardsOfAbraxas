@@ -10,10 +10,14 @@ namespace Abraxas.Cards.Controllers
         #region Dependencies
         ICardController _cardController;
         readonly ICardViewerManager _cardViewerManager;
-        public CardMouseOverHandler(ICardController cardController, ICardViewerManager cardViewerManager)
+        public CardMouseOverHandler(ICardViewerManager cardViewerManager)
+        {
+            _cardViewerManager = cardViewerManager;
+        }
+
+        internal void Initialize(ICardController cardController)
         {
             _cardController = cardController;
-            _cardViewerManager = cardViewerManager;
         }
         #endregion
 
@@ -25,11 +29,6 @@ namespace Abraxas.Cards.Controllers
         public void OnPointerExit()
         {
             _cardViewerManager.HideCardViewer();
-        }
-
-        internal void Initialize(ICardController cardController)
-        {
-            _cardController = cardController;
         }
     }
 }

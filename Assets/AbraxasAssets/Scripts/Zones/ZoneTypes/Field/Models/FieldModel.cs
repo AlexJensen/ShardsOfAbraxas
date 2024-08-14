@@ -9,9 +9,15 @@ namespace Abraxas.Zones.Fields.Models
     class FieldModel : ZoneModel, IFieldModel
     {
         #region Dependencies
+        IFieldView _view;
         public override void Initialize<TView>(TView view)
         {
-            _fieldGrid = ((IFieldView)view).GenerateField();
+            _view = (IFieldView)view;
+        }
+
+        public void GenerateField()
+        {
+            _fieldGrid = _view.GenerateField();
         }
         #endregion
 

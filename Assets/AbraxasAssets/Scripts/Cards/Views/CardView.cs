@@ -1,7 +1,10 @@
+using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Models;
 using Abraxas.Cells.Controllers;
+using Abraxas.Players.Managers;
 using Abraxas.StatBlocks;
 using Abraxas.Stones;
+using Abraxas.UI;
 using Abraxas.Unity.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,19 +31,23 @@ namespace Abraxas.Cards.Views
         Statblock.Settings _statblockSettings;
 
         ICardModel _model;
+        ICardController _controller;
 
-
+        IPlayerManager _playerManager;
         [Inject]
-        public void Construct(Stone.Settings stoneSettings, Players.Player.Settings playerSettings, Statblock.Settings statblockSettings)
+        public void Construct(Stone.Settings stoneSettings, Players.Player.Settings playerSettings, Statblock.Settings statblockSettings, IPlayerManager playerManager)
         {
             _stoneSettings = stoneSettings;
             _playerSettings = playerSettings;
             _statblockSettings = statblockSettings;
+            _playerManager = playerManager;
+
         }
 
-        public void Initialize(ICardModel model)
+        public void Initialize(ICardModel model, ICardController controller)
         {
             _model = model;
+            _controller = controller;
 
             _model.OnTitleChanged += OnTitleChanged;
             _model.OnOwnerChanged += OnOwnerChanged;
@@ -60,6 +67,7 @@ namespace Abraxas.Cards.Views
             _model.OnOwnerChanged -= OnOwnerChanged;
             _model.OnOriginalOwnerChanged -= OnOriginalOwnerChanged;
             _model.OnHiddenChanged -= OnHiddenChanged;
+            _controller.OnDestroy();
         }
         #endregion
 
@@ -91,7 +99,7 @@ namespace Abraxas.Cards.Views
 
         public void OnOwnerChanged()
         {
-            UnityEngine.Color playerColor = _playerSettings.GetPlayerDetails(_model.Owner).color;
+            UnityEngine.Color playerColor = _playerSettings.GetPlayerDetails(_playerManager.LocalPlayer == Player.Player1? _model.Owner : _model.Owner == Player.Player1? Player.Player2: Player.Player1).color;
             _titleText.color = playerColor;
             _cover.color = playerColor;
             _cardBack.color = playerColor;
@@ -99,7 +107,7 @@ namespace Abraxas.Cards.Views
 
         public void OnOriginalOwnerChanged()
         {
-            Image.transform.localScale = new Vector3(_model.OriginalOwner == Player.Player1 ? 1 : -1, 1, 1);
+            Image.transform.localScale = new Vector3((_playerManager.LocalPlayer == Player.Player1 ? _model.Owner : _model.Owner == Player.Player1 ? Player.Player2 : Player.Player1) == Player.Player1 ? 1 : -1, 1, 1);
         }
 
         public void OnHiddenChanged()

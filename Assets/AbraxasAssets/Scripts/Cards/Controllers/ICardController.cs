@@ -1,9 +1,9 @@
 ﻿using Abraxas.Cells.Controllers;
-using Abraxas.Manas;
 using Abraxas.StatBlocks.Controllers;
 using Abraxas.StatusEffects;
 using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
+using Abraxas.UI;
 using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Controllers;
 using System.Collections;
@@ -30,22 +30,21 @@ namespace Abraxas.Cards.Controllers
         ITransformManipulator TransformManipulator { get; }
         IImageManipulator ImageManipulator { get; }
         RectTransformMover RectTransformMover { get; }
-        List<ManaType> LastManas { get; set; }
-
-        void ApplyStatusEffect(IStatusEffect effect);
         void ChangeScale(PointF pointF, float scaleCardToOverlayTime);
         IEnumerator CheckDeath();
         IEnumerator Combat();
         bool DeterminePlayability();
         IEnumerator Fight(ICardController opponent);
         string GetCostText();
-        bool HasStatusEffect<T>() where T : IStatusEffect;
         IEnumerator MoveToCell(ICellController cell, float moveCardTime);
         IEnumerator PassHomeRow();
         IEnumerator RangedAttack(ICardController opponent);
-        void RemoveStatusEffect<T>() where T : IStatusEffect;
         void SetCardPositionToMousePosition();
         void SetToInitialScale();
         void UpdatePlayabilityAndCostText();
+        void RequestApplyStatusEffect(IStatusEffect effect);
+        bool RequestHasStatusEffect<T>() where T : IStatusEffect;
+        void RequestRemoveStatusEffect<T>() where T : IStatusEffect;
+        void OnDestroy();
     }
 }

@@ -5,7 +5,6 @@ using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Abraxas.StackBlocks.Views;
 using Abraxas.StatBlocks.Controllers;
-using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Triggers;
@@ -67,7 +66,7 @@ namespace Abraxas.Cards.Factories
 
             model.Initialize(data, statBlockController, stoneControllers);
             controller.Initialize(model, view);
-            view.Initialize(model);
+            view.Initialize(model, controller);
 
             foreach (var (triggerStoneController, stoneData) in
                 from TriggerStone triggerStoneController

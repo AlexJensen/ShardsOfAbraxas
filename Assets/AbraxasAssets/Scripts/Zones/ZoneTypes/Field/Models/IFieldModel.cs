@@ -7,5 +7,7 @@ namespace Abraxas.Zones.Fields.Models
     public interface IFieldModel : IZoneModel
     {
         List<List<ICellController>> FieldGrid { get; }
+
+        void GenerateField();
     }
 }

@@ -35,7 +35,7 @@ namespace Abraxas.Players
                 }
 
                 // I'll DI this when I figure out more about how it's generated in NetworkManager :/
-                FindObjectOfType<PlayerManager>().RegisterLocalPlayer(_player);
+                StartCoroutine(FindObjectOfType<PlayerManager>().RegisterLocalPlayer(_player));
             }
 
         }

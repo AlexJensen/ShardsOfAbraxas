@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Abraxas
+namespace Abraxas.UI
 {
     public class LoadSceneButton : MonoBehaviour
     {

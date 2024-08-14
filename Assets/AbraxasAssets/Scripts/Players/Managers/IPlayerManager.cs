@@ -10,7 +10,7 @@ namespace Abraxas.Players.Managers
         Players ActivePlayer { get; }
         Players LocalPlayer { get; }
 
-        void RegisterLocalPlayer(Players player);
+        IEnumerator RegisterLocalPlayer(Players player);
         IEnumerator SetActivePlayer(Players player);
     }
 }

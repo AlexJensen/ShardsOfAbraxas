@@ -1,53 +1,55 @@
 ﻿using Abraxas.Core;
-using Abraxas.Stones.Data;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 
-[Serializable]
-public class StoneConnector
+namespace Abraxas.Stones.Data
 {
-
-    public StoneSO RuntimeStoneData;
-
-    public List<int> ConnectionIndexes;
-
-    public StoneConnector() { }
-
-    public StoneConnector(StoneSO stoneData)
+    [Serializable]
+    public class StoneConnector
     {
-        RuntimeStoneData = stoneData;
-        if (stoneData is TriggerSO triggerStoneData)
+
+        public StoneSO RuntimeStoneData;
+
+        public List<int> ConnectionIndexes;
+
+        public StoneConnector() { }
+
+        public StoneConnector(StoneSO stoneData)
         {
-            triggerStoneData.Indexes = ConnectionIndexes;
-        }
-    }
-
-
-    public int Index { get; internal set; }
-
-    public static void Serialize<T>(BufferSerializer<T> serializer, ref StoneConnector connector) where T : IReaderWriter
-
-    {
-        string typeId = string.Empty;
-        if (!serializer.IsReader)
-        {
-            typeId = connector.RuntimeStoneData.Data.GetType().AssemblyQualifiedName;
-        }
-        serializer.SerializeValue(ref typeId);
-
-        if (serializer.IsReader)
-        {
-            var instance = Utilities.CreateInstanceFromStoneCache<StoneSO>(typeId);
-            if (instance != null)
+            RuntimeStoneData = stoneData;
+            if (stoneData is TriggerSO triggerStoneData)
             {
-                connector = new StoneConnector(instance);
-                instance.Data.NetworkSerialize(serializer);
+                triggerStoneData.Indexes = ConnectionIndexes;
             }
         }
-        else
+
+
+        public int Index { get; internal set; }
+
+        public static void Serialize<T>(BufferSerializer<T> serializer, ref StoneConnector connector) where T : IReaderWriter
+
         {
-            connector.RuntimeStoneData.Data.NetworkSerialize(serializer);
+            string typeId = string.Empty;
+            if (!serializer.IsReader)
+            {
+                typeId = connector.RuntimeStoneData.Data.GetType().AssemblyQualifiedName;
+            }
+            serializer.SerializeValue(ref typeId);
+
+            if (serializer.IsReader)
+            {
+                var instance = Utilities.CreateInstanceFromStoneCache<StoneSO>(typeId);
+                if (instance != null)
+                {
+                    connector = new StoneConnector(instance);
+                    instance.Data.NetworkSerialize(serializer);
+                }
+            }
+            else
+            {
+                connector.RuntimeStoneData.Data.NetworkSerialize(serializer);
+            }
         }
     }
 }

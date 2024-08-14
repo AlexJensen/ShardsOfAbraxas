@@ -14,12 +14,12 @@ namespace Abraxas.Cells.Controllers
         ICellView _view;
         ICellModel _model;
         public ICellView View => _view;
+
         public void Initialize(ICellView view, ICellModel model)
         {
             _view = view;
             _model = model;
 
-            _model.FieldPosition = _view.FieldPosition;
             _model.Player = _view.Player;
         }
 
@@ -31,8 +31,20 @@ namespace Abraxas.Cells.Controllers
 
         #region Properties
         public Player Player { get => _model.Player; }
-        public Point FieldPosition { get => _model.FieldPosition; }
-        public int CardsOnCell => _model.CardsOnCell;
+        public Point FieldPosition
+        {
+            get => _model.FieldPosition; set
+            {
+                _model.FieldPosition = value;
+            }
+        }
+        public int CardsOnCell
+        {
+            get
+            {
+                return _model.CardsOnCell;
+            }
+        }
 
         public RectTransform RectTransform => _view.RectTransform;
         #endregion
@@ -42,9 +54,7 @@ namespace Abraxas.Cells.Controllers
         {
             _model.AddCard(card);
             _view.SetChild(card.TransformManipulator.Transform);
-
             card.Cell = this;
-
         }
 
         public void RemoveCard(ICardController card)

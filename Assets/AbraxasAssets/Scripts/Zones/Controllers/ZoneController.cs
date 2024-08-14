@@ -1,19 +1,31 @@
 ﻿using Abraxas.Cards.Controllers;
+using Abraxas.Events;
+using Abraxas.Events.Managers;
 using Abraxas.Stones;
 using Abraxas.Zones.Models;
 using Abraxas.Zones.Views;
 using System.Collections;
 using System.Collections.Generic;
-
+using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Controllers
 {
-    abstract class ZoneController : IZoneController
+    abstract class ZoneController : IZoneController,
+        IGameEventListener<Event_LocalPlayerChanged>
     {
         #region Dependencies
         IZoneView _view;
         IZoneModel _model;
+
+        IEventManager _eventManager;
+        [Inject]
+        public void Construct(IEventManager eventManager)
+        {
+            _eventManager = eventManager;
+
+            _eventManager.AddListener(typeof(Event_LocalPlayerChanged), this);
+        }
 
         public void Initialize<TView, TModel>(TView view, TModel model)
             where TView : IZoneView
@@ -23,6 +35,11 @@ namespace Abraxas.Zones.Controllers
             _model = model;
 
             _model.Player = view.Player;
+        }
+
+        public void OnDestroy()
+        {
+            _eventManager.RemoveListener(typeof(Event_LocalPlayerChanged), this);
         }
         #endregion
 
@@ -63,6 +80,17 @@ namespace Abraxas.Zones.Controllers
             _view.AddCardToHolder(card, index);
             _model.AddCard(card, index);
 
+        }
+
+        public virtual IEnumerator OnEventRaised(Event_LocalPlayerChanged eventData)
+        {
+            _model.Player = _view.Player;
+            yield break;
+        }
+
+        public bool ShouldReceiveEvent(Event_LocalPlayerChanged eventData)
+        {
+            return true;
         }
         #endregion
 

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-namespace Abraxas
+namespace Abraxas.UI
 {
     /// <summary>
     /// Button to toggle the display of cards within a zone

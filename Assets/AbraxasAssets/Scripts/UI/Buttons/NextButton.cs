@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
+
 namespace Abraxas.UI
 {
     public class NextButton : MonoBehaviour, IGameEventListener<Event_GameStateEntered>
@@ -106,7 +107,7 @@ namespace Abraxas.UI
             GameState state = eventData.Data;
             _button.interactable = _buttonSettings.GetInteractable(state.CurrentState);
             _buttonStr.text = _buttonSettings.GetText(state.CurrentState);
-            _image.color = _playerSettings.GetPlayerDetails(_playerManager.ActivePlayer).color;
+            _image.color = _playerSettings.GetPlayerDetails(_playerManager.LocalPlayer == Players.Players.Player1 ? _playerManager.ActivePlayer : _playerManager.ActivePlayer == Players.Players.Player1 ? Players.Players.Player2 : Players.Players.Player1).color;
             if (_playerManager.LocalPlayer != _playerManager.ActivePlayer)
             {
                 _button.interactable = false;

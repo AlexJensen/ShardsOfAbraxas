@@ -1,5 +1,8 @@
-﻿using Abraxas.Health.Models;
+﻿using Abraxas.Events;
+using Abraxas.Events.Managers;
+using Abraxas.Health.Models;
 using Abraxas.Health.Views;
+using System.Collections;
 using Zenject;
 using Player = Abraxas.Players.Players;
 
@@ -8,14 +11,36 @@ namespace Abraxas.Health.Controllers
     /// <summary>
     /// PlayerHealthController facilitates communication between the player health model and view.
     /// </summary>
-    class PlayerHealthController : IPlayerHealthController
+    class PlayerHealthController : IPlayerHealthController,
+        IGameEventListener<Event_LocalPlayerChanged>
     {
         #region Dependencies
         IPlayerHealthModel _model;
+        IPlayerHealthView _view;
+
+        readonly IEventManager _eventManager;
+        [Inject]
+        public PlayerHealthController(IEventManager eventManager)
+        {
+            _eventManager = eventManager;
+
+            _eventManager.AddListener(typeof(Event_LocalPlayerChanged), this);
+        }
         internal void Initialize(IPlayerHealthView view, IPlayerHealthModel model)
         {
             _model = model;
-            _model.Player = view.Player;
+            _view = view;
+        }
+
+        public IEnumerator OnEventRaised(Event_LocalPlayerChanged eventData)
+        {
+            _model.Player = _view.Player;
+            yield break;
+        }
+
+        public bool ShouldReceiveEvent(Event_LocalPlayerChanged eventData)
+        {
+            return true;
         }
 
         public class Factory : PlaceholderFactory<IPlayerHealthView, IPlayerHealthController>

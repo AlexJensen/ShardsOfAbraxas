@@ -1,4 +1,5 @@
 
+using Abraxas.Manas.Controllers;
 using Abraxas.Manas.Models;
 using System.Collections;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace Abraxas.Manas.Views
         Players.Players Player { get; }
         Transform Transform { get; }
 
-        void Initialize(IManaModel model);
+        void Initialize(IManaModel model, IManaController controller);
         void StartManaEventCoroutine(IEnumerator eventInvoke);
     }
 }

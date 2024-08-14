@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Abraxas
+namespace Abraxas.UI
 {
     public class RectTransformMover : MonoBehaviour
     {

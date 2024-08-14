@@ -22,6 +22,7 @@ namespace Abraxas.Manas.Controllers
         bool CanPurchaseStone(IStoneController stone);
         void CreateManaTypesFromDeck(IDeckController deck);
         IEnumerator GenerateRatioMana(int amount);
+        void OnDestroy();
         void PurchaseCard(ICardController card);
         void PurchaseStone(IStoneController stone);
     }

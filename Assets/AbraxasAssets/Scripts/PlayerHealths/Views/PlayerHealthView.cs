@@ -1,6 +1,8 @@
 using Abraxas.Health.Models;
+using Abraxas.Players.Managers;
 using TMPro;
 using UnityEngine;
+using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Health.Views
@@ -23,6 +25,14 @@ namespace Abraxas.Health.Views
 
         #region Dependencies
         IPlayerHealthModel _model;
+
+        IPlayerManager _playerManager;
+
+        [Inject]
+        public void Construct(IPlayerManager playerManager)
+        {
+            _playerManager = playerManager;
+        }
         public void Initialize(IPlayerHealthModel model)
         {
             _model = model;
@@ -46,7 +56,7 @@ namespace Abraxas.Health.Views
         #endregion
 
         #region Properties
-        public Player Player { get => _player; set => _player = value; }
+        public Player Player => _playerManager.LocalPlayer == Player.Player1 ? _player : (_player == Player.Player1 ? Player.Player2 : Player.Player1);
         #endregion
 
         #region Methods

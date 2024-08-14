@@ -1,4 +1,5 @@
 ﻿using Abraxas.Cards.Controllers;
+using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Models;
 using System.Collections;
 
@@ -10,7 +11,8 @@ namespace Abraxas.Zones.Views
         void AddCardToHolder(ICardController card, int index = 0);
         IEnumerator MoveCardToZone(ICardController card, int index = 0);
         void RemoveCardFromHolder(ICardController view);
-        void Initialize<TModel>(TModel model)
-            where TModel : IZoneModel;
+        void Initialize<TModel, TController>(TModel model, TController controller)
+            where TModel : IZoneModel
+            where TController : IZoneController;
     }
 }

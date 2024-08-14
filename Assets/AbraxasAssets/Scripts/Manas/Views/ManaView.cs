@@ -1,10 +1,12 @@
 
+using Abraxas.Manas.Controllers;
 using Abraxas.Manas.Models;
+using Abraxas.Players.Managers;
 using System.Collections;
 using TMPro;
 
 using UnityEngine;
-
+using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Manas.Views
@@ -18,16 +20,26 @@ namespace Abraxas.Manas.Views
     {
         #region Dependencies
         IManaModel _model;
-        public void Initialize(IManaModel model)
+        IManaController _controller;
+        IPlayerManager _playerManager;
+
+        [Inject]
+        public void Construct(IPlayerManager playerManager)
+        {
+            _playerManager = playerManager;
+        }
+        public void Initialize(IManaModel model, IManaController controller)
         {
             _model = model;
+            _controller = controller;
             _model.OnStartOfTurnManaChanged += RefreshVisuals;
             RefreshVisuals();
         }
 
         public void OnDestroy()
         {
-            _model.OnStartOfTurnManaChanged -= RefreshVisuals;
+            _controller.OnDestroy();
+            _model.OnStartOfTurnManaChanged -= RefreshVisuals;           
         }
         #endregion
 
@@ -43,7 +55,7 @@ namespace Abraxas.Manas.Views
 
         #region Properties
         public Transform Transform { get => transform; }
-        public Player Player { get => _player; }
+        public Player Player => _playerManager.LocalPlayer == Player.Player1 ? _player : (_player == Player.Player1 ? Player.Player2 : Player.Player1);
         #endregion
 
         #region Methods

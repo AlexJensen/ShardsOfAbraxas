@@ -10,7 +10,7 @@ namespace Abraxas.Cells.Controllers
     {
         ICellView View { get; }
         Players.Players Player { get; }
-        Point FieldPosition { get; }
+        Point FieldPosition { get; set; }
         int CardsOnCell { get; }
         RectTransform RectTransform { get; }
 

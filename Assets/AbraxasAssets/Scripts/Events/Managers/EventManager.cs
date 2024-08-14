@@ -34,7 +34,9 @@ namespace Abraxas.Events.Managers
         {
             if (_eventListeners.TryGetValue(type, out var listeners))
             {
-                foreach (var routine in from IGameEventListener<T> listener in listeners.Cast<IGameEventListener<T>>()
+                var castListeners = listeners.Cast<IGameEventListener<T>>();
+                var listenersCopy = new List<IGameEventListener<T>>(castListeners);
+                foreach (var routine in from IGameEventListener<T> listener in listenersCopy
                                         where listener.ShouldReceiveEvent(eventData)
                                         let routine = listener.OnEventRaised(eventData)
                                         select routine)

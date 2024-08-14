@@ -30,8 +30,16 @@ namespace Abraxas.Cells.Models
 
         public void RemoveCard(ICardController card)
         {
-            _cards.Remove(card);
-        }
+
+            for (int i = 0; i < _cards.Count; i++)
+            {
+                if (_cards[i].Equals(card))
+                {
+                    _cards.RemoveAt(i);
+                    break;
+                }
+            }
+        }        
         #endregion
     }
 }

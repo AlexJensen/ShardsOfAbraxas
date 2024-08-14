@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Abraxas
+namespace Abraxas.UI
 {
     public class FlickerOpacity : MonoBehaviour
     {

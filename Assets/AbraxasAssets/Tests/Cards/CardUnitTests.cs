@@ -14,7 +14,6 @@ using Abraxas.Core;
 using Abraxas.Events;
 using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
-using Abraxas.GameStates;
 using Abraxas.Health.Controllers;
 using Abraxas.Health.Factories;
 using Abraxas.Health.Managers;
@@ -368,7 +367,8 @@ namespace Abraxas.Tests
             {
                 var cellView = new Mock<ICellView>();
                 var fieldPosition = new Point(i, 0);
-                cellView.SetupGet(view => view.FieldPosition).Returns(fieldPosition);
+                var cell = cellFactory.Create(cellView.Object);
+                cell.FieldPosition = fieldPosition;
                 row.Add(cellFactory.Create(cellView.Object));
             }
             fieldGrid.Add(row);
@@ -411,20 +411,14 @@ namespace Abraxas.Tests
             var eventManagerMock = new Mock<IEventManager>();
 
             var cardController = new CardController(
-                Container.Resolve<IPlayerManager>(),
-                Container.Resolve<IGameStateManager>(),
-                Container.Resolve<IZoneManager>(),
-                eventManagerMock.Object,
-                Container.Resolve<IPlayerHealthManager>(),
-                Container.Resolve<IFieldManager>(),
                 Container);
 
             // Act
             cardController.Initialize(modelMock.Object, viewMock.Object);
 
             // Assert
-            eventManagerMock.Verify(em => em.AddListener<Event_ManaModified>(typeof(Event_ManaModified), cardController), Times.Once);
-            eventManagerMock.Verify(em => em.AddListener<Event_CardChangedZones>(typeof(Event_CardChangedZones), cardController), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener(typeof(Event_ManaModified), cardController as IGameEventListener<Event_ManaModified>), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener(typeof(Event_CardChangedZones), cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
 
             var modelField = typeof(CardController).GetField("_model", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var viewField = typeof(CardController).GetField("_view", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -442,12 +436,6 @@ namespace Abraxas.Tests
             var eventManagerMock = new Mock<IEventManager>();
 
             var cardController = new CardController(
-                Container.Resolve<IPlayerManager>(),
-                Container.Resolve<IGameStateManager>(),
-                Container.Resolve<IZoneManager>(),
-                eventManagerMock.Object,
-                Container.Resolve<IPlayerHealthManager>(),
-                Container.Resolve<IFieldManager>(),
                 Container);
 
             // Act
@@ -455,10 +443,10 @@ namespace Abraxas.Tests
             cardController.OnDestroy();
 
             // Assert
-            eventManagerMock.Verify(em => em.AddListener<Event_ManaModified>(typeof(Event_ManaModified), cardController), Times.Once);
-            eventManagerMock.Verify(em => em.AddListener<Event_CardChangedZones>(typeof(Event_CardChangedZones), cardController), Times.Once);
-            eventManagerMock.Verify(em => em.RemoveListener<Event_ManaModified>(typeof(Event_ManaModified), cardController), Times.Once);
-            eventManagerMock.Verify(em => em.RemoveListener<Event_CardChangedZones>(typeof(Event_CardChangedZones), cardController), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener(typeof(Event_ManaModified), cardController as IGameEventListener<Event_ManaModified>), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener(typeof(Event_CardChangedZones), cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
+            eventManagerMock.Verify(em => em.RemoveListener(typeof(Event_ManaModified), cardController as IGameEventListener<Event_ManaModified>), Times.Once);
+            eventManagerMock.Verify(em => em.RemoveListener(typeof(Event_CardChangedZones), cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
         }
 
 
@@ -493,12 +481,6 @@ namespace Abraxas.Tests
             var statblockSettingsMock = new Mock<Statblock.Settings>();
 
             var cardController = new CardController(
-                Container.Resolve<IPlayerManager>(),
-                Container.Resolve<IGameStateManager>(),
-                Container.Resolve<IZoneManager>(),
-                Container.Resolve<IEventManager>(),
-                Container.Resolve<IPlayerHealthManager>(),
-                Container.Resolve<IFieldManager>(),
                 Container);
 
             cardController.Initialize(modelMock.Object, viewMock.Object);

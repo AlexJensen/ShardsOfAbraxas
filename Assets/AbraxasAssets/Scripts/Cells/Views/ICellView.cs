@@ -11,9 +11,9 @@ namespace Abraxas.Cells.Views
         ICellController Controller { get; }
 
         Player Player { get; }
-        Point FieldPosition { get; }
 
         void Initialize(ICellController controller);
         void SetChild(Transform cardTransform);
+        void UpdateText(string Text);
     }
 }

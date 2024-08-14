@@ -46,15 +46,10 @@ namespace Abraxas.Zones.Hands.Views
             yield return CardPlaceholder.ScaleToMaxSize();
             yield return card.RectTransformMover.MoveToFitRectangle(CardPlaceholder.CardPlaceholderRect, NetworkManager.Singleton.IsServer ? 0 : MoveCardTime);
             cardReturningToPlaceholder = false;
-            AddCardAtPlaceholder(card);
-        }
-
-        public void AddCardAtPlaceholder(ICardController card)
-        {
-            OverlayManager.ClearCard(card);
             card.TransformManipulator.Transform.SetParent(CardPlaceholder.transform.parent);
             card.TransformManipulator.Transform.SetSiblingIndex(CardPlaceholder.transform.GetSiblingIndex());
             CardPlaceholder.Reset();
+            OverlayManager.ClearCard(card);
         }
 
         public void UpdateCardPlaceholderPosition()
@@ -62,9 +57,7 @@ namespace Abraxas.Zones.Hands.Views
             var cardList = Model.CardList;
             foreach (ICardController card in cardList)
             {
-                if (Player == Player.Player1 ?
-                    Input.mousePosition.y > card.TransformManipulator.Transform.position.y :
-                    Input.mousePosition.y < card.TransformManipulator.Transform.position.y)
+                if (Input.mousePosition.y > card.TransformManipulator.Transform.position.y)
                 {
                     CardPlaceholder.UpdateIndex(cardList.IndexOf(card));
                     break;

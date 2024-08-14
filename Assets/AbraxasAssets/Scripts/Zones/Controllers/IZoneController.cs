@@ -23,6 +23,8 @@ namespace Abraxas.Zones.Controllers
         void AddCard(ICardController card, int index = 0);
 
         ICardController PeekCard(int index);
+        void OnDestroy();
+
         int TotalCardsInZone { get; }
     }
 }

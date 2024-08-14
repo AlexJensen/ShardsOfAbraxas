@@ -28,7 +28,7 @@ namespace Abraxas.Players.Managers
 
         #region Fields
         readonly NetworkVariable<Players> _activePlayer = new(Players.Player1);
-        Players _localPlayer;
+        Players _localPlayer = Players.Player1;
 
         #endregion
 
@@ -41,6 +41,10 @@ namespace Abraxas.Players.Managers
         public override void OnNetworkSpawn()
         {
             _activePlayer.OnValueChanged += OnActivePlayerChanged;
+            if (IsServer)
+            {
+                StartCoroutine(_eventManager.RaiseEvent(typeof(Event_LocalPlayerChanged), new Event_LocalPlayerChanged(LocalPlayer)));
+            }
         }
 
         public override void OnNetworkDespawn()
@@ -79,9 +83,10 @@ namespace Abraxas.Players.Managers
             yield return WaitForClients();
         }
 
-        public void RegisterLocalPlayer(Players player)
+        public IEnumerator RegisterLocalPlayer(Players player)
         {
             _localPlayer = player;
+            yield return _eventManager.RaiseEvent(typeof(Event_LocalPlayerChanged), new Event_LocalPlayerChanged(player));
         }
         #endregion
     }

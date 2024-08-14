@@ -4,7 +4,6 @@ using Abraxas.Events.Managers;
 using Abraxas.Manas.Models;
 using Abraxas.Manas.Views;
 using Abraxas.Random.Managers;
-using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
@@ -18,7 +17,8 @@ namespace Abraxas.Manas.Controllers
     /// <summary>
     /// ManaController is a class that contains all data to represent a mana gameobject.
     /// </summary>
-    class ManaController : IManaController
+    class ManaController : IManaController,
+        IGameEventListener<Event_LocalPlayerChanged>
     {
         #region Dependencies
         IManaModel _model;
@@ -33,17 +33,24 @@ namespace Abraxas.Manas.Controllers
             _randomManager = randomManager;
             _eventManager = eventManager;
             _typeFactory = typeFactory;
+
+            _eventManager.AddListener(typeof(Event_LocalPlayerChanged), this);
         }
         public void Initialize(IManaView view, IManaModel model)
         {
             _model = model;
             _view = view;
-            model.Player = view.Player;
+
         }
 
         public class Factory : PlaceholderFactory<IManaView, IManaController>
         {
 
+        }
+
+        public void OnDestroy()
+        {
+            _eventManager.RemoveListener(typeof(Event_LocalPlayerChanged), this);
         }
         #endregion
 
@@ -138,6 +145,17 @@ namespace Abraxas.Manas.Controllers
             ManaType result = ManaTypes.Find(x => x.Type == stone.StoneType);
             result.Amount -= stone.Cost;
             _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
+        }
+
+        public IEnumerator OnEventRaised(Event_LocalPlayerChanged eventData)
+        {
+            _model.Player = _view.Player;
+            yield break;
+        }
+
+        public bool ShouldReceiveEvent(Event_LocalPlayerChanged eventData)
+        {
+            return true;
         }
     }
 }
