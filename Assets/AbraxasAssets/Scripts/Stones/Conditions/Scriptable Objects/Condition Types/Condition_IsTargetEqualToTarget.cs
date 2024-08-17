@@ -9,31 +9,23 @@ namespace Abraxas.Stones.Conditions
 {
     [CreateAssetMenu(menuName = "Abraxas/Conditions/TargetEqualsTarget")]
     [Serializable]
-    public class Condition_IsTargetEqualToTarget : ConditionSO<IEventBase>
+    public class Condition_IsTargetEqualToTarget : ConditionSO<IEvent>
     {
         #region Fields
         [SerializeField]
-        private TargetSO<object> _firstTarget;
+        private TargetSOBase _firstTarget;
         [SerializeField]
-        private TargetSO<object> _secondTarget;
+        private TargetSOBase _secondTarget;
         #endregion
 
         #region Methods
         public override bool IsMet()
         {
-            return _firstTarget.Target.Equals(_secondTarget.Target);
+            return _firstTarget.GetTarget().Equals(_secondTarget.GetTarget());
         }
 
-        public override bool ShouldReceiveEvent(IEventBase eventData)
+        public override bool ShouldReceiveEvent(IEvent eventData)
         {
-            if (_firstTarget is IGameEventListener<IEventBase> listener1)
-            {
-                listener1.OnEventRaised(eventData);
-            }
-            if (_secondTarget is IGameEventListener<IEventBase> listener2)
-            {
-                listener2.OnEventRaised(eventData);
-            }
             return true;
         }
         #endregion
@@ -60,7 +52,7 @@ namespace Abraxas.Stones.Conditions
 
                 if (GUILayout.Button("Set First Target"))
                 {
-                    ShowSelectTypeMenu<ITarget>(type => SetTarget(type, _firstTargetProperty));
+                    ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _firstTargetProperty));
                 }
 
                 if (_firstTargetProperty.objectReferenceValue != null && GUILayout.Button("Remove First Target"))
@@ -70,7 +62,7 @@ namespace Abraxas.Stones.Conditions
 
                 if (GUILayout.Button("Set Second Target"))
                 {
-                    ShowSelectTypeMenu<ITarget>(type => SetTarget(type, _secondTargetProperty));
+                    ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _secondTargetProperty));
                 }
 
                 if (_secondTargetProperty.objectReferenceValue != null && GUILayout.Button("Remove Second Target"))

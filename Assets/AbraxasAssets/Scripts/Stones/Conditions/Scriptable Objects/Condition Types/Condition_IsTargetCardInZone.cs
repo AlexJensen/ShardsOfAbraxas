@@ -25,6 +25,7 @@ namespace Abraxas.Stones.Conditions
         #region Fields
         [SerializeField]
         ZoneType _zone;
+        ZoneType _eventZone;
         [SerializeField]
         TargetSO<ICardController> _target;
         #endregion
@@ -41,8 +42,8 @@ namespace Abraxas.Stones.Conditions
 
         public override bool ShouldReceiveEvent(Event_CardChangedZones eventData)
         {
-            _target.Target = eventData.Data;
-            return eventData.Data != _target.Target;
+            _eventZone = eventData.Card.Zone.Type;
+            return eventData.Card != _target.Target;
         }
         #endregion
     }
@@ -53,11 +54,13 @@ namespace Abraxas.Stones.Conditions
     {
         private SerializedProperty _zoneProperty;
         private SerializedProperty _targetProperty;
+        private SerializedProperty _isTriggerProperty;
 
         protected void OnEnable()
         {
             _zoneProperty = serializedObject.FindProperty("_zone");
             _targetProperty = serializedObject.FindProperty("_target");
+            _isTriggerProperty = serializedObject.FindProperty("_isTrigger");
         }
 
         public override void OnInspectorGUI()
@@ -66,6 +69,7 @@ namespace Abraxas.Stones.Conditions
 
             EditorGUILayout.PropertyField(_zoneProperty);
             EditorGUILayout.PropertyField(_targetProperty);
+            EditorGUILayout.PropertyField(_isTriggerProperty);
 
             if (GUILayout.Button("Set Target"))
             {

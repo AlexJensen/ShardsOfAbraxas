@@ -2,16 +2,16 @@
 
 namespace Abraxas.Events
 {
-    public class Event_GameStateExited : IEvent<GameState>
+    public class Event_GameStateExited : IEvent
     {
         #region Properties
-        public GameState Data { get; set; }
+        public GameState State { get; set; }
         #endregion
 
         #region Methods
         public Event_GameStateExited(GameState state)
         {
-            Data = state;
+            State = state;
         }
         #endregion
     }

@@ -6,11 +6,14 @@ using UnityEngine;
 
 namespace Abraxas.Events.Managers
 {
+    /// <summary>
+    /// EventManager handles subscribing and unsubscribing to global game events and provides invoke capabilities for any event type.
+    /// </summary>
     public class EventManager : MonoBehaviour, IEventManager
     {
         private readonly Dictionary<Type, List<IGameEventListenerBase>> _eventListeners = new();
 
-        public void AddListener<T>(Type type, IGameEventListener<T> listener)
+        public void AddListener<T>(IGameEventListener<T> listener)
         {
             Type eventType = typeof(T);
             if (!_eventListeners.TryGetValue(eventType, out var listeners))
@@ -21,7 +24,7 @@ namespace Abraxas.Events.Managers
             listeners.Add(listener);
         }
 
-        public void RemoveListener<T>(Type type, IGameEventListener<T> listener)
+        public void RemoveListener<T>(IGameEventListener<T> listener)
         {
             Type eventType = typeof(T);
             if (_eventListeners.TryGetValue(eventType, out var listeners))
@@ -30,9 +33,9 @@ namespace Abraxas.Events.Managers
             }
         }
 
-        public IEnumerator RaiseEvent<T>(Type type, T eventData)
+        public IEnumerator RaiseEvent<T>(T eventData)
         {
-            if (_eventListeners.TryGetValue(type, out var listeners))
+            if (_eventListeners.TryGetValue(typeof(T), out var listeners))
             {
                 var castListeners = listeners.Cast<IGameEventListener<T>>();
                 var listenersCopy = new List<IGameEventListener<T>>(castListeners);

@@ -20,7 +20,7 @@ namespace Abraxas.Stones.Conditions
 
         public override void Initialize(IStoneController stone, ICondition condition)
         {
-            Player = ((Condition_IsTargetPlayerActivePlayer)condition).Player;
+            Type = ((Condition_IsTargetPlayerActivePlayer)condition).Type;
             base.Initialize(stone, condition);
         }
         #endregion
@@ -35,14 +35,14 @@ namespace Abraxas.Stones.Conditions
 
         #region Fields
         [SerializeField]
-        PlayerType _player;
+        PlayerType _type;
 
         [SerializeField]
         TargetSO<Players.Players> _target;
         #endregion
 
         #region Properties
-        public PlayerType Player { get => _player; set => _player = value; }
+        public PlayerType Type { get => _type; set => _type = value; }
         #endregion
 
         #region Methods
@@ -50,7 +50,7 @@ namespace Abraxas.Stones.Conditions
         {
             var player = _target.Target;
 
-            if (Player == PlayerType.Active
+            if (Type == PlayerType.Active
             ? player == _playerManager.ActivePlayer
             : player != _playerManager.ActivePlayer)
             {
@@ -61,7 +61,7 @@ namespace Abraxas.Stones.Conditions
 
         public override bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData)
         {
-            return eventData.Data != _target.Target;
+            return eventData.Player != _target.Target;
         }
         #endregion
     }
@@ -70,21 +70,24 @@ namespace Abraxas.Stones.Conditions
     [CustomEditor(typeof(Condition_IsTargetPlayerActivePlayer))]
     public class IsTargetPlayerActivePlayerConditionEditor : StoneSOEditor
     {
-        private SerializedProperty _playerProperty;
+        private SerializedProperty _typeProperty;
         private SerializedProperty _targetProperty;
+        private SerializedProperty _isTriggerProperty;
 
         protected void OnEnable()
         {
-            _playerProperty = serializedObject.FindProperty("_player");
+            _typeProperty = serializedObject.FindProperty("_type");
             _targetProperty = serializedObject.FindProperty("_target");
+            _isTriggerProperty = serializedObject.FindProperty("_isTrigger");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(_playerProperty);
+            EditorGUILayout.PropertyField(_typeProperty);
             EditorGUILayout.PropertyField(_targetProperty);
+            EditorGUILayout.PropertyField(_isTriggerProperty);
 
             if (GUILayout.Button("Set Target"))
             {

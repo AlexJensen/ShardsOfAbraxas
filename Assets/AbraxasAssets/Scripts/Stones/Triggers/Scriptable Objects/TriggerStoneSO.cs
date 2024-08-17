@@ -9,7 +9,7 @@ namespace Abraxas.Stones.Data
 {
 
     [CreateAssetMenu(fileName = "New Trigger", menuName = "Abraxas/StoneData/Trigger")]
-    public class TriggerSO : StoneSO
+    public class TriggerStoneSO : StoneSO
     {
         #region Fields
         [HideInInspector]
@@ -30,7 +30,7 @@ namespace Abraxas.Stones.Data
     }
 
     #if UNITY_EDITOR
-        [CustomEditor(typeof(TriggerSO))]
+        [CustomEditor(typeof(TriggerStoneSO))]
         public class TriggerStoneDataSOEditor : StoneSOEditor
         {
             private SerializedProperty _conditionsProperty;

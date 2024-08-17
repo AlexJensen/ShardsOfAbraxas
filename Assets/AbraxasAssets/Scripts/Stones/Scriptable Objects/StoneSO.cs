@@ -3,6 +3,10 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using Abraxas.Events;
+using System.Collections.Generic;
+using Abraxas.Events.Managers;
+using Zenject;
 
 namespace Abraxas.Stones.Data
 {
@@ -10,7 +14,7 @@ namespace Abraxas.Stones.Data
     {
         public abstract IStoneData Data { get; set; }
         public abstract Type ControllerType { get; set; }
-    }
+    }    
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(StoneSO), true)]
@@ -19,12 +23,10 @@ namespace Abraxas.Stones.Data
         protected void ShowSelectTypeMenu<T>(Action<Type> onSelected)
         {
             var menu = new GenericMenu();
-
             var types = Assembly.GetAssembly(typeof(T))
                     .GetTypes()
                     .Where(t => t.IsClass && !t.IsAbstract && typeof(T).IsAssignableFrom(t) && typeof(ScriptableObject).IsAssignableFrom(t))
                     .ToList();
-
             foreach (var type in types)
             {
                 var typeName = type.Name;
@@ -34,26 +36,28 @@ namespace Abraxas.Stones.Data
                 }
                 menu.AddItem(new GUIContent(typeName), false, () => onSelected(type));
             }
-
             menu.ShowAsContext();
         }
-
 
         protected void SetTarget(Type type, SerializedProperty property)
         {
             RemoveTarget(property);
             CreateNewTarget(type, property);
+
+            // Check if the created target requires additional configuration
+            if (typeof(Target_TriggeringObject).IsAssignableFrom(type))
+            {
+                ShowSelectEventTypeMenu(property);
+            }
         }
 
         protected void CreateNewTarget(Type type, SerializedProperty property)
         {
             var parent = (ScriptableObject)property.serializedObject.targetObject;
-
             ScriptableObject target;
             if (type.IsGenericTypeDefinition)
             {
-                // Assume a single generic argument for simplicity; adjust as needed
-                var genericArguments = new Type[] { typeof(object) }; // Replace 'object' with appropriate types as needed
+                var genericArguments = new Type[] { typeof(object) };
                 var closedType = type.MakeGenericType(genericArguments);
                 target = (ScriptableObject)Activator.CreateInstance(closedType);
             }
@@ -61,18 +65,13 @@ namespace Abraxas.Stones.Data
             {
                 target = CreateInstance(type);
             }
-
             target.name = type.Name;
             AssetDatabase.AddObjectToAsset(target, parent);
             AssetDatabase.SaveAssets();
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(parent));
-
             property.objectReferenceValue = target;
-
             serializedObject.ApplyModifiedProperties();
         }
-
-
 
         protected void RemoveTarget(SerializedProperty property)
         {
@@ -85,13 +84,34 @@ namespace Abraxas.Stones.Data
                     AssetDatabase.RemoveObjectFromAsset(target);
                     DestroyImmediate(target, true);
                     AssetDatabase.SaveAssets();
-                    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(target));
                 }
-
                 property.objectReferenceValue = null;
                 serializedObject.ApplyModifiedProperties();
             }
         }
+
+        protected void ShowSelectEventTypeMenu(SerializedProperty property)
+        {
+            var menu = new GenericMenu();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                foreach (Type type in assembly.GetTypes())
+                {
+                    if (typeof(IEvent).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+                    {
+                        menu.AddItem(new GUIContent(type.FullName), false, () => {
+                            property.stringValue = type.AssemblyQualifiedName;
+                            serializedObject.ApplyModifiedProperties();
+                            (target as Target_TriggeringObject).SetEventType(type);
+                        });
+                    }
+                }
+            }
+            menu.ShowAsContext();
+        }
+
     }
+
 #endif
 }

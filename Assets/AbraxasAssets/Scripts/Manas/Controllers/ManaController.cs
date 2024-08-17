@@ -34,7 +34,7 @@ namespace Abraxas.Manas.Controllers
             _eventManager = eventManager;
             _typeFactory = typeFactory;
 
-            _eventManager.AddListener(typeof(Event_LocalPlayerChanged), this);
+            _eventManager.AddListener(this);
         }
         public void Initialize(IManaView view, IManaModel model)
         {
@@ -50,7 +50,7 @@ namespace Abraxas.Manas.Controllers
 
         public void OnDestroy()
         {
-            _eventManager.RemoveListener(typeof(Event_LocalPlayerChanged), this);
+            _eventManager.RemoveListener(this);
         }
         #endregion
 
@@ -70,7 +70,7 @@ namespace Abraxas.Manas.Controllers
                 result.Amount -= cost.Value;
             }
 
-            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(new Event_ManaModified(this)));
         }
 
         public void CreateManaTypesFromDeck(IDeckController deck)
@@ -98,7 +98,7 @@ namespace Abraxas.Manas.Controllers
             {
                 ManaTypes[i].transform.SetSiblingIndex(i);
             }
-            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(new Event_ManaModified(this)));
         }
         public IEnumerator GenerateRatioMana(int amount)
         {
@@ -117,7 +117,7 @@ namespace Abraxas.Manas.Controllers
                     break;
                 }
             }
-            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(new Event_ManaModified(this)));
             yield break;
         }
 
@@ -144,7 +144,7 @@ namespace Abraxas.Manas.Controllers
         {
             ManaType result = ManaTypes.Find(x => x.Type == stone.StoneType);
             result.Amount -= stone.Cost;
-            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(typeof(Event_ManaModified), new Event_ManaModified(this)));
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(new Event_ManaModified(this)));
         }
 
         public IEnumerator OnEventRaised(Event_LocalPlayerChanged eventData)

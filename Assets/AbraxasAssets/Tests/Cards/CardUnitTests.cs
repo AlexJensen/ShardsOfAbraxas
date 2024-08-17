@@ -417,8 +417,8 @@ namespace Abraxas.Tests
             cardController.Initialize(modelMock.Object, viewMock.Object);
 
             // Assert
-            eventManagerMock.Verify(em => em.AddListener(typeof(Event_ManaModified), cardController as IGameEventListener<Event_ManaModified>), Times.Once);
-            eventManagerMock.Verify(em => em.AddListener(typeof(Event_CardChangedZones), cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener(cardController as IGameEventListener<Event_ManaModified>), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener(cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
 
             var modelField = typeof(CardController).GetField("_model", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var viewField = typeof(CardController).GetField("_view", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -443,10 +443,10 @@ namespace Abraxas.Tests
             cardController.OnDestroy();
 
             // Assert
-            eventManagerMock.Verify(em => em.AddListener(typeof(Event_ManaModified), cardController as IGameEventListener<Event_ManaModified>), Times.Once);
-            eventManagerMock.Verify(em => em.AddListener(typeof(Event_CardChangedZones), cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
-            eventManagerMock.Verify(em => em.RemoveListener(typeof(Event_ManaModified), cardController as IGameEventListener<Event_ManaModified>), Times.Once);
-            eventManagerMock.Verify(em => em.RemoveListener(typeof(Event_CardChangedZones), cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener(cardController as IGameEventListener<Event_ManaModified>), Times.Once);
+            eventManagerMock.Verify(em => em.AddListener(cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
+            eventManagerMock.Verify(em => em.RemoveListener(cardController as IGameEventListener<Event_ManaModified>), Times.Once);
+            eventManagerMock.Verify(em => em.RemoveListener(cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
         }
 
 

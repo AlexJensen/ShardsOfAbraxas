@@ -3,13 +3,13 @@ using UnityEditor;
 
 namespace Abraxas.Stones.Data
 {
-    public abstract class EffectSO : StoneSO
+    public abstract class EffectStoneSO : StoneSO
     {
 
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(EffectSO), true)]
+    [CustomEditor(typeof(EffectStoneSO), true)]
     public class EffectSOEditor : StoneSOEditor
     {
         private SerializedProperty _dataProperty;

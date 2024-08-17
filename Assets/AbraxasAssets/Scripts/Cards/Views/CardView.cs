@@ -125,7 +125,7 @@ namespace Abraxas.Cards.Views
             _highlight.SetActive(isPlayable);
         }
 
-        public void UpdateCostTextWithManaTypes(List<Manas.ManaType> manaTypes, Dictionary<StoneType, int> totalCosts, bool isPlayable)
+        public void UpdateCostTextWithManaTypes(List<Manas.ManaType> manaTypes, Dictionary<StoneType, int> totalCosts, bool isPlayable, bool isInHand)
         {
             string totalCost = "";
             foreach (var (pair, manaPair) in from pair in totalCosts
@@ -134,7 +134,7 @@ namespace Abraxas.Cards.Views
             {
                 if (manaPair != null)
                 {
-                    string alpha = pair.Value <= manaPair.Amount ? "FF" : "44";
+                    string alpha = (pair.Value <= manaPair.Amount || !isInHand) ? "FF" : "44";
                     totalCost += $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneTypeDetails(pair.Key).color)}{alpha}>{pair.Value}";
                 }
             }

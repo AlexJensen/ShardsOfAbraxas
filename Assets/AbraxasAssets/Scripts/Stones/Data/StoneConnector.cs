@@ -18,7 +18,7 @@ namespace Abraxas.Stones.Data
         public StoneConnector(StoneSO stoneData)
         {
             RuntimeStoneData = stoneData;
-            if (stoneData is TriggerSO triggerStoneData)
+            if (stoneData is TriggerStoneSO triggerStoneData)
             {
                 triggerStoneData.Indexes = ConnectionIndexes;
             }

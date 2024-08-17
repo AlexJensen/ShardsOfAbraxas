@@ -78,11 +78,11 @@ namespace Abraxas.Cards.Data
             {
                 var menu = new GenericMenu();
 
-                menu.AddItem(new GUIContent("Trigger Stone"), false, () => AddNewStone(typeof(TriggerSO)));
+                menu.AddItem(new GUIContent("Trigger Stone"), false, () => AddNewStone(typeof(TriggerStoneSO)));
 
-                var effectTypes = Assembly.GetAssembly(typeof(EffectSO))
+                var effectTypes = Assembly.GetAssembly(typeof(EffectStoneSO))
                                             .GetTypes()
-                                            .Where(t => t.IsSubclassOf(typeof(EffectSO)) && !t.IsAbstract)
+                                            .Where(t => t.IsSubclassOf(typeof(EffectStoneSO)) && !t.IsAbstract)
                                             .ToList();
 
                 foreach (var effectType in effectTypes)

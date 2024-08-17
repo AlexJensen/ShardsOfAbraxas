@@ -24,7 +24,7 @@ namespace Abraxas.Zones.Controllers
         {
             _eventManager = eventManager;
 
-            _eventManager.AddListener(typeof(Event_LocalPlayerChanged), this);
+            _eventManager.AddListener(this);
         }
 
         public void Initialize<TView, TModel>(TView view, TModel model)
@@ -39,7 +39,7 @@ namespace Abraxas.Zones.Controllers
 
         public void OnDestroy()
         {
-            _eventManager.RemoveListener(typeof(Event_LocalPlayerChanged), this);
+            _eventManager.RemoveListener(this);
         }
         #endregion
 

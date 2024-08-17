@@ -16,7 +16,12 @@ namespace Abraxas.Stones.Conditions
         #region Fields
         protected IStoneController Stone;
         protected IEventManager EventManager;
-        public bool IsTrigger = false;
+        [SerializeField]
+        private bool _isTrigger = false;
+        #endregion
+
+        #region Properties
+        public virtual bool IsTrigger { get => _isTrigger; set => _isTrigger = value; }
         #endregion
 
         #region Methods
@@ -40,12 +45,12 @@ namespace Abraxas.Stones.Conditions
 
         public void SubscribeToEvents()
         {
-            EventManager.AddListener(typeof(T), this);
+            EventManager.AddListener(this);
         }
 
         public void UnsubscribeFromEvents()
         {
-            EventManager.RemoveListener(typeof(T), this);
+            EventManager.RemoveListener(this);
         }
 
         public abstract bool IsMet();

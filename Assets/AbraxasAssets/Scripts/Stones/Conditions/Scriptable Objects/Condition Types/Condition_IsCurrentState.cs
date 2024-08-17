@@ -36,7 +36,7 @@ namespace Abraxas.Stones.Conditions
 
         public override bool ShouldReceiveEvent(Event_GameStateEntered eventData)
         {
-            _currentState = eventData.Data.CurrentState;
+            _currentState = eventData.State.CurrentState;
             return IsMet();
         }
         #endregion

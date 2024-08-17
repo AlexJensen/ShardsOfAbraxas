@@ -24,7 +24,7 @@ namespace Abraxas.Health.Controllers
         {
             _eventManager = eventManager;
 
-            _eventManager.AddListener(typeof(Event_LocalPlayerChanged), this);
+            _eventManager.AddListener(this);
         }
         internal void Initialize(IPlayerHealthView view, IPlayerHealthModel model)
         {

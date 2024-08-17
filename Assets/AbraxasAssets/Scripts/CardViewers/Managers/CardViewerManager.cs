@@ -1,11 +1,13 @@
 using Abraxas.Cards.Controllers;
-using Abraxas.Network.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Abraxas.CardViewers.Managers
 {
+    /// <summary>
+    /// CardViewerManager handles displaying detailed card and stone information inside the CardViewer UI component.
+    /// </summary>
     public class CardViewerManager : MonoBehaviour, ICardViewerManager
     {
         #region Constants

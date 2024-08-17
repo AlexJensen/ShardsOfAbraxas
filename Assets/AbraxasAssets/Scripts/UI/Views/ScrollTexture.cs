@@ -22,8 +22,8 @@ public class TextureScroller : MonoBehaviour, IGameEventListener<Event_ActivePla
     {
         _eventManager = eventManager;
         _playerManager = playerManager;
-        eventManager.AddListener(typeof(Event_ActivePlayerChanged), this as IGameEventListener<Event_ActivePlayerChanged>);
-        eventManager.AddListener(typeof(Event_LocalPlayerChanged), this as IGameEventListener<Event_LocalPlayerChanged>);
+        eventManager.AddListener(this as IGameEventListener<Event_ActivePlayerChanged>);
+        eventManager.AddListener(this as IGameEventListener<Event_LocalPlayerChanged>);
     }
 
     void Awake()
@@ -49,13 +49,13 @@ public class TextureScroller : MonoBehaviour, IGameEventListener<Event_ActivePla
         {
             Destroy(instanceMaterial);
         }
-        _eventManager.RemoveListener(typeof(Event_ActivePlayerChanged), this as IGameEventListener<Event_ActivePlayerChanged>);
-        _eventManager.RemoveListener(typeof(Event_LocalPlayerChanged), this as IGameEventListener<Event_LocalPlayerChanged>);
+        _eventManager.RemoveListener(this as IGameEventListener<Event_ActivePlayerChanged>);
+        _eventManager.RemoveListener(this as IGameEventListener<Event_LocalPlayerChanged>);
     }
 
     public IEnumerator OnEventRaised(Event_ActivePlayerChanged eventData)
     {
-        isPlayer1 = (eventData.Data == Players.Player1) ? (_playerManager.LocalPlayer == Players.Player1) : (_playerManager.LocalPlayer == Players.Player2);
+        isPlayer1 = (eventData.Player == Players.Player1) ? (_playerManager.LocalPlayer == Players.Player1) : (_playerManager.LocalPlayer == Players.Player2);
         yield break;
     }
 
@@ -66,7 +66,7 @@ public class TextureScroller : MonoBehaviour, IGameEventListener<Event_ActivePla
 
     public IEnumerator OnEventRaised(Event_LocalPlayerChanged eventData)
     {
-        isPlayer1 = (eventData.Data == Players.Player1) ? (_playerManager.LocalPlayer == Players.Player1) : (_playerManager.LocalPlayer == Players.Player2);
+        isPlayer1 = (eventData.Player == Players.Player1) ? (_playerManager.LocalPlayer == Players.Player1) : (_playerManager.LocalPlayer == Players.Player2);
         yield break;
     }
 

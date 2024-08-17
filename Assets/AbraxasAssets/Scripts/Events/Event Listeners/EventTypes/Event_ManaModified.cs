@@ -2,16 +2,16 @@
 
 namespace Abraxas.Events
 {
-	public class Event_ManaModified : IEvent<IManaController>
+	public class Event_ManaModified : IEvent
     {
         #region Properties
-        public IManaController Data { get; set; }
+        public IManaController Mana { get; set; }
         #endregion
 
         #region Methods
         public Event_ManaModified(IManaController mana)
         {
-            Data = mana;
+            Mana = mana;
         }
         #endregion
     }

@@ -75,7 +75,7 @@ namespace Abraxas.Cards.Factories
                 from stoneData in
                     from stoneData in data.Stones
                     where stoneData.Index == triggerStoneController.Index
-                    let triggerStoneData = stoneData.RuntimeStoneData as TriggerSO
+                    let triggerStoneData = stoneData.RuntimeStoneData as TriggerStoneSO
                     where triggerStoneData != null
                     select stoneData
                 select (triggerStoneController, stoneData))

@@ -9,7 +9,7 @@ namespace Abraxas.Stones.Types
 {
     [CreateAssetMenu(fileName = "New Effect ModifyTargetCardGroupStatBlock", menuName = "Abraxas/StoneData/Effects/Modify Target Card Group Stat Block")]
     [Serializable]
-    public class Effect_ModifyCardGroupStatblockDataSO : EffectSO
+    public class Effect_ModifyCardGroupStatblockDataSO : EffectStoneSO
     {
         #region Fields
         [SerializeField]

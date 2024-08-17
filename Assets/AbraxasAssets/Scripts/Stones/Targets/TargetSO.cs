@@ -4,17 +4,26 @@ using UnityEngine;
 
 namespace Abraxas.Stones.Targets
 {
+    public abstract class TargetSOBase : ScriptableObject, ITarget
+    {
+        public abstract object GetTarget();
+        public virtual void Initialize(StoneController stoneController)
+        {
+            //
+        }
+    }
+
     [Serializable]
-    abstract class TargetSO<T> : ScriptableObject, ITarget
+    abstract class TargetSO<T> : TargetSOBase
     {
         #region Properties
         public abstract T Target { get; set; }
         #endregion
 
         #region Methods
-        public virtual void Initialize(StoneController stoneController)
+        public override object GetTarget()
         {
-            //
+            return Target;
         }
         #endregion
     }

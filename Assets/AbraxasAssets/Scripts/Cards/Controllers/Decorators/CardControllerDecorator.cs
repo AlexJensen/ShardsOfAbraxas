@@ -82,18 +82,18 @@ namespace Abraxas.Cards.Controllers
 
         public virtual void InitializeListeners()
         {
-            _eventManager.AddListener(typeof(Event_ManaModified), this as IGameEventListener<Event_ManaModified>);
-            _eventManager.AddListener(typeof(Event_CardChangedZones), this as IGameEventListener<Event_CardChangedZones>);
-            _eventManager.AddListener(typeof(Event_GameStateEntered), this as IGameEventListener<Event_GameStateEntered>);
-            _eventManager.AddListener(typeof(Event_ActivePlayerChanged), this as IGameEventListener<Event_ActivePlayerChanged>);
+            _eventManager.AddListener(this as IGameEventListener<Event_ManaModified>);
+            _eventManager.AddListener(this as IGameEventListener<Event_CardChangedZones>);
+            _eventManager.AddListener(this as IGameEventListener<Event_GameStateEntered>);
+            _eventManager.AddListener(this as IGameEventListener<Event_ActivePlayerChanged>);
         }
 
         public virtual void RemoveListeners()
         {
-            _eventManager.RemoveListener(typeof(Event_ManaModified), this as IGameEventListener<Event_ManaModified>);
-            _eventManager.RemoveListener(typeof(Event_CardChangedZones), this as IGameEventListener<Event_CardChangedZones>);
-            _eventManager.RemoveListener(typeof(Event_GameStateEntered), this as IGameEventListener<Event_GameStateEntered>);
-            _eventManager.RemoveListener(typeof(Event_ActivePlayerChanged), this as IGameEventListener<Event_ActivePlayerChanged>);
+            _eventManager.RemoveListener(this as IGameEventListener<Event_ManaModified>);
+            _eventManager.RemoveListener(this as IGameEventListener<Event_CardChangedZones>);
+            _eventManager.RemoveListener(this as IGameEventListener<Event_GameStateEntered>);
+            _eventManager.RemoveListener(this as IGameEventListener<Event_ActivePlayerChanged>);
         }
         #endregion
 
@@ -221,19 +221,20 @@ namespace Abraxas.Cards.Controllers
         public virtual void UpdatePlayabilityAndCostText()
         {
             bool isPlayable = DeterminePlayability();
-            _view.UpdateCostTextWithManaTypes(LastManas, TotalCosts, isPlayable);
+            bool isInHand = Zone is IHandController;
+            _view.UpdateCostTextWithManaTypes(LastManas, TotalCosts, isPlayable, isInHand);
         }
         #endregion
 
         #region Delegate Methods
         public virtual IEnumerator OnEventRaised(Event_ManaModified eventData)
         {
-            LastManas = eventData.Data.ManaTypes;
+            LastManas = eventData.Mana.ManaTypes;
             UpdatePlayabilityAndCostText();
             yield break;
         }
 
-        public virtual bool ShouldReceiveEvent(Event_ManaModified eventData) => eventData.Data.Player == Owner && eventData.Data.ManaTypes != null;
+        public virtual bool ShouldReceiveEvent(Event_ManaModified eventData) => eventData.Mana.Player == Owner && eventData.Mana.ManaTypes != null;
 
         public virtual IEnumerator OnEventRaised(Event_CardChangedZones eventData)
         {
@@ -249,7 +250,7 @@ namespace Abraxas.Cards.Controllers
             yield break;
         }
 
-        public virtual bool ShouldReceiveEvent(Event_CardChangedZones eventData) => eventData.Data.Equals(GetBaseCard());
+        public virtual bool ShouldReceiveEvent(Event_CardChangedZones eventData) => eventData.Card.Equals(GetBaseCard());
 
         public virtual IEnumerator OnEventRaised(Event_GameStateEntered eventData)
         {

@@ -10,7 +10,7 @@ namespace Abraxas.Stones.Types
 {
     [CreateAssetMenu(fileName = "New Effect DrawCardFromLibrary", menuName = "Abraxas/StoneData/Effects/Draw Card From Library")]
     [Serializable]
-    public class Effect_DrawCardFromDeckDataSO : EffectSO
+    public class Effect_DrawCardFromDeckDataSO : EffectStoneSO
     {
         #region Fields
         [SerializeField]

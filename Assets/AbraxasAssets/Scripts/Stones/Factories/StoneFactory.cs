@@ -68,7 +68,7 @@ namespace Abraxas.Stones.Factories
                 var conditionField = FindFieldByType(dataSO.GetType(), typeof(ConditionSO<>));
                 if (conditionField != null)
                 {
-                    var conditionSO = (ConditionSO<IEventBase>)conditionField.GetValue(dataSO);
+                    var conditionSO = (ConditionSO<IEvent>)conditionField.GetValue(dataSO);
                     conditionableController.Conditions = new List<ICondition> { conditionSO };
                     conditionSO.Initialize(controller, conditionSO );
                 }

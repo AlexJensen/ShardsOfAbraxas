@@ -2,16 +2,18 @@
 
 namespace Abraxas.Events
 {
-    public class Event_LocalPlayerChanged : IEvent
+    public class Event_PlayerMillsCards : IEvent
     {
         #region Properties
         public Player Player { get; set; }
+        public int Amount { get; set; }
         #endregion
 
         #region Methods
-        public Event_LocalPlayerChanged(Player player)
+        public Event_PlayerMillsCards(Player player, int amount)
         {
             Player = player;
+            Amount = amount;
         }
         #endregion
     }

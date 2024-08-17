@@ -1,6 +1,7 @@
 ﻿using Abraxas.Stones;
 using System;
 using Unity.Netcode;
+using UnityEngine;
 namespace Abraxas.StatBlocks.Data
 {
     /// <summary>
@@ -28,17 +29,22 @@ namespace Abraxas.StatBlocks.Data
     [Serializable]
     public struct StatData :INetworkSerializable
     {
-        public int ATK;
-        public int DEF;
-        public int SPD;
-        public int RNG;
+        public int _ATK;
+        public int _DEF;
+        public int _SPD;
+        public int _RNG;
+
+        public int ATK { readonly get => _ATK; set => _ATK = value; }
+        public int DEF { readonly get => _DEF; set => _DEF = value; }
+        public int SPD { readonly get => _SPD; set => _SPD = value; }
+        public int RNG { readonly get => _RNG; set => _RNG = value; }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
-            serializer.SerializeValue(ref ATK);
-            serializer.SerializeValue(ref DEF);
-            serializer.SerializeValue(ref SPD);
-            serializer.SerializeValue(ref RNG);
+            serializer.SerializeValue(ref _ATK);
+            serializer.SerializeValue(ref _DEF);
+            serializer.SerializeValue(ref _SPD);
+            serializer.SerializeValue(ref _RNG);
         }
 
         public static StatData operator +(StatData a, StatData b)
@@ -84,7 +90,7 @@ namespace Abraxas.StatBlocks.Data
                 RNG = a.RNG - b.RNG
             };
         }
-        public bool Equals(StatData other)
+        public readonly bool Equals(StatData other)
         {
             return ATK.Equals(other.ATK) &&
                 DEF.Equals(other.DEF) &&

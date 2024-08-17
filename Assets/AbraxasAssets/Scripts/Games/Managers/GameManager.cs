@@ -1,6 +1,8 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Managers;
 using Abraxas.Core;
+using Abraxas.Events;
+using Abraxas.Events.Managers;
 using Abraxas.GameStates;
 using Abraxas.Manas;
 using Abraxas.Network.Managers;
@@ -10,16 +12,19 @@ using Abraxas.Players.Managers;
 using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Managers;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 using Player = Abraxas.Players.Players;
 using State = Abraxas.GameStates.GameStates;
-using Abraxas.Random.Managers;
 
 namespace Abraxas.Games.Managers
 {
+    /// <summary>
+    /// GameManager is responsible for handling complex game-logic level instructions and facilitating communication and delegation between multiple other manager classes to implement those instructions into game logic.
+    /// </summary>
     public class GameManager : NetworkedManager, IGameManager
     {
         #region Settings
@@ -31,6 +36,7 @@ namespace Abraxas.Games.Managers
         IPlayerManager _playerManager;
         IManaManager _manaManager;
         ICardManager _cardManager;
+        IEventManager _eventManager;
 
         // Zones
         IZoneManager _zoneManager;
@@ -43,7 +49,8 @@ namespace Abraxas.Games.Managers
                        IDeckManager deckManager,
                        IPlayerManager playerManager,
                        IManaManager manaManager,
-                       ICardManager cardManager)
+                       ICardManager cardManager,
+                       IEventManager eventManager)
         {
             _settings = settings;
             _gameStateManager = gameStateManager;
@@ -52,6 +59,7 @@ namespace Abraxas.Games.Managers
             _playerManager = playerManager;
             _manaManager = manaManager;
             _cardManager = cardManager;
+            _eventManager = eventManager;
         }
         #endregion
 
@@ -77,9 +85,22 @@ namespace Abraxas.Games.Managers
 
         public IEnumerator DrawCard(Player player, int amount = 1, int index = 0)
         {
+            List<ICardController> cards = new();
             for (int i = 0; i < amount; i++)
             {
-                yield return _zoneManager.MoveCardFromDeckToHand(_deckManager.PeekCard(player, index), player);
+                var card = _deckManager.PeekCard(player, index);
+                yield return _zoneManager.MoveCardFromDeckToHand(card, player);
+                cards.Add(card);
+            }
+            yield return _eventManager.RaiseEvent(new Event_PlayerDrawsCards(player, cards));
+        }
+
+        public IEnumerator MillCard(Player player, int amount = 1, int index = 0)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                yield return _zoneManager.MoveCardFromDeckToGraveyard(_deckManager.PeekCard(player, index), player);
+                yield return _eventManager.RaiseEvent(new Event_PlayerMillsCards(player, amount));
             }
         }
 
@@ -96,8 +117,6 @@ namespace Abraxas.Games.Managers
 
 
         #region Server Methods
-
-
         public void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition)
         {
             if (!IsClient) return;
@@ -129,8 +148,6 @@ namespace Abraxas.Games.Managers
             _manaManager.PurchaseCard(card);
             StartCoroutine(_zoneManager.MoveCardFromHandToCell(card, new Point(fieldPosition.x, fieldPosition.y)));
         }
-
-
         #endregion
     }
 }

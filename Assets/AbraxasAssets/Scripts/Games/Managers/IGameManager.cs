@@ -14,5 +14,6 @@ namespace Abraxas.Games.Managers
         void RequestPurchaseCardAndMoveFromHandToCell(ICardController card, Point fieldPosition);
 
         IEnumerator DrawCard(Player player, int amount = 1, int index = 0);
+        IEnumerator MillCard(Player player, int amount = 1, int index = 0);
     }
 }

@@ -73,7 +73,7 @@ namespace Abraxas.UI
             _eventManager = eventManager;
             _playerManager = playerManager;
 
-            _eventManager.AddListener(typeof(Event_GameStateEntered), this);
+            _eventManager.AddListener(this);
         }
         #endregion
 
@@ -93,7 +93,7 @@ namespace Abraxas.UI
 
         private void OnDestroy()
         {
-            _eventManager.RemoveListener(typeof(Event_GameStateEntered), this);
+            _eventManager.RemoveListener(this);
         }
 
         public void NextButtonPressed()
@@ -104,7 +104,7 @@ namespace Abraxas.UI
 
         public IEnumerator OnEventRaised(Event_GameStateEntered eventData)
         {
-            GameState state = eventData.Data;
+            GameState state = eventData.State;
             _button.interactable = _buttonSettings.GetInteractable(state.CurrentState);
             _buttonStr.text = _buttonSettings.GetText(state.CurrentState);
             _image.color = _playerSettings.GetPlayerDetails(_playerManager.LocalPlayer == Players.Players.Player1 ? _playerManager.ActivePlayer : _playerManager.ActivePlayer == Players.Players.Player1 ? Players.Players.Player2 : Players.Players.Player1).color;

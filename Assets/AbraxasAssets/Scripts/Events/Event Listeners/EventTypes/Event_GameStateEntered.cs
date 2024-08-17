@@ -5,16 +5,16 @@ namespace Abraxas.Events
     /// <summary>
     /// GameStateEnteredEvent is an event that is triggered when a game state is entered.
     /// </summary>
-    public class Event_GameStateEntered : IEvent<GameState>
+    public class Event_GameStateEntered : IEvent
     {
         #region Properties
-        public GameState Data { get; set; }
+        public GameState State { get; set; }
         #endregion
 
         #region Methods
         public Event_GameStateEntered(GameState state)
         {
-            Data = state;
+            State = state;
         }
         #endregion
     }

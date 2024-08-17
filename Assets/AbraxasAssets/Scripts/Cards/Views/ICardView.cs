@@ -23,7 +23,7 @@ namespace Abraxas.Cards.Views
         IEnumerator MoveToCell(ICellController cell, float moveCardTime);
         void UpdateCostText(string totalCost);
         void SetHighlight(bool isPlayable);
-        void UpdateCostTextWithManaTypes(List<ManaType> manaTypes, Dictionary<StoneType, int> totalCosts, bool isPlayable);
+        void UpdateCostTextWithManaTypes(List<ManaType> manaTypes, Dictionary<StoneType, int> totalCosts, bool isPlayable, bool isInHand);
         void SetToInitialScale();
     }
 }

@@ -31,7 +31,7 @@ namespace Abraxas.Cells.Views
             _playerSettings = playerSettings;
             _eventManager = eventManager;
 
-            _eventManager.AddListener(typeof(Event_LocalPlayerChanged), this);
+            _eventManager.AddListener(this);
         }
 
         public void Initialize(ICellController controller)
@@ -47,7 +47,7 @@ namespace Abraxas.Cells.Views
 
         public void OnDestroy()
         {
-            _eventManager.RemoveListener(typeof(Event_LocalPlayerChanged), this);
+            _eventManager.RemoveListener(this);
         }
         #endregion
 

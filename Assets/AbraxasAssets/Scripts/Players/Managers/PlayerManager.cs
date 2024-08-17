@@ -43,7 +43,7 @@ namespace Abraxas.Players.Managers
             _activePlayer.OnValueChanged += OnActivePlayerChanged;
             if (IsServer)
             {
-                StartCoroutine(_eventManager.RaiseEvent(typeof(Event_LocalPlayerChanged), new Event_LocalPlayerChanged(LocalPlayer)));
+                StartCoroutine(_eventManager.RaiseEvent(new Event_LocalPlayerChanged(LocalPlayer)));
             }
         }
 
@@ -64,7 +64,7 @@ namespace Abraxas.Players.Managers
 
         private IEnumerator ChangeActivePlayer(Players player)
         {
-            yield return _eventManager.RaiseEvent(typeof(Event_ActivePlayerChanged), new Event_ActivePlayerChanged(player));
+            yield return _eventManager.RaiseEvent(new Event_ActivePlayerChanged(player));
 
             if (IsClient)
             {
@@ -86,7 +86,7 @@ namespace Abraxas.Players.Managers
         public IEnumerator RegisterLocalPlayer(Players player)
         {
             _localPlayer = player;
-            yield return _eventManager.RaiseEvent(typeof(Event_LocalPlayerChanged), new Event_LocalPlayerChanged(player));
+            yield return _eventManager.RaiseEvent(new Event_LocalPlayerChanged(player));
         }
         #endregion
     }

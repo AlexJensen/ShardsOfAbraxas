@@ -2,16 +2,16 @@
 
 namespace Abraxas.Events
 {
-    public class Event_ActivePlayerChanged : IEvent<Player>
+    public class Event_ActivePlayerChanged : IEvent
     {
         #region Properties
-        public Player Data { get; set; }
+        public Player Player { get; set; }
         #endregion
 
         #region Methods
         public Event_ActivePlayerChanged(Player player)
         {
-            Data = player;
+            Player = player;
         }
         #endregion
     }

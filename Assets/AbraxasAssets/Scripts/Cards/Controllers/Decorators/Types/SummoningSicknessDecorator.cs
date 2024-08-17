@@ -19,7 +19,7 @@ namespace Abraxas.Cards.Controllers
         public override void InitializeListeners()
         {
             base.InitializeListeners();
-            _eventManager.AddListener(typeof(Event_CardChangedZones), this as IGameEventListener<Event_CardChangedZones>);
+            _eventManager.AddListener(this as IGameEventListener<Event_CardChangedZones>);
         }
 
 
@@ -41,7 +41,7 @@ namespace Abraxas.Cards.Controllers
             if (_gameStateManager.State is EndState)
             {
                 GetBaseCard().RequestRemoveStatusEffect<StatusEffect_SummoningSickness>();
-                _eventManager.RemoveListener(typeof(Event_GameStateEntered), this as IGameEventListener<Event_GameStateEntered>);
+                _eventManager.RemoveListener(this as IGameEventListener<Event_GameStateEntered>);
             }
 
             yield return base.OnEventRaised(eventData);
