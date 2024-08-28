@@ -13,6 +13,7 @@ namespace Abraxas.Cards.Controllers
     class SummoningSicknessDecorator : CardControllerDecorator,
         IGameEventListener<Event_CardChangedZones>
     {
+        #region Dependencies
         public SummoningSicknessDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
             : base(innerController, model, view) { }
 
@@ -21,7 +22,8 @@ namespace Abraxas.Cards.Controllers
             base.InitializeListeners();
             _eventManager.AddListener(this as IGameEventListener<Event_CardChangedZones>);
         }
-
+        #endregion
+        #region Methods
 
         public override IEnumerator Combat()
         {
@@ -34,7 +36,9 @@ namespace Abraxas.Cards.Controllers
                 yield return InnerController.Combat();
             }
         }
+        #endregion
 
+        #region Event Listeners
         // Listen to the game state change event to remove summoning sickness
         public override IEnumerator OnEventRaised(Event_GameStateEntered eventData)
         {
@@ -49,5 +53,6 @@ namespace Abraxas.Cards.Controllers
         }
 
         public override bool ShouldReceiveEvent(Event_GameStateEntered eventData) => true;
+        #endregion
     }
 }

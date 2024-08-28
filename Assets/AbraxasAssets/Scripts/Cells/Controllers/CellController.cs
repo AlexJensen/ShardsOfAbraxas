@@ -33,7 +33,8 @@ namespace Abraxas.Cells.Controllers
         public Player Player { get => _model.Player; }
         public Point FieldPosition
         {
-            get => _model.FieldPosition; set
+            get => _model.FieldPosition; 
+            set
             {
                 _model.FieldPosition = value;
             }

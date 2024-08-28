@@ -20,7 +20,7 @@ namespace Abraxas.StatBlocks.Installers
         }
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [CustomEditor(typeof(StatBlockSettingsInstaller))]
     public class StatblockSettingsEditor : Editor
     {
@@ -44,10 +44,11 @@ namespace Abraxas.StatBlocks.Installers
             {
                 for (int spd = 0; spd <= 2; spd++)
                 {
-                    for (int atk = 0; atk <= 5; atk++)
+                    for (int def = 0; def <= 5; def++)
                     {
-                        for (int def = 0; def <= 5; def++)
+                        for (int atk = 0; atk <= 5; atk++)
                         {
+
                             Statblock.Settings.StatBlockCombination combination = new()
                             {
                                 Stats = new StatData
@@ -70,5 +71,5 @@ namespace Abraxas.StatBlocks.Installers
             EditorUtility.SetDirty(settings);
         }
     }
-    #endif
+#endif
 }

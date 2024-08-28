@@ -19,6 +19,9 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Views
 {
+    /// <summary>
+    /// CardView is a monobehaviour class that contains all visual data and Unity-specific functionality for a card.
+    /// </summary>
     [RequireComponent(typeof(RectTransform))]
     [RequireComponent(typeof(RectTransformMover))]
     [RequireComponent(typeof(CardDragListener))]
@@ -59,6 +62,7 @@ namespace Abraxas.Cards.Views
             OnHiddenChanged();
 
             _image.sprite = _statblockSettings.GetSprite(_model.StatBlock.Stats);
+            _image.material = _stoneSettings.GetStoneTypeDetails(_model.StatBlock.StoneType).material;
         }
 
         public override void OnDestroy()
@@ -86,7 +90,6 @@ namespace Abraxas.Cards.Views
 
         #region Properties
         public RectTransformMover RectTransformMover => _rectTransformMover = _rectTransformMover != null ? _rectTransformMover : GetComponent<RectTransformMover>();
-
         public Image Image { get => _image; set => _image = value; }
         public Transform Transform => transform;
         #endregion

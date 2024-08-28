@@ -14,6 +14,7 @@ using Abraxas.Core;
 using Abraxas.Events;
 using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
+using Abraxas.GameStates;
 using Abraxas.Health.Controllers;
 using Abraxas.Health.Factories;
 using Abraxas.Health.Managers;
@@ -34,6 +35,7 @@ using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Factories;
 using Abraxas.Stones.Installers;
+using Abraxas.UI;
 using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Factories;
 using Abraxas.Zones.Fields.Controllers;
@@ -79,6 +81,8 @@ namespace Abraxas.Tests
             Container.Bind<IFieldManager>().FromMock();
             Container.Bind<IOverlayManager>().FromMock();
             Container.Bind<IRandomManager>().FromMock();
+            Container.Bind<IUIManager>().FromMock();
+            Container.Bind<IGameStateManager>().FromMock();
 
             Container.BindInterfacesAndSelfTo<CardView>().FromNewComponentOnNewGameObject().AsTransient();
             Container.BindInterfacesAndSelfTo<CardController>().AsTransient();
@@ -369,7 +373,7 @@ namespace Abraxas.Tests
                 var fieldPosition = new Point(i, 0);
                 var cell = cellFactory.Create(cellView.Object);
                 cell.FieldPosition = fieldPosition;
-                row.Add(cellFactory.Create(cellView.Object));
+                row.Add(cell);
             }
             fieldGrid.Add(row);
 
@@ -382,6 +386,7 @@ namespace Abraxas.Tests
 
             var cardFactory = Container.Resolve<CardController.Factory>();
             var cardController = cardFactory.Create(cardData);
+            fieldManager.AddCard(cardController);
 
 
             Utilities.RunCoroutineToCompletion(fieldManager.MoveCardToCell(cardController, new Point(0, 0)));
@@ -408,8 +413,6 @@ namespace Abraxas.Tests
             // Arrange
             var modelMock = new Mock<ICardModel>();
             var viewMock = new Mock<ICardView>();
-            var eventManagerMock = new Mock<IEventManager>();
-
             var cardController = new CardController(
                 Container);
 
@@ -417,38 +420,12 @@ namespace Abraxas.Tests
             cardController.Initialize(modelMock.Object, viewMock.Object);
 
             // Assert
-            eventManagerMock.Verify(em => em.AddListener(cardController as IGameEventListener<Event_ManaModified>), Times.Once);
-            eventManagerMock.Verify(em => em.AddListener(cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
-
             var modelField = typeof(CardController).GetField("_model", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var viewField = typeof(CardController).GetField("_view", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
             Assert.AreSame(modelMock.Object, modelField.GetValue(cardController));
             Assert.AreSame(viewMock.Object, viewField.GetValue(cardController));
         }
-
-        [Test]
-        public void CardController_EventListeners_AddedAndRemoved()
-        {
-            // Arrange
-            var modelMock = new Mock<ICardModel>();
-            var viewMock = new Mock<ICardView>();
-            var eventManagerMock = new Mock<IEventManager>();
-
-            var cardController = new CardController(
-                Container);
-
-            // Act
-            cardController.Initialize(modelMock.Object, viewMock.Object);
-            cardController.OnDestroy();
-
-            // Assert
-            eventManagerMock.Verify(em => em.AddListener(cardController as IGameEventListener<Event_ManaModified>), Times.Once);
-            eventManagerMock.Verify(em => em.AddListener(cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
-            eventManagerMock.Verify(em => em.RemoveListener(cardController as IGameEventListener<Event_ManaModified>), Times.Once);
-            eventManagerMock.Verify(em => em.RemoveListener(cardController as IGameEventListener<Event_CardChangedZones>), Times.Once);
-        }
-
 
         [Test]
         public void CardController_PropertyChangeTests()

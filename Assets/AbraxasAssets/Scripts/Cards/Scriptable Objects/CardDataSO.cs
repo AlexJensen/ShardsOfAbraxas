@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Abraxas.Cards.Data
 {
+    /// <summary>
+    /// CardDataSO is a ScriptableObject that contains a CardData struct used to display editable card data in the Unity inspector.
+    /// </summary>
     [CreateAssetMenu(fileName = "New Card", menuName = "Abraxas/Data/Card")]
     public class CardDataSO : ScriptableObject
     {

@@ -11,6 +11,8 @@ namespace Abraxas.Cards.Managers
     {
         #region Fields
         readonly List<ICardController> _cards = new();
+
+        public List<ICardController> Cards => _cards;
         #endregion
         #region Methods
         public void AddCard(ICardController card)

@@ -10,6 +10,9 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Models
 {
+    /// <summary>
+    /// CardModel is a class that contains all data and logic for a card.
+    /// </summary>
     class CardModel : ICardModel
     {
         #region Events
@@ -33,8 +36,8 @@ namespace Abraxas.Cards.Models
         List<IStoneController> _stones = new();
         IZoneController _zone;
         ICellController _cell;
-        bool _hidden;
         IStatBlockController _statBlock;
+        bool _hidden;
         #endregion
 
         #region Properties

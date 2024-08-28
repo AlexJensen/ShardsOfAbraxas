@@ -30,6 +30,9 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Controllers
 {
+    /// <summary>
+    /// The default CardControllerDecorator class functions as the baseline for expected card behaviour and operates as the root of the decorator pattern.
+    /// </summary>
     class CardControllerDecorator : ICardControllerInternal,
                                     IGameEventListener<Event_ManaModified>,
                                     IGameEventListener<Event_CardChangedZones>,
@@ -137,6 +140,11 @@ namespace Abraxas.Cards.Controllers
         public virtual void ApplyStatusEffect(IStatusEffect effect) => InnerController.ApplyStatusEffect(effect);
         public virtual bool HasStatusEffect<T>() where T : IStatusEffect => InnerController.HasStatusEffect<T>();
         public virtual void RemoveStatusEffect<T>() where T : IStatusEffect => InnerController.RemoveStatusEffect<T>();
+
+        /// <summary>
+        /// A card attacks the opponent's home row, dealing damage to the opponent and moving to the graveyard.
+        /// </summary>
+        /// <returns></returns>
         public virtual IEnumerator PassHomeRow()
         {
             _healthManager.ModifyPlayerHealth(Owner ==
@@ -144,6 +152,12 @@ namespace Abraxas.Cards.Controllers
 
             yield return _zoneManager.MoveCardFromFieldToDeck(GetBaseCard(), Owner, 0, true);
         }
+
+        /// <summary>
+        /// A card attacks an opponent's card, dealing damage to both cards equal to eachother's ATK and moving either card to the graveyard if its DEF is reduced to 0.
+        /// </summary>
+        /// <param name="opponent">Card to fight</param>
+        /// <returns></returns>
         public virtual IEnumerator Fight(ICardController opponent)
         {
             if (opponent.Owner == Owner) yield break;
@@ -165,6 +179,11 @@ namespace Abraxas.Cards.Controllers
                 CheckDeath());
         }
 
+        /// <summary>
+        /// A card attacks an opponent's card from a distance, dealing damage to the opponent card's DEF equal to the attacker's ATK and moving the opponent's card to the graveyard if its DEF is reduced to 0.
+        /// </summary>
+        /// <param name="opponent"></param>
+        /// <returns></returns>
         public virtual IEnumerator RangedAttack(ICardController opponent)
         {
             if (opponent.Owner == Owner) yield break;
@@ -181,6 +200,10 @@ namespace Abraxas.Cards.Controllers
                                opponent.CheckDeath());
         }
 
+        /// <summary>
+        /// A card is destroyed if its DEF is reduced to 0 while on the field.
+        /// </summary>
+        /// <returns></returns>
         public virtual IEnumerator CheckDeath()
         {
 
@@ -189,16 +212,19 @@ namespace Abraxas.Cards.Controllers
             yield return _zoneManager.MoveCardFromFieldToGraveyard(GetBaseCard(), Owner);
         }
 
+        /// <summary>
+        /// A card moves forward on the field equal to its SPD value during combat and will fight enemy cards it comes in contact with during the movement.
+        /// </summary>
+        /// <returns></returns>
         public virtual IEnumerator Combat()
         {
             yield return _fieldManager.CombatMovement(GetBaseCard(), new Point(Owner == Player.Player1? StatBlock.Stats.SPD:-StatBlock.Stats.SPD, 0));
         }
 
-        public virtual void ChangeScale(PointF pointF, float scaleCardToOverlayTime) => _view.ChangeScale(pointF, scaleCardToOverlayTime);
-        public virtual void SetToInitialScale() => _view.SetToInitialScale();
-        public virtual void SetCardPositionToMousePosition() => _view.SetCardPositionToMousePosition();
-        public virtual string GetCostText() => _view.GetCostText();
-        public virtual IEnumerator MoveToCell(ICellController cell, float moveCardTime) => _view.MoveToCell(cell, moveCardTime);
+        /// <summary>
+        /// A card can only be played if the player is the active player, the game state is either of the two main phases, the card is in the player's hand, and the player has enough mana to pay the card's cost.
+        /// </summary>
+        /// <returns></returns>
         public virtual bool DeterminePlayability()
         {
             if (Zone is not IHandController ||
@@ -217,6 +243,13 @@ namespace Abraxas.Cards.Controllers
             }
             return true;
         }
+
+        public virtual void ChangeScale(PointF pointF, float scaleCardToOverlayTime) => _view.ChangeScale(pointF, scaleCardToOverlayTime);
+        public virtual void SetToInitialScale() => _view.SetToInitialScale();
+        public virtual void SetCardPositionToMousePosition() => _view.SetCardPositionToMousePosition();
+        public virtual string GetCostText() => _view.GetCostText();
+        public virtual IEnumerator MoveToCell(ICellController cell, float moveCardTime) => _view.MoveToCell(cell, moveCardTime);
+       
 
         public virtual void UpdatePlayabilityAndCostText()
         {
@@ -238,9 +271,9 @@ namespace Abraxas.Cards.Controllers
 
         public virtual IEnumerator OnEventRaised(Event_CardChangedZones eventData)
         {
+            // Apply summoning sickness when a card enters the field
             if (Zone is IFieldController)
             {
-                // Apply summoning sickness when a card enters the field
                 ApplyStatusEffect(new StatusEffect_SummoningSickness());
             }
             if (LastManas != null)

@@ -21,6 +21,7 @@ namespace Abraxas.Cards.Controllers
         }
         #endregion
 
+        #region Methods
         public void OnPointerEnter()
         {
             if (_cardController.Hidden) return;
@@ -30,5 +31,6 @@ namespace Abraxas.Cards.Controllers
         {
             _cardViewerManager.HideCardViewer();
         }
+        #endregion  
     }
 }

@@ -6,7 +6,9 @@ using Abraxas.Stones.Models;
 using Abraxas.Stones.Targets;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using UnityEngine;
 using Zenject;
 
 namespace Abraxas.Stones.Factories
@@ -14,10 +16,12 @@ namespace Abraxas.Stones.Factories
     class StoneFactory : IFactory<StoneSO, IStoneController>
     {
         private readonly DiContainer _container;
+        private readonly ConditionSOBase.Factory _conditionFactory;
 
-        public StoneFactory(DiContainer container)
+        public StoneFactory(DiContainer container, ConditionSOBase.Factory conditionFactory)
         {
             _container = container;
+            _conditionFactory = conditionFactory;
         }
 
         public IStoneController Create(StoneSO dataSO)
@@ -55,22 +59,35 @@ namespace Abraxas.Stones.Factories
                 if (targetField != null)
                 {
                     targetableController.Target = (TargetSO<object>)targetField.GetValue(dataSO);
+                    ((TargetSOBase)targetField.GetValue(dataSO)).Initialize(controller);
                 }
             }
         }
-
-        // ...
 
         private void InitializeConditionsIfPresent(IStoneController controller, StoneSO dataSO)
         {
             if (controller is IConditional conditionableController)
             {
-                var conditionField = FindFieldByType(dataSO.GetType(), typeof(ConditionSO<>));
+                var conditionField = FindFieldByType(dataSO.GetType(), typeof(List<ScriptableObject>));
                 if (conditionField != null)
                 {
-                    var conditionSO = (ConditionSO<IEvent>)conditionField.GetValue(dataSO);
-                    conditionableController.Conditions = new List<ICondition> { conditionSO };
-                    conditionSO.Initialize(controller, conditionSO );
+                    var conditionList = (List<ScriptableObject>)conditionField.GetValue(dataSO);
+                    var conditions = new List<ICondition>();
+
+                    foreach (var conditionSO in conditionList)
+                    {
+                        if (conditionSO is ConditionSO<IEvent> conditionBase)
+                        {
+                            var conditionInstance = _conditionFactory.Create(conditionBase, controller);
+                            conditions.Add(conditionInstance);
+                        }
+                        else
+                        {
+                            Debug.LogError($"Condition of type {conditionSO.GetType()} is not a valid ConditionSOBase type.");
+                        }
+                    }
+
+                    conditionableController.Conditions = conditions;
                 }
             }
         }
@@ -79,7 +96,7 @@ namespace Abraxas.Stones.Factories
         {
             foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
-                if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == fieldType)
+                if (field.FieldType.IsGenericType && field.FieldType == fieldType)
                 {
                     return field;
                 }

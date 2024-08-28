@@ -32,6 +32,7 @@ namespace Abraxas.Stones
                 public string name;
                 public StoneType type;
                 public Color color;
+                public Material material;
             }
 
             public List<StoneTypeDetails> stones;

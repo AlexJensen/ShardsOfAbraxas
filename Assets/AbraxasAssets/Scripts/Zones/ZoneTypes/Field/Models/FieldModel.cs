@@ -13,6 +13,7 @@ namespace Abraxas.Zones.Fields.Models
         public override void Initialize<TView>(TView view)
         {
             _view = (IFieldView)view;
+            GenerateField();
         }
 
         public void GenerateField()

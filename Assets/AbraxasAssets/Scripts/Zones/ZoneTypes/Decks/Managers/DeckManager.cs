@@ -205,7 +205,6 @@ namespace Abraxas.Zones.Decks.Managers
                 OriginalOwner = player,
                 Stones = new List<StoneConnector>(cardData.Stones),
                 StatBlock = cardData.StatBlock,
-
             };
 
             var cardController = _cardFactory.Create(modifiedCardData);

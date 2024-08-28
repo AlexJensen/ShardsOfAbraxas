@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 
 namespace Abraxas.Cards.Views
 {
+    /// <summary>
+    /// CardMouseOverlistener is a MonoBehaviour that listens for mouse over events on a card and reports them to a CardMouseOverHandler.
+    /// </summary>
     public class CardMouseOverListener : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         #region Dependencies

@@ -100,6 +100,7 @@ namespace Abraxas.Tests
             _handManagerMock.Setup(h => h.CardDragging).Returns(_cardControllerMock.Object);
             _playerManagerMock.Setup(p => p.ActivePlayer).Returns(Player.Player1);
             _cardControllerMock.Setup(c => c.OriginalOwner).Returns(Player.Player1);
+            _cardControllerMock.Setup(c => c.DeterminePlayability()).Returns(true);
             var cellMock = new Mock<ICellController>();
             cellMock.Setup(c => c.CardsOnCell).Returns(0);
             cellMock.Setup(c => c.Player).Returns(Player.Player1);

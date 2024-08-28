@@ -52,10 +52,10 @@ namespace Abraxas.StatBlocks
             SerializedProperty statProperty = property.FindPropertyRelative("Stats");
 
             // Generate display name
-            string displayName = $"{statProperty.FindPropertyRelative("ATK").intValue} " +
-                                 $"{statProperty.FindPropertyRelative("DEF").intValue} " +
-                                 $"{statProperty.FindPropertyRelative("SPD").intValue} " +
-                                 $"{statProperty.FindPropertyRelative("RNG").intValue}";
+            string displayName = $"{statProperty.FindPropertyRelative("_ATK").intValue} " +
+                                 $"{statProperty.FindPropertyRelative("_DEF").intValue} " +
+                                 $"{statProperty.FindPropertyRelative("_SPD").intValue} " +
+                                 $"{statProperty.FindPropertyRelative("_RNG").intValue}";
             titleProperty.stringValue = displayName;
             EditorGUI.PropertyField(position, property, label, true);
         }

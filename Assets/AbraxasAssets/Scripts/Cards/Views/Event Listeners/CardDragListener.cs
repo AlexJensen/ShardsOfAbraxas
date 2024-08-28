@@ -1,7 +1,6 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cells.Views;
 using Abraxas.Core;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +8,9 @@ using UnityEngine.UI;
 
 namespace Abraxas.Cards.Views
 {
+    /// <summary>
+    /// CardDragListener is a class that listens for drag events on a card and reports them to a DragHandler.
+    /// </summary>
     [RequireComponent(typeof(ICardView))]
     public class CardDragListener : MonoBehaviour, ICardDragListener, IBeginDragHandler, IEndDragHandler, IDragHandler
     {

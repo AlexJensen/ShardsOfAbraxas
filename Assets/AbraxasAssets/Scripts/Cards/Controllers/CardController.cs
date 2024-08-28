@@ -18,6 +18,9 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Controllers
 {
+    /// <summary>
+    /// CardController is a controller-level class for handling card events. It integrates with a decorator pattern to apply status effects to cards and operates as the central line of communication between the card model and view and other gameobject controllers as well as managers.
+    /// </summary>
     class CardController : ICardControllerInternal
     {
         #region Dependencies
