@@ -15,7 +15,7 @@ D:/Users/Jax/Documents/Work/Projects/Shards of Abraxas/Shards of Abraxas
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-52515
+56339
 Successfully changed project path to: D:/Users/Jax/Documents/Work/Projects/Shards of Abraxas/Shards of Abraxas
 D:/Users/Jax/Documents/Work/Projects/Shards of Abraxas/Shards of Abraxas
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -49,11 +49,11 @@ D:/Users/Jax/Documents/Work/Projects/Shards of Abraxas/Shards of Abraxas
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [26176] Host "[IP] 10.0.0.19 [Port] 0 [Flags] 2 [Guid] 646226650 [EditorId] 646226650 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-ACN6LI9) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [18532] Host "[IP] 10.0.0.19 [Port] 0 [Flags] 2 [Guid] 3966018913 [EditorId] 3966018913 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-ACN6LI9) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [26176] Host "[IP] 10.0.0.19 [Port] 0 [Flags] 2 [Guid] 646226650 [EditorId] 646226650 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-ACN6LI9) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [18532] Host "[IP] 10.0.0.19 [Port] 0 [Flags] 2 [Guid] 3966018913 [EditorId] 3966018913 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-ACN6LI9) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
-Refreshing native plugins compatible for Editor in 2769.96 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 38.96 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.3.5f1 (9674261d40ee)
 [Subsystems] Discovering subsystems at path D:/Program Files (x86)/Unity/2022.3.5f1/Editor/Data/Resources/UnitySubsystems
@@ -69,97 +69,97 @@ Initialize mono
 Mono path[0] = 'D:/Program Files (x86)/Unity/2022.3.5f1/Editor/Data/Managed'
 Mono path[1] = 'D:/Program Files (x86)/Unity/2022.3.5f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'D:/Program Files (x86)/Unity/2022.3.5f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56592
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56952
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: D:/Program Files (x86)/Unity/2022.3.5f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.027770 seconds.
-- Loaded All Assemblies, in  2.081 seconds
+Registered in 0.009413 seconds.
+- Loaded All Assemblies, in  0.630 seconds
 Native extension for WindowsStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.534 seconds
-Domain Reload Profiling: 2727ms
-	BeginReloadAssembly (1323ms)
+- Finished resetting the current domain, in  0.431 seconds
+Domain Reload Profiling: 1061ms
+	BeginReloadAssembly (228ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (9ms)
-	RebuildCommonClasses (149ms)
-	RebuildNativeTypeToScriptingClass (17ms)
-	initialDomainReloadingComplete (178ms)
-	LoadAllAssembliesAndSetupDomain (413ms)
-		LoadAssemblies (1296ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (71ms)
+	RebuildNativeTypeToScriptingClass (20ms)
+	initialDomainReloadingComplete (83ms)
+	LoadAllAssembliesAndSetupDomain (227ms)
+		LoadAssemblies (227ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (397ms)
-			TypeCache.Refresh (396ms)
-				TypeCache.ScanAssembly (316ms)
-			ScanForSourceGeneratedMonoScriptInfo (0ms)
+		AnalyzeDomain (223ms)
+			TypeCache.Refresh (222ms)
+				TypeCache.ScanAssembly (198ms)
+			ScanForSourceGeneratedMonoScriptInfo (1ms)
 			ResolveRequiredComponents (1ms)
-	FinalizeReload (646ms)
+	FinalizeReload (431ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (442ms)
+		SetupLoadedEditorAssemblies (325ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (18ms)
-			SetLoadedEditorAssemblies (15ms)
+			InitializePlatformSupportModulesInManaged (11ms)
+			SetLoadedEditorAssemblies (11ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (11ms)
-			ProcessInitializeOnLoadAttributes (293ms)
-			ProcessInitializeOnLoadMethodAttributes (94ms)
+			BeforeProcessingInitializeOnLoad (3ms)
+			ProcessInitializeOnLoadAttributes (218ms)
+			ProcessInitializeOnLoadMethodAttributes (81ms)
 			AfterProcessingInitializeOnLoad (0ms)
-			EditorAssembliesLoaded (12ms)
+			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
 		AwakeInstancesAfterBackupRestoration (0ms)
 ========================================================================
 Worker process is ready to serve import requests
 Begin MonoManager ReloadAssembly
 Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  8.828 seconds
-Refreshing native plugins compatible for Editor in 15.01 ms, found 3 plugins.
+- Loaded All Assemblies, in  2.493 seconds
+Refreshing native plugins compatible for Editor in 11.60 ms, found 3 plugins.
 Native extension for WindowsStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  1.568 seconds
-Domain Reload Profiling: 10357ms
-	BeginReloadAssembly (429ms)
+- Finished resetting the current domain, in  1.722 seconds
+Domain Reload Profiling: 4213ms
+	BeginReloadAssembly (282ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (7ms)
+		DisableScriptedObjects (12ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (126ms)
-	RebuildCommonClasses (46ms)
-	RebuildNativeTypeToScriptingClass (15ms)
-	initialDomainReloadingComplete (46ms)
-	LoadAllAssembliesAndSetupDomain (8253ms)
-		LoadAssemblies (7731ms)
+		CreateAndSetChildDomain (46ms)
+	RebuildCommonClasses (50ms)
+	RebuildNativeTypeToScriptingClass (14ms)
+	initialDomainReloadingComplete (50ms)
+	LoadAllAssembliesAndSetupDomain (2094ms)
+		LoadAssemblies (1548ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (719ms)
-			TypeCache.Refresh (623ms)
-				TypeCache.ScanAssembly (590ms)
-			ScanForSourceGeneratedMonoScriptInfo (75ms)
-			ResolveRequiredComponents (21ms)
-	FinalizeReload (1568ms)
+		AnalyzeDomain (703ms)
+			TypeCache.Refresh (621ms)
+				TypeCache.ScanAssembly (589ms)
+			ScanForSourceGeneratedMonoScriptInfo (63ms)
+			ResolveRequiredComponents (19ms)
+	FinalizeReload (1723ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (1264ms)
+		SetupLoadedEditorAssemblies (1207ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (7ms)
-			SetLoadedEditorAssemblies (8ms)
+			InitializePlatformSupportModulesInManaged (12ms)
+			SetLoadedEditorAssemblies (14ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (256ms)
-			ProcessInitializeOnLoadAttributes (824ms)
-			ProcessInitializeOnLoadMethodAttributes (165ms)
-			AfterProcessingInitializeOnLoad (5ms)
+			BeforeProcessingInitializeOnLoad (304ms)
+			ProcessInitializeOnLoadAttributes (707ms)
+			ProcessInitializeOnLoadMethodAttributes (163ms)
+			AfterProcessingInitializeOnLoad (6ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (10ms)
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.27 seconds
-Refreshing native plugins compatible for Editor in 10.85 ms, found 3 plugins.
+		AwakeInstancesAfterBackupRestoration (13ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.09 seconds
+Refreshing native plugins compatible for Editor in 15.99 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6007 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 99 unused Assets / (356.7 KB). Loaded Objects now: 6460.
-Memory consumption went from 236.3 MB to 235.9 MB.
-Total: 50.722300 ms (FindLiveObjects: 0.673700 ms CreateObjectMapping: 0.889500 ms MarkObjects: 48.735000 ms  DeleteObjects: 0.422600 ms)
+Unloading 6008 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 99 unused Assets / (357.2 KB). Loaded Objects now: 6461.
+Memory consumption went from 236.0 MB to 235.7 MB.
+Total: 7.716400 ms (FindLiveObjects: 0.637900 ms CreateObjectMapping: 0.720200 ms MarkObjects: 6.043200 ms  DeleteObjects: 0.314000 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
@@ -176,948 +176,84 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 159230.671138 seconds.
+  Time since last request: 176305.938260 seconds.
   path: Assets/AbraxasAssets/Shaders/ColorReplace.shader
   artifactKey: Guid(6ec0b2b73b97c8a4d9c586435b2efa44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Shaders/ColorReplace.shader using Guid(6ec0b2b73b97c8a4d9c586435b2efa44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8cedf721f6a6610bfa0c300f3459f1b9') in 0.024790 seconds
-Number of updated asset objects reloaded before import = 0
+Start importing Assets/AbraxasAssets/Shaders/ColorReplace.shader using Guid(6ec0b2b73b97c8a4d9c586435b2efa44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9a77b0e272572d5a69a37bc0f869630b') in 0.007201 seconds
+Number of updated asset objects reloaded before import = 1
 Number of asset objects unloaded after import = 0
 ========================================================================
 Received Import Request.
-  Time since last request: 237.361413 seconds.
-  path: ProjectSettings/TagManager.asset
-  artifactKey: Guid(00000000000000003000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing ProjectSettings/TagManager.asset using Guid(00000000000000003000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2132469524f8bb2dda9225aa76f143e3') in 0.001430 seconds
-Number of updated asset objects reloaded before import = 0
+  Time since last request: 19.792532 seconds.
+  path: Assets/AbraxasAssets/Shaders/ColorReplace.shader
+  artifactKey: Guid(6ec0b2b73b97c8a4d9c586435b2efa44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Shaders/ColorReplace.shader using Guid(6ec0b2b73b97c8a4d9c586435b2efa44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a4125d9bed6ee47593916cc9f84bc47') in 0.000982 seconds
+Number of updated asset objects reloaded before import = 1
 Number of asset objects unloaded after import = 0
 ========================================================================
 Received Import Request.
-  Time since last request: 552.921530 seconds.
-  path: Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg
-  artifactKey: Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg using Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a1b23c25a124ada15b2b1a03413df31e') in 0.004839 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
+  Time since last request: 3223.914358 seconds.
+  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Amethyst.mat
+  artifactKey: Guid(b6693b15b6131ae4facff6fcf92af63d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Amethyst.mat using Guid(b6693b15b6131ae4facff6fcf92af63d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2e2d7822bd3f09108f2c45b2c493cc04') in 0.017211 seconds
+Number of updated asset objects reloaded before import = 1
+Number of asset objects unloaded after import = 1
 ========================================================================
 Received Import Request.
-  Time since last request: 5.320781 seconds.
-  path: Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg
-  artifactKey: Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg using Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '578d3506410f6c09125fb035d7101479') in 0.004622 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 6.042770 seconds.
-  path: Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg
-  artifactKey: Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg using Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '342277e65f3bee0d039aee98c1048384') in 0.001717 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 8.268466 seconds.
-  path: Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg
-  artifactKey: Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg using Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b0b9135b96a2c0ddac7de883729fa707') in 0.004134 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 17.236074 seconds.
-  path: Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg
-  artifactKey: Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Textures/b25cb67126cea781a75c4bf3672e13f9.jpg using Guid(70c3cb03af45d9845a2efc876b5b5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e37c7f40a74fb2fd8cafc24822f1d9f0') in 0.001803 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 11.80 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 2 unused Assets / (290.7 KB). Loaded Objects now: 6461.
-Memory consumption went from 114.2 MB to 114.0 MB.
-Total: 6.156800 ms (FindLiveObjects: 0.474500 ms CreateObjectMapping: 0.603700 ms MarkObjects: 5.012300 ms  DeleteObjects: 0.065300 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.748 seconds
-Refreshing native plugins compatible for Editor in 13.06 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.376 seconds
-Domain Reload Profiling: 4120ms
-	BeginReloadAssembly (341ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (23ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (83ms)
-	RebuildCommonClasses (69ms)
-	RebuildNativeTypeToScriptingClass (21ms)
-	initialDomainReloadingComplete (64ms)
-	LoadAllAssembliesAndSetupDomain (1248ms)
-		LoadAssemblies (826ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (590ms)
-			TypeCache.Refresh (563ms)
-				TypeCache.ScanAssembly (532ms)
-			ScanForSourceGeneratedMonoScriptInfo (0ms)
-			ResolveRequiredComponents (27ms)
-	FinalizeReload (2377ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (908ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (8ms)
-			SetLoadedEditorAssemblies (9ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (246ms)
-			ProcessInitializeOnLoadAttributes (518ms)
-			ProcessInitializeOnLoadMethodAttributes (122ms)
-			AfterProcessingInitializeOnLoad (5ms)
-			EditorAssembliesLoaded (1ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (29ms)
-Refreshing native plugins compatible for Editor in 15.38 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5836 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.0 KB). Loaded Objects now: 6467.
-Memory consumption went from 204.6 MB to 204.3 MB.
-Total: 6.596900 ms (FindLiveObjects: 0.640600 ms CreateObjectMapping: 0.705300 ms MarkObjects: 5.052700 ms  DeleteObjects: 0.196700 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 799.093701 seconds.
-  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Moonstone.mat
-  artifactKey: Guid(19f0a2d2a97688942974a5d624b3cfe3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Moonstone.mat using Guid(19f0a2d2a97688942974a5d624b3cfe3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9f85797aaeeee69b948d66ac8f50b3c2') in 0.014739 seconds
+  Time since last request: 0.000231 seconds.
+  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Emerald.mat
+  artifactKey: Guid(addcf8c7a4980014fa0d8d057f387c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Emerald.mat using Guid(addcf8c7a4980014fa0d8d057f387c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6fdd47188d0883f39497892fda788acd') in 0.002794 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 1
 ========================================================================
 Received Import Request.
-  Time since last request: 31.952132 seconds.
-  path: Assets/AbraxasAssets/Scripts/Stones/Installers/StoneSettings.cs
-  artifactKey: Guid(55818dfdd92e3204db2c473218f7ca7e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Scripts/Stones/Installers/StoneSettings.cs using Guid(55818dfdd92e3204db2c473218f7ca7e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8cea349e94552ea34f241aff00e732db') in 0.000750 seconds
+  Time since last request: 0.000023 seconds.
+  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Turquoise.mat
+  artifactKey: Guid(ae69964982bc86e46819d7041ce2a1ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Turquoise.mat using Guid(ae69964982bc86e46819d7041ce2a1ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '95deb7729450d060a6e9a058ec79f0be') in 0.002760 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 0
+Number of asset objects unloaded after import = 1
 ========================================================================
 Received Import Request.
-  Time since last request: 22.721381 seconds.
-  path: Assets/AbraxasAssets/Scripts/Stones/Installers/StoneSettings.cs
-  artifactKey: Guid(55818dfdd92e3204db2c473218f7ca7e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Scripts/Stones/Installers/StoneSettings.cs using Guid(55818dfdd92e3204db2c473218f7ca7e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ab3e8e4d9d092dd019478410df2e3cc1') in 0.000616 seconds
+  Time since last request: 0.000021 seconds.
+  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Garnet.mat
+  artifactKey: Guid(efb2a911c7cfcaf48ba58d2e3ee152cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Garnet.mat using Guid(efb2a911c7cfcaf48ba58d2e3ee152cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a3d68e7bdf678ce611bbf5b84c136a84') in 0.002296 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 0
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.640 seconds
-Refreshing native plugins compatible for Editor in 11.52 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.019 seconds
-Domain Reload Profiling: 3656ms
-	BeginReloadAssembly (315ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (15ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (76ms)
-	RebuildCommonClasses (45ms)
-	RebuildNativeTypeToScriptingClass (14ms)
-	initialDomainReloadingComplete (39ms)
-	LoadAllAssembliesAndSetupDomain (1223ms)
-		LoadAssemblies (688ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (710ms)
-			TypeCache.Refresh (674ms)
-				TypeCache.ScanAssembly (651ms)
-			ScanForSourceGeneratedMonoScriptInfo (18ms)
-			ResolveRequiredComponents (19ms)
-	FinalizeReload (2020ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (924ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (17ms)
-			SetLoadedEditorAssemblies (8ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (255ms)
-			ProcessInitializeOnLoadAttributes (540ms)
-			ProcessInitializeOnLoadMethodAttributes (100ms)
-			AfterProcessingInitializeOnLoad (3ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (19ms)
-Refreshing native plugins compatible for Editor in 10.21 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5836 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.2 KB). Loaded Objects now: 6472.
-Memory consumption went from 204.6 MB to 204.3 MB.
-Total: 6.302100 ms (FindLiveObjects: 0.588700 ms CreateObjectMapping: 0.898100 ms MarkObjects: 4.620600 ms  DeleteObjects: 0.193600 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.523 seconds
-Refreshing native plugins compatible for Editor in 8.41 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.344 seconds
-Domain Reload Profiling: 3865ms
-	BeginReloadAssembly (288ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (18ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (72ms)
-	RebuildCommonClasses (69ms)
-	RebuildNativeTypeToScriptingClass (20ms)
-	initialDomainReloadingComplete (45ms)
-	LoadAllAssembliesAndSetupDomain (1100ms)
-		LoadAssemblies (695ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (559ms)
-			TypeCache.Refresh (527ms)
-				TypeCache.ScanAssembly (491ms)
-			ScanForSourceGeneratedMonoScriptInfo (18ms)
-			ResolveRequiredComponents (15ms)
-	FinalizeReload (2345ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (950ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (13ms)
-			SetLoadedEditorAssemblies (14ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (236ms)
-			ProcessInitializeOnLoadAttributes (546ms)
-			ProcessInitializeOnLoadMethodAttributes (137ms)
-			AfterProcessingInitializeOnLoad (4ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (22ms)
-Refreshing native plugins compatible for Editor in 12.05 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5836 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.4 KB). Loaded Objects now: 6477.
-Memory consumption went from 204.6 MB to 204.3 MB.
-Total: 10.231400 ms (FindLiveObjects: 0.674300 ms CreateObjectMapping: 0.768700 ms MarkObjects: 8.573400 ms  DeleteObjects: 0.213400 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 14.32 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 2 unused Assets / (290.7 KB). Loaded Objects now: 6477.
-Memory consumption went from 115.1 MB to 114.8 MB.
-Total: 12.477400 ms (FindLiveObjects: 0.693100 ms CreateObjectMapping: 0.665300 ms MarkObjects: 10.918200 ms  DeleteObjects: 0.198700 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+Number of asset objects unloaded after import = 1
 ========================================================================
 Received Import Request.
-  Time since last request: 1825.582162 seconds.
-  path: Assets/AbraxasAssets/Scripts/Conditions/Installers/ConditionInstaller.cs
-  artifactKey: Guid(22417bbf41dfdba458ff09d8d3403c2f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AbraxasAssets/Scripts/Conditions/Installers/ConditionInstaller.cs using Guid(22417bbf41dfdba458ff09d8d3403c2f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9d334ff5583f68149de0f11f33d3aebe') in 0.125543 seconds
+  Time since last request: 0.000029 seconds.
+  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Citrine.mat
+  artifactKey: Guid(3138dcc05776a454698eb9e8ca302d73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Citrine.mat using Guid(3138dcc05776a454698eb9e8ca302d73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a29ffc78df213a2835bfae1e4ac412b') in 0.001450 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Sapphire.mat
+  artifactKey: Guid(c823087bc3b0edd4699b8f66616d19e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Sapphire.mat using Guid(c823087bc3b0edd4699b8f66616d19e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '47fa61bfe338da340aec44036d8e1d3e') in 0.002255 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 0.000044 seconds.
+  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Moonstone.mat
+  artifactKey: Guid(19f0a2d2a97688942974a5d624b3cfe3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Moonstone.mat using Guid(19f0a2d2a97688942974a5d624b3cfe3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '29abb613b3063a82a251dfc911ad817c') in 0.001310 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
 ========================================================================
 Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  7.682 seconds
-Refreshing native plugins compatible for Editor in 9.50 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in 109.211 seconds
-Domain Reload Profiling: 116892ms
-	BeginReloadAssembly (465ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (17ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (94ms)
-	RebuildCommonClasses (47ms)
-	RebuildNativeTypeToScriptingClass (18ms)
-	initialDomainReloadingComplete (59ms)
-	LoadAllAssembliesAndSetupDomain (7091ms)
-		LoadAssemblies (6293ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (1105ms)
-			TypeCache.Refresh (1074ms)
-				TypeCache.ScanAssembly (1038ms)
-			ScanForSourceGeneratedMonoScriptInfo (14ms)
-			ResolveRequiredComponents (17ms)
-	FinalizeReload (109212ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (897ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (8ms)
-			SetLoadedEditorAssemblies (8ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (276ms)
-			ProcessInitializeOnLoadAttributes (491ms)
-			ProcessInitializeOnLoadMethodAttributes (109ms)
-			AfterProcessingInitializeOnLoad (4ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (19ms)
-Refreshing native plugins compatible for Editor in 13.53 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.2 KB). Loaded Objects now: 6483.
-Memory consumption went from 204.6 MB to 204.3 MB.
-Total: 82.002500 ms (FindLiveObjects: 0.900400 ms CreateObjectMapping: 1.307200 ms MarkObjects: 79.621900 ms  DeleteObjects: 0.172100 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.721 seconds
-Refreshing native plugins compatible for Editor in 11.99 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.289 seconds
-Domain Reload Profiling: 4008ms
-	BeginReloadAssembly (375ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (35ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (113ms)
-	RebuildCommonClasses (85ms)
-	RebuildNativeTypeToScriptingClass (29ms)
-	initialDomainReloadingComplete (70ms)
-	LoadAllAssembliesAndSetupDomain (1158ms)
-		LoadAssemblies (729ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (599ms)
-			TypeCache.Refresh (558ms)
-				TypeCache.ScanAssembly (520ms)
-			ScanForSourceGeneratedMonoScriptInfo (16ms)
-			ResolveRequiredComponents (24ms)
-	FinalizeReload (2290ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (957ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (6ms)
-			SetLoadedEditorAssemblies (28ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (253ms)
-			ProcessInitializeOnLoadAttributes (532ms)
-			ProcessInitializeOnLoadMethodAttributes (132ms)
-			AfterProcessingInitializeOnLoad (6ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (25ms)
-Refreshing native plugins compatible for Editor in 53.40 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.2 KB). Loaded Objects now: 6488.
-Memory consumption went from 204.6 MB to 204.3 MB.
-Total: 15.182300 ms (FindLiveObjects: 1.766200 ms CreateObjectMapping: 1.411300 ms MarkObjects: 11.794800 ms  DeleteObjects: 0.208800 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.713 seconds
-Refreshing native plugins compatible for Editor in 11.73 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.343 seconds
-Domain Reload Profiling: 4054ms
-	BeginReloadAssembly (350ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (27ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (85ms)
-	RebuildCommonClasses (74ms)
-	RebuildNativeTypeToScriptingClass (23ms)
-	initialDomainReloadingComplete (57ms)
-	LoadAllAssembliesAndSetupDomain (1206ms)
-		LoadAssemblies (773ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (615ms)
-			TypeCache.Refresh (576ms)
-				TypeCache.ScanAssembly (549ms)
-			ScanForSourceGeneratedMonoScriptInfo (18ms)
-			ResolveRequiredComponents (21ms)
-	FinalizeReload (2344ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (934ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (8ms)
-			SetLoadedEditorAssemblies (8ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (271ms)
-			ProcessInitializeOnLoadAttributes (525ms)
-			ProcessInitializeOnLoadMethodAttributes (119ms)
-			AfterProcessingInitializeOnLoad (4ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (17ms)
-Refreshing native plugins compatible for Editor in 10.93 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.1 KB). Loaded Objects now: 6493.
-Memory consumption went from 204.7 MB to 204.3 MB.
-Total: 6.226800 ms (FindLiveObjects: 0.815700 ms CreateObjectMapping: 0.896200 ms MarkObjects: 4.326800 ms  DeleteObjects: 0.186900 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.695 seconds
-Refreshing native plugins compatible for Editor in 15.87 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.147 seconds
-Domain Reload Profiling: 3841ms
-	BeginReloadAssembly (282ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (16ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (84ms)
-	RebuildCommonClasses (65ms)
-	RebuildNativeTypeToScriptingClass (21ms)
-	initialDomainReloadingComplete (55ms)
-	LoadAllAssembliesAndSetupDomain (1270ms)
-		LoadAssemblies (807ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (597ms)
-			TypeCache.Refresh (550ms)
-				TypeCache.ScanAssembly (522ms)
-			ScanForSourceGeneratedMonoScriptInfo (25ms)
-			ResolveRequiredComponents (22ms)
-	FinalizeReload (2148ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (954ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (13ms)
-			SetLoadedEditorAssemblies (11ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (227ms)
-			ProcessInitializeOnLoadAttributes (582ms)
-			ProcessInitializeOnLoadMethodAttributes (117ms)
-			AfterProcessingInitializeOnLoad (5ms)
-			EditorAssembliesLoaded (1ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (28ms)
-Refreshing native plugins compatible for Editor in 12.20 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.2 KB). Loaded Objects now: 6498.
-Memory consumption went from 204.7 MB to 204.3 MB.
-Total: 4.583200 ms (FindLiveObjects: 0.459900 ms CreateObjectMapping: 0.493600 ms MarkObjects: 3.502900 ms  DeleteObjects: 0.125900 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 9.05 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 13.99 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 2 unused Assets / (290.7 KB). Loaded Objects now: 6498.
-Memory consumption went from 115.1 MB to 114.8 MB.
-Total: 4.957700 ms (FindLiveObjects: 0.486200 ms CreateObjectMapping: 0.519900 ms MarkObjects: 3.857400 ms  DeleteObjects: 0.093100 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.706 seconds
-Refreshing native plugins compatible for Editor in 21.96 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.580 seconds
-Domain Reload Profiling: 4284ms
-	BeginReloadAssembly (344ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (21ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (74ms)
-	RebuildCommonClasses (80ms)
-	RebuildNativeTypeToScriptingClass (18ms)
-	initialDomainReloadingComplete (56ms)
-	LoadAllAssembliesAndSetupDomain (1205ms)
-		LoadAssemblies (722ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (650ms)
-			TypeCache.Refresh (631ms)
-				TypeCache.ScanAssembly (602ms)
-			ScanForSourceGeneratedMonoScriptInfo (0ms)
-			ResolveRequiredComponents (19ms)
-	FinalizeReload (2581ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (1232ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (8ms)
-			SetLoadedEditorAssemblies (12ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (271ms)
-			ProcessInitializeOnLoadAttributes (789ms)
-			ProcessInitializeOnLoadMethodAttributes (147ms)
-			AfterProcessingInitializeOnLoad (5ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (32ms)
-Refreshing native plugins compatible for Editor in 13.35 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.3 KB). Loaded Objects now: 6503.
-Memory consumption went from 204.7 MB to 204.3 MB.
-Total: 8.723500 ms (FindLiveObjects: 0.647500 ms CreateObjectMapping: 0.716400 ms MarkObjects: 7.225100 ms  DeleteObjects: 0.132800 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.655 seconds
-Refreshing native plugins compatible for Editor in 11.70 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.153 seconds
-Domain Reload Profiling: 3807ms
-	BeginReloadAssembly (347ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (19ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (80ms)
-	RebuildCommonClasses (96ms)
-	RebuildNativeTypeToScriptingClass (16ms)
-	initialDomainReloadingComplete (49ms)
-	LoadAllAssembliesAndSetupDomain (1145ms)
-		LoadAssemblies (751ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (589ms)
-			TypeCache.Refresh (559ms)
-				TypeCache.ScanAssembly (536ms)
-			ScanForSourceGeneratedMonoScriptInfo (12ms)
-			ResolveRequiredComponents (19ms)
-	FinalizeReload (2154ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (988ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (11ms)
-			SetLoadedEditorAssemblies (14ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (318ms)
-			ProcessInitializeOnLoadAttributes (519ms)
-			ProcessInitializeOnLoadMethodAttributes (122ms)
-			AfterProcessingInitializeOnLoad (3ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (20ms)
-Refreshing native plugins compatible for Editor in 8.79 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.3 KB). Loaded Objects now: 6508.
-Memory consumption went from 204.7 MB to 204.3 MB.
-Total: 8.107900 ms (FindLiveObjects: 0.701700 ms CreateObjectMapping: 0.729800 ms MarkObjects: 6.438600 ms  DeleteObjects: 0.236000 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.305 seconds
-Refreshing native plugins compatible for Editor in 12.44 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.037 seconds
-Domain Reload Profiling: 3339ms
-	BeginReloadAssembly (276ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (18ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (63ms)
-	RebuildCommonClasses (48ms)
-	RebuildNativeTypeToScriptingClass (15ms)
-	initialDomainReloadingComplete (50ms)
-	LoadAllAssembliesAndSetupDomain (914ms)
-		LoadAssemblies (601ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (462ms)
-			TypeCache.Refresh (447ms)
-				TypeCache.ScanAssembly (427ms)
-			ScanForSourceGeneratedMonoScriptInfo (0ms)
-			ResolveRequiredComponents (15ms)
-	FinalizeReload (2037ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (901ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (6ms)
-			SetLoadedEditorAssemblies (8ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (225ms)
-			ProcessInitializeOnLoadAttributes (513ms)
-			ProcessInitializeOnLoadMethodAttributes (143ms)
-			AfterProcessingInitializeOnLoad (6ms)
-			EditorAssembliesLoaded (1ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (25ms)
-Refreshing native plugins compatible for Editor in 10.26 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (327.3 KB). Loaded Objects now: 6513.
-Memory consumption went from 204.7 MB to 204.4 MB.
-Total: 6.198700 ms (FindLiveObjects: 0.754600 ms CreateObjectMapping: 0.992900 ms MarkObjects: 4.292400 ms  DeleteObjects: 0.157700 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.572 seconds
-Refreshing native plugins compatible for Editor in 10.52 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.546 seconds
-Domain Reload Profiling: 4117ms
-	BeginReloadAssembly (292ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (19ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (74ms)
-	RebuildCommonClasses (50ms)
-	RebuildNativeTypeToScriptingClass (19ms)
-	initialDomainReloadingComplete (49ms)
-	LoadAllAssembliesAndSetupDomain (1161ms)
-		LoadAssemblies (686ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (612ms)
-			TypeCache.Refresh (587ms)
-				TypeCache.ScanAssembly (554ms)
-			ScanForSourceGeneratedMonoScriptInfo (0ms)
-			ResolveRequiredComponents (25ms)
-	FinalizeReload (2547ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (1030ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (9ms)
-			SetLoadedEditorAssemblies (14ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (277ms)
-			ProcessInitializeOnLoadAttributes (565ms)
-			ProcessInitializeOnLoadMethodAttributes (159ms)
-			AfterProcessingInitializeOnLoad (5ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (24ms)
-Refreshing native plugins compatible for Editor in 14.68 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (328.2 KB). Loaded Objects now: 6518.
-Memory consumption went from 204.7 MB to 204.4 MB.
-Total: 10.204000 ms (FindLiveObjects: 0.821100 ms CreateObjectMapping: 1.022700 ms MarkObjects: 8.093600 ms  DeleteObjects: 0.265300 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.650 seconds
-Refreshing native plugins compatible for Editor in 13.04 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.468 seconds
-Domain Reload Profiling: 4116ms
-	BeginReloadAssembly (284ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (16ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (64ms)
-	RebuildCommonClasses (80ms)
-	RebuildNativeTypeToScriptingClass (22ms)
-	initialDomainReloadingComplete (53ms)
-	LoadAllAssembliesAndSetupDomain (1207ms)
-		LoadAssemblies (833ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (532ms)
-			TypeCache.Refresh (492ms)
-				TypeCache.ScanAssembly (470ms)
-			ScanForSourceGeneratedMonoScriptInfo (16ms)
-			ResolveRequiredComponents (24ms)
-	FinalizeReload (2469ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (1120ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (10ms)
-			SetLoadedEditorAssemblies (11ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (288ms)
-			ProcessInitializeOnLoadAttributes (674ms)
-			ProcessInitializeOnLoadMethodAttributes (130ms)
-			AfterProcessingInitializeOnLoad (6ms)
-			EditorAssembliesLoaded (1ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (28ms)
-Refreshing native plugins compatible for Editor in 9.46 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (328.1 KB). Loaded Objects now: 6523.
-Memory consumption went from 204.7 MB to 204.4 MB.
-Total: 8.508800 ms (FindLiveObjects: 0.549700 ms CreateObjectMapping: 0.607500 ms MarkObjects: 7.075600 ms  DeleteObjects: 0.274700 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 10.50 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 2 unused Assets / (290.7 KB). Loaded Objects now: 6523.
-Memory consumption went from 115.1 MB to 114.8 MB.
-Total: 5.934700 ms (FindLiveObjects: 0.630900 ms CreateObjectMapping: 0.754900 ms MarkObjects: 4.391200 ms  DeleteObjects: 0.155600 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 12.27 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 2 unused Assets / (290.7 KB). Loaded Objects now: 6523.
+Unloading 2 unused Assets / (290.7 KB). Loaded Objects now: 6462.
 Memory consumption went from 114.0 MB to 113.7 MB.
-Total: 6.905800 ms (FindLiveObjects: 0.751100 ms CreateObjectMapping: 0.705000 ms MarkObjects: 5.322700 ms  DeleteObjects: 0.126200 ms)
+Total: 70.613400 ms (FindLiveObjects: 1.451100 ms CreateObjectMapping: 0.692400 ms MarkObjects: 68.162000 ms  DeleteObjects: 0.306100 ms)
 
 Prepare: number of updated asset objects reloaded= 0
 AssetImportParameters requested are different than current active one (requested -> active):
@@ -1135,75 +271,67 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Prepare
-Begin MonoManager ReloadAssembly
-Duplicate assembly 'Moq.dll' with different versions detected, using 'Assets/Plugins/Moq/Moq.dll, AssemblyName=Moq, Version=4.18.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Moq.dll, AssemblyName=Moq, Version=4.7.99.0, Culture=neutral, PublicKeyToken=69f491c39445e920'.Duplicate assembly 'Castle.Core.dll' with different versions detected, using 'Assets/Plugins/Castle.Core/Castle.Core.dll, AssemblyName=Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' and ignoring 'Assets/Plugins/Zenject/OptionalExtras/TestFramework/Editor/Moq-Net46/Moq/Castle.Core.dll, AssemblyName=Castle.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc'.Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  1.595 seconds
-Refreshing native plugins compatible for Editor in 14.85 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.688 seconds
-Domain Reload Profiling: 4281ms
-	BeginReloadAssembly (315ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (43ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (67ms)
-	RebuildCommonClasses (57ms)
-	RebuildNativeTypeToScriptingClass (28ms)
-	initialDomainReloadingComplete (56ms)
-	LoadAllAssembliesAndSetupDomain (1136ms)
-		LoadAssemblies (670ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (618ms)
-			TypeCache.Refresh (586ms)
-				TypeCache.ScanAssembly (554ms)
-			ScanForSourceGeneratedMonoScriptInfo (0ms)
-			ResolveRequiredComponents (32ms)
-	FinalizeReload (2689ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (1359ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (24ms)
-			SetLoadedEditorAssemblies (53ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (483ms)
-			ProcessInitializeOnLoadAttributes (638ms)
-			ProcessInitializeOnLoadMethodAttributes (156ms)
-			AfterProcessingInitializeOnLoad (5ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (30ms)
-Refreshing native plugins compatible for Editor in 13.47 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5837 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 59 unused Assets / (328.2 KB). Loaded Objects now: 6528.
-Memory consumption went from 204.7 MB to 204.4 MB.
-Total: 8.070500 ms (FindLiveObjects: 0.676000 ms CreateObjectMapping: 0.856000 ms MarkObjects: 6.385900 ms  DeleteObjects: 0.151600 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 13.91 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 11.55 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 2 unused Assets / (290.7 KB). Loaded Objects now: 6528.
-Memory consumption went from 115.1 MB to 114.8 MB.
-Total: 8.123500 ms (FindLiveObjects: 0.614400 ms CreateObjectMapping: 0.640800 ms MarkObjects: 6.793000 ms  DeleteObjects: 0.073900 ms)
+Unloading 2 unused Assets / (290.7 KB). Loaded Objects now: 6462.
+Memory consumption went from 114.0 MB to 113.7 MB.
+Total: 19.251200 ms (FindLiveObjects: 0.621200 ms CreateObjectMapping: 0.685900 ms MarkObjects: 17.757400 ms  DeleteObjects: 0.184600 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:CustomObjectIndexerAttribute: a3ef5dd2817f97addfee359851a9dba5 -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 4443.439918 seconds.
+  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Tourmaline 1.mat
+  artifactKey: Guid(d643acb45f3497d44b8415be42eb350a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Tourmaline 1.mat using Guid(d643acb45f3497d44b8415be42eb350a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '673801ddfe93a392f7113da63b98d16d') in 0.482496 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 21.770765 seconds.
+  path: Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Turquoise.mat
+  artifactKey: Guid(d643acb45f3497d44b8415be42eb350a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Materials/Color Replacers/Color Replace Turquoise.mat using Guid(d643acb45f3497d44b8415be42eb350a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3cb5357361c720f471544985ce6caddb') in 0.001760 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 208.583419 seconds.
+  path: Assets/AbraxasAssets/Resources/Settings/StoneSettings.asset
+  artifactKey: Guid(db4b4cf31c592ad4dafe7b10b79f2a09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Resources/Settings/StoneSettings.asset using Guid(db4b4cf31c592ad4dafe7b10b79f2a09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7daf4ad0bb6e0f97b752690166223d3c') in 0.500981 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 12
+========================================================================
+Received Import Request.
+  Time since last request: 18.973972 seconds.
+  path: Assets/AbraxasAssets/Resources/Settings/StoneSettings.asset
+  artifactKey: Guid(db4b4cf31c592ad4dafe7b10b79f2a09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AbraxasAssets/Resources/Settings/StoneSettings.asset using Guid(db4b4cf31c592ad4dafe7b10b79f2a09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '150825a4b8ec9b51bc0ba5e35754593d') in 0.034474 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 13
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 18.30 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 2 unused Assets / (290.7 KB). Loaded Objects now: 6462.
+Memory consumption went from 114.0 MB to 113.7 MB.
+Total: 57.589900 ms (FindLiveObjects: 1.688500 ms CreateObjectMapping: 1.541700 ms MarkObjects: 54.156100 ms  DeleteObjects: 0.201800 ms)
 
 Prepare: number of updated asset objects reloaded= 0
 AssetImportParameters requested are different than current active one (requested -> active):

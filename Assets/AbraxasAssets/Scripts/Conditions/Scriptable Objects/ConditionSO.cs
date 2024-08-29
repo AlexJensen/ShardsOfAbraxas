@@ -16,7 +16,7 @@ namespace Abraxas.Stones.Conditions
         public abstract void SubscribeToEvents();
         public abstract void UnsubscribeFromEvents();
 
-        public class Factory : PlaceholderFactory<ConditionSO<IEvent>, IStoneController, ICondition> { }
+        public class Factory : PlaceholderFactory<ConditionSOBase, IStoneController, ICondition> { }
     }
 
     [Serializable]

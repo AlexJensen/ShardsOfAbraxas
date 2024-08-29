@@ -43,14 +43,23 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _Threshold: 0.2
+    - _Threshold1: 0.19
+    - _Threshold2: 0.19
+    - _Threshold3: 0.14
+    - _Threshold4: 0.14
+    - _Threshold5: 0.14
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color1: {r: 0.81568635, g: 0, b: 0, a: 1}
     - _Color2: {r: 0.48627454, g: 0, b: 0, a: 1}
-    - _Color3: {r: 0.9921569, g: 0.64705884, b: 0.64705884, a: 1}
+    - _Color3: {r: 1, g: 0.6862745, b: 0.6862745, a: 1}
+    - _Color4: {r: 0.81568635, g: 0.4156863, b: 0.40000004, a: 1}
+    - _Color5: {r: 0.8862746, g: 0.2627451, b: 0.2627451, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _ReplaceColor1: {r: 0, g: 0.49803922, b: 0.49803922, a: 1}
-    - _ReplaceColor2: {r: 0.06852971, g: 0.18867922, b: 0.18867922, a: 1}
-    - _ReplaceColor3: {r: 0.3234247, g: 0.8679245, b: 0.8679245, a: 1}
+    - _ReplaceColor2: {r: 0.10337308, g: 0.21698111, b: 0.21698111, a: 1}
+    - _ReplaceColor3: {r: 0.47899607, g: 0.8679245, b: 0.8679245, a: 1}
+    - _ReplaceColor4: {r: 0, g: 0.49803925, b: 0.49803925, a: 1}
+    - _ReplaceColor5: {r: 0, g: 0.49803925, b: 0.49803925, a: 1}
   m_BuildTextureStacks: []

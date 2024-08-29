@@ -191,7 +191,7 @@ Canvas:
   m_GameObject: {fileID: 10449431}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 775188690}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
@@ -3774,10 +3774,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.06314751
+    x: 0.07454546
     y: 0
-    width: 0.8735405
-    height: 0.99999994
+    width: 0.2521212
+    height: 0.22696412
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -3864,7 +3864,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 775188688}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
   m_Name: 
@@ -6606,7 +6606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6715332493396874440, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50.00003
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 6715332494089312648, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
       propertyPath: m_Name

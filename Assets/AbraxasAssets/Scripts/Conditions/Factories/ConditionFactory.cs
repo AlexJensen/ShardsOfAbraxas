@@ -8,7 +8,7 @@ using Zenject;
 
 namespace Abraxas.Conditions.Factories
 {
-    class ConditionFactory : IFactory<ConditionSO<IEvent>, IStoneController, ICondition>
+    class ConditionFactory : IFactory<ConditionSOBase, IStoneController, ICondition>
     {
         private readonly DiContainer _container;
         private readonly TargetSOBase.Factory _targetFactory;
@@ -19,48 +19,52 @@ namespace Abraxas.Conditions.Factories
             _targetFactory = targetFactory;
         }
 
-        public ICondition Create(ConditionSO<IEvent> conditionSO, IStoneController stone)
+        public ICondition Create(ConditionSOBase conditionSO, IStoneController stone)
         {
             if (conditionSO == null)
             {
                 throw new ArgumentNullException(nameof(conditionSO), "ConditionSO cannot be null.");
             }
 
-            // Instantiate the condition scriptable object
-            var conditionInstance = _container.Instantiate(conditionSO.GetType()) as ConditionSO<IEvent>;
-
-            if (conditionInstance == null)
+            // Use the container to instantiate the specific condition type
+            if (_container.Instantiate(conditionSO.GetType()) is not ICondition conditionInstance)
             {
                 throw new InvalidOperationException($"Could not instantiate condition of type '{conditionSO.GetType()}'");
             }
 
-            // Initialize the condition and recursively initialize any nested conditions or targets
-            InitializeCondition(conditionInstance, stone);
+            // Initialize the condition
+            if (conditionInstance is ConditionSOBase conditionSOBase)
+            {
+                conditionSOBase.Initialize(stone, conditionSOBase, _container);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Condition of type '{conditionSO.GetType()}' does not inherit from ConditionSOBase");
+            }
+
+            // Initialize any nested conditions or targets
+            InitializeNestedElements(conditionInstance, stone);
 
             return conditionInstance;
         }
 
-        private void InitializeCondition(ConditionSO<IEvent> conditionInstance, IStoneController stone)
+        private void InitializeNestedElements(ICondition condition, IStoneController stone)
         {
-            var container = _container;
-            conditionInstance.Initialize(stone, conditionInstance, container);
-
-            var fields = conditionInstance.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
+            var fields = condition.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var field in fields)
             {
-                if (typeof(ConditionSO<IEvent>).IsAssignableFrom(field.FieldType))
+                if (typeof(ConditionSOBase).IsAssignableFrom(field.FieldType))
                 {
-                    var nestedCondition = field.GetValue(conditionInstance) as ConditionSO<IEvent>;
+                    var nestedCondition = field.GetValue(condition) as ConditionSOBase;
                     if (nestedCondition != null)
                     {
                         var nestedConditionInstance = Create(nestedCondition, stone);
-                        field.SetValue(conditionInstance, nestedConditionInstance);
+                        field.SetValue(condition, nestedConditionInstance);
                     }
                 }
                 else if (typeof(TargetSOBase).IsAssignableFrom(field.FieldType))
                 {
-                    var targetInstance = field.GetValue(conditionInstance) as TargetSOBase;
+                    var targetInstance = field.GetValue(condition) as TargetSOBase;
                     if (targetInstance != null)
                     {
                         _targetFactory.Create(targetInstance as TargetSO<object>, stone);

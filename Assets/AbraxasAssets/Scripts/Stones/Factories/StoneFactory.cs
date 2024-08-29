@@ -76,7 +76,7 @@ namespace Abraxas.Stones.Factories
 
                     foreach (var conditionSO in conditionList)
                     {
-                        if (conditionSO is ConditionSO<IEvent> conditionBase)
+                        if (conditionSO is ConditionSOBase conditionBase)
                         {
                             var conditionInstance = _conditionFactory.Create(conditionBase, controller);
                             conditions.Add(conditionInstance);

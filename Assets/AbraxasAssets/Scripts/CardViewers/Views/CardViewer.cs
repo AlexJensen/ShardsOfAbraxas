@@ -44,6 +44,7 @@ namespace Abraxas.CardViewers
             _range.text = card.StatBlock.Stats.RNG.ToString();
 
             _image.sprite = card.ImageManipulator.Image.sprite;
+            _image.material = card.ImageManipulator.Image.material;
             _image.transform.localScale = card.ImageManipulator.Image.transform.localScale;
 
             for (int i = 0; i < _stones.Count; i++)
