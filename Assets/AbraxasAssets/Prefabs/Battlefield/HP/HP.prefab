@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 665118d0b173035459325343c2ce29e4, type: 2}
   m_Color: {r: 1, g: 0.6862745, b: 0.6862745, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -385,6 +385,8 @@ MonoBehaviour:
   _HPText: {fileID: 4136605670139482842}
   _addHPText: {fileID: 4107279137807360079}
   _addMaxHPText: {fileID: 4886184575527259654}
+  hpBarMaterial: {fileID: 0}
+  hpBarImage: {fileID: 2597941614538026976}
   _player: 0
 --- !u!1 &6316746043253379785
 GameObject:

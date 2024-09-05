@@ -2,6 +2,7 @@ using Abraxas.Health.Models;
 using Abraxas.Players.Managers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 using Player = Abraxas.Players.Players;
 
@@ -47,6 +48,12 @@ namespace Abraxas.Health.Views
         TMP_Text _HPText, _addHPText, _addMaxHPText;
 
         [SerializeField]
+        Material hpBarMaterial;
+
+        [SerializeField]
+        Image hpBarImage;
+
+        [SerializeField]
         Player _player;
 
         Animator _animator;
@@ -71,6 +78,10 @@ namespace Abraxas.Health.Views
             {
                 UpdateHpText(ref _previousHP, _model.HP, _addHPText, HealthChangeAnimationTriggers.AddHPUp, HealthChangeAnimationTriggers.AddHPDown);
                 UpdateHpText(ref _previousMaxHP, _model.MaxHP, _addMaxHPText, HealthChangeAnimationTriggers.AddMaxHPUp, HealthChangeAnimationTriggers.AddMaxHPDown);
+
+                hpBarMaterial.SetFloat("_HP", _model.HP);
+                hpBarMaterial.SetFloat("_MaxHP", _model.MaxHP);
+
                 _healthChanged = false;
             }
         }
@@ -84,7 +95,6 @@ namespace Abraxas.Health.Views
                 if (Player == Player.Player1) SetAnimationTrigger(change >= 0 ? animationTriggerUp : animationTriggerDown);
                 if (Player == Player.Player2) SetAnimationTrigger(change >= 0 ? animationTriggerDown : animationTriggerUp);
                 previousValue = currentValue;
-                _healthChanged = true;
             }
         }
 
@@ -92,6 +102,7 @@ namespace Abraxas.Health.Views
         {
             if (_HPText != null)
                 _HPText.text = $"{_model.HP + "/" + _model.MaxHP}";
+            _healthChanged = true;
         }
 
         private void SetAnimationTrigger(HealthChangeAnimationTriggers trigger)
