@@ -4,7 +4,6 @@ using Abraxas.Events.Managers;
 using Abraxas.Players.Managers;
 using Abraxas.Random.Managers;
 using System.Collections;
-using System.Drawing;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -60,6 +59,8 @@ namespace Abraxas.Cells.Views
         TMP_Text _cellText;
         [SerializeField]
         RectTransform _cardHolder;
+        [SerializeField]
+        GameObject _highlight;
         #endregion
 
         #region Properties

@@ -38,9 +38,11 @@ namespace Abraxas.Editor
 
             // Find elements
             var createDeckButton = container.Q<Button>("create-deck-button");
+            var createRandomDeckButton = container.Q<Button>("create-random-deck-button");
             _deckListView = container.Q<ListView>("deck-list-view");
             _deckTitleView = container.Q<TextField>("deck-title-field");
-            createDeckButton.clicked += CreateRandomDeck;
+            createDeckButton.clicked += CreateNewDeck;
+            createRandomDeckButton.clicked += CreateRandomDeck;
 
             // Initialize list views
             _decks = LoadAllDecks();
@@ -121,7 +123,7 @@ namespace Abraxas.Editor
                             data.StatBlock.Stats.RNG = range;
                             data.StatBlock.Cost = (attack *2) + (defense *2) + (speed * 4) + (range * 4) + 1;
                             data.StatBlock.StoneType = (StoneType)(currentStone++);
-                            data.Title = $"Card ({attack}, {defense}, {speed}, {range})";
+                            data.Title = $"Model ({attack}, {defense}, {speed}, {range})";
                             if (currentStone >= Enum.GetValues(typeof(StoneType)).Length / 6)
                             {
                                 currentStone = 0;
@@ -156,7 +158,7 @@ namespace Abraxas.Editor
                                                   .Take(numStoneColors)
                                                   .ToList();
 
-            for (int i = 1; i <= 10; i++)
+            for (int i = 1; i <= 12; i++)
             {
                 // Generate random ATK and DEF values between 0 and 10
                 int attack = UnityEngine.Random.Range(0, 11);
@@ -181,14 +183,14 @@ namespace Abraxas.Editor
                 data.StatBlock.Stats.RNG = range;
                 data.StatBlock.Cost = (attack * 2) + (defense * 2) + (speed * 4) + (range * 4) + 1;
                 data.StatBlock.StoneType = stoneType;
-                data.Title = $"Card {ToRoman(i)}";
+                data.Title = $"Model {ToRoman(i)}";
                 newCard.Data = data;
                 newCard.name = data.Title;
 
                 AssetDatabase.AddObjectToAsset(newCard, newDeck);
 
-                // Add 4 copies of each card to the deck
-                for (int j = 0; j < 4; j++)
+                // Add 5 copies of each card to the deck
+                for (int j = 0; j < 5; j++)
                 {
                     newDeck.Cards.Add(newCard);
                 }

@@ -2,6 +2,7 @@
     <ui:VisualElement>
         <ui:Label text="Deck Editor"/>
         <ui:Button text="Create New Deck" name="create-deck-button"/>
+        <ui:Button text="Generate Random Deck" name="create-random-deck-button"/>
         <ui:Button text="Copy Deck" name="copy-deck-button"/>
         <ui:ListView name="deck-list-view"/>
         <ui:VisualElement name="deck-details-container">
