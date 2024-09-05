@@ -66,7 +66,6 @@ namespace Abraxas.Cells.Views
         #region Properties
         public ICellController Controller => _controller;
         public RectTransform RectTransform { get => _cardHolder; }
-
         public Player Player => _player;
         #endregion
 
@@ -86,6 +85,11 @@ namespace Abraxas.Cells.Views
         public void UpdateText(string Text)
         {
             _cellText.text = Text;
+        }
+
+        public void HighlightCell(bool highlight)
+        {
+            _highlight.SetActive(highlight);
         }
 
         public IEnumerator OnEventRaised(Event_LocalPlayerChanged eventData)

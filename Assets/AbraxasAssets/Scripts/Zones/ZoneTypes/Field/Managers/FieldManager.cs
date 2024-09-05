@@ -63,6 +63,16 @@ namespace Abraxas.Zones.Fields.Managers
         {
             _field = fieldController;
         }
+
+        public void HighlightPlayableOpenCells(ICardController cardController)
+        {
+            _field.HighlightPlayableOpenCells(cardController);
+        }
+
+        public void SetHighlightVisible(bool val)
+        {
+            _field.SetHighlightVisible(val);
+        }
         #endregion
     }
 }

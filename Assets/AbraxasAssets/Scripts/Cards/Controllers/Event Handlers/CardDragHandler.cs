@@ -54,6 +54,7 @@ namespace Abraxas.Cards.Controllers
                 _handManager.CardDragging = _cardController;
                 _handManager.RemoveCard(_cardController);
                 _overlayManager.SetCard(_cardController);
+                _fieldManager.HighlightPlayableOpenCells(_cardController);
                 _cardController.ChangeScale(_fieldManager.GetCellDimensions(), _cardAnimationSettings.ScaleCardToOverlayTime);
             }
         }
@@ -68,6 +69,7 @@ namespace Abraxas.Cards.Controllers
 
         public void OnEndDrag()
         {
+            _fieldManager.SetHighlightVisible(false);
             if (_handManager.CardDragging == _cardController)
             {
                 _cardDragListener.DetermineLastDragRaycast();

@@ -1,8 +1,6 @@
-using Abraxas.Events;
-using Abraxas.Events.Managers;
 using Abraxas.Manas.Controllers;
+using Abraxas.Players.Managers;
 using Abraxas.Stones;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,9 +25,11 @@ namespace Abraxas.Manas
 
         #region Dependencies
         Stone.Settings _stoneSettings;
+        IPlayerManager _playerManager;
         [Inject]
-        public void Construct(Stone.Settings stoneSettings)
+        public void Construct(IPlayerManager playerManager, Stone.Settings stoneSettings)
         {
+            _playerManager = playerManager;
             _stoneSettings = stoneSettings;
         }
 
@@ -92,8 +92,8 @@ namespace Abraxas.Manas
             {
                 int change = _amount - _previousAmount;
                 _addStr.text = change >= 0 ? "+" + change.ToString() : change.ToString();
-                if (Player == Player.Player1) SetAnimationTrigger(ManaChangeAnimationTriggers.AddManaDown);
-                if (Player == Player.Player2) SetAnimationTrigger(ManaChangeAnimationTriggers.AddManaUp);
+                if (Player == Player.Player1) SetAnimationTrigger(_playerManager.LocalPlayer == Player.Player1 ? ManaChangeAnimationTriggers.AddManaDown : ManaChangeAnimationTriggers.AddManaUp);
+                if (Player == Player.Player2) SetAnimationTrigger(_playerManager.LocalPlayer == Player.Player1 ? ManaChangeAnimationTriggers.AddManaUp : ManaChangeAnimationTriggers.AddManaDown);
                 _previousAmount = _amount;
             }
         }

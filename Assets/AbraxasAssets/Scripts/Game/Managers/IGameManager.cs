@@ -15,5 +15,6 @@ namespace Abraxas.Games.Managers
 
         IEnumerator DrawCard(Player player, int amount = 1, int index = 0);
         IEnumerator MillCard(Player player, int amount = 1, int index = 0);
+        bool IsAnyPlayerInputAvailable();
     }
 }

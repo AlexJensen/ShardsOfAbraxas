@@ -2722,35 +2722,13 @@ PrefabInstance:
     - {fileID: -7600990883620992607, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2951617939625341572, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 615434492}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
 --- !u!224 &615434489 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6715332494089312651, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
   m_PrefabInstance: {fileID: 615434488}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &615434491 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2951617939625341572, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
-  m_PrefabInstance: {fileID: 615434488}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &615434492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 615434491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 1
-  m_VerticalFit: 0
 --- !u!1001 &615951261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3774,10 +3752,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.4490909
-    y: 0
-    width: 0.6529293
-    height: 0.58777887
+    x: 0
+    y: 0.0498132
+    width: 1
+    height: 0.90014005
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -6600,10 +6578,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6272898999008346511, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 600
-      objectReference: {fileID: 0}
     - target: {fileID: 6715332493396874440, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -50
@@ -6703,10 +6677,6 @@ PrefabInstance:
     - target: {fileID: 6940282275991869678, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7378558062236359426, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
-      propertyPath: m_MinWidth
-      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 8680597831758663781, guid: ccf1a74a17cf26446b2ca41751e59054, type: 3}
       propertyPath: m_AnchorMax.x

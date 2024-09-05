@@ -13,7 +13,6 @@ namespace Abraxas.Cells.Controllers
         #region Dependencies
         ICellView _view;
         ICellModel _model;
-        public ICellView View => _view;
 
         public void Initialize(ICellView view, ICellModel model)
         {
@@ -61,11 +60,22 @@ namespace Abraxas.Cells.Controllers
         public void RemoveCard(ICardController card)
         {
             _model.RemoveCard(card);
+            card.Cell = null;
         }
 
         public ICardController GetCardAtIndex(int index)
         {
             return _model.GetCardAtIndex(index);
+        }
+
+        public void HighlightPlayableOpenCell(ICardController card)
+        {
+            _view.HighlightCell(_model.Player == card.Owner && _model.CardsOnCell == 0);
+        }
+
+        public void SetHighlightVisible(bool val)
+        {
+            _view.HighlightCell(val);
         }
         #endregion
     }

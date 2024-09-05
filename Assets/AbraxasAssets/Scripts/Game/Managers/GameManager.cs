@@ -113,7 +113,19 @@ namespace Abraxas.Games.Managers
             yield return _manaManager.GenerateManaFromDeckRatio(_playerManager.ActivePlayer, _manaManager.GetStartOfTurnMana(_playerManager.ActivePlayer));
             _manaManager.IncrementStartOfTurnManaAmount(_playerManager.ActivePlayer);
         }
-		#endregion
+
+        public bool IsAnyPlayerInputAvailable()
+        {
+            foreach (var card in _cardManager.Cards)
+            {
+                if (card.DeterminePlayability())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        #endregion
 
 
         #region Server Methods
@@ -130,7 +142,7 @@ namespace Abraxas.Games.Managers
             ICardController card = _cardManager.GetCardFromIndex(cardNetworkObjectId);
             if (card != null)
             {
-                PurchaseCardAndMoveFromHandToCell(card, fieldPosition);
+                StartCoroutine(PurchaseCardAndMoveFromHandToCell(card, fieldPosition));
                 if (!IsHost) PurchaseCardAndMoveFromHandToCellClientRpc(cardNetworkObjectId, fieldPosition);
             }
         }
@@ -140,13 +152,17 @@ namespace Abraxas.Games.Managers
             ICardController card = _cardManager.GetCardFromIndex(cardNetworkObjectId);
             if (card != null)
             {
-                PurchaseCardAndMoveFromHandToCell(card, fieldPosition);
+                StartCoroutine(PurchaseCardAndMoveFromHandToCell(card, fieldPosition));
             }
         }
-        private void PurchaseCardAndMoveFromHandToCell(ICardController card, Vector2Int fieldPosition)
+        private IEnumerator PurchaseCardAndMoveFromHandToCell(ICardController card, Vector2Int fieldPosition)
         {
             _manaManager.PurchaseCard(card);
-            StartCoroutine(_zoneManager.MoveCardFromHandToCell(card, new Point(fieldPosition.x, fieldPosition.y)));
+            yield return _zoneManager.MoveCardFromHandToCell(card, new Point(fieldPosition.x, fieldPosition.y));
+            if (!IsAnyPlayerInputAvailable() && _playerManager.LocalPlayer == _playerManager.ActivePlayer)
+            {
+                _gameStateManager.RequestNextGameState();
+            }
         }
         #endregion
     }

@@ -65,6 +65,14 @@ Shader "Custom/ColorReplace"
             float4 _ReplaceColor5;
             float _Threshold1, _Threshold2, _Threshold3, _Threshold4, _Threshold5;
 
+            // Offsets for neighbor sampling
+            float2 offsets[8] = {
+                float2(-1.0, 0.0), float2(1.0, 0.0),  // left, right
+                float2(0.0, -1.0), float2(0.0, 1.0),  // bottom, top
+                float2(-1.0, -1.0), float2(1.0, 1.0), // bottom-left, top-right
+                float2(1.0, -1.0), float2(-1.0, 1.0)  // bottom-right, top-left
+            };
+
             v2f vert (appdata_t v)
             {
                 v2f o;
@@ -73,26 +81,80 @@ Shader "Custom/ColorReplace"
                 return o;
             }
 
+            bool IsColorSimilar(float3 color, float3 target, float threshold) 
+            {
+                return all(abs(color - target) < threshold);
+            }
+
             float4 frag (v2f i) : SV_Target
             {
                 float4 col = tex2D(_MainTex, i.uv);
-
                 float alpha = col.a;
+                bool colorMatched = false;
 
-                // Replace colors if they match within the threshold
-                if (_Color1.a != 0 && all(abs(col.rgb - _Color1.rgb) < _Threshold1))
+                // Check current pixel
+                if (_Color1.a != 0 && IsColorSimilar(col.rgb, _Color1.rgb, _Threshold1)) 
+                {
                     col.rgb = _ReplaceColor1.rgb;
-                else if (_Color2.a != 0 && all(abs(col.rgb - _Color2.rgb) < _Threshold2))
+                    colorMatched = true;
+                }
+                else if (_Color2.a != 0 && IsColorSimilar(col.rgb, _Color2.rgb, _Threshold2)) 
+                {
                     col.rgb = _ReplaceColor2.rgb;
-                else if (_Color3.a != 0 && all(abs(col.rgb - _Color3.rgb) < _Threshold3))
+                    colorMatched = true;
+                }
+                else if (_Color3.a != 0 && IsColorSimilar(col.rgb, _Color3.rgb, _Threshold3)) 
+                {
                     col.rgb = _ReplaceColor3.rgb;
-                else if (_Color4.a != 0 && all(abs(col.rgb - _Color4.rgb) < _Threshold4))
+                    colorMatched = true;
+                }
+                else if (_Color4.a != 0 && IsColorSimilar(col.rgb, _Color4.rgb, _Threshold4)) 
+                {
                     col.rgb = _ReplaceColor4.rgb;
-                else if (_Color5.a != 0 && all(abs(col.rgb - _Color5.rgb) < _Threshold5))
+                    colorMatched = true;
+                }
+                else if (_Color5.a != 0 && IsColorSimilar(col.rgb, _Color5.rgb, _Threshold5)) 
+                {
                     col.rgb = _ReplaceColor5.rgb;
+                    colorMatched = true;
+                }
 
-                col.a = alpha;
+                // If color didn't match, check neighboring pixels
+                if (!colorMatched)
+                {
+                    for (int idx = 0; idx < 8; ++idx)
+                    {
+                        float4 neighborCol = tex2D(_MainTex, i.uv + offsets[idx] * _ScreenParams.zw); // Adjust by screen UV scale
 
+                        if (_Color1.a != 0 && IsColorSimilar(neighborCol.rgb, _Color1.rgb, _Threshold1)) 
+                        {
+                            col.rgb = _ReplaceColor1.rgb;
+                            break;
+                        }
+                        else if (_Color2.a != 0 && IsColorSimilar(neighborCol.rgb, _Color2.rgb, _Threshold2)) 
+                        {
+                            col.rgb = _ReplaceColor2.rgb;
+                            break;
+                        }
+                        else if (_Color3.a != 0 && IsColorSimilar(neighborCol.rgb, _Color3.rgb, _Threshold3)) 
+                        {
+                            col.rgb = _ReplaceColor3.rgb;
+                            break;
+                        }
+                        else if (_Color4.a != 0 && IsColorSimilar(neighborCol.rgb, _Color4.rgb, _Threshold4)) 
+                        {
+                            col.rgb = _ReplaceColor4.rgb;
+                            break;
+                        }
+                        else if (_Color5.a != 0 && IsColorSimilar(neighborCol.rgb, _Color5.rgb, _Threshold5)) 
+                        {
+                            col.rgb = _ReplaceColor5.rgb;
+                            break;
+                        }
+                    }
+                }
+
+                col.a = alpha; // Preserve original alpha channel
                 return col;
             }
             ENDCG

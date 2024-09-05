@@ -12,6 +12,7 @@ namespace Abraxas.Cells.Views
 
         Player Player { get; }
 
+        void HighlightCell(bool highlight);
         void Initialize(ICellController controller);
         void SetChild(Transform cardTransform);
         void UpdateText(string Text);

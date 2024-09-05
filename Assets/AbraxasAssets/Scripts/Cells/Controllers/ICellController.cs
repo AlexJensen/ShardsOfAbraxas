@@ -8,7 +8,6 @@ namespace Abraxas.Cells.Controllers
 {
     public interface ICellController
     {
-        ICellView View { get; }
         Players.Players Player { get; }
         Point FieldPosition { get; set; }
         int CardsOnCell { get; }
@@ -18,5 +17,7 @@ namespace Abraxas.Cells.Controllers
         void Initialize(ICellView view, ICellModel model);
         void RemoveCard(ICardController card);
         ICardController GetCardAtIndex(int v);
+        void HighlightPlayableOpenCell(ICardController card);
+        void SetHighlightVisible(bool v);
     }
 }

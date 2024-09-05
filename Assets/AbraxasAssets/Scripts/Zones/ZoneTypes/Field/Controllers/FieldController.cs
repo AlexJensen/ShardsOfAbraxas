@@ -109,7 +109,6 @@ namespace Abraxas.Zones.Fields.Controllers
         public override void RemoveCard(ICardController card)
         {
             card.Cell?.RemoveCard(card);
-            card.Cell = null;
             Model.RemoveCard(card);
         }
 
@@ -128,6 +127,22 @@ namespace Abraxas.Zones.Fields.Controllers
         {
             ((IFieldModel)Model).GenerateField();
             return base.OnEventRaised(eventData);
+        }
+
+        public void HighlightPlayableOpenCells(ICardController cardController)
+        {
+            foreach (var cell in ((IFieldModel)Model).FieldGrid.SelectMany(x => x))
+            {
+                cell.HighlightPlayableOpenCell(cardController);
+            }
+        }
+
+        public void SetHighlightVisible(bool val)
+        {
+            foreach (var cell in ((IFieldModel)Model).FieldGrid.SelectMany(x => x))
+            {
+                cell.SetHighlightVisible(val);
+            }
         }
         #endregion
     }

@@ -15,5 +15,7 @@ namespace Abraxas.Zones.Fields.Managers
         IEnumerator CombatMovement(ICardController card, Point movement);
         void SetField(IFieldController fieldController);
         void AddCard(ICardController card);
+        void HighlightPlayableOpenCells(ICardController cardController);
+        void SetHighlightVisible(bool val);
     }
 }
