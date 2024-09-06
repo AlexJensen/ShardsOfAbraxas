@@ -1,4 +1,5 @@
-﻿using Player = Abraxas.Players.Players;
+﻿using System.Collections;
+using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Health.Controllers
 {
@@ -7,8 +8,11 @@ namespace Abraxas.Health.Controllers
     /// </summary>
     public interface IPlayerHealthController
     {
-        int HP { get; set; }
-        int MaxHP { get; set; }
+        int HP { get; }
+        int MaxHP { get; }
         Player Player { get; set; }
+
+        IEnumerator SetHealth(int health);
+        IEnumerator SetMaxHealth(int v);
     }
 }

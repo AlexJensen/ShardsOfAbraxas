@@ -1,4 +1,5 @@
-﻿using Abraxas.Cards.Controllers;
+﻿using Abraxas.Cards;
+using Abraxas.Cards.Controllers;
 using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
 using System.Drawing;
@@ -70,12 +71,17 @@ namespace Abraxas.Cells.Controllers
 
         public void HighlightPlayableOpenCell(ICardController card)
         {
-            _view.HighlightCell(_model.Player == card.Owner && _model.CardsOnCell == 0);
+            _view.HighlightCell(IsOpen(card.Owner));
         }
 
         public void SetHighlightVisible(bool val)
         {
             _view.HighlightCell(val);
+        }
+
+        public bool IsOpen(Player player)
+        {
+            return _model.Player == player && _model.CardsOnCell == 0;
         }
         #endregion
     }

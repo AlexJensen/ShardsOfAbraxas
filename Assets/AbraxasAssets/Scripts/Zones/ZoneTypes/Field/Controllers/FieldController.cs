@@ -144,6 +144,19 @@ namespace Abraxas.Zones.Fields.Controllers
                 cell.SetHighlightVisible(val);
             }
         }
+
+        public ICellController[] GetOpenCells(Player player)
+        {
+            var openCells = new List<ICellController>();
+            foreach (var cell in ((IFieldModel)Model).FieldGrid.SelectMany(x => x))
+            {
+                if (cell.IsOpen(player))
+                {
+                    openCells.Add(cell);
+                }
+            }
+            return openCells.ToArray();
+        }
         #endregion
     }
 }

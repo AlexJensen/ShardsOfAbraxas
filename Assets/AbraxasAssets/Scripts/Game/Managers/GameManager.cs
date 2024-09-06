@@ -7,9 +7,9 @@ using Abraxas.GameStates;
 using Abraxas.Manas;
 using Abraxas.Network.Managers;
 using Abraxas.Players.Managers;
-
-
+using Abraxas.Popups;
 using Abraxas.Zones.Decks.Managers;
+using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,29 +37,35 @@ namespace Abraxas.Games.Managers
         IManaManager _manaManager;
         ICardManager _cardManager;
         IEventManager _eventManager;
+        IPopupWindowManager _popupWindowManager;
 
         // Zones
         IZoneManager _zoneManager;
         IDeckManager _deckManager;
+        IFieldManager _fieldManager;
 
         [Inject]
         public void Construct(Game.Settings settings,
                        IGameStateManager gameStateManager,
                        IZoneManager zoneManager,
                        IDeckManager deckManager,
+                       IFieldManager fieldManager,
                        IPlayerManager playerManager,
                        IManaManager manaManager,
                        ICardManager cardManager,
-                       IEventManager eventManager)
+                       IEventManager eventManager,
+                       IPopupWindowManager popupWindowManager)
         {
             _settings = settings;
             _gameStateManager = gameStateManager;
             _zoneManager = zoneManager;
             _deckManager = deckManager;
+            _fieldManager = fieldManager;
             _playerManager = playerManager;
             _manaManager = manaManager;
             _cardManager = cardManager;
             _eventManager = eventManager;
+            _popupWindowManager = popupWindowManager;
         }
         #endregion
 
@@ -116,6 +122,10 @@ namespace Abraxas.Games.Managers
 
         public bool IsAnyPlayerInputAvailable()
         {
+            if (_fieldManager.GetOpenCells(_playerManager.ActivePlayer).Length == 0)
+            {
+                return false;
+            }
             foreach (var card in _cardManager.Cards)
             {
                 if (card.DeterminePlayability())
@@ -124,6 +134,16 @@ namespace Abraxas.Games.Managers
                 }
             }
             return false;
+        }
+
+        public IEnumerator EndGame(Player player)
+        {
+            var winningPlayer = player == Player.Player1 ? Player.Player2 : Player.Player1;
+            var gameOverPopup = _popupWindowManager.PopupWindow<GameOverPopup>(true) as GameOverPopup;
+            gameOverPopup.SetWinner(_playerManager.LocalPlayer == Player.Player1 ? winningPlayer : player);
+            while (true) {
+                yield return null;
+            }
         }
         #endregion
 
@@ -164,6 +184,8 @@ namespace Abraxas.Games.Managers
                 _gameStateManager.RequestNextGameState();
             }
         }
+
+
         #endregion
     }
 }

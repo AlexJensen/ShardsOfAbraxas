@@ -19,5 +19,6 @@ namespace Abraxas.Cells.Controllers
         ICardController GetCardAtIndex(int v);
         void HighlightPlayableOpenCell(ICardController card);
         void SetHighlightVisible(bool v);
+        bool IsOpen(Players.Players player);
     }
 }

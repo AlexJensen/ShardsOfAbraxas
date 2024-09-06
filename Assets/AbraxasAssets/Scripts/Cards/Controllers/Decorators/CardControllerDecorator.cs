@@ -147,7 +147,7 @@ namespace Abraxas.Cards.Controllers
         /// <returns></returns>
         public virtual IEnumerator PassHomeRow()
         {
-            _healthManager.ModifyPlayerHealth(Owner ==
+            yield return _healthManager.ModifyPlayerHealth(Owner ==
                 Player.Player1 ? Player.Player2 : Player.Player1, -StatBlock.Stats.ATK);
 
             yield return _zoneManager.MoveCardFromFieldToDeck(GetBaseCard(), Owner, 0, true);

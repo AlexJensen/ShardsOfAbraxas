@@ -1,4 +1,5 @@
 using Abraxas.Health.Controllers;
+using System.Collections;
 
 namespace Abraxas.Health.Managers
 {
@@ -9,7 +10,7 @@ namespace Abraxas.Health.Managers
     public interface IPlayerHealthManager
     {
         IPlayerHealthController GetPlayerHealth(Players.Players player);
-        void ModifyPlayerHealth(Players.Players player, int amount);
-        void AddPlayerHealth(IPlayerHealthController playerHealthController);
+        IEnumerator ModifyPlayerHealth(Players.Players player, int amount);
+        void AddPlayerHealthController(IPlayerHealthController playerHealthController);
     }
 }

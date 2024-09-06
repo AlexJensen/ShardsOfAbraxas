@@ -306,10 +306,10 @@ namespace Abraxas.Tests
             var healthFactory = Container.Resolve<PlayerHealthController.Factory>();
             var playerHealthViewMock = new Mock<IPlayerHealthView>();
             var playerHealthController = healthFactory.Create(playerHealthViewMock.Object);
-            playerHealthController.MaxHP = 1;
-            playerHealthController.HP = 1;
+            playerHealthController.SetMaxHealth(1);
+            playerHealthController.SetHealth(1);
             playerHealthController.Player = Player.Player2;
-            healthManager.AddPlayerHealth(playerHealthController);
+            healthManager.AddPlayerHealthController(playerHealthController);
 
             var cardFactory = Container.Resolve<CardController.Factory>();
             var cardController = cardFactory.Create(cardData);

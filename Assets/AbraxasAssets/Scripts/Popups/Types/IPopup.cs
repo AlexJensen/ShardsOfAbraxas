@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Abraxas.PopupWindowViewers.Managers
+namespace Abraxas.Popups
 {
-    public interface IPopupWindowManager
+    public interface IPopup
     {
     }
 }

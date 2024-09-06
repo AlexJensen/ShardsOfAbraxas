@@ -1,4 +1,5 @@
 using Abraxas.Cards.Controllers;
+using Abraxas.Cells.Controllers;
 using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
 using System.Drawing;
@@ -17,5 +18,6 @@ namespace Abraxas.Zones.Fields.Managers
         void AddCard(ICardController card);
         void HighlightPlayableOpenCells(ICardController cardController);
         void SetHighlightVisible(bool val);
+        ICellController[] GetOpenCells(Players.Players player);
     }
 }

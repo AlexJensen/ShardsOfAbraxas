@@ -10,6 +10,8 @@ using System.Drawing;
 using UnityEngine;
 using Zenject;
 
+using Player = Abraxas.Players.Players;
+
 namespace Abraxas.Zones.Fields.Managers
 {
 
@@ -67,6 +69,11 @@ namespace Abraxas.Zones.Fields.Managers
         public void HighlightPlayableOpenCells(ICardController cardController)
         {
             _field.HighlightPlayableOpenCells(cardController);
+        }
+
+        public ICellController[] GetOpenCells(Player player)
+        {
+            return _field.GetOpenCells(player);
         }
 
         public void SetHighlightVisible(bool val)
