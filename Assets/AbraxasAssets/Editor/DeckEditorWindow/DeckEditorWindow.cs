@@ -164,11 +164,11 @@ namespace Abraxas.Editor
                 int attack = UnityEngine.Random.Range(0, 11);
                 int defense = UnityEngine.Random.Range(0, 11);
 
-                // Generate random SPD between 1 and 4
-                int speed = UnityEngine.Random.Range(1, 5);
+                // Generate random SPD between 0 and 4
+                int speed = UnityEngine.Random.Range(0, 5);
 
-                // Range is always 0
-                int range = 0;
+                // Generate random RNG between 0 and 4
+                int range = UnityEngine.Random.Range(0, 5);
 
                 // Select a random stone from the chosen ones
                 StoneType stoneType = selectedStones[UnityEngine.Random.Range(0, selectedStones.Count)];
@@ -181,7 +181,7 @@ namespace Abraxas.Editor
                 data.StatBlock.Stats.DEF = defense;
                 data.StatBlock.Stats.SPD = speed;
                 data.StatBlock.Stats.RNG = range;
-                data.StatBlock.Cost = (attack * 2) + (defense * 2) + (speed * 4) + (range * 4) + 1;
+                data.StatBlock.Cost = (attack * 2) + (defense * 2) + (speed * 4) + (range * 8) + 1;
                 data.StatBlock.StoneType = stoneType;
                 data.Title = $"Model {ToRoman(i)}";
                 newCard.Data = data;

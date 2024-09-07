@@ -44,7 +44,6 @@ namespace Abraxas.Cards.Views
             _playerSettings = playerSettings;
             _statblockSettings = statblockSettings;
             _playerManager = playerManager;
-
         }
 
         public void Initialize(ICardModel model, ICardController controller)
@@ -141,7 +140,10 @@ namespace Abraxas.Cards.Views
                     totalCost += $"<#{ColorUtility.ToHtmlStringRGB(_stoneSettings.GetStoneTypeDetails(pair.Key).color)}{alpha}>{pair.Value}";
                 }
             }
-            UpdateCostText(totalCost);
+            if (totalCost != "")
+            {
+                UpdateCostText(totalCost);
+            }
             SetHighlight(isPlayable);
         }
 

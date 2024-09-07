@@ -2,6 +2,7 @@ using Abraxas.Cards.Controllers;
 using Abraxas.Cells.Controllers;
 using Abraxas.Events;
 using Abraxas.Players.Managers;
+using Abraxas.StatBlocks;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Fields.Models;
 using Abraxas.Zones.Fields.Views;
@@ -10,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using static UnityEngine.UI.GridLayoutGroup;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Fields.Controllers
@@ -66,9 +68,8 @@ namespace Abraxas.Zones.Fields.Controllers
             }
             else if (card.StatBlock.Stats.RNG > 0)
             {
-                yield return CheckRangedAttack(card, movement, FieldGrid);
+                yield return CheckRangedAttack(card, new Point(card.Owner == Player.Player1 ? card.StatBlock.Stats.RNG : -card.StatBlock.Stats.RNG, 0), FieldGrid);
             }
-
         }
 
         private IEnumerator CheckRangedAttack(ICardController card, Point movement, List<List<ICellController>> FieldGrid)

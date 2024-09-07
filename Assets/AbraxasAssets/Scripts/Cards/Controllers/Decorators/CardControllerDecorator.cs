@@ -222,7 +222,9 @@ namespace Abraxas.Cards.Controllers
         }
 
         /// <summary>
-        /// A card can only be played if the player is the active player, the game state is either of the two main phases, the card is in the player's hand, and the player has enough mana to pay the card's cost.
+        /// A card can only be played if the player is the active player, the game state is either of the two main phases, the card is in the player's hand, and the player has enough mana to pay the card's cost. 
+        /// Note this only checks if this specific card can be played, another check to see if there are any available open cells must also be made by the field manager separately from this function to conclusively 
+        /// determine if the card can be played.
         /// </summary>
         /// <returns></returns>
         public virtual bool DeterminePlayability()
@@ -254,8 +256,7 @@ namespace Abraxas.Cards.Controllers
         public virtual void UpdatePlayabilityAndCostText()
         {
             bool isPlayable = DeterminePlayability();
-            bool isInHand = Zone is IHandController;
-            _view.UpdateCostTextWithManaTypes(LastManas, TotalCosts, isPlayable, isInHand);
+            _view.UpdateCostTextWithManaTypes(LastManas, TotalCosts, isPlayable, Zone is IHandController);
         }
         #endregion
 
