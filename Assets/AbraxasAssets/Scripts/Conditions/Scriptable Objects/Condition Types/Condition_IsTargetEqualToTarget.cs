@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Abraxas.Stones.Conditions
 {
-    [CreateAssetMenu(menuName = "Abraxas/Conditions/TargetEqualsTarget")]
+    [CreateAssetMenu(menuName = "Abraxas/Data/StoneData/Conditions/TargetEqualsTarget")]
     [Serializable]
     public class Condition_IsTargetEqualToTarget : ConditionSO<IEvent>
     {

@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Abraxas.Stones.Conditions
 {
-    [CreateAssetMenu(menuName = "Abraxas/Conditions/StartOfState")]
+    [CreateAssetMenu(menuName = "Abraxas/Data/StoneData/Conditions/StartOfState")]
     [Serializable]
     public class Condition_IsCurrentState : ConditionSO<Event_GameStateEntered>
     {

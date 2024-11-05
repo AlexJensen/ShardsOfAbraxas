@@ -11,7 +11,7 @@ using Player = Abraxas.Players.Players;
 namespace Abraxas.Cards.Models
 {
     /// <summary>
-    /// CardModel is a class that contains all data and logic for a card.
+    /// CardModel provides access to data to a card and transmits event invokations for listening view classes to update when that data changes.
     /// </summary>
     class CardModel : ICardModel
     {

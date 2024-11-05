@@ -203,7 +203,7 @@ namespace Abraxas.Zones.Decks.Managers
                 Title = cardData.Title,
                 Owner = player,
                 OriginalOwner = player,
-                Stones = new List<StoneConnector>(cardData.Stones),
+                Stones = new List<StoneSO>(cardData.Stones),
                 StatBlock = cardData.StatBlock,
             };
 

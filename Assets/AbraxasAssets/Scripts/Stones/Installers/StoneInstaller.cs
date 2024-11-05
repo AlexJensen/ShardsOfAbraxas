@@ -1,3 +1,4 @@
+using Abraxas.Cards.Controllers;
 using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Factories;
@@ -13,10 +14,10 @@ namespace Abraxas.Cards.Installers
         {
             Container.BindInterfacesAndSelfTo<StoneController>().AsTransient();
             Container.BindInterfacesAndSelfTo<StoneModel>().AsTransient();
-            Container.BindFactory<StoneSO, IStoneController, StoneController.Factory>().FromFactory<StoneFactory>();
-
-            Container.BindInterfacesAndSelfTo<Effect_TargetPlayerDrawsCardsFromDeck>().AsTransient();
+            Container.BindFactory<StoneSO, ICardController, IStoneController, StoneController.Factory>().FromFactory<StoneFactory>();
         }
+        #endregion
     }
-    #endregion
+
+
 }

@@ -10,7 +10,7 @@ namespace Abraxas.Popups
     {
         Players.Player.Settings _playerSettings;
         [Inject]
-        void Construct(Players.Player.Settings playerSettings)
+        public void Construct(Players.Player.Settings playerSettings)
         {
             _playerSettings = playerSettings;
         }

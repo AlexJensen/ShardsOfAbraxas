@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Abraxas.Events;
+using System;
 using System.Linq;
 using System.Reflection;
+using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
-using Abraxas.Events;
-using System.Collections.Generic;
-using Abraxas.Events.Managers;
-using Zenject;
 
 namespace Abraxas.Stones.Data
 {
@@ -14,6 +12,11 @@ namespace Abraxas.Stones.Data
     {
         public abstract IStoneData Data { get; set; }
         public abstract Type ControllerType { get; set; }
+
+        public virtual void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            Data.NetworkSerialize(serializer);
+        }
     }    
 
 #if UNITY_EDITOR
@@ -45,7 +48,7 @@ namespace Abraxas.Stones.Data
             CreateNewTarget(type, property);
 
             // Check if the created target requires additional configuration
-            if (typeof(Target_TriggeringObject).IsAssignableFrom(type))
+            if (typeof(Target_TriggeringObjectSO).IsAssignableFrom(type))
             {
                 ShowSelectEventTypeMenu(property);
             }
@@ -103,7 +106,7 @@ namespace Abraxas.Stones.Data
                         menu.AddItem(new GUIContent(type.FullName), false, () => {
                             property.stringValue = type.AssemblyQualifiedName;
                             serializedObject.ApplyModifiedProperties();
-                            (target as Target_TriggeringObject).SetEventType(type);
+                            (target as Target_TriggeringObjectSO).SetEventType(type);
                         });
                     }
                 }

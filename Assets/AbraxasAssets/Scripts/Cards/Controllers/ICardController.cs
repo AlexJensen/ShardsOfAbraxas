@@ -6,6 +6,7 @@ using Abraxas.Stones.Controllers;
 using Abraxas.UI;
 using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Controllers;
+using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -32,13 +33,14 @@ namespace Abraxas.Cards.Controllers
         RectTransformMover RectTransformMover { get; }
         void ChangeScale(PointF pointF, float scaleCardToOverlayTime);
         IEnumerator CheckDeath();
-        IEnumerator Combat();
+        IEnumerator Combat(IFieldController field);
         bool DeterminePlayability();
         IEnumerator Fight(ICardController opponent);
         string GetCostText();
         IEnumerator MoveToCell(ICellController cell, float moveCardTime);
         IEnumerator PassHomeRow();
-        IEnumerator RangedAttack(ICardController opponent);
+        IEnumerator Attack(ICardController opponent);
+        IEnumerator PlayAnimationClip(UnityEngine.AnimationClip clip, UnityEngine.Color color, bool flip);
         void SetCardPositionToMousePosition();
         void SetToInitialScale();
         void UpdatePlayabilityAndCostText();

@@ -1,5 +1,7 @@
 ﻿using Abraxas.StatBlocks.Controllers;
 using Abraxas.StatBlocks.Models;
+using Abraxas.Stones;
+using UnityEngine;
 
 namespace Abraxas.StatBlocks.Views
 {
@@ -8,5 +10,6 @@ namespace Abraxas.StatBlocks.Views
     /// </summary>
     interface IStatBlockView
     {
+        Color GetStoneColor(StoneType stoneType);
     }
 }

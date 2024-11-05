@@ -31,6 +31,8 @@ namespace Abraxas.CardViewers.Managers
         [SerializeField]
         List<Side> _sides;
 
+        private float _screenWidth;
+
         RectTransform _cardDetailRect;
         #endregion
 
@@ -39,6 +41,11 @@ namespace Abraxas.CardViewers.Managers
         #endregion
 
         #region Methods
+        private void Awake()
+        {
+            _screenWidth = Screen.width * 0.5f;
+        }
+
         private void ShowCardViewerOnSide(ICardController card, ScreenSide side)
         {
             _cardViewer.gameObject.SetActive(true);
@@ -56,7 +63,7 @@ namespace Abraxas.CardViewers.Managers
 
         public void ShowCardViewer(ICardController card)
         {
-            if (Input.mousePosition.x > Screen.width * .5f)
+            if (Input.mousePosition.x > _screenWidth)
             {
                 ShowCardViewerOnSide(card, ScreenSide.LEFT);
             }

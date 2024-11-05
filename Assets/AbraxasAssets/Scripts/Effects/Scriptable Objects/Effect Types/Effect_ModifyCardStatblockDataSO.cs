@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Abraxas.Stones.Types
 {
-    [CreateAssetMenu(fileName = "New Effect ModifyTargetCardGroupStatBlock", menuName = "Abraxas/StoneData/Effects/Modify Target Card Group Stat Block")]
+    [CreateAssetMenu(fileName = "New Effect ModifyTargetCardGroupStatBlock", menuName = "Abraxas/Data/StoneData/Effects/Modify Target Card Group Stat Block")]
     [Serializable]
     public class Effect_ModifyCardGroupStatblockDataSO : EffectStoneSO
     {

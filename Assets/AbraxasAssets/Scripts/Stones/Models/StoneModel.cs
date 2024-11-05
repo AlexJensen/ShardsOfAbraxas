@@ -15,11 +15,13 @@ namespace Abraxas.Stones.Models
         IStoneData _data;
         public void Initialize(StoneSO data)
         {
+            StoneSO = data;
             Data = data.Data;
         }
         #endregion
 
         #region Properties
+        public StoneSO StoneSO { get; private set; }
         public IStoneData Data { get => _data; set => _data = value; }
         public int Cost
         {

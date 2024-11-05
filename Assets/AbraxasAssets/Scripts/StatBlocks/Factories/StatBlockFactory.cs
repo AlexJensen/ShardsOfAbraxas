@@ -11,7 +11,6 @@ namespace Abraxas.StatBlocks.Factories
     /// <summary>
     /// StatBlockFactory is a factory for creating stat blocks.
     /// </summary>
-
     class StatBlockFactory : IFactory<StatBlockData, IStatBlockView, IStatBlockController>
     {
         #region Dependencies
@@ -30,7 +29,7 @@ namespace Abraxas.StatBlocks.Factories
             var statBlockController = _container.Instantiate<StatBlockController>();
 
             statBlockModel.Initialize(data);
-            statBlockController.Initialize(statBlockModel);
+            statBlockController.Initialize(statBlockModel, statBlockView);
             ((StatBlockView)statBlockView).Initialize(statBlockModel, statBlockController);
 
             return statBlockController;

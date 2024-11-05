@@ -1,6 +1,5 @@
 ﻿using Abraxas.StatBlocks.Data;
 using Abraxas.Stones;
-using System.Numerics;
 using UnityEngine;
 
 namespace Abraxas.StatBlocks.Controllers
@@ -15,8 +14,7 @@ namespace Abraxas.StatBlocks.Controllers
         string StatsStr { get; }
         StoneType StoneType { get; }
         int Cost { get; set; }
-
         StatData Stats { get; set; }
-
+        Color Color { get; }
     }
 }

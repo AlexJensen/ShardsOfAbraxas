@@ -50,6 +50,11 @@ namespace Abraxas.StackBlocks.Views
             _statsText.text = _controller.StatsStr;
             _statsText.color = _stoneSettings.GetStoneTypeDetails(_controller.StoneType).color;
         }
+
+        public Color GetStoneColor(StoneType stoneType)
+        {
+            return _stoneSettings.GetStoneTypeDetails(stoneType).color;
+        }
         #endregion
     }
 }

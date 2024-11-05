@@ -20,6 +20,7 @@ namespace Abraxas.Stones.Models
         string Info { get; set; }
         StoneType StoneType { get; set; }
         IStoneData Data { get; set; }
+        StoneSO StoneSO { get; }
         #endregion
 
 

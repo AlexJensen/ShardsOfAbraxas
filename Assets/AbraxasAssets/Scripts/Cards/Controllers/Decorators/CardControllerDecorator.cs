@@ -21,6 +21,7 @@ using Abraxas.Zones.Fields.Controllers;
 using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Hands.Controllers;
 using Abraxas.Zones.Managers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,11 +34,7 @@ namespace Abraxas.Cards.Controllers
     /// <summary>
     /// The default CardControllerDecorator class functions as the baseline for expected card behaviour and operates as the root of the decorator pattern.
     /// </summary>
-    class CardControllerDecorator : ICardControllerInternal,
-                                    IGameEventListener<Event_ManaModified>,
-                                    IGameEventListener<Event_CardChangedZones>,
-                                    IGameEventListener<Event_GameStateEntered>,
-                                    IGameEventListener<Event_ActivePlayerChanged>
+    class CardControllerDecorator : ICardControllerInternal
                                     
     {
         #region Dependencies
@@ -60,7 +57,7 @@ namespace Abraxas.Cards.Controllers
         }
 
         [Inject]
-        public void Initialize(
+        public void Construct(
             IPlayerManager playerManager,
             IGameStateManager gameStateManager,
             IZoneManager zoneManager,
@@ -74,29 +71,11 @@ namespace Abraxas.Cards.Controllers
             _eventManager = eventManager;
             _healthManager = healthManager;
             _fieldManager = fieldManager;
-
-            InitializeListeners();
         }
 
-        public void OnDestroy()
+        public virtual void OnDestroy()
         {
-            RemoveListeners();
-        }
 
-        public virtual void InitializeListeners()
-        {
-            _eventManager.AddListener(this as IGameEventListener<Event_ManaModified>);
-            _eventManager.AddListener(this as IGameEventListener<Event_CardChangedZones>);
-            _eventManager.AddListener(this as IGameEventListener<Event_GameStateEntered>);
-            _eventManager.AddListener(this as IGameEventListener<Event_ActivePlayerChanged>);
-        }
-
-        public virtual void RemoveListeners()
-        {
-            _eventManager.RemoveListener(this as IGameEventListener<Event_ManaModified>);
-            _eventManager.RemoveListener(this as IGameEventListener<Event_CardChangedZones>);
-            _eventManager.RemoveListener(this as IGameEventListener<Event_GameStateEntered>);
-            _eventManager.RemoveListener(this as IGameEventListener<Event_ActivePlayerChanged>);
         }
         #endregion
 
@@ -142,7 +121,7 @@ namespace Abraxas.Cards.Controllers
         public virtual void RemoveStatusEffect<T>() where T : IStatusEffect => InnerController.RemoveStatusEffect<T>();
 
         /// <summary>
-        /// A card attacks the opponent's home row, dealing damage to the opponent and moving to the graveyard.
+        /// A card attacks the opponent's home row, dealing damage to the opponent and moving to the deck.
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerator PassHomeRow()
@@ -154,7 +133,7 @@ namespace Abraxas.Cards.Controllers
         }
 
         /// <summary>
-        /// A card attacks an opponent's card, dealing damage to both cards equal to eachother's ATK and moving either card to the graveyard if its DEF is reduced to 0.
+        /// A card fights an opponent's card, each dealing damage to the other equal to its ATK value. If a card's DEF is reduced to 0, it is moved to the graveyard.
         /// </summary>
         /// <param name="opponent">Card to fight</param>
         /// <returns></returns>
@@ -162,33 +141,20 @@ namespace Abraxas.Cards.Controllers
         {
             if (opponent.Owner == Owner) yield break;
 
-            IStatBlockController collided = opponent.StatBlock;
-
-            StatData collidedStats = collided.Stats;
-            StatData stats = StatBlock.Stats;
-
-            collidedStats.DEF -= StatBlock.Stats.ATK;
-            stats.DEF -= collidedStats.ATK;
-
-            collided.Stats = collidedStats;
-            StatBlock.Stats = stats;
-
-
             yield return Utilities.WaitForCoroutines(
-                opponent.CheckDeath(),
-                CheckDeath());
+                opponent.Attack(this),
+                Attack(opponent));
         }
 
         /// <summary>
-        /// A card attacks an opponent's card from a distance, dealing damage to the opponent card's DEF equal to the attacker's ATK and moving the opponent's card to the graveyard if its DEF is reduced to 0.
+        /// A card attacks an opponent's card, dealing damage to the opponent card's DEF equal to the attacker's ATK and moving the opponent's card to the graveyard if its DEF is reduced to 0.
         /// </summary>
         /// <param name="opponent"></param>
         /// <returns></returns>
-        public virtual IEnumerator RangedAttack(ICardController opponent)
+        public virtual IEnumerator Attack(ICardController opponent)
         {
-            if (opponent.Owner == Owner) yield break;
-
             IStatBlockController collided = opponent.StatBlock;
+            yield return opponent.PlayAnimationClip(_view.Attack, StatBlock.Color, _playerManager.LocalPlayer == Player.Player2);
 
             StatData collidedStats = collided.Stats;
 
@@ -216,15 +182,102 @@ namespace Abraxas.Cards.Controllers
         /// A card moves forward on the field equal to its SPD value during combat and will fight enemy cards it comes in contact with during the movement.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator Combat()
+        public virtual IEnumerator Combat(IFieldController field)
         {
-            yield return _fieldManager.CombatMovement(GetBaseCard(), new Point(Owner == Player.Player1? StatBlock.Stats.SPD:-StatBlock.Stats.SPD, 0));
+            if (CanPerformPreMovementAction())
+            {
+                yield return PreMovementAction(field);
+            }
+
+            yield return MoveAndHandleCollisions(field);
+
+            if (CanPerformPostMovementAction())
+            {
+                yield return PostMovementAction(field);
+            }
+        }
+
+        protected virtual bool CanPerformPreMovementAction() => false;
+        protected virtual bool CanPerformPostMovementAction() => true;
+
+        protected virtual IEnumerator PreMovementAction(IFieldController field)
+        {
+            // Default: Do nothing before movement
+            yield break;
+        }
+
+        protected virtual IEnumerator MoveAndHandleCollisions(IFieldController field)
+        {
+            var movement = new Point(Owner == Player.Player1 ? StatBlock.Stats.SPD : -StatBlock.Stats.SPD, 0);
+            Point destination = new(
+                Math.Clamp(Cell.FieldPosition.X + movement.X, 0, field.FieldGrid[0].Count - 1),
+                Cell.FieldPosition.Y);
+
+            ICardController collided = null;
+            var fieldGrid = field.FieldGrid;
+
+            // Movement and collision detection
+            for (int i = Cell.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
+            {
+                if (fieldGrid[Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
+                destination.X = i - Math.Sign(movement.X);
+                collided = fieldGrid[Cell.FieldPosition.Y][i].GetCardAtIndex(0);
+                break;
+            }
+
+            // Move the card if necessary
+            if (destination != Cell.FieldPosition)
+            {
+                yield return field.MoveCardToCell(GetBaseCard(), fieldGrid[destination.Y][destination.X]);
+            }
+
+            // Handle collision
+            if (collided != null)
+            {
+                yield return Fight(collided);
+            }
+            else if (fieldGrid[destination.Y][destination.X].Player != Owner && fieldGrid[destination.Y][destination.X].Player != Player.Neutral)
+            {
+                yield return PassHomeRow();
+            }
+
+            yield break;
+        }
+
+        protected virtual IEnumerator PostMovementAction(IFieldController field)
+        {
+            if (StatBlock.Stats.RNG > 0)
+            {
+                var target = CheckRangedAttack(field, new Point(Owner == Player.Player1 ? StatBlock.Stats.RNG : -StatBlock.Stats.RNG, 0));
+                if (target != null)
+                {
+                    yield return Attack(target);
+                }
+            }
+            yield break;
+        }
+
+        protected virtual ICardController CheckRangedAttack(IFieldController field, Point movement)
+        {
+            if (field != Zone) return null;
+            Point destination = new(
+                            Math.Clamp(Cell.FieldPosition.X + (StatBlock.Stats.RNG * Math.Sign(movement.X)), 0, field.FieldGrid[0].Count - 1),
+                            Cell.FieldPosition.Y);
+
+            for (int i = Cell.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
+            {
+                if (i > field.FieldGrid[0].Count - 1 || i < 0) break;
+                if (field.FieldGrid[Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
+                destination.X = i - Math.Sign(movement.X);
+                var collided = field.FieldGrid[Cell.FieldPosition.Y][i].GetCardAtIndex(0);
+                return collided;
+            }
+            return null;
         }
 
         /// <summary>
         /// A card can only be played if the player is the active player, the game state is either of the two main phases, the card is in the player's hand, and the player has enough mana to pay the card's cost. 
-        /// Note this only checks if this specific card can be played, another check to see if there are any available open cells must also be made by the field manager separately from this function to conclusively 
-        /// determine if the card can be played.
+        /// Note this only checks if this specific card can be played, another check to see if there are any available open cells must also be made by the field manager to conclusively determine if the card can be played.
         /// </summary>
         /// <returns></returns>
         public virtual bool DeterminePlayability()
@@ -250,6 +303,11 @@ namespace Abraxas.Cards.Controllers
         public virtual void SetToInitialScale() => _view.SetToInitialScale();
         public virtual void SetCardPositionToMousePosition() => _view.SetCardPositionToMousePosition();
         public virtual string GetCostText() => _view.GetCostText();
+
+        public virtual IEnumerator PlayAnimationClip(UnityEngine.AnimationClip clip, UnityEngine.Color color, bool flip)
+        {
+            yield return _view.PlayAnimation(clip, color, flip);
+        }
         public virtual IEnumerator MoveToCell(ICellController cell, float moveCardTime) => _view.MoveToCell(cell, moveCardTime);
        
 
@@ -308,6 +366,6 @@ namespace Abraxas.Cards.Controllers
 
         public virtual bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData) => true;
 
-          #endregion
+        #endregion
     }
 }

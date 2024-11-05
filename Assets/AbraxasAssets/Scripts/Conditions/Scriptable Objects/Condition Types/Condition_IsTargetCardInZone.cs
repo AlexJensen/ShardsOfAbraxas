@@ -11,7 +11,7 @@ using Zenject;
 
 namespace Abraxas.Stones.Conditions
 {
-    [CreateAssetMenu(menuName = "Abraxas/Conditions/IsTargetCardInZone")]
+    [CreateAssetMenu(menuName = "Abraxas/Data/StoneData/Conditions/IsTargetCardInZone")]
     [Serializable]
     public class Condition_IsTargetCardInZone : ConditionSO<Event_CardChangedZones>
     {

@@ -3,6 +3,7 @@ using Abraxas.StatBlocks.Data;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Models;
 using Abraxas.Stones.Targets;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,10 +12,17 @@ namespace Abraxas.Stones.Controllers
     public class Effect_ModifyTargetCardGroupStatblock : EffectStone, ITargetable<List<ICardController>>
     {
         #region Dependencies
-        public override void Initialize(IStoneModel model)
+        public override void Initialize(IStoneModel model, ICardController card)
         {
-            _modification = ((ModifyCardStatBlockData)model.Data).Modification;
-            base.Initialize(model);
+            if (model.Data is ModifyCardStatBlockData data)
+            {
+                _modification = data.Modification;
+            }
+            else
+            {
+                throw new InvalidOperationException("Model data is not of type ModifyCardStatBlockData.");
+            }
+            base.Initialize(model, card);
         }
         #endregion
 

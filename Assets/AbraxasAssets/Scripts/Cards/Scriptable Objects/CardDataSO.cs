@@ -1,4 +1,5 @@
-﻿using Abraxas.Stones.Data;
+﻿using Abraxas.Passives;
+using Abraxas.Stones.Data;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -93,6 +94,16 @@ namespace Abraxas.Cards.Data
                     var effectTypeName = effectType.Name.Replace("Effect", "").Replace("DataSO", "");
                     menu.AddItem(new GUIContent($"Effect Stones/{effectTypeName}"), false, () => AddNewStone(effectType));
                 }
+                var passiveTypes = Assembly.GetAssembly(typeof(PassiveStoneSO))
+                                            .GetTypes()
+                                            .Where(t => t.IsSubclassOf(typeof(PassiveStoneSO)) && !t.IsAbstract)
+                                            .ToList();
+
+                foreach (var passiveType in passiveTypes)
+                {
+                    var passiveTypeName = passiveType.Name.Replace("Passive", "").Replace("DataSO", "");
+                    menu.AddItem(new GUIContent($"Passive Stones/{passiveTypeName}"), false, () => AddNewStone(passiveType));
+                }
                 menu.ShowAsContext();
             }
 
@@ -107,7 +118,7 @@ namespace Abraxas.Cards.Data
 
                 _stonesProperty.InsertArrayElementAtIndex(_stonesProperty.arraySize);
                 var newElement = _stonesProperty.GetArrayElementAtIndex(_stonesProperty.arraySize - 1);
-                newElement.FindPropertyRelative("RuntimeStoneData").objectReferenceValue = stone;
+                newElement.objectReferenceValue = stone;
 
                 serializedObject.ApplyModifiedProperties();
             }

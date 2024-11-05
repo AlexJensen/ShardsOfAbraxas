@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Abraxas.Stones.Controllers.StoneTypes.Conditions
 {
-    [CreateAssetMenu(menuName = "Abraxas/Conditions/Triggers/TargetPlayerDrawsCard")]
+    [CreateAssetMenu(menuName = "Abraxas/Data/StoneData/Conditions/TargetPlayerDrawsCard")]
     [Serializable]
     public class Condition_Trigger_PlayerDrawsCards : ConditionSO<Event_PlayerDrawsCards>
     {
@@ -20,12 +20,11 @@ namespace Abraxas.Stones.Controllers.StoneTypes.Conditions
         }
         #endregion
 
+        public override bool IsTrigger => true;
+
         #region Fields
         [SerializeField]
         TargetSO<Players.Players> _target;
-
-        [HideInInspector]
-        public new bool IsTrigger = true;
         #endregion
 
 

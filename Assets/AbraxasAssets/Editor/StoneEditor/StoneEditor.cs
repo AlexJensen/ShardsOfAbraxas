@@ -14,9 +14,9 @@ public class StoneEditor
 {
     private VisualElement _root;
     private ListView _stoneListView;
-    private List<StoneConnector> _stones = new();
+    private List<StoneSO> _stones = new();
     private CardDataSO _selectedCard;
-    private StoneConnector _selectedStone;
+    private StoneSO _selectedStone;
     private VisualElement _stoneDetailsContainer;
     private SerializedObject _serializedStone;
     private List<SerializedProperty> _stoneProperties;
@@ -40,7 +40,7 @@ public class StoneEditor
         _stoneListView.bindItem = (element, i) =>
         {
             var label = element as Label;
-            label.text = _stones[i] != null ? _stones[i].RuntimeStoneData.name : "Missing Reference";
+            label.text = _stones[i] != null ? _stones[i].name : "Missing Reference";
         };
         _stoneListView.itemsSource = _stones;
         _stoneListView.selectionChanged += OnStoneSelected;
@@ -62,7 +62,7 @@ public class StoneEditor
         }
         else
         {
-            _stones = new List<StoneConnector>();
+            _stones = new List<StoneSO>();
         }
         _stoneListView.itemsSource = _stones;
         _stoneDetailsContainer.style.display = DisplayStyle.None;
@@ -71,14 +71,14 @@ public class StoneEditor
 
     private void OnStoneSelected(IEnumerable<object> selectedItems)
     {
-        _selectedStone = (StoneConnector)selectedItems.FirstOrDefault();
-        if (_selectedStone?.RuntimeStoneData == null)
+        _selectedStone = (StoneSO)selectedItems.FirstOrDefault();
+        if (_selectedStone == null)
         {
             _stoneDetailsContainer.style.display = DisplayStyle.None;
             return;
         }
 
-        _serializedStone = new SerializedObject(_selectedStone.RuntimeStoneData);
+        _serializedStone = new SerializedObject(_selectedStone);
         var dataProperty = _serializedStone.FindProperty("_data");
         if (dataProperty == null)
         {
@@ -172,31 +172,29 @@ public class StoneEditor
         if (_selectedCard.Data.Stones == null)
         {
             var data = _selectedCard.Data;
-            data.Stones = new List<StoneConnector>();
+            data.Stones = new List<StoneSO>();
             _selectedCard.Data = data;
         }
-        var stoneConnector = new StoneConnector { RuntimeStoneData = newStone };
-        _selectedCard.Data.Stones.Add(stoneConnector);
-        _stones.Add(stoneConnector);
+        _selectedCard.Data.Stones.Add(newStone);
+        _stones.Add(newStone);
         _stoneListView.Rebuild();
     }
 
     private void CopySelectedStone()
     {
         if (_selectedStone == null) return;
-        var copiedStone = UnityEngine.Object.Instantiate(_selectedStone.RuntimeStoneData);
+        var copiedStone = UnityEngine.Object.Instantiate(_selectedStone);
         AssetDatabase.AddObjectToAsset(copiedStone, _selectedCard);
         AssetDatabase.SaveAssets();
         AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(copiedStone));
         if (_selectedCard.Data.Stones == null)
         {
             var data = _selectedCard.Data;
-            data.Stones = new List<StoneConnector>();
+            data.Stones = new List<StoneSO>();
             _selectedCard.Data = data;
         }
-        var stoneConnector = new StoneConnector { RuntimeStoneData = copiedStone };
-        _selectedCard.Data.Stones.Add(stoneConnector);
-        _stones.Add(stoneConnector);
+        _selectedCard.Data.Stones.Add(copiedStone);
+        _stones.Add(copiedStone);
         _stoneListView.Rebuild();
     }
     #endregion

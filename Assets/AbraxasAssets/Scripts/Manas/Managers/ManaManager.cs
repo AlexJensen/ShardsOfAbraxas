@@ -62,7 +62,7 @@ namespace Abraxas.Manas.Managers
             return GetPlayerMana(stone.Card.OriginalOwner).CanPurchaseStone(stone);
         }
 
-        public void PuchaseStoneActivation(IStoneController stone)
+        public void PurchaseStoneActivation(IStoneController stone)
         {
             GetPlayerMana(stone.Card.OriginalOwner).PurchaseStone(stone);
         }

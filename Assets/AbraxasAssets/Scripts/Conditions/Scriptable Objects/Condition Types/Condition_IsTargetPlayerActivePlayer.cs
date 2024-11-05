@@ -11,7 +11,7 @@ using Zenject;
 namespace Abraxas.Stones.Conditions
 {
     [Serializable]
-    [CreateAssetMenu(menuName = "Abraxas/Conditions/IsActivePlayer")]
+    [CreateAssetMenu(menuName = "Abraxas/Data/StoneData/Conditions/IsActivePlayer")]
     class Condition_IsTargetPlayerActivePlayer : ConditionSO<Event_ActivePlayerChanged>
     {
         #region Dependencies
@@ -49,14 +49,8 @@ namespace Abraxas.Stones.Conditions
         public override bool IsMet()
         {
             var player = _target.Target;
-
-            if (Type == PlayerType.Active
-            ? player == _playerManager.ActivePlayer
-            : player != _playerManager.ActivePlayer)
-            {
-                return false;
-            }
-            return true;
+            bool isActivePlayer = player == _playerManager.ActivePlayer;
+            return Type == PlayerType.Active ? isActivePlayer : !isActivePlayer;
         }
 
         public override bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData)

@@ -5,22 +5,23 @@ using Zenject;
 
 namespace Abraxas.Stones.Controllers
 {
-
-
     public class StoneController : IStoneController
     {
         #region Dependencies
         protected IStoneModel Model;
+        public ICardController Card { get; set; }
 
-        public virtual void Initialize(IStoneModel model)
+        public virtual void Initialize(IStoneModel model, ICardController card)
         {
             Model = model;
+            Card = card;
         }
 
-        public class Factory : PlaceholderFactory<StoneSO, IStoneController> { }
+        public class Factory : PlaceholderFactory<StoneSO, ICardController, IStoneController> { }
         #endregion
+
         #region Properties
-        public ICardController Card { get; set; }
+
         public int Index { get; set; }
 
         public int Cost

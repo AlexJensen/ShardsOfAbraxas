@@ -1,4 +1,5 @@
 ﻿using Abraxas.Games.Managers;
+using Abraxas.Manas;
 using Abraxas.Stones.Targets;
 using System.Collections;
 using Zenject;
@@ -14,7 +15,7 @@ namespace Abraxas.Stones.Controllers
         #region Dependencies
         readonly IGameManager _gameManager;
         [Inject]
-        public Effect_TargetPlayerDrawsCardsFromDeck(IGameManager gameManager)
+        public Effect_TargetPlayerDrawsCardsFromDeck(IGameManager gameManager) : base()
         {
             _gameManager = gameManager;
         }

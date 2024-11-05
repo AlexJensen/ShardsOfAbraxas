@@ -17,6 +17,8 @@ namespace Abraxas.Cards.Views
         Transform Transform { get; }
         NetworkObject NetworkObject { get; }
         RectTransformMover RectTransformMover { get; }
+        AnimationClip Attack { get; }
+
         void ChangeScale(PointF pointF, float time);
         void SetCardPositionToMousePosition();
         string GetCostText();
@@ -25,5 +27,6 @@ namespace Abraxas.Cards.Views
         void SetHighlight(bool isPlayable);
         void UpdateCostTextWithManaTypes(List<ManaType> manaTypes, Dictionary<StoneType, int> totalCosts, bool isPlayable, bool isInHand);
         void SetToInitialScale();
+        IEnumerator PlayAnimation(AnimationClip clip, UnityEngine.Color color, bool flip);
     }
 }

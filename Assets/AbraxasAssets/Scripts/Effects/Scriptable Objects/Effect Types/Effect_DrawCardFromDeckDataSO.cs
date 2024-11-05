@@ -8,7 +8,7 @@ using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Stones.Types
 {
-    [CreateAssetMenu(fileName = "New Effect DrawCardFromLibrary", menuName = "Abraxas/StoneData/Effects/Draw Card From Library")]
+    [CreateAssetMenu(fileName = "New Effect DrawCardFromLibrary", menuName = "Abraxas/Data/StoneData/Effects/Draw Card From Library")]
     [Serializable]
     public class Effect_DrawCardFromDeckDataSO : EffectStoneSO
     {

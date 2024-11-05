@@ -11,6 +11,6 @@ namespace Abraxas.Stones.Controllers
         int Index { get; set; }
         ICardController Card { get; set; }
 
-        void Initialize(IStoneModel model);
+        void Initialize(IStoneModel model, ICardController card);
     }
 }

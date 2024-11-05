@@ -16,7 +16,7 @@ namespace Abraxas.Manas
         bool CanPurchaseCard(ICardController card);
         void PurchaseCard(ICardController card);
         bool CanPurchaseStoneActivation(IStoneController stone);
-        void PuchaseStoneActivation(IStoneController stone);
+        void PurchaseStoneActivation(IStoneController stone);
         void IncrementStartOfTurnManaAmount(Player player);
         void InitializeManaFromDeck(IDeckController deck);
         void InitializeManaFromDecks(List<IDeckController> decks);

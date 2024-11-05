@@ -3,9 +3,6 @@ using Abraxas.StatBlocks.Models;
 using Abraxas.StatBlocks.Views;
 using Abraxas.Stones;
 
-using NSubstitute.Routing.Handlers;
-using UnityEngine;
-
 using Zenject;
 
 namespace Abraxas.StatBlocks.Controllers
@@ -17,15 +14,18 @@ namespace Abraxas.StatBlocks.Controllers
     {
         #region Dependencies
         IStatBlockModel _model;
-        internal void Initialize(IStatBlockModel model)
+        IStatBlockView _view;
+        internal void Initialize(IStatBlockModel model, IStatBlockView view)
         {
             _model = model;
+            _view = view;
         }
         #endregion
 
         #region Properties
         public string StatsStr => _model.StatsStr;
         public StoneType StoneType => _model.StoneType;
+        public UnityEngine.Color Color => _view.GetStoneColor(StoneType);
 
         public int Cost { get => _model.Cost; set => _model.Cost = value; }
 

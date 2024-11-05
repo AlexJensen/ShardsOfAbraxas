@@ -1,8 +1,4 @@
-using Abraxas.Stones.Data;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Abraxas.Core
@@ -68,35 +64,6 @@ namespace Abraxas.Core
                     RunCoroutineToCompletion(nestedEnumerator);
                 }
             }
-        }
-
-        private static readonly Dictionary<string, Type> _stoneDataTypeCache;
-
-
-        static Utilities()
-        {
-            // Initialize the cache by reflecting over all types implementing IStoneData
-            _stoneDataTypeCache = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(IStoneData).IsAssignableFrom(type) && !type.IsInterface)
-                .ToDictionary(type => type.FullName, type => type);
-        }
-
-
-        /// <summary>
-        /// Converts a string type ID into an underlying type of stone object.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="typeId"></param>
-        /// <returns></returns>
-        public static T CreateInstanceFromStoneCache<T>(string typeId)
-            where T : ScriptableObject
-        {
-            if (_stoneDataTypeCache.TryGetValue(typeId, out var type))
-            {
-                return (T)ScriptableObject.CreateInstance(type);
-            }
-            return default;
         }
     }
 }

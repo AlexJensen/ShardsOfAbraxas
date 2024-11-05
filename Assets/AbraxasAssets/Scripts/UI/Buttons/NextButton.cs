@@ -1,5 +1,6 @@
 using Abraxas.Events;
 using Abraxas.Events.Managers;
+using Abraxas.Games.Managers;
 using Abraxas.GameStates;
 using Abraxas.Players;
 using Abraxas.Players.Managers;
@@ -25,7 +26,6 @@ namespace Abraxas.UI
             public struct NextButtonState
             {
                 public string Text;
-                public bool Interactable;
                 public GameStates.GameStates State;
             }
 
@@ -43,32 +43,22 @@ namespace Abraxas.UI
 
                 return "NO STATE FOUND";
             }
-
-            public bool GetInteractable(GameStates.GameStates state)
-            {
-                foreach (var nextState in from nextState in _nextButtonStates
-                                          where nextState.State == state
-                                          select nextState)
-                {
-                    return nextState.Interactable;
-                }
-
-                return false;
-            }
         }
         #endregion
 
         #region Dependencies
+        IGameManager _gameManager;
         IGameStateManager _gameStateManager;
         IEventManager _eventManager;
         IPlayerManager _playerManager;
         Settings _buttonSettings;
         Player.Settings _playerSettings;
         [Inject]
-        public void Construct(Settings buttonSettings, Player.Settings playerSettings, IGameStateManager gameStateManager, IPlayerManager playerManager, IEventManager eventManager)
+        public void Construct(Settings buttonSettings, Player.Settings playerSettings, IGameManager gameManager, IGameStateManager gameStateManager, IPlayerManager playerManager, IEventManager eventManager)
         {
             _buttonSettings = buttonSettings;
             _playerSettings = playerSettings;
+            _gameManager = gameManager;
             _gameStateManager = gameStateManager;
             _eventManager = eventManager;
             _playerManager = playerManager;
@@ -105,7 +95,7 @@ namespace Abraxas.UI
         public IEnumerator OnEventRaised(Event_GameStateEntered eventData)
         {
             GameState state = eventData.State;
-            _button.interactable = _buttonSettings.GetInteractable(state.CurrentState);
+            _button.interactable = _gameManager.IsAnyPlayerInputAvailable();
             _buttonStr.text = _buttonSettings.GetText(state.CurrentState);
             _image.color = _playerSettings.GetPlayerDetails(_playerManager.LocalPlayer == Players.Players.Player1 ? _playerManager.ActivePlayer : _playerManager.ActivePlayer == Players.Players.Player1 ? Players.Players.Player2 : Players.Players.Player1).color;
             if (_playerManager.LocalPlayer != _playerManager.ActivePlayer)

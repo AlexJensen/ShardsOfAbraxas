@@ -168,7 +168,7 @@ namespace Abraxas.Editor
                 int speed = UnityEngine.Random.Range(0, 5);
 
                 // Generate random RNG between 0 and 4
-                int range = UnityEngine.Random.Range(0, 5);
+                int range = 0;
 
                 // Select a random stone from the chosen ones
                 StoneType stoneType = selectedStones[UnityEngine.Random.Range(0, selectedStones.Count)];

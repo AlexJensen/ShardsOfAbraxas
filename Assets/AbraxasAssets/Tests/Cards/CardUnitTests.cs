@@ -11,7 +11,6 @@ using Abraxas.Cells.Factories;
 using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
 using Abraxas.Core;
-using Abraxas.Events;
 using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
 using Abraxas.GameStates;
@@ -89,7 +88,7 @@ namespace Abraxas.Tests
             Container.BindInterfacesAndSelfTo<CardModel>().AsTransient();
 
             Container.BindFactory<CardData, ICardController, CardController.Factory>().FromFactory<CardFactory>();
-            Container.BindFactory<StoneSO, IStoneController, StoneController.Factory>().FromFactory<StoneFactory>();
+            Container.BindFactory<StoneSO, ICardController, IStoneController, StoneController.Factory>().FromFactory<StoneFactory>();
             Container.BindFactory<StatBlockData, IStatBlockView, IStatBlockController, StatBlockController.Factory>().FromFactory<StatBlockFactory>();
         }
     }
@@ -395,7 +394,7 @@ namespace Abraxas.Tests
             Assert.AreEqual(0, cardController.Cell.FieldPosition.Y);
 
             // Act
-            Utilities.RunCoroutineToCompletion(cardController.Combat());
+            Utilities.RunCoroutineToCompletion(cardController.Combat(fieldController));
 
 
             // Assert
@@ -411,10 +410,12 @@ namespace Abraxas.Tests
         public void CardController_Initialization_Success()
         {
             // Arrange
+            var eventManager = Container.Resolve<IEventManager>();
+
             var modelMock = new Mock<ICardModel>();
             var viewMock = new Mock<ICardView>();
             var cardController = new CardController(
-                Container);
+                Container, eventManager);
 
             // Act
             cardController.Initialize(modelMock.Object, viewMock.Object);
@@ -452,13 +453,15 @@ namespace Abraxas.Tests
         public void CardController_GetCostText_ValidCostText()
         {
             // Arrange
+            var eventManager = Container.Resolve<IEventManager>();
+
             var modelMock = new Mock<ICardModel>();
             var viewMock = new Mock<ICardView>();
             var playerSettingsMock = new Mock<Players.Player.Settings>();
             var statblockSettingsMock = new Mock<Statblock.Settings>();
 
             var cardController = new CardController(
-                Container);
+                Container, eventManager);
 
             cardController.Initialize(modelMock.Object, viewMock.Object);
 

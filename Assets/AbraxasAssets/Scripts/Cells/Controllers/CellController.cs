@@ -33,19 +33,10 @@ namespace Abraxas.Cells.Controllers
         public Player Player { get => _model.Player; }
         public Point FieldPosition
         {
-            get => _model.FieldPosition; 
-            set
-            {
-                _model.FieldPosition = value;
-            }
+            get => _model.FieldPosition;
+            set => _model.FieldPosition = value;
         }
-        public int CardsOnCell
-        {
-            get
-            {
-                return _model.CardsOnCell;
-            }
-        }
+        public int CardsOnCell => _model.CardsOnCell;
 
         public RectTransform RectTransform => _view.RectTransform;
         #endregion

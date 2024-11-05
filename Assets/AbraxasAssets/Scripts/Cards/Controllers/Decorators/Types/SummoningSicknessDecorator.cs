@@ -3,6 +3,7 @@ using Abraxas.Cards.Views;
 using Abraxas.Events;
 using Abraxas.GameStates;
 using Abraxas.StatusEffects.Types;
+using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
 
 namespace Abraxas.Cards.Controllers
@@ -10,22 +11,15 @@ namespace Abraxas.Cards.Controllers
     /// <summary>
     /// A card with Summoning Sickness does not move or attack during combat. Summoning Sickness automatically expires at the end of the turn.
     /// </summary>
-    class SummoningSicknessDecorator : CardControllerDecorator,
-        IGameEventListener<Event_CardChangedZones>
+    class SummoningSicknessDecorator : CardControllerDecorator
     {
         #region Dependencies
         public SummoningSicknessDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
             : base(innerController, model, view) { }
-
-        public override void InitializeListeners()
-        {
-            base.InitializeListeners();
-            _eventManager.AddListener(this as IGameEventListener<Event_CardChangedZones>);
-        }
         #endregion
         #region Methods
 
-        public override IEnumerator Combat()
+        public override IEnumerator Combat(IFieldController field)
         {
             if (RequestHasStatusEffect<StatusEffect_SummoningSickness>())
             {
@@ -33,7 +27,7 @@ namespace Abraxas.Cards.Controllers
             }
             else
             {
-                yield return InnerController.Combat();
+                yield return InnerController.Combat(field);
             }
         }
         #endregion

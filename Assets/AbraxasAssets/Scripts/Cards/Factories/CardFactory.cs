@@ -9,15 +9,10 @@ using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Triggers;
 using System.Collections.Generic;
-using System.Linq;
 using Zenject;
-
 
 namespace Abraxas.Cards.Factories
 {
-    /// <summary>
-    /// CardFactory is a factory class for creating cards.
-    /// </summary>
     class CardFactory : IFactory<CardData, ICardController>
     {
         #region Dependencies
@@ -26,7 +21,13 @@ namespace Abraxas.Cards.Factories
         readonly ICardManager _cardManager;
         readonly StoneController.Factory _stoneFactory;
         readonly StatBlockController.Factory _statBlockFactory;
-        public CardFactory(DiContainer container, Card.Settings cardSettings, ICardManager cardManager, StoneController.Factory stoneFactory, StatBlockController.Factory statBlockFactory)
+
+        public CardFactory(
+            DiContainer container,
+            Card.Settings cardSettings,
+            ICardManager cardManager,
+            StoneController.Factory stoneFactory,
+            StatBlockController.Factory statBlockFactory)
         {
             _container = container;
             _cardSettings = cardSettings;
@@ -52,42 +53,60 @@ namespace Abraxas.Cards.Factories
             var statBlockController = _statBlockFactory.Create(data.StatBlock, statBlockView);
 
             List<IStoneController> stoneControllers = new();
-            if (data.Stones != null)
-            {
-                foreach (var stoneController in from stoneData in data.Stones
-                                                let stoneController = _stoneFactory.Create(stoneData.RuntimeStoneData)
-                                                select stoneController)
-                {
-                    stoneController.Card = controller;
-                    stoneControllers.Add(stoneController);
-                    stoneController.Index = stoneControllers.IndexOf(stoneController);
-                }
-            }
+            Dictionary<StoneSO, IStoneController> stoneSoToControllerMap = new();
 
+            // Initialize model, controller, and view
             model.Initialize(data, statBlockController, stoneControllers);
             controller.Initialize(model, view);
             view.Initialize(model, controller);
 
-            foreach (var (triggerStoneController, stoneData) in
-                from TriggerStone triggerStoneController
-                in stoneControllers.OfType<TriggerStone>()
-                let validIndexes = new List<int>()
-                from stoneData in
-                    from stoneData in data.Stones
-                    where stoneData.Index == triggerStoneController.Index
-                    let triggerStoneData = stoneData.RuntimeStoneData as TriggerStoneSO
-                    where triggerStoneData != null
-                    select stoneData
-                select (triggerStoneController, stoneData))
+            // Create stone controllers and build the mapping
+            if (data.Stones != null)
             {
-                triggerStoneController.Effects.AddRange(
-                from index in stoneData.ConnectionIndexes
-                where index >= 0 && index < stoneControllers.Count
-                let effectStone = stoneControllers[index] as EffectStone
-                where effectStone != null
-                select effectStone);
+                for (int i = 0; i < data.Stones.Count; i++)
+                {
+                    var stoneData = data.Stones[i];
+                    var stoneController = _stoneFactory.Create(stoneData, controller);
+                    stoneController.Index = i;
+
+                    stoneControllers.Add(stoneController);
+
+                    // Map StoneSO to its controller
+                    stoneSoToControllerMap[stoneData] = stoneController;
+                }
             }
 
+            // Set up connections for trigger stones
+            foreach (var stoneController in stoneControllers)
+            {
+                if (stoneController is TriggerStone triggerStoneController)
+                {
+                    var triggerStoneData = data.Stones[triggerStoneController.Index] as TriggerStoneSO;
+                    if (triggerStoneData != null)
+                    {
+                        List<EffectStone> effects = new();
+
+                        foreach (int index in triggerStoneData.ConnectionIndexes)
+                        {
+                            if (index >= 0 && index < data.Stones.Count)
+                            {
+                                var effectStoneData = data.Stones[index];
+                                if (stoneSoToControllerMap.TryGetValue(effectStoneData, out var effectStoneController))
+                                {
+                                    if (effectStoneController is EffectStone effectStone)
+                                    {
+                                        effects.Add(effectStone);
+                                    }
+                                }
+                            }
+                        }
+
+                        triggerStoneController.Effects = effects;
+                    }
+                }
+            }
+
+            // Initialize drag and mouse over handlers
             dragHandler.Initialize(dragListener, controller);
             dragListener.Initialize(dragHandler);
             mouseOverHandler.Initialize(controller);

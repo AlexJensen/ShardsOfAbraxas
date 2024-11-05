@@ -31,14 +31,7 @@ namespace Abraxas.Cells.Models
         public void RemoveCard(ICardController card)
         {
 
-            for (int i = 0; i < _cards.Count; i++)
-            {
-                if (_cards[i].Equals(card))
-                {
-                    _cards.RemoveAt(i);
-                    break;
-                }
-            }
+            _cards.Remove(card);
         }        
         #endregion
     }

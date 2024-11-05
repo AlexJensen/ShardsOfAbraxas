@@ -6,6 +6,7 @@ using Abraxas.StatBlocks;
 using Abraxas.Stones;
 using Abraxas.UI;
 using Abraxas.Unity.Interfaces;
+using Abraxas.VFX;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,12 +21,13 @@ using Player = Abraxas.Players.Players;
 namespace Abraxas.Cards.Views
 {
     /// <summary>
-    /// CardView is a monobehaviour class that contains all visual data and Unity-specific functionality for a card.
+    /// CardView contains all visual data and Unity-specific functionality for a card.
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
     [RequireComponent(typeof(RectTransformMover))]
     [RequireComponent(typeof(CardDragListener))]
     [RequireComponent(typeof(CardMouseOverListener))]
+    [RequireComponent(typeof(AnimationClipPlayer))]
     class CardView : NetworkBehaviour, ICardView, ITransformManipulator, IImageManipulator
     {
         #region Dependencies
@@ -61,6 +63,7 @@ namespace Abraxas.Cards.Views
             OnHiddenChanged();
 
             _image.sprite = _statblockSettings.GetSprite(_model.StatBlock.Stats);
+            _attack = _statblockSettings.GetAttackAnimation(_model.StatBlock.Stats);
             _image.material = _stoneSettings.GetStoneTypeDetails(_model.StatBlock.StoneType).material;
         }
 
@@ -83,6 +86,9 @@ namespace Abraxas.Cards.Views
         Image _image;
         [SerializeField]
         GameObject _highlight;
+        [SerializeField]
+        AnimationClipPlayer _animationClipPlayer;
+        AnimationClip _attack;
         RectTransformMover _rectTransformMover;
 
         #endregion
@@ -91,6 +97,8 @@ namespace Abraxas.Cards.Views
         public RectTransformMover RectTransformMover => _rectTransformMover = _rectTransformMover != null ? _rectTransformMover : GetComponent<RectTransformMover>();
         public Image Image { get => _image; set => _image = value; }
         public Transform Transform => transform;
+
+        public AnimationClip Attack { get => _attack; }
         #endregion
 
         #region Methods
@@ -125,6 +133,11 @@ namespace Abraxas.Cards.Views
         public void SetHighlight(bool isPlayable)
         {
             _highlight.SetActive(isPlayable);
+        }
+
+        public IEnumerator PlayAnimation(AnimationClip clip, UnityEngine.Color color, bool flip)
+        {
+            yield return _animationClipPlayer.PlayAnimationAndWait(clip, color, flip);
         }
 
         public void UpdateCostTextWithManaTypes(List<Manas.ManaType> manaTypes, Dictionary<StoneType, int> totalCosts, bool isPlayable, bool isInHand)

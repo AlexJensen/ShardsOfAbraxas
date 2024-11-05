@@ -22,7 +22,8 @@ namespace Abraxas.StatBlocks
                 [HideInInspector]
                 public string Title;
                 public StatData Stats;
-                public Sprite Sprite;        
+                public Sprite Sprite;
+                public AnimationClip AttackAnimation;
             }
 
             public Sprite GetSprite(StatData stats)
@@ -33,6 +34,19 @@ namespace Abraxas.StatBlocks
                     if (combination.Stats.Equals(adjustedStats))
                     {
                         return combination.Sprite;
+                    }
+                }
+                return null;
+            }
+
+            public AnimationClip GetAttackAnimation(StatData stats)
+            {
+                StatData adjustedStats = stats / StatMultiplier;
+                foreach (var combination in statBlocks)
+                {
+                    if (combination.Stats.Equals(adjustedStats))
+                    {
+                        return combination.AttackAnimation;
                     }
                 }
                 return null;

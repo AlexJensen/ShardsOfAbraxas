@@ -19,7 +19,7 @@ namespace Abraxas.Stones.Controllers
         public virtual IEnumerator TriggerEffect(object[] vals)
         {
             if (!_manaManager.CanPurchaseStoneActivation(this)) yield break;
-            _manaManager.PuchaseStoneActivation(this);
+            _manaManager.PurchaseStoneActivation(this);
             yield return PerformEffect(vals);
         }
 

@@ -20,7 +20,7 @@ namespace Abraxas.Cards.Data
         public Player Owner;
         [HideInInspector]
         public Player OriginalOwner;
-        public List<StoneConnector> Stones;
+        public List<StoneSO> Stones;
         public StatBlockData StatBlock;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -34,24 +34,47 @@ namespace Abraxas.Cards.Data
 
             if (serializer.IsReader)
             {
-                Stones = new List<StoneConnector>(stonesCount);
+                Stones = new List<StoneSO>(stonesCount);
                 for (int i = 0; i < stonesCount; i++)
                 {
-                    StoneConnector stoneWrapper = new();
-                    StoneConnector.Serialize(serializer, ref stoneWrapper);
-                    Stones.Add(stoneWrapper);
+                    StoneSO stone = null;
+                    SerializeStone(serializer, ref stone);
+                    Stones.Add(stone);
                 }
             }
             else
             {
-                foreach (var stoneWrapper in Stones)
+                foreach (var stone in Stones)
                 {
-                    StoneConnector tempStone = stoneWrapper;
-                    StoneConnector.Serialize(serializer, ref tempStone);
+                    SerializeStone(serializer, stone);
                 }
             }
 
             serializer.SerializeValue(ref StatBlock);
+        }
+
+        private readonly void SerializeStone<T>(BufferSerializer<T> serializer, StoneSO stone) where T : IReaderWriter
+        {
+            string typeId = stone.GetType().AssemblyQualifiedName;
+            serializer.SerializeValue(ref typeId);
+
+            stone.NetworkSerialize(serializer);
+        }
+
+        private readonly void SerializeStone<T>(BufferSerializer<T> serializer, ref StoneSO stone) where T : IReaderWriter
+        {
+            string typeId = string.Empty;
+            serializer.SerializeValue(ref typeId);
+
+            var stoneType = Type.GetType(typeId);
+            if (stoneType != null)
+            {
+                stone = ScriptableObject.CreateInstance(stoneType) as StoneSO;
+                if (stone != null)
+                {
+                    stone.NetworkSerialize(serializer);
+                }
+            }
         }
     }
 }

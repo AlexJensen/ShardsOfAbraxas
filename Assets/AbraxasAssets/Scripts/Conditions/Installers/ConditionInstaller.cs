@@ -7,7 +7,7 @@ using Zenject;
 namespace Abraxas.Conditions.Installers
 {
     /// <summary>
-    /// CardInstaller is a Unity-Specific installer for the card system.
+    /// ConditionInstaller is a Unity-Specific installer for conditions.
     /// </summary>
     public class ConditionInstaller : MonoInstaller<ConditionInstaller>
     {
@@ -20,7 +20,7 @@ namespace Abraxas.Conditions.Installers
     }
 
     /// <summary>
-    /// CardBaseInstaller is a generic installer for the card system used for unit testing.
+    /// ConditionBaseInstaller is a generic installer for conditions used for unit testing.
     /// </summary>
     public class ConditionBaseInstaller : Installer<ConditionBaseInstaller>
     {
