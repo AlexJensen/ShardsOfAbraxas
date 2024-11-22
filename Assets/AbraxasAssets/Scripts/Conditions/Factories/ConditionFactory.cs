@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Abraxas.Conditions.Factories
 {
-    class ConditionFactory : IFactory<ConditionSOBase, IStoneController, ICondition>
+    class ConditionFactory : IFactory<ConditionSO, IStoneController, ICondition>
     {
         private readonly DiContainer _container;
         private readonly TargetSOBase.Factory _targetFactory;
@@ -18,7 +18,7 @@ namespace Abraxas.Conditions.Factories
             _targetFactory = targetFactory;
         }
 
-        public ICondition Create(ConditionSOBase conditionSO, IStoneController stone)
+        public ICondition Create(ConditionSO conditionSO, IStoneController stone)
         {
             if (conditionSO == null)
             {
@@ -32,9 +32,9 @@ namespace Abraxas.Conditions.Factories
             }
 
             // Initialize the condition
-            if (conditionInstance is ConditionSOBase conditionSOBase)
+            if (conditionInstance is ConditionSO conditionSOBase)
             {
-                conditionSOBase.Initialize(stone, conditionSOBase, _container);
+                conditionSOBase.Initialize(stone, _container);
             }
             else
             {
@@ -52,9 +52,9 @@ namespace Abraxas.Conditions.Factories
             var fields = condition.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var field in fields)
             {
-                if (typeof(ConditionSOBase).IsAssignableFrom(field.FieldType))
+                if (typeof(ConditionSO).IsAssignableFrom(field.FieldType))
                 {
-                    var nestedCondition = field.GetValue(condition) as ConditionSOBase;
+                    var nestedCondition = field.GetValue(condition) as ConditionSO;
                     if (nestedCondition != null)
                     {
                         var nestedConditionInstance = Create(nestedCondition, stone);

@@ -16,14 +16,13 @@ namespace Abraxas.Stones.Targets
             }
             set
             {
-                //
+                // do not override the target
             }
         }
 
         public override void Initialize(IStoneController stone)
         {
             _cardTarget = stone.Card;
-            base.Initialize(stone);
         }
     }
 }

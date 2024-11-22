@@ -13,9 +13,11 @@ namespace Abraxas.StatBlocks.Models
     public interface IStatBlockModel
     {
         string StatsStr { get; }
+        string StatsStrSymbol { get; }
         StoneType StoneType { get; set; }
         int Cost { get; set; }
         StatData Stats { get; set; }
+        bool ShowSymbols { get; set; }
 
         event Action OnStatsChanged;
 

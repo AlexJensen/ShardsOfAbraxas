@@ -2,6 +2,7 @@
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Abraxas.Events;
+using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
 
 class PrefuelDecorator : CardControllerDecorator
@@ -16,6 +17,7 @@ class PrefuelDecorator : CardControllerDecorator
         {
             UpdatePlayabilityAndCostText();
         }
+        StatBlock.ShowSymbols = Zone is IFieldController;
         yield break;
     }
 }

@@ -16,5 +16,6 @@ namespace Abraxas.StatBlocks.Controllers
         int Cost { get; set; }
         StatData Stats { get; set; }
         Color Color { get; }
+        bool ShowSymbols { get; set; }
     }
 }

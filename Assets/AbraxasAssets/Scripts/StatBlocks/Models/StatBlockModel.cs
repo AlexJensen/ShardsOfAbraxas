@@ -1,8 +1,6 @@
 ﻿using Abraxas.StatBlocks.Data;
 using Abraxas.Stones;
-using NSubstitute.Routing.Handlers;
 using System;
-using UnityEngine;
 
 namespace Abraxas.StatBlocks.Models
 {
@@ -23,8 +21,22 @@ namespace Abraxas.StatBlocks.Models
         }
         #endregion
 
+        #region Fields
+        private bool _showSymbols;
+        #endregion
+
         #region Properties
-        public string StatsStr => _data.Stats.ATK.ToString() + "/" + _data.Stats.DEF.ToString() + "/" + _data.Stats.SPD.ToString()+ "/" + _data.Stats.RNG.ToString();
+        public bool ShowSymbols
+        {
+            get => _showSymbols;
+            set
+            {
+                _showSymbols = value;
+                OnStatsChanged.Invoke();
+            }
+        }
+        public string StatsStrSymbol => _data.Stats.ATK.ToString() + "<sprite=0 tint=1>/" + _data.Stats.DEF.ToString() + "<sprite=1 tint=1>/" + _data.Stats.SPD.ToString()+ "<sprite=2 tint=1>/" + _data.Stats.RNG.ToString() + "<sprite=3 tint=1>";
+        public string StatsStr => _data.Stats.ATK.ToString() + "/" + _data.Stats.DEF.ToString() + "/" + _data.Stats.SPD.ToString() + "/" + _data.Stats.RNG.ToString();
 
         public StoneType StoneType
         {
@@ -45,7 +57,9 @@ namespace Abraxas.StatBlocks.Models
 
         public StatData Stats
         {
-            get => _data.Stats; set
+            get => _data.Stats; 
+            
+            set
             {
                 _data.Stats = value;
                 OnStatsChanged.Invoke();

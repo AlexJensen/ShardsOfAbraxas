@@ -1,5 +1,3 @@
-using Abraxas.Events;
-using Abraxas.Stones.Conditions;
 using Abraxas.Stones.Controllers;
 using System;
 using UnityEngine;
@@ -10,10 +8,7 @@ namespace Abraxas.Stones.Targets
     abstract class TargetSOBase : ScriptableObject, ITarget
     {
         public abstract object GetTarget();
-        public virtual void Initialize(IStoneController stoneController)
-        {
-            //
-        }
+        public virtual void Initialize(IStoneController stoneController) { }
 
         public class Factory : PlaceholderFactory<TargetSOBase, IStoneController, ITarget> { }
     }

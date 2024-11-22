@@ -11,9 +11,9 @@ namespace Abraxas.Targets.Factories
     internal class TargetFactory : IFactory<TargetSOBase, IStoneController, ITarget>
     {
         private readonly DiContainer _container;
-        private readonly ConditionSOBase.Factory _conditionFactory;
+        private readonly ConditionSO.Factory _conditionFactory;
 
-        public TargetFactory(DiContainer container, ConditionSOBase.Factory conditionFactory)
+        public TargetFactory(DiContainer container, ConditionSO.Factory conditionFactory)
         {
             _container = container;
             _conditionFactory = conditionFactory;
@@ -27,12 +27,7 @@ namespace Abraxas.Targets.Factories
             }
 
             // Instantiate the target scriptable object
-            var targetInstance = _container.Instantiate(targetSO.GetType()) as TargetSOBase;
-
-            if (targetInstance == null)
-            {
-                throw new InvalidOperationException($"Could not instantiate condition of type '{targetSO.GetType()}'");
-            }
+            var targetInstance = _container.Instantiate(targetSO.GetType()) as TargetSOBase ?? throw new InvalidOperationException($"Could not instantiate condition of type '{targetSO.GetType()}'");
 
             // Initialize the targets and recursively initialize any nested conditions or targets
             InitializeTarget(targetInstance, stone);
@@ -49,12 +44,12 @@ namespace Abraxas.Targets.Factories
 
             foreach (var field in fields)
             {
-                if (typeof(ConditionSOBase).IsAssignableFrom(field.FieldType))
+                if (typeof(ConditionSO).IsAssignableFrom(field.FieldType))
                 {
-                    var nestedCondition = field.GetValue(targetInstance) as ConditionSOBase;
+                    var nestedCondition = field.GetValue(targetInstance) as ConditionSO;
                     if (nestedCondition != null)
                     {
-                        var nestedConditionInstance = _conditionFactory.Create(nestedCondition as ConditionSO<IEvent>, stone);
+                        var nestedConditionInstance = _conditionFactory.Create(nestedCondition, stone);
                         field.SetValue(targetInstance, nestedConditionInstance);
                     }
                 }

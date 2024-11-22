@@ -330,9 +330,11 @@ namespace Abraxas.Cards.Controllers
 
         public virtual IEnumerator OnEventRaised(Event_CardChangedZones eventData)
         {
+            StatBlock.ShowSymbols = false;
             // Apply summoning sickness when a card enters the field
             if (Zone is IFieldController)
             {
+                StatBlock.ShowSymbols = true;
                 ApplyStatusEffect(new StatusEffect_SummoningSickness());
             }
             if (LastManas != null)

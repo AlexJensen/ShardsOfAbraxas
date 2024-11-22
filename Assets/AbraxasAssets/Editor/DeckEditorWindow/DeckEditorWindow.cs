@@ -106,13 +106,13 @@ namespace Abraxas.Editor
             AssetDatabase.CreateAsset(newDeck, path);
 
             int currentStone = 0;
-            for (int attack = 1; attack <= 10; attack++)
+            for (int attack = 0; attack <= 10; attack++)
             {
-                for (int defense = 1; defense <= 10; defense++)
+                for (int defense = 0; defense <= 10; defense++)
                 {
-                    for (int speed = 2; speed <= 4; speed++)
+                    for (int speed = 0; speed <= 4; speed++)
                     {
-                        for (int range = 0; range <= 0; range++)
+                        for (int range = 0; range <= 4; range++)
                         {
                             var newCard = CreateInstance<CardDataSO>();
 
@@ -168,7 +168,7 @@ namespace Abraxas.Editor
                 int speed = UnityEngine.Random.Range(0, 5);
 
                 // Generate random RNG between 0 and 4
-                int range = 0;
+                int range = UnityEngine.Random.Range(0, 3);               
 
                 // Select a random stone from the chosen ones
                 StoneType stoneType = selectedStones[UnityEngine.Random.Range(0, selectedStones.Count)];

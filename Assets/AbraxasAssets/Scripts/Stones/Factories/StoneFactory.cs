@@ -15,9 +15,9 @@ namespace Abraxas.Stones.Factories
     class StoneFactory : IFactory<StoneSO, ICardController, IStoneController>
     {
         private readonly DiContainer _container;
-        private readonly ConditionSOBase.Factory _conditionFactory;
+        private readonly ConditionSO.Factory _conditionFactory;
 
-        public StoneFactory(DiContainer container, ConditionSOBase.Factory conditionFactory)
+        public StoneFactory(DiContainer container, ConditionSO.Factory conditionFactory)
         {
             _container = container;
             _conditionFactory = conditionFactory;
@@ -67,10 +67,10 @@ namespace Abraxas.Stones.Factories
         {
             if (controller is IConditional conditionableController)
             {
-                var conditionField = FindFieldByType(dataSO.GetType(), typeof(List<ConditionSOBase>));
+                var conditionField = FindFieldByType(dataSO.GetType(), typeof(List<ConditionSO>));
                 if (conditionField != null)
                 {
-                    var conditionList = (List<ConditionSOBase>)conditionField.GetValue(dataSO);
+                    var conditionList = (List<ConditionSO>)conditionField.GetValue(dataSO);
                     var conditions = new List<ICondition>();
 
                     foreach (var conditionSO in conditionList)

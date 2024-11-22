@@ -1,9 +1,9 @@
-using Abraxas.Cards.Controllers;
+using Abraxas.Events;
 using Abraxas.Manas;
 using Abraxas.Stones.Conditions;
 using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
-using Abraxas.Stones.Models;
+using Abraxas.Stones.EventListeners;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,26 +11,25 @@ using Zenject;
 
 namespace Abraxas.Stones.Triggers
 {
-
     public class TriggerStone : StoneController, IConditional
     {
         #region Dependencies
         IManaManager _manaManager;
 
         [Inject]
-        public void Construct(IManaManager manaManager)
+        public void Construct(IManaManager manaManager, DiContainer container)
         {
             _manaManager = manaManager;
-        }
 
-        public override void Initialize(IStoneModel model, ICardController card)
-        {
-            base.Initialize(model, card);
-
-            var triggerStoneSO = model.StoneSO as TriggerStoneSO;
+            // Register event listeners dynamically
+            var triggerStoneSO = Model.StoneSO as TriggerStoneSO;
             if (triggerStoneSO != null)
             {
-                Conditions = triggerStoneSO.Conditions.OfType<ICondition>().ToList();
+                foreach (var eventListener in triggerStoneSO.EventListeners.OfType<EventListenerSO<IEvent>>())
+                {
+                    container.Inject(eventListener);
+                    eventListener.InitializeListener();
+                }
             }
         }
         #endregion
@@ -62,7 +61,4 @@ namespace Abraxas.Stones.Triggers
         }
         #endregion
     }
-
-
-
 }

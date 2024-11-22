@@ -1,7 +1,6 @@
 ﻿using Abraxas.Conditions.Factories;
 using Abraxas.Stones.Conditions;
 using Abraxas.Stones.Controllers;
-using Abraxas.Stones.Controllers.StoneTypes.Conditions;
 using Zenject;
 
 namespace Abraxas.Conditions.Installers
@@ -26,16 +25,12 @@ namespace Abraxas.Conditions.Installers
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<Condition_IsCurrentState>().AsTransient();
-            Container.BindInterfacesAndSelfTo<Condition_IsTargetPlayerActivePlayer>().AsTransient();
-            Container.BindInterfacesAndSelfTo<Condition_IsTargetCardInZone>().AsTransient();
-            Container.BindInterfacesAndSelfTo<Condition_Trigger_PlayerDrawsCards>().AsTransient();
-            Container.BindInterfacesAndSelfTo<Condition_IsTargetEqualToTarget>().AsTransient();
-            Container.BindInterfacesAndSelfTo<Condition_WasTargetCardInZone>().AsTransient();
 
-            Container.Bind<ConditionSOBase>().To(x => x
+            Container.BindInterfacesAndSelfTo<Condition_IsTargetEqualToTarget>().AsTransient();
+
+            Container.Bind<ConditionSO>().To(x => x
            .AllNonAbstractClasses()
-           .DerivingFrom<ConditionSOBase>())
+           .DerivingFrom<ConditionSO>())
            .AsTransient();
 
             // Bind ICondition to all its implementations
@@ -44,7 +39,7 @@ namespace Abraxas.Conditions.Installers
                 .DerivingFrom<ICondition>())
                 .AsTransient();
 
-            Container.BindFactory<ConditionSOBase, IStoneController, ICondition, ConditionSOBase.Factory>().FromFactory<ConditionFactory>();
+            Container.BindFactory<ConditionSO, IStoneController, ICondition, ConditionSO.Factory>().FromFactory<ConditionFactory>();
         }
     }
 }

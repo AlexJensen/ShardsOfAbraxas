@@ -6,9 +6,7 @@ namespace Abraxas.Stones.Conditions
 {
     public interface ICondition
     {
-        void Initialize(IStoneController stoneController, ICondition condition, DiContainer container);
-        void SubscribeToEvents();
-        void UnsubscribeFromEvents();
+        void Initialize(IStoneController stoneController, DiContainer container);
         bool IsMet();
     }
 }

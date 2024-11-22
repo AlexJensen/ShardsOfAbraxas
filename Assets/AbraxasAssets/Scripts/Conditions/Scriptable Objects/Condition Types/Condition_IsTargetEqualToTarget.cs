@@ -1,21 +1,29 @@
-﻿using Abraxas.Events;
+﻿using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Targets;
 using System;
+using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
+using Zenject;
 
 namespace Abraxas.Stones.Conditions
 {
     [CreateAssetMenu(menuName = "Abraxas/Data/StoneData/Conditions/TargetEqualsTarget")]
     [Serializable]
-    public class Condition_IsTargetEqualToTarget : ConditionSO<IEvent>
+    public class Condition_IsTargetEqualToTarget : ConditionSO
     {
         #region Fields
         [SerializeField]
         private TargetSOBase _firstTarget;
         [SerializeField]
         private TargetSOBase _secondTarget;
+
+        public override void Initialize(IStoneController stoneController, DiContainer container)
+        {
+            _firstTarget.Initialize(stoneController);
+            _secondTarget.Initialize(stoneController);
+        }
         #endregion
 
         #region Methods
@@ -24,9 +32,9 @@ namespace Abraxas.Stones.Conditions
             return _firstTarget.GetTarget().Equals(_secondTarget.GetTarget());
         }
 
-        public override bool ShouldReceiveEvent(IEvent eventData)
+        internal override void NetworkSerialize<T>(BufferSerializer<T> serializer)
         {
-            return true;
+            throw new NotImplementedException();
         }
         #endregion
 

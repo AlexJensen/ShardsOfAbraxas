@@ -23,7 +23,12 @@ namespace Abraxas.StatBlocks.Controllers
         #endregion
 
         #region Properties
-        public string StatsStr => _model.StatsStr;
+        public bool ShowSymbols
+        {   
+            get =>_model.ShowSymbols;
+            set => _model.ShowSymbols = value;
+        }
+        public string StatsStr => ShowSymbols? _model.StatsStrSymbol: _model.StatsStr;
         public StoneType StoneType => _model.StoneType;
         public UnityEngine.Color Color => _view.GetStoneColor(StoneType);
 

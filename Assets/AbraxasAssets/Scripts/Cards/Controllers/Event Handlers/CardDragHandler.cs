@@ -56,6 +56,7 @@ namespace Abraxas.Cards.Controllers
                 _overlayManager.SetCard(_cardController);
                 _fieldManager.HighlightPlayableOpenCells(_cardController);
                 _cardController.ChangeScale(_fieldManager.GetCellDimensions(), _cardAnimationSettings.ScaleCardToOverlayTime);
+                _cardController.StatBlock.ShowSymbols = true;
             }
         }
 
@@ -92,6 +93,7 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator ReturnFromOverlayToHand()
         {
+            _cardController.StatBlock.ShowSymbols = false;
             yield return _handManager.ReturnCardToHand(_cardController);
             _handManager.CardDragging = null;
         }
