@@ -17,6 +17,10 @@ namespace Abraxas.Network.Managers
         #region Methods
         protected IEnumerator WaitForClients()
         {
+            if (IsHost)
+            {
+                yield break;
+            }
             isWaitingForClientAcknowledgments = true;
             clientAcknowledgments = 0;
             while (clientAcknowledgments < NetworkManager.Singleton.ConnectedClients.Count)

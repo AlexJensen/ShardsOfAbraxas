@@ -1,4 +1,5 @@
-﻿using Abraxas.Cards.Managers;
+﻿using Abraxas.AI.Managers;
+using Abraxas.Cards.Managers;
 using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
 using System.Collections;
@@ -13,11 +14,13 @@ namespace Abraxas.GameStates
     {
         #region Dependencies
         readonly IGameStateManager _gameStateManager;
+        readonly IAIManager _aiManager;
 
         [Inject]
-        public AfterCombatState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager) : base(gameManager, eventManager)
+        public AfterCombatState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, IAIManager aiManager) : base(gameManager, eventManager)
         {
             _gameStateManager = gameStateManager;
+            _aiManager = aiManager;
         }
         public class Factory : PlaceholderFactory<AfterCombatState> { }
         #endregion
@@ -35,9 +38,14 @@ namespace Abraxas.GameStates
         public override IEnumerator OnEnterState()
         {
             yield return base.OnEnterState();
+
             if (!gameManager.IsAnyPlayerInputAvailable())
             {
                 yield return _gameStateManager.BeginNextGameState();
+            }
+            else
+            {
+                yield return _aiManager.DeterminePlay();
             }
         }
 

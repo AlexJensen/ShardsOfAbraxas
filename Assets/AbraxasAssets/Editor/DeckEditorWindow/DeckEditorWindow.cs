@@ -154,6 +154,7 @@ namespace Abraxas.Editor
             int numStoneColors = UnityEngine.Random.Range(1, 13);
             List<StoneType> selectedStones = Enum.GetValues(typeof(StoneType))
                                                   .Cast<StoneType>()
+                                                  .Where(stoneType => stoneType != StoneType.INVALID)
                                                   .OrderBy(x => UnityEngine.Random.value)
                                                   .Take(numStoneColors)
                                                   .ToList();
@@ -168,7 +169,7 @@ namespace Abraxas.Editor
                 int speed = UnityEngine.Random.Range(0, 5);
 
                 // Generate random RNG between 0 and 4
-                int range = UnityEngine.Random.Range(0, 3);               
+                int range = UnityEngine.Random.Range(0, 3);
 
                 // Select a random stone from the chosen ones
                 StoneType stoneType = selectedStones[UnityEngine.Random.Range(0, selectedStones.Count)];

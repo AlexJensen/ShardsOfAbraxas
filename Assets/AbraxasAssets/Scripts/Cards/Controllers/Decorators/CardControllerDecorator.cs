@@ -139,8 +139,6 @@ namespace Abraxas.Cards.Controllers
         /// <returns></returns>
         public virtual IEnumerator Fight(ICardController opponent)
         {
-            if (opponent.Owner == Owner) yield break;
-
             yield return Utilities.WaitForCoroutines(
                 opponent.Attack(this),
                 Attack(opponent));
@@ -153,6 +151,7 @@ namespace Abraxas.Cards.Controllers
         /// <returns></returns>
         public virtual IEnumerator Attack(ICardController opponent)
         {
+            if (opponent.Owner == Owner) yield break;
             IStatBlockController collided = opponent.StatBlock;
             yield return opponent.PlayAnimationClip(_view.Attack, StatBlock.Color, _playerManager.LocalPlayer == Player.Player2);
 

@@ -45,7 +45,6 @@ namespace Abraxas.Zones.Controllers
 
         #region Properties
         public Player Player => _model.Player;
-        public ZoneType Type => _model.Type;
 
         public int TotalCardsInZone => _model.CardList.Count;
         protected IZoneView View => _view;
@@ -61,6 +60,8 @@ namespace Abraxas.Zones.Controllers
 
         public virtual ICardController PeekCard(int index)
         {
+            if (index >= _model.CardList.Count || index < 0)
+                return null;
             return _model.CardList[index];
         }
 

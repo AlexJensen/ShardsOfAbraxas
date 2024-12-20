@@ -20,6 +20,7 @@ namespace Abraxas.Cells.Models
         #region Methods
         public ICardController GetCardAtIndex(int index)
         {
+            if (index >= _cards.Count || index < 0) return null;
             return _cards[index];
         }
 

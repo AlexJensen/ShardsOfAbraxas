@@ -1,5 +1,6 @@
 ﻿using Abraxas.Random.Managers;
 using Abraxas.Zones.Models;
+using System.Collections;
 
 namespace Abraxas.Zones.Decks.Models
 {

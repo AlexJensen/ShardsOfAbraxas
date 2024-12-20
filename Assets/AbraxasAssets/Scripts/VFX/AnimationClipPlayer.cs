@@ -19,7 +19,7 @@ namespace Abraxas.VFX
         {
             if (clip == null)
             {
-                Debug.LogError("Invalid animation clip.");
+                Debug.LogWarning("Invalid or missing animation clip.");
                 yield break;
             }
 

@@ -1,10 +1,10 @@
-﻿using Abraxas.Stones.Controllers;
+﻿using Abraxas.Players;
+using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.Targets;
 using System;
 using UnityEditor;
 using UnityEngine;
-using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Stones.Types
 {
@@ -16,12 +16,12 @@ namespace Abraxas.Stones.Types
         [SerializeField]
         BasicStoneData _data = new();
         [SerializeField]
-        TargetSO<Player> _target;
+        TargetSOBase _target;
         #endregion
 
         #region Properties
         public override IStoneData Data { get => _data; set => _data = (BasicStoneData)value; }
-        public override Type ControllerType { get; set; } = typeof(Effect_TargetPlayerDrawsCardsFromDeck);
+        public override Type ControllerType { get; set; } = typeof(Effect_DrawCardsFromDeck);
         #endregion
     }
 
@@ -31,7 +31,7 @@ namespace Abraxas.Stones.Types
     {
         private SerializedProperty _targetProperty;
 
-        public override void OnEnable()
+        protected override void OnEnable()
         {
             base.OnEnable();
             _targetProperty = serializedObject.FindProperty("_target");
@@ -41,9 +41,13 @@ namespace Abraxas.Stones.Types
         {
             EditorGUILayout.PropertyField(_targetProperty);
 
+            // Suppose we want to derive expectedType from the effect
+            StoneSO effect = (StoneSO)target;
+            Type expectedType = GetExpectedTypeFromEffect(effect);
+
             if (GUILayout.Button("Set Target"))
             {
-                ShowSelectTypeMenu<TargetSO<Player>>(type => SetTarget(type, _targetProperty));
+                ShowSelectTypeMenu<TargetSOBase>(expectedType, t => SetTarget(t, _targetProperty, expectedType));
             }
 
             if (_targetProperty.objectReferenceValue != null && GUILayout.Button("Remove Target"))

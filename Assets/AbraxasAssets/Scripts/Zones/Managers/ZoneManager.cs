@@ -1,17 +1,13 @@
-﻿using Abraxas.Cards;
-using Abraxas.Cards.Controllers;
+﻿using Abraxas.Cards.Controllers;
 using Abraxas.Events;
 using Abraxas.Events.Managers;
 using Abraxas.Zones.Decks.Managers;
 using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Graveyards;
 using Abraxas.Zones.Hands.Managers;
-using Abraxas.Zones.Overlays.Managers;
 using System;
 using System.Collections;
 using System.Drawing;
-using static Abraxas.Cards.Card.Settings;
-using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Managers

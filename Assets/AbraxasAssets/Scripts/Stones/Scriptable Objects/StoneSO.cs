@@ -1,4 +1,5 @@
 ﻿using Abraxas.Events;
+using Abraxas.Stones.Targets;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -23,7 +24,7 @@ namespace Abraxas.Stones.Data
     [CustomEditor(typeof(StoneSO), true)]
     public class StoneSOEditor : Editor
     {
-        protected void ShowSelectTypeMenu<T>(Action<Type> onSelected)
+        protected void ShowSelectTypeMenu<T>(Type expectedType, Action<Type> onSelected)
         {
             var menu = new GenericMenu();
             var types = Assembly.GetAssembly(typeof(T))
@@ -32,29 +33,54 @@ namespace Abraxas.Stones.Data
                     .ToList();
             foreach (var type in types)
             {
-                var typeName = type.Name;
-                if (type.IsGenericTypeDefinition)
+                if (CanProduceType(type, expectedType))
                 {
-                    typeName += "<T>"; // Indicate that this is a generic type
+                    var typeName = type.Name;
+                    if (type.IsGenericTypeDefinition)
+                    {
+                        typeName += "<T>"; // Indicate that this is a generic type
+                    }
+                    menu.AddItem(new GUIContent(typeName), false, () => onSelected(type));
                 }
-                menu.AddItem(new GUIContent(typeName), false, () => onSelected(type));
+            }
+            if (menu.GetItemCount() == 0)
+            {
+                menu.AddDisabledItem(new GUIContent("No Compatible Types Found"));
             }
             menu.ShowAsContext();
         }
+        private bool CanProduceType(Type targetType, Type expectedType)
+        {
+            var baseType = targetType.BaseType;
+            if (baseType != null && baseType.IsGenericType)
+            {
+                var returnType = baseType.GetGenericArguments()[0];
 
-        protected void SetTarget(Type type, SerializedProperty property)
+                // If returnType is object, treat it as a wildcard and allow selection
+                if (returnType == typeof(object))
+                {
+                    return true;
+                }
+
+                return expectedType == null || expectedType.IsAssignableFrom(returnType);
+            }
+
+            return expectedType == null;
+        }
+
+
+        protected void SetTarget(Type type, SerializedProperty property, Type expectedType = null)
         {
             RemoveTarget(property);
-            CreateNewTarget(type, property);
+            CreateNewTarget(type, property, expectedType);
 
-            // Check if the created target requires additional configuration
             if (typeof(Target_TriggeringObjectSO).IsAssignableFrom(type))
             {
                 ShowSelectEventTypeMenu(property);
             }
         }
 
-        protected void CreateNewTarget(Type type, SerializedProperty property)
+        protected void CreateNewTarget(Type type, SerializedProperty property, Type expectedType)
         {
             var parent = (ScriptableObject)property.serializedObject.targetObject;
             ScriptableObject target;
@@ -72,8 +98,32 @@ namespace Abraxas.Stones.Data
             AssetDatabase.AddObjectToAsset(target, parent);
             AssetDatabase.SaveAssets();
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(parent));
+
             property.objectReferenceValue = target;
             serializedObject.ApplyModifiedProperties();
+
+            if (expectedType != null && target is TargetSOBase targetSO)
+            {
+                targetSO.SetExpectedType(expectedType);
+                EditorUtility.SetDirty(targetSO);
+            }
+        }
+
+        protected virtual Type GetExpectedTypeFromEffect(StoneSO target)
+        {
+            Type effectType = target.ControllerType;
+
+            // Check if effectType implements ITargetable<>
+            var iTargetableInterface = effectType.GetInterfaces()
+            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ITargetable<>));
+
+            if (iTargetableInterface != null)
+            {
+                Type expectedType = iTargetableInterface.GetGenericArguments()[0];
+                // Now you know the expectedType that the effect wants.
+                return expectedType;
+            }
+            return null;
         }
 
         protected void RemoveTarget(SerializedProperty property)
@@ -113,8 +163,6 @@ namespace Abraxas.Stones.Data
             }
             menu.ShowAsContext();
         }
-
     }
-
 #endif
 }

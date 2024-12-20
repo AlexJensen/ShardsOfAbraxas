@@ -32,7 +32,7 @@ namespace Abraxas.Zones.Hands.Controllers
         #region Methods
         public override IEnumerator MoveCardToZone(ICardController card, int index = 0)
         {
-            if (!NetworkManager.Singleton.IsServer) card.Hidden = card.Owner != _playerManager.LocalPlayer && card.PreviousZone is DeckController;
+            if (!NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsHost) card.Hidden = card.Owner != _playerManager.LocalPlayer && card.PreviousZone is DeckController;
             yield return base.MoveCardToZone(card, index);
         }
 

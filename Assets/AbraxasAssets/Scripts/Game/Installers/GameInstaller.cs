@@ -1,4 +1,5 @@
 ﻿
+using Abraxas.Cards.Managers;
 using Abraxas.Games.Managers;
 using Zenject;
 

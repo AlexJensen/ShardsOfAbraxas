@@ -82,7 +82,14 @@ namespace Abraxas.Zones.Decks.Managers
         public IEnumerator ShuffleDeck(Player player)
         {
             if (!IsServer) yield break;
-            if (!IsHost) GetPlayerDeck(player).Shuffle();
+
+            if (IsHost)
+            {
+                GetPlayerDeck(player).Shuffle();
+                yield break;
+            }
+
+            GetPlayerDeck(player).Shuffle();
             ShuffleDeckClientRpc(player);
             yield return WaitForClients();
         }
@@ -95,21 +102,31 @@ namespace Abraxas.Zones.Decks.Managers
 
         private IEnumerator LoadDeck(Player player)
         {
-            List<CardDataSO> cardDataList = (player == Player.Player1 ? player1DeckData : player2DeckData).Cards;
+            var cardDataList = (player == Player.Player1 ? player1DeckData : player2DeckData).Cards;
+
+            if (IsHost)
+            {
+                BuildDeck(player);
+                foreach (var cardDataSO in cardDataList)
+                {
+                    BuildCard(cardDataSO.Data, player);
+                }
+                yield break;
+            }
+
+
+            BuildDeck(player);
+            yield return SendInitializeBuildingDeckAndWait(player);
+
             List<List<CardData>> batches = new();
             List<CardData> currentBatch = new();
             int batchSizeBytes = 0;
 
-            if (!IsHost)
+            foreach (var cardDataSO in cardDataList)
             {
-                BuildDeck(player);
-            }
-            yield return SendInitializeBuildingDeckAndWait(player);
-            foreach (var (cardData, cardDataBytes) in from CardDataSO cardData in cardDataList.Cast<CardDataSO>()
-                                                      let serializedCardData = JsonConvert.SerializeObject(cardData, _settings)
-                                                      let cardDataBytes = System.Text.Encoding.UTF8.GetBytes(serializedCardData)
-                                                      select (cardData, cardDataBytes))
-            {
+                var serializedCardData = JsonConvert.SerializeObject(cardDataSO, _settings);
+                var cardDataBytes = System.Text.Encoding.UTF8.GetBytes(serializedCardData);
+
                 if (batchSizeBytes + cardDataBytes.Length > 6144)
                 {
                     batches.Add(new List<CardData>(currentBatch));
@@ -117,7 +134,7 @@ namespace Abraxas.Zones.Decks.Managers
                     batchSizeBytes = 0;
                 }
 
-                currentBatch.Add(cardData.Data);
+                currentBatch.Add(cardDataSO.Data);
                 batchSizeBytes += cardDataBytes.Length;
             }
 
@@ -126,10 +143,9 @@ namespace Abraxas.Zones.Decks.Managers
                 batches.Add(currentBatch);
             }
 
-            foreach (var (batch, serializedBatch) in from batch in batches
-                                                     let serializedBatch = JsonConvert.SerializeObject(batch, _settings)
-                                                     select (batch, serializedBatch))
+            foreach (var batch in batches)
             {
+                var serializedBatch = JsonConvert.SerializeObject(batch, _settings);
                 if (!IsHost)
                 {
                     foreach (var cardData in batch)

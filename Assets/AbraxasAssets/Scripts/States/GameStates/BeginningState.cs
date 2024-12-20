@@ -32,7 +32,7 @@ namespace Abraxas.GameStates
         public override IEnumerator OnEnterState()
         {
             yield return base.OnEnterState();
-            yield return gameManager.GenerateStartOfTurnManaForActivePlayer();
+            gameManager.GenerateStartOfTurnManaForActivePlayer();
             yield return gameManager.DrawStartOfTurnCardsForActivePlayer();
             yield return _gameStateManager.BeginNextGameState();
         }

@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2394284682578198106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1a40d45ba622342a077288cbc9a68f, type: 3}
+  m_Name: Target_PropertyOfTargetSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: Abraxas.Players.Players, Abraxas.Runtime, Version=0.0.0.0, Culture=neutral,
+    PublicKeyToken=null
+  _targetObject: {fileID: 6945509864664922153}
+  _propertyName: Owner
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 090b9270ce1783b448025502940d0015, type: 3}
+  m_Name: New Effect DrawCardFromLibrary
+  m_EditorClassIdentifier: 
+  _data:
+    cost: 0
+    info: 
+    stoneType: 0
+  _target: {fileID: -2394284682578198106}
+--- !u!114 &6945509864664922153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2df1fad39f9f74398c975922806fea, type: 3}
+  m_Name: Target_ThisCardSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: Abraxas.Players.Players, Abraxas.Runtime, Version=0.0.0.0, Culture=neutral,
+    PublicKeyToken=null

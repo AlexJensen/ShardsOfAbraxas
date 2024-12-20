@@ -7,7 +7,7 @@ namespace Abraxas.Zones.Decks.Views
     {
         #region Properties
 
-        protected override float MoveCardTime => NetworkManager.Singleton.IsServer ? 0 : AnimationSettings.MoveCardToDeckTime;
+        protected override float MoveCardTime => NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsHost ? 0 : AnimationSettings.MoveCardToDeckTime;
         #endregion
     }
 }

@@ -60,7 +60,7 @@ namespace Abraxas.Stones.Conditions
 
                 if (GUILayout.Button("Set First Target"))
                 {
-                    ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _firstTargetProperty));
+                    ShowSelectTypeMenu<TargetSOBase>(typeof(TargetSOBase), type => SetTarget(type, _firstTargetProperty));
                 }
 
                 if (_firstTargetProperty.objectReferenceValue != null && GUILayout.Button("Remove First Target"))
@@ -70,7 +70,7 @@ namespace Abraxas.Stones.Conditions
 
                 if (GUILayout.Button("Set Second Target"))
                 {
-                    ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _secondTargetProperty));
+                    ShowSelectTypeMenu<TargetSOBase>(typeof(TargetSOBase), type => SetTarget(type, _secondTargetProperty));
                 }
 
                 if (_secondTargetProperty.objectReferenceValue != null && GUILayout.Button("Remove Second Target"))

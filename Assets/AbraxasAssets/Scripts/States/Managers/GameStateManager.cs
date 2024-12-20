@@ -50,14 +50,23 @@ namespace Abraxas.GameStates.Managers
         }
         private IEnumerator SwitchGameStateTo(GameStates state)
         {
+            if (IsHost)
+            {
+                yield return State?.OnExitState();
+                _state = _stateFactory.CreateState(state);
+                yield return null;
+                yield return State?.OnEnterState();
+                yield break;
+            }
+
             if (!IsClient)
             {
-
                 SetGameStateClientRpc(state);
                 yield return WaitForClients();
 
                 yield return State?.OnExitState();
                 _state = _stateFactory.CreateState(state);
+                yield return null;
                 yield return State?.OnEnterState();
 
                 AdvanceGameStateClientRpc();
@@ -66,6 +75,7 @@ namespace Abraxas.GameStates.Managers
             {
                 yield return State?.OnExitState();
                 _state = _stateFactory.CreateState(state);
+                yield return null;
                 yield return State?.OnEnterState();
 
                 isWaitingForServer = true;

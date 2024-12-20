@@ -7,6 +7,31 @@ namespace Abraxas.Stones.Targets
 {
     abstract class TargetSOBase : ScriptableObject, ITarget
     {
+        [SerializeField]
+        private string _expectedTypeName;
+
+        public Type ExpectedType
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_expectedTypeName))
+                    return null;
+                return Type.GetType(_expectedTypeName);
+            }
+        }
+
+        public void SetExpectedType(Type t)
+        {
+            if (t == null)
+            {
+                _expectedTypeName = string.Empty;
+            }
+            else
+            {
+                _expectedTypeName = t.AssemblyQualifiedName;
+            }
+        }
+
         public abstract object GetTarget();
         public virtual void Initialize(IStoneController stoneController) { }
 

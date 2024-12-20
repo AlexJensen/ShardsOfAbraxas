@@ -14,7 +14,7 @@ namespace Abraxas.Stones.Data
     {
         private SerializedProperty _dataProperty;
 
-        public virtual void OnEnable()
+        protected virtual void OnEnable()
         {
             _dataProperty = serializedObject.FindProperty("_data");
         }

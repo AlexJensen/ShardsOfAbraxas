@@ -1,7 +1,6 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Decks.Controllers;
-using System.Collections;
 using System.Collections.Generic;
 using Player = Abraxas.Players.Players;
 
@@ -12,7 +11,7 @@ namespace Abraxas.Manas
     /// </summary>
     public interface IManaManager
     {
-        IEnumerator GenerateManaFromDeckRatio(Player player, int startOfTurnMana);
+        void GenerateManaFromDeckRatio(Player player, int startOfTurnMana);
         bool CanPurchaseCard(ICardController card);
         void PurchaseCard(ICardController card);
         bool CanPurchaseStoneActivation(IStoneController stone);

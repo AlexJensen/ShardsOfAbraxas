@@ -19,7 +19,7 @@ namespace Abraxas.Zones.Hands.Views
         public CardPlaceholder CardPlaceholder => _cardPlaceholder = _cardPlaceholder != null ? _cardPlaceholder : GetComponentInChildren<CardPlaceholder>();
 
 
-        protected override float MoveCardTime { get => NetworkManager.Singleton.IsServer ? 0 : AnimationSettings.MoveCardToHandTime; }
+        protected override float MoveCardTime { get => NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsHost ? 0 : AnimationSettings.MoveCardToHandTime; }
 
         public int CardPlaceholderSiblingIndex => CardPlaceholder.transform.GetSiblingIndex();
         #endregion
@@ -44,7 +44,7 @@ namespace Abraxas.Zones.Hands.Views
             CardPlaceholder.transform.SetSiblingIndex(index);
             cardReturningToPlaceholder = true;
             yield return CardPlaceholder.ScaleToMaxSize();
-            yield return card.RectTransformMover.MoveToFitRectangle(CardPlaceholder.CardPlaceholderRect, NetworkManager.Singleton.IsServer ? 0 : MoveCardTime);
+            yield return card.RectTransformMover.MoveToFitRectangle(CardPlaceholder.CardPlaceholderRect, NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsHost ? 0 : MoveCardTime);
             cardReturningToPlaceholder = false;
             card.TransformManipulator.Transform.SetParent(CardPlaceholder.transform.parent);
             card.TransformManipulator.Transform.SetSiblingIndex(CardPlaceholder.transform.GetSiblingIndex());

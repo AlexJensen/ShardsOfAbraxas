@@ -1,11 +1,12 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Manas.Controllers;
+using Abraxas.Manas.Models;
 using Abraxas.Manas.Views;
+using Abraxas.Network.Managers;
 using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Decks.Controllers;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Netcode;
 using Zenject;
 
 using Player = Abraxas.Players.Players;
@@ -17,7 +18,7 @@ namespace Abraxas.Manas.Managers
     /// ManaManager is a class for managing player mana.
     /// </summary>
 
-	class ManaManager : MonoBehaviour, IManaManager
+    class ManaManager : NetworkedManager, IManaManager
     {
         #region Dependencies
         Mana.Settings _settings;
@@ -40,10 +41,38 @@ namespace Abraxas.Manas.Managers
         #endregion
 
         #region Methods
-        public IEnumerator GenerateManaFromDeckRatio(Player player, int amount)
+        public void GenerateManaFromDeckRatio(Player player, int amount)
         {
-            yield return GetPlayerMana(player).GenerateRatioMana(amount);
+            if (IsClient)
+            {
+                // Send request to server
+                GenerateManaFromDeckRatioServerRpc(player, amount);
+            }
+            else if (IsServer)
+            {
+                // Generate mana on the server
+                var generatedManaAmounts = GetPlayerMana(player).GenerateRatioMana(amount);
+                GetPlayerMana(player).ApplyGeneratedMana(generatedManaAmounts);
+                // Send generated mana amounts to clients
+                GenerateManaFromDeckRatioClientRpc(player, generatedManaAmounts);
+            }
         }
+
+        [ServerRpc]
+        private void GenerateManaFromDeckRatioServerRpc(Player player, int amount)
+        {
+            var generatedManaAmounts = GetPlayerMana(player).GenerateRatioMana(amount);
+            GetPlayerMana(player).ApplyGeneratedMana(generatedManaAmounts);
+            // Send generated mana amounts to clients
+            GenerateManaFromDeckRatioClientRpc(player, generatedManaAmounts);
+        }
+
+        [ClientRpc]
+        private void GenerateManaFromDeckRatioClientRpc(Player player, ManaAmounts generatedManaAmounts)
+        {
+            GetPlayerMana(player).ApplyGeneratedMana(generatedManaAmounts);
+        }
+
 
         public bool CanPurchaseCard(ICardController card)
         {

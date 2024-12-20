@@ -26,7 +26,7 @@ namespace Abraxas.Zones.Fields.Views
         #endregion
 
         #region Properties
-        protected override float MoveCardTime => NetworkManager.Singleton.IsServer ? 0 : AnimationSettings.MoveCardToFieldTime;
+        protected override float MoveCardTime => NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsHost ? 0 : AnimationSettings.MoveCardToFieldTime;
         #endregion
 
         #region Methods

@@ -1,7 +1,6 @@
 using Abraxas.Games.Managers;
 using Abraxas.Health.Controllers;
 using Abraxas.Health.Views;
-using Abraxas.Popups;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,18 +11,15 @@ using Player = Abraxas.Players.Players;
 namespace Abraxas.Health.Managers
 {
     /// <summary>
-    /// PlayerHealthManager is a manager for player health.
+    /// PlayerHealthManager manages the health of both players.
     /// </summary>
 
-	class PlayerHealthManager : MonoBehaviour, IPlayerHealthManager
+    class PlayerHealthManager : MonoBehaviour, IPlayerHealthManager
     {
         #region Dependencies
-        IGameManager _gameManager;
         [Inject]
-        public void Construct(IGameManager gameManager, PlayerHealthController.Factory healthFactory)
+        public void Construct(PlayerHealthController.Factory healthFactory)
         {
-            _gameManager = gameManager;
-
             foreach (var cellView in FindObjectsOfType<PlayerHealthView>())
             {
                 _hps.Add(healthFactory.Create(cellView));
@@ -40,10 +36,6 @@ namespace Abraxas.Health.Managers
         {
             var playerHealth = GetPlayerHealth(player);
             yield return playerHealth.SetHealth(playerHealth.HP + amount);
-            if (playerHealth.HP <= 0)
-            {
-                yield return _gameManager.EndGame(player);
-            }
         }
         public IPlayerHealthController GetPlayerHealth(Player player)
         {

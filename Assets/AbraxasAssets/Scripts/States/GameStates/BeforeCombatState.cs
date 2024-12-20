@@ -1,6 +1,9 @@
-﻿using Abraxas.Events.Managers;
+﻿using Abraxas.AI.Managers;
+using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
+using Abraxas.Players.Managers;
 using System.Collections;
+using UnityEngine;
 using Zenject;
 
 namespace Abraxas.GameStates
@@ -13,11 +16,14 @@ namespace Abraxas.GameStates
         #region Dependencies
         
         readonly IGameStateManager _gameStateManager;
+        readonly IAIManager _aiManager;
+
 
         [Inject]
-        public BeforeCombatState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager) : base(gameManager, eventManager) 
+        public BeforeCombatState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, IAIManager aiManager) : base(gameManager, eventManager) 
         {
             _gameStateManager = gameStateManager;
+            _aiManager = aiManager;
         }
 
         public class Factory : PlaceholderFactory<BeforeCombatState> { }
@@ -36,10 +42,15 @@ namespace Abraxas.GameStates
         public override IEnumerator OnEnterState()
         {
             yield return base.OnEnterState();
+
             if (!gameManager.IsAnyPlayerInputAvailable())
             {
                 yield return _gameStateManager.BeginNextGameState();
             }
+            else
+            {
+                yield return _aiManager.DeterminePlay();
+            }   
         }
 
         public override IEnumerator OnExitState()

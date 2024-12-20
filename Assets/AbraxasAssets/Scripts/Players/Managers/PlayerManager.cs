@@ -56,8 +56,7 @@ namespace Abraxas.Players.Managers
         {
             if (IsClient)
             {
-                Debug.Log($"OnActivePlayerChanged: {previous} -> {current}");
-                
+                Debug.Log($"OnActivePlayerChanged: {previous} -> {current}");    
             }
             StartCoroutine(ChangeActivePlayer(current));
         }
@@ -66,7 +65,7 @@ namespace Abraxas.Players.Managers
         {
             yield return _eventManager.RaiseEvent(new Event_ActivePlayerChanged(player));
 
-            if (IsClient)
+            if (!IsHost)
             {
                 AcknowledgeServerRpc();
             }
@@ -76,11 +75,9 @@ namespace Abraxas.Players.Managers
         {
             if (!IsServer) yield break;
             Debug.Log($"SetActivePlayer: {player}");
-            if (IsHost) _localPlayer = player;
-
             _activePlayer.Value = player;
             
-            yield return WaitForClients();
+            if (!IsHost) yield return WaitForClients();
         }
 
         public IEnumerator RegisterLocalPlayer(Players player)

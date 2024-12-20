@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Segment Tint
+  m_Shader: {fileID: 4800000, guid: 2dd03221d09df4d40a7074fee14434aa, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _EnableExternalAlpha: 0
+    - _Segments: 0.1
+    - _Stencil: 0
+    - _StencilComp: 0
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Segments: {r: 0.1, g: 0.1, b: 0.1, a: 0.1}
+    - _Segments2: {r: 0.1, g: 0.1, b: 0.1, a: 0.1}
+    - _Segments3: {r: 0.1, g: 0.1, b: 0.1, a: 0.1}
+    - _TintColor1: {r: 1, g: 0, b: 0, a: 1}
+    - _TintColor10: {r: 0.45547083, g: 0.764151, b: 0.2559185, a: 1}
+    - _TintColor11: {r: 0.735849, g: 0.6490744, b: 0.6490744, a: 1}
+    - _TintColor12: {r: 0.26415092, g: 0.1956212, b: 0.1956212, a: 1}
+    - _TintColor2: {r: 0.0107040405, g: 0, b: 1, a: 1}
+    - _TintColor3: {r: 0.6509434, g: 0, b: 0.5233553, a: 1}
+    - _TintColor4: {r: 0, g: 0.7169812, b: 0.6889083, a: 1}
+    - _TintColor5: {r: 1, g: 0.9214484, b: 0, a: 1}
+    - _TintColor6: {r: 0.21598683, g: 0.084905654, b: 0.33962262, a: 1}
+    - _TintColor7: {r: 0.44568017, g: 0.6132076, b: 0.2747864, a: 1}
+    - _TintColor8: {r: 0.3301887, g: 0.16353685, b: 0.24998045, a: 1}
+    - _TintColor9: {r: 0.24973297, g: 0.6917117, b: 0.8679245, a: 1}
+    - _TintColors: {r: 1, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []

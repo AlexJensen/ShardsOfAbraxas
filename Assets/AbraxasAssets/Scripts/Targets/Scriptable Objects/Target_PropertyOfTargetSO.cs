@@ -95,6 +95,9 @@ namespace Abraxas.Stones.Targets
 
             EditorGUILayout.PropertyField(_targetProperty);
 
+            var propertyTarget = (Target_PropertyOfTargetSO)target;
+            Type expectedType = propertyTarget.ExpectedType;
+
             if (_targetProperty.objectReferenceValue != null)
             {
                 UpdatePropertyList();
@@ -117,7 +120,7 @@ namespace Abraxas.Stones.Targets
             {
                 if (GUILayout.Button("Set Target"))
                 {
-                    ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _targetProperty));
+                    ShowSelectTypeMenu<TargetSOBase>(typeof(object), type => SetTarget(type, _targetProperty, expectedType));
                 }
             }
 
@@ -133,6 +136,11 @@ namespace Abraxas.Stones.Targets
                 {
                     Type targetType = ResolveTargetType(targetObject);
                     var properties = targetType.GetProperties();
+                    Type expectedType = (target as TargetSOBase)?.ExpectedType;
+                    if (expectedType != null)
+                    {
+                        properties = properties.Where(p => expectedType.IsAssignableFrom(p.PropertyType)).ToArray();
+                    }
                     _propertyNames = properties.Select(p => p.Name).ToArray();
                 }
             }

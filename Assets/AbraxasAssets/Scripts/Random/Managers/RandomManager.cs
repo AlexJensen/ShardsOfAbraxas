@@ -19,7 +19,7 @@ namespace Abraxas.Random.Managers
         {
             if (!IsServer) yield break;
             randomSeed.Value = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-            yield return WaitForClients();
+            if (!IsHost) yield return WaitForClients();
         }
 
         [Inject]

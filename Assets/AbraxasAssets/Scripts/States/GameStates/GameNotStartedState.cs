@@ -1,4 +1,5 @@
-﻿using Abraxas.Events.Managers;
+﻿using Abraxas.AI.Managers;
+using Abraxas.Events.Managers;
 using Abraxas.Games.Managers;
 using Abraxas.Manas;
 using Abraxas.Random.Managers;
@@ -21,14 +22,16 @@ namespace Abraxas.GameStates
         readonly IDeckManager _deckManager;
         readonly IManaManager _manaManager;
         readonly IRandomManager _randomManager;
+        readonly IAIManager _aiManager;
         [Inject]
-        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, IDeckManager deckManager, IManaManager manaManager, IRandomManager randomManager) : base(gameManager, eventManager)
+        public GameNotStartedState(IGameManager gameManager, IGameStateManager gameStateManager, IEventManager eventManager, IDeckManager deckManager, IManaManager manaManager, IRandomManager randomManager, IAIManager aiManager) : base(gameManager, eventManager)
         {
             _gameStateManager = gameStateManager;
             _networkManager = NetworkManager.Singleton;
             _deckManager = deckManager;
             _manaManager = manaManager;
             _randomManager = randomManager;
+            _aiManager = aiManager;
         }
 
         public class Factory : PlaceholderFactory<GameNotStartedState>
@@ -50,14 +53,17 @@ namespace Abraxas.GameStates
         {
 
             yield return base.OnEnterState();
-            if (_networkManager.IsHost)
-
+            if (_networkManager.IsHost )
             {
+                yield return _randomManager.InitializeRandomSeed();
+                yield return _deckManager.LoadDecks();
+                yield return _deckManager.ShuffleDeck(Player.Player1);
+                yield return _deckManager.ShuffleDeck(Player.Player2);
                 yield return _gameStateManager.BeginNextGameState();
             }
             else if (_networkManager.IsServer)
             {
-                while (_networkManager.ConnectedClients.Count != 2)
+                while (_networkManager.ConnectedClients.Count != ((_aiManager.IsPlayer1AI || _aiManager.IsPlayer2AI) ? 1: 2))
                 {
                     yield return null;
                 }

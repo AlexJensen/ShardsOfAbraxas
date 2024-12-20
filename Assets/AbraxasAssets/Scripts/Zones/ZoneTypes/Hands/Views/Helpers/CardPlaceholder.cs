@@ -62,12 +62,12 @@ namespace Abraxas.Zones.Hands
                         _currentIndex = _newIndex;
                         gameObject.SetActive(true);
 
-                        StartCoroutine(ScalePlaceholder(_settings.maxScale, NetworkManager.Singleton.IsServer ? 0 : _settings.scaleToMaxSizeTime));
+                        StartCoroutine(ScalePlaceholder(_settings.maxScale, NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsHost ? 0 : _settings.scaleToMaxSizeTime));
                     }
                     else if (!_expanding)
                     {
                         _retracting = true;
-                        StartCoroutine(ScalePlaceholder(_settings.minScale, NetworkManager.Singleton.IsServer ? 0 : _settings.scaleToMaxSizeTime));
+                        StartCoroutine(ScalePlaceholder(_settings.minScale, NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsHost ? 0 : _settings.scaleToMaxSizeTime));
                     }
                 }
             }
@@ -88,13 +88,13 @@ namespace Abraxas.Zones.Hands
             else if (!_expanding && !_retracting)
             {
                 _retracting = true;
-                StartCoroutine(ScalePlaceholder(_settings.minScale, NetworkManager.Singleton.IsServer ? 0 : _settings.scaleToMaxSizeTime));
+                StartCoroutine(ScalePlaceholder(_settings.minScale, NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsHost ? 0 : _settings.scaleToMaxSizeTime));
             }
         }
 
         public IEnumerator ScaleToMaxSize()
         {
-            yield return ScalePlaceholder(_settings.maxScale, NetworkManager.Singleton.IsServer ? 0 : _settings.scaleToMaxSizeTime);
+            yield return ScalePlaceholder(_settings.maxScale, NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsHost ? 0 : _settings.scaleToMaxSizeTime);
         }
 
         IEnumerator ScalePlaceholder(float height, float time)

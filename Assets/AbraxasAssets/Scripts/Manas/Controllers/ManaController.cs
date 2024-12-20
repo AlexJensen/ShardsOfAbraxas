@@ -4,6 +4,7 @@ using Abraxas.Events.Managers;
 using Abraxas.Manas.Models;
 using Abraxas.Manas.Views;
 using Abraxas.Random.Managers;
+using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
 using Abraxas.Zones.Decks.Controllers;
 using System.Collections;
@@ -100,8 +101,14 @@ namespace Abraxas.Manas.Controllers
             }
             _view.StartManaEventCoroutine(_eventManager.RaiseEvent(new Event_ManaModified(this)));
         }
-        public IEnumerator GenerateRatioMana(int amount)
+        public ManaAmounts GenerateRatioMana(int amount)
         {
+            var generatedMana = new ManaAmounts
+            {
+                ManaTypes = new List<StoneType>(),
+                Amounts = new List<int>()
+            };
+
             for (int i = 0; i < amount; i++)
             {
                 int num = _randomManager.Range(0, _model.TotalDeckCost);
@@ -112,14 +119,38 @@ namespace Abraxas.Manas.Controllers
                         num -= manaAmount.Value;
                         continue;
                     }
-                    ManaType manaType = ManaTypes.Find(x => x.Type == manaAmount.Key);
-                    manaType.Amount += 1;
+
+                    var index = generatedMana.ManaTypes.IndexOf(manaAmount.Key);
+                    if (index >= 0)
+                    {
+                        generatedMana.Amounts[index] += 1;
+                    }
+                    else
+                    {
+                        generatedMana.ManaTypes.Add(manaAmount.Key);
+                        generatedMana.Amounts.Add(1);
+                    }
                     break;
                 }
             }
-            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(new Event_ManaModified(this)));
-            yield break;
+            return generatedMana;
         }
+
+
+
+        public void ApplyGeneratedMana(ManaAmounts generatedManaAmounts)
+        {
+            for (int i = 0; i < generatedManaAmounts.ManaTypes.Count; i++)
+            {
+                var manaType = ManaTypes.Find(x => x.Type == generatedManaAmounts.ManaTypes[i]);
+                if (manaType != null)
+                {
+                    manaType.Amount += generatedManaAmounts.Amounts[i];
+                }
+            }
+            _view.StartManaEventCoroutine(_eventManager.RaiseEvent(new Event_ManaModified(this)));
+        }
+
 
         public bool CanPurchaseCard(ICardController card)
         {

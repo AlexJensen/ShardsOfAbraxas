@@ -6,6 +6,7 @@ using Abraxas.Zones.Fields.Controllers;
 using Abraxas.Zones.Fields.Models;
 using Abraxas.Zones.Fields.Views;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 using Zenject;
@@ -75,6 +76,11 @@ namespace Abraxas.Zones.Fields.Managers
         public void SetHighlightVisible(bool val)
         {
             _field.SetHighlightVisible(val);
+        }
+
+        public List<ICellController> GetRow(int y)
+        {
+            return _field.FieldGrid[y];
         }
         #endregion
     }
