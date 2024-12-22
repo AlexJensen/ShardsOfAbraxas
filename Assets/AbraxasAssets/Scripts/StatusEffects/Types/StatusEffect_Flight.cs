@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Abraxas.StatusEffects.Types
 {
-    internal class StatusEffect_AdvanceFire : StatusEffect
+    internal class StatusEffect_Flight : StatusEffect
     {
         public override void ApplyEffect(ICardController card)
         {
@@ -14,8 +14,7 @@ namespace Abraxas.StatusEffects.Types
 
         public override ICardController GetDecorator(ICardController card, ICardModel model, ICardView view, DiContainer container)
         {
-            var internalController = card as ICardControllerInternal;
-            return container.Instantiate<AdvanceFireDecorator>(new object[] { internalController, model, view });
+            return container.Instantiate<FlightDecorator>(new object[] { card, model, view });
         }
     }
 }

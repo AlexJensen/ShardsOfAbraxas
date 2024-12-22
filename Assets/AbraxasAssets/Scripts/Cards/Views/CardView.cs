@@ -98,7 +98,7 @@ namespace Abraxas.Cards.Views
         public Image Image { get => _image; set => _image = value; }
         public Transform Transform => transform;
 
-        public AnimationClip Attack { get => _attack; }
+        public AnimationClip AttackAnimation { get => _attack; }
         #endregion
 
         #region Methods

@@ -11,7 +11,7 @@ namespace Abraxas.Cards.Controllers
     /// <summary>
     /// A card with Summoning Sickness does not move or attack during combat. Summoning Sickness automatically expires at the end of the turn.
     /// </summary>
-    class SummoningSicknessDecorator : CardControllerDecorator
+    class SummoningSicknessDecorator : DefaultBehaviorDecorator
     {
         #region Dependencies
         public SummoningSicknessDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
@@ -38,7 +38,7 @@ namespace Abraxas.Cards.Controllers
         {
             if (_gameStateManager.State is EndState)
             {
-                GetBaseCard().RequestRemoveStatusEffect<StatusEffect_SummoningSickness>();
+                RequestRemoveStatusEffect<StatusEffect_SummoningSickness>();
                 _eventManager.RemoveListener(this as IGameEventListener<Event_GameStateEntered>);
             }
 

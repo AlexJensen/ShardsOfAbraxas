@@ -5,7 +5,7 @@ using Abraxas.Events;
 using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
 
-class PrefuelDecorator : CardControllerDecorator
+class PrefuelDecorator : DefaultBehaviorDecorator
 {
     public PrefuelDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
         : base(innerController, model, view) { }

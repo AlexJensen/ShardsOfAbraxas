@@ -22,7 +22,7 @@ using Player = Abraxas.Players.Players;
 namespace Abraxas.Cards.Controllers
 {
     /// <summary>
-    /// CardController is a controller-level class for handling card events. It integrates with a decorator pattern to apply status effects to cards and operates as the central line of communication between the card model and view and other  controllers as well as managers.
+    /// CardController is an aggregator class for handling card events. It orchestrates incoming events and function calls to the top level of the decorator chain and serves as the middleman for communication between the card and other cards or manager classes.
     /// </summary>
     class CardController : ICardControllerInternal,
                            IGameEventListener<Event_ManaModified>,
@@ -48,11 +48,14 @@ namespace Abraxas.Cards.Controllers
             _model = model;
             _view = view;
 
-            _decorator = _container.Instantiate<CardControllerDecorator>(new object[] { this, _model, _view });
+            var baseController = new BaseCardController(this, _model, _view);
+            _decorator = _container.Instantiate<DefaultBehaviorDecorator>(
+                new object[] { baseController, _model, _view });
 
             // Register this as the event listener
             InitializeListeners();
         }
+
 
         public void OnDestroy()
         {
@@ -91,7 +94,6 @@ namespace Abraxas.Cards.Controllers
         #endregion
 
         #region Fields
-
         readonly List<IStatusEffect> _activeStatusEffects = new();
         #endregion
 
@@ -117,6 +119,15 @@ namespace Abraxas.Cards.Controllers
         public ITransformManipulator TransformManipulator => _decorator.TransformManipulator;
         public IImageManipulator ImageManipulator => _decorator.ImageManipulator;
         public RectTransformMover RectTransformMover => _decorator.RectTransformMover;
+
+        public ICardControllerInternal Aggregator => this;
+
+        #endregion
+
+        #region Flags
+        public bool EnablePreMovementRangedAttack { get; set; }
+        public bool EnablePostMovementRangedAttack { get; set; }
+        public bool HasAttacked { get; set; }
         #endregion
 
         #region Methods
@@ -141,21 +152,21 @@ namespace Abraxas.Cards.Controllers
 
         private void RebuildDecoratorChain()
         {
-            // Remove listeners from old decorator
-            _decorator.OnDestroy();
+            // Start from a fresh BaseCardController
+            var baseController = new BaseCardController(this, _model, _view);
+            ICardControllerInternal chain = baseController;
 
-            // Start with the base decorator
-            _decorator = _container.Instantiate<CardControllerDecorator>(new object[] { this, _model, _view });
+            chain = _container.Instantiate<DefaultBehaviorDecorator>(new object[] { chain, _model, _view });
 
-            // Apply decorators for the active status effects
+            // Apply each status effect as a decorator
             foreach (var effect in _activeStatusEffects)
             {
-                var newDecorator = effect.GetDecorator(_decorator, _model, _view, _container);
-                if (newDecorator != null)
+                if (effect.GetDecorator(chain, _model, _view, _container) is ICardControllerInternal newDecorator)
                 {
-                    _decorator = (ICardControllerInternal)newDecorator;
+                    chain = newDecorator;
                 }
             }
+            _decorator = chain;
         }
 
         public void RequestApplyStatusEffect(IStatusEffect effect) => _decorator.RequestApplyStatusEffect(effect);
@@ -163,7 +174,7 @@ namespace Abraxas.Cards.Controllers
         public void RequestRemoveStatusEffect<T>() where T : IStatusEffect => _decorator.RequestRemoveStatusEffect<T>();
         public IEnumerator PassHomeRow() => _decorator.PassHomeRow();
         public IEnumerator Fight(ICardController opponent) => _decorator.Fight(opponent);
-        public IEnumerator Attack(ICardController opponent) => _decorator.Attack(opponent);
+        public IEnumerator Attack(ICardController opponent, bool ranged) => _decorator.Attack(opponent, ranged);
         public IEnumerator CheckDeath() => _decorator.CheckDeath();
         public IEnumerator Combat(IFieldController field) => _decorator.Combat(field);
         public void ChangeScale(PointF pointF, float scaleCardToOverlayTime) => _decorator.ChangeScale(pointF, scaleCardToOverlayTime);
@@ -174,6 +185,30 @@ namespace Abraxas.Cards.Controllers
         public void UpdatePlayabilityAndCostText() => _decorator.UpdatePlayabilityAndCostText();
         public bool DeterminePlayability() => _decorator.DeterminePlayability();
         public IEnumerator PlayAnimationClip(UnityEngine.AnimationClip clip, UnityEngine.Color color, bool flip) => _decorator.PlayAnimationClip(clip, color, flip);
+        public bool CanBeAttackedRanged() => _decorator.CanBeAttackedRanged();
+        public IEnumerator MoveAndHandleCollisions(IFieldController field) => _decorator.MoveAndHandleCollisions(field);
+        public IEnumerator DealDamage(ICardController opponent, int amount) => _decorator.DealDamage(opponent, amount);
+        public IEnumerator TakeDamage(int amount) => _decorator.TakeDamage(amount);
+
+        public IEnumerator PreMovementAction(IFieldController field)
+        {
+            return _decorator.PreMovementAction(field);
+        }
+
+        public IEnumerator PostMovementAction(IFieldController field)
+        {
+            return _decorator.PostMovementAction(field);
+        }
+
+        public IEnumerator RangedAttack(IFieldController field, bool doAttack)
+        {
+            return _decorator.RangedAttack(field, doAttack);
+        }
+
+        public ICardController CheckRangedAttack(IFieldController field, Point movement)
+        {
+            return _decorator.CheckRangedAttack(field, movement);
+        }
         #endregion
     }
 }

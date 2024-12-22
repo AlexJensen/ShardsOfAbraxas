@@ -39,7 +39,7 @@ namespace Abraxas.Cards.Controllers
         string GetCostText();
         IEnumerator MoveToCell(ICellController cell, float moveCardTime);
         IEnumerator PassHomeRow();
-        IEnumerator Attack(ICardController opponent);
+        IEnumerator Attack(ICardController opponent, bool ranged);
         IEnumerator PlayAnimationClip(UnityEngine.AnimationClip clip, UnityEngine.Color color, bool flip);
         void SetCardPositionToMousePosition();
         void SetToInitialScale();
@@ -48,5 +48,9 @@ namespace Abraxas.Cards.Controllers
         bool RequestHasStatusEffect<T>() where T : IStatusEffect;
         void RequestRemoveStatusEffect<T>() where T : IStatusEffect;
         void OnDestroy();
+        bool CanBeAttackedRanged();
+        IEnumerator MoveAndHandleCollisions(IFieldController field);
+        IEnumerator DealDamage(ICardController opponent, int amount);
+        IEnumerator TakeDamage(int amount);
     }
 }

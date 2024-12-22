@@ -1,6 +1,8 @@
 ﻿using Abraxas.Events;
 using Abraxas.StatusEffects;
+using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
+using System.Drawing;
 
 namespace Abraxas.Cards.Controllers
 {
@@ -9,16 +11,28 @@ namespace Abraxas.Cards.Controllers
     /// </summary>
     internal interface ICardControllerInternal : ICardController
     {
+        ICardControllerInternal Aggregator { get; }
+
         void ApplyStatusEffect(IStatusEffect effect);
         bool HasStatusEffect<T>() where T : IStatusEffect;
+        void RemoveStatusEffect<T>() where T : IStatusEffect;
         IEnumerator OnEventRaised(Event_ManaModified eventData);
         IEnumerator OnEventRaised(Event_GameStateEntered eventData);
         IEnumerator OnEventRaised(Event_ActivePlayerChanged eventData);
         IEnumerator OnEventRaised(Event_CardChangedZones eventData);
-        void RemoveStatusEffect<T>() where T : IStatusEffect;
         bool ShouldReceiveEvent(Event_ManaModified eventData);
         bool ShouldReceiveEvent(Event_CardChangedZones eventData);
         bool ShouldReceiveEvent(Event_GameStateEntered eventData);
         bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData);
+        IEnumerator PreMovementAction(IFieldController field);
+        IEnumerator PostMovementAction(IFieldController field);
+        IEnumerator RangedAttack(IFieldController field, bool doAttack);
+        ICardController CheckRangedAttack(IFieldController field, Point movement);
+
+        #region Flags
+        bool EnablePreMovementRangedAttack { get; set; }
+        bool EnablePostMovementRangedAttack { get; set; }
+        bool HasAttacked { get; set; }
+        #endregion
     }
 }

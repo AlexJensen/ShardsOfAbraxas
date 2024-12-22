@@ -15,6 +15,7 @@ namespace Abraxas.StatBlocks
         {
             public StatData StatMultiplier;
             public List<StatBlockCombination> statBlocks;
+            public AnimationClip defaultClip;
 
             [Serializable]
             public struct StatBlockCombination
@@ -46,10 +47,10 @@ namespace Abraxas.StatBlocks
                 {
                     if (combination.Stats.Equals(adjustedStats))
                     {
-                        return combination.AttackAnimation;
+                        return combination.AttackAnimation != null? combination.AttackAnimation: defaultClip;
                     }
                 }
-                return null;
+                return defaultClip;
             }
         }
         #endregion

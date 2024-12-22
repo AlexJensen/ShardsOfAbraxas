@@ -1,7 +1,6 @@
 ﻿using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
-using Abraxas.Core;
 using Abraxas.Events;
 using Abraxas.Events.Managers;
 using Abraxas.GameStates;
@@ -9,7 +8,6 @@ using Abraxas.Health.Managers;
 using Abraxas.Manas;
 using Abraxas.Players.Managers;
 using Abraxas.StatBlocks.Controllers;
-using Abraxas.StatBlocks.Data;
 using Abraxas.StatusEffects;
 using Abraxas.StatusEffects.Types;
 using Abraxas.Stones;
@@ -32,9 +30,9 @@ using Player = Abraxas.Players.Players;
 namespace Abraxas.Cards.Controllers
 {
     /// <summary>
-    /// The default CardControllerDecorator class functions as the baseline for expected card behaviour and operates as the root of the decorator pattern.
+    /// The default DefaultBehaviorDecorator class functions as the baseline for expected card behaviour and lays over the BaseCardController layer. It provides all specific game logic for card actions and effects.
     /// </summary>
-    class CardControllerDecorator : ICardControllerInternal
+    class DefaultBehaviorDecorator : ICardControllerInternal
                                     
     {
         #region Dependencies
@@ -49,7 +47,7 @@ namespace Abraxas.Cards.Controllers
         protected IPlayerHealthManager _healthManager;
         protected IFieldManager _fieldManager;
 
-        public CardControllerDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
+        public DefaultBehaviorDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
         {
             _innerController = innerController;
             _model = model;
@@ -75,47 +73,56 @@ namespace Abraxas.Cards.Controllers
 
         public virtual void OnDestroy()
         {
-
+            InnerController.OnDestroy();
         }
         #endregion
 
         #region Fields
-        List<Manas.ManaType> _lastManas = new();
+        List<ManaType> _lastManas = new();
+        
         #endregion
 
         #region Properties
-        public virtual IStatBlockController StatBlock => _model.StatBlock;
-        public virtual List<IStoneController> Stones => _model.Stones;
-        public virtual string Title { get => _model.Title; set => _model.Title = value; }
-        public virtual Player Owner { get => _model.Owner; set => _model.Owner = value; }
-        public virtual Player OriginalOwner { get => _model.OriginalOwner; set => _model.OriginalOwner = value; }
-        public virtual Dictionary<StoneType, int> TotalCosts => _model.TotalCosts;
-        public virtual ICellController Cell { get => _model.Cell; set => _model.Cell = value; }
-        public virtual IZoneController Zone { get => _model.Zone; set => _model.Zone = value; }
+        public virtual ICardControllerInternal Aggregator => InnerController.Aggregator;
+        public virtual IStatBlockController StatBlock => InnerController.StatBlock;
+        public virtual List<IStoneController> Stones => InnerController.Stones;
+        public virtual string Title { get => InnerController.Title; set => InnerController.Title = value; }
+        public virtual Player Owner { get => InnerController.Owner; set => InnerController.Owner = value; }
+        public virtual Player OriginalOwner { get => InnerController.OriginalOwner; set => InnerController.OriginalOwner = value; }
+        public virtual Dictionary<StoneType, int> TotalCosts => InnerController.TotalCosts;
+        public virtual ICellController Cell { get => InnerController.Cell; set => InnerController.Cell = value; }
+        public virtual IZoneController Zone { get => InnerController.Zone; set => InnerController.Zone = value; }
         public virtual IZoneController PreviousZone { get => InnerController.PreviousZone; set => InnerController.PreviousZone = value; }
-        public virtual bool Hidden { get => _model.Hidden; set => _model.Hidden = value; }
-        public virtual ITransformManipulator TransformManipulator => (ITransformManipulator)_view;
-        public virtual IImageManipulator ImageManipulator => (IImageManipulator)_view;
-        public virtual RectTransformMover RectTransformMover => _view.RectTransformMover;
+        public virtual bool Hidden { get => InnerController.Hidden; set => InnerController.Hidden = value; }
+        public virtual ITransformManipulator TransformManipulator => InnerController.TransformManipulator;
+        public virtual IImageManipulator ImageManipulator => InnerController.ImageManipulator;
+        public virtual RectTransformMover RectTransformMover => InnerController.RectTransformMover;
         public List<ManaType> LastManas { get => _lastManas; set => _lastManas = value; }
-        public ICardControllerInternal InnerController { get => _innerController; set => _innerController = value; }
+        public ICardControllerInternal InnerController { get => _innerController; }
+        public bool HasAttacked { get => InnerController.HasAttacked; set => _innerController.HasAttacked = value; }
+        #endregion
+
+        #region Flags
+        public bool EnablePreMovementRangedAttack { get => InnerController.EnablePreMovementRangedAttack; set => InnerController.EnablePreMovementRangedAttack = value; }
+        public bool EnablePostMovementRangedAttack { get => InnerController.EnablePostMovementRangedAttack; set => InnerController.EnablePostMovementRangedAttack = value; }
         #endregion
 
         #region Methods
-        public ICardController GetBaseCard()
+        public virtual void RequestApplyStatusEffect(IStatusEffect effect)
         {
-            ICardController card = this;
-            while (card is CardControllerDecorator decorator)
-            {
-                card = decorator.InnerController;
-            }
-            return card;
+            ApplyStatusEffect(effect);
         }
-        public void RequestApplyStatusEffect(IStatusEffect effect) => ApplyStatusEffect(effect);
 
-        public bool RequestHasStatusEffect<T>() where T : IStatusEffect => HasStatusEffect<T>();
+        public virtual bool RequestHasStatusEffect<T>() where T : IStatusEffect
+        {
+            return HasStatusEffect<T>();
+        }
 
-        public void RequestRemoveStatusEffect<T>() where T : IStatusEffect => RemoveStatusEffect<T>();
+        public virtual void RequestRemoveStatusEffect<T>() where T : IStatusEffect
+        {
+            RemoveStatusEffect<T>();
+        }
+
         public virtual void ApplyStatusEffect(IStatusEffect effect) => InnerController.ApplyStatusEffect(effect);
         public virtual bool HasStatusEffect<T>() where T : IStatusEffect => InnerController.HasStatusEffect<T>();
         public virtual void RemoveStatusEffect<T>() where T : IStatusEffect => InnerController.RemoveStatusEffect<T>();
@@ -126,86 +133,86 @@ namespace Abraxas.Cards.Controllers
         /// <returns></returns>
         public virtual IEnumerator PassHomeRow()
         {
-            yield return _healthManager.ModifyPlayerHealth(Owner ==
-                Player.Player1 ? Player.Player2 : Player.Player1, -StatBlock.Stats.ATK);
-
-            yield return _zoneManager.MoveCardFromFieldToDeck(GetBaseCard(), Owner, 0, true);
+            yield return InnerController.PassHomeRow();
         }
 
         /// <summary>
-        /// A card fights an opponent's card, each dealing damage to the other equal to its ATK value. If a card's DEF is reduced to 0, it is moved to the graveyard.
+        /// A card fights an opponent's card, each dealing damage to the other equal to its ATK value.
         /// </summary>
         /// <param name="opponent">Card to fight</param>
         /// <returns></returns>
         public virtual IEnumerator Fight(ICardController opponent)
         {
-            yield return Utilities.WaitForCoroutines(
-                opponent.Attack(this),
-                Attack(opponent));
+            yield return InnerController.Fight(opponent);
         }
 
         /// <summary>
-        /// A card attacks an opponent's card, dealing damage to the opponent card's DEF equal to the attacker's ATK and moving the opponent's card to the graveyard if its DEF is reduced to 0.
+        /// A card attacks an opponent's card. Normally cards can only do this once per combat step, ranged or melee.
         /// </summary>
         /// <param name="opponent"></param>
         /// <returns></returns>
-        public virtual IEnumerator Attack(ICardController opponent)
+        public virtual IEnumerator Attack(ICardController opponent, bool ranged)
         {
-            if (opponent.Owner == Owner) yield break;
-            IStatBlockController collided = opponent.StatBlock;
-            yield return opponent.PlayAnimationClip(_view.Attack, StatBlock.Color, _playerManager.LocalPlayer == Player.Player2);
-
-            StatData collidedStats = collided.Stats;
-
-            collidedStats.DEF -= StatBlock.Stats.ATK;
-
-            collided.Stats = collidedStats;
-
-            yield return Utilities.WaitForCoroutines(
-                               opponent.CheckDeath());
+            yield return InnerController.Attack(opponent, ranged);
         }
 
         /// <summary>
-        /// A card is destroyed if its DEF is reduced to 0 while on the field.
+        /// A card deals damage to an opponent's card.
+        /// </summary>
+        /// <param name="opponent"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public virtual IEnumerator DealDamage(ICardController opponent, int amount)
+        {
+            yield return InnerController.DealDamage(opponent, amount);
+        }
+
+        /// <summary>
+        /// A card takes damage from a source.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public virtual IEnumerator TakeDamage(int amount)
+        {
+            yield return InnerController.TakeDamage(amount);
+        }
+
+        /// <summary>
+        /// A card is destroyed if its DEF is reduced to 0 or less while on the field. 
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerator CheckDeath()
         {
 
-            if (StatBlock.Stats.DEF > 0 || Zone is not IFieldController) yield break;
+            yield return InnerController.CheckDeath();
+        }
 
-            yield return _zoneManager.MoveCardFromFieldToGraveyard(GetBaseCard(), Owner);
+        /// <summary>
+        /// Combat is split into three phases: pre-movement, movement, and post-movement. Each phase can have different actions and effects applied to the card.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public virtual IEnumerator Combat(IFieldController field)
+        {
+            yield return InnerController.Combat(field);
+        }
+
+        /// <summary>
+        /// Pre-movement actions are applied to the card before it moves on the field.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public virtual IEnumerator PreMovementAction(IFieldController field)
+        {
+            yield return RangedAttack(field, EnablePreMovementRangedAttack);
         }
 
         /// <summary>
         /// A card moves forward on the field equal to its SPD value during combat and will fight enemy cards it comes in contact with during the movement.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator Combat(IFieldController field)
-        {
-            if (CanPerformPreMovementAction())
-            {
-                yield return PreMovementAction(field);
-            }
-
-            yield return MoveAndHandleCollisions(field);
-
-            if (CanPerformPostMovementAction())
-            {
-                yield return PostMovementAction(field);
-            }
-        }
-
-        protected virtual bool CanPerformPreMovementAction() => false;
-        protected virtual bool CanPerformPostMovementAction() => true;
-
-        protected virtual IEnumerator PreMovementAction(IFieldController field)
-        {
-            // Default: Do nothing before movement
-            yield break;
-        }
-
-        protected virtual IEnumerator MoveAndHandleCollisions(IFieldController field)
+        public virtual IEnumerator MoveAndHandleCollisions(IFieldController field)
         {
             var movement = new Point(Owner == Player.Player1 ? StatBlock.Stats.SPD : -StatBlock.Stats.SPD, 0);
             Point destination = new(
@@ -227,7 +234,7 @@ namespace Abraxas.Cards.Controllers
             // Move the card if necessary
             if (destination != Cell.FieldPosition)
             {
-                yield return field.MoveCardToCell(GetBaseCard(), fieldGrid[destination.Y][destination.X]);
+                yield return field.MoveCardToCell(Aggregator, fieldGrid[destination.Y][destination.X]);
             }
 
             // Handle collision
@@ -243,35 +250,36 @@ namespace Abraxas.Cards.Controllers
             yield break;
         }
 
-        protected virtual IEnumerator PostMovementAction(IFieldController field)
+        /// <summary>
+        /// After movement actions are applied to the card after it moves on the field.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public virtual IEnumerator PostMovementAction(IFieldController field)
         {
-            if (StatBlock.Stats.RNG > 0)
-            {
-                var target = CheckRangedAttack(field, new Point(Owner == Player.Player1 ? StatBlock.Stats.RNG : -StatBlock.Stats.RNG, 0));
-                if (target != null)
-                {
-                    yield return Attack(target);
-                }
-            }
-            yield break;
+            yield return InnerController.PostMovementAction(field);
         }
 
-        protected virtual ICardController CheckRangedAttack(IFieldController field, Point movement)
+        /// <summary>
+        /// Performs a ranged attack if able.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="doAttack"></param>
+        /// <returns></returns>
+        public virtual IEnumerator RangedAttack(IFieldController field, bool doAttack)
         {
-            if (field != Zone) return null;
-            Point destination = new(
-                            Math.Clamp(Cell.FieldPosition.X + (StatBlock.Stats.RNG * Math.Sign(movement.X)), 0, field.FieldGrid[0].Count - 1),
-                            Cell.FieldPosition.Y);
+            yield return InnerController.RangedAttack(field, doAttack);
+        }
 
-            for (int i = Cell.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
-            {
-                if (i > field.FieldGrid[0].Count - 1 || i < 0) break;
-                if (field.FieldGrid[Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
-                destination.X = i - Math.Sign(movement.X);
-                var collided = field.FieldGrid[Cell.FieldPosition.Y][i].GetCardAtIndex(0);
-                return collided;
-            }
-            return null;
+        /// <summary>
+        /// Ranged attack is a special attack that allows a card to attack an opponent's card from a distance. The card will attack the first enemy card it encounters within its range.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="movement"></param>
+        /// <returns></returns>
+        public virtual ICardController CheckRangedAttack(IFieldController field, Point movement)
+        {
+            return InnerController.CheckRangedAttack(field, movement);
         }
 
         /// <summary>
@@ -298,23 +306,23 @@ namespace Abraxas.Cards.Controllers
             return true;
         }
 
-        public virtual void ChangeScale(PointF pointF, float scaleCardToOverlayTime) => _view.ChangeScale(pointF, scaleCardToOverlayTime);
-        public virtual void SetToInitialScale() => _view.SetToInitialScale();
-        public virtual void SetCardPositionToMousePosition() => _view.SetCardPositionToMousePosition();
-        public virtual string GetCostText() => _view.GetCostText();
+        public virtual void ChangeScale(PointF pointF, float scaleCardToOverlayTime) => InnerController.ChangeScale(pointF, scaleCardToOverlayTime);
+        public virtual void SetToInitialScale() => InnerController.SetToInitialScale();
+        public virtual void SetCardPositionToMousePosition() => InnerController.SetCardPositionToMousePosition();
+        public virtual string GetCostText() => InnerController.GetCostText();
 
-        public virtual IEnumerator PlayAnimationClip(UnityEngine.AnimationClip clip, UnityEngine.Color color, bool flip)
-        {
-            yield return _view.PlayAnimation(clip, color, flip);
-        }
-        public virtual IEnumerator MoveToCell(ICellController cell, float moveCardTime) => _view.MoveToCell(cell, moveCardTime);
-       
+        public virtual IEnumerator PlayAnimationClip(UnityEngine.AnimationClip clip, UnityEngine.Color color, bool flip) => InnerController.PlayAnimationClip(clip, color, flip);
+
+        
+        public virtual IEnumerator MoveToCell(ICellController cell, float moveCardTime) => InnerController.MoveToCell(cell, moveCardTime);
 
         public virtual void UpdatePlayabilityAndCostText()
         {
-            bool isPlayable = DeterminePlayability();
-            _view.UpdateCostTextWithManaTypes(LastManas, TotalCosts, isPlayable, Zone is IHandController);
+            _view.UpdateCostTextWithManaTypes(LastManas, TotalCosts, DeterminePlayability(), Zone is IHandController);
+            InnerController.UpdatePlayabilityAndCostText();
         }
+
+        public virtual bool CanBeAttackedRanged() => InnerController.CanBeAttackedRanged();
         #endregion
 
         #region Delegate Methods
@@ -322,7 +330,7 @@ namespace Abraxas.Cards.Controllers
         {
             LastManas = eventData.Mana.ManaTypes;
             UpdatePlayabilityAndCostText();
-            yield break;
+            yield return InnerController.OnEventRaised(eventData);
         }
 
         public virtual bool ShouldReceiveEvent(Event_ManaModified eventData) => eventData.Mana.Player == Owner && eventData.Mana.ManaTypes != null;
@@ -334,7 +342,7 @@ namespace Abraxas.Cards.Controllers
             if (Zone is IFieldController)
             {
                 StatBlock.ShowSymbols = true;
-                ApplyStatusEffect(new StatusEffect_SummoningSickness());
+                RequestApplyStatusEffect(new StatusEffect_SummoningSickness());
             }
             if (LastManas != null)
             {
@@ -343,7 +351,7 @@ namespace Abraxas.Cards.Controllers
             yield break;
         }
 
-        public virtual bool ShouldReceiveEvent(Event_CardChangedZones eventData) => eventData.Card.Equals(GetBaseCard());
+        public virtual bool ShouldReceiveEvent(Event_CardChangedZones eventData) => eventData.Card.Equals(Aggregator);
 
         public virtual IEnumerator OnEventRaised(Event_GameStateEntered eventData)
         {
@@ -364,9 +372,7 @@ namespace Abraxas.Cards.Controllers
             }
             yield break;
         }
-
         public virtual bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData) => true;
-
         #endregion
     }
 }

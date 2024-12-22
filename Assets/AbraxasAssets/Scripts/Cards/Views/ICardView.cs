@@ -17,7 +17,7 @@ namespace Abraxas.Cards.Views
         Transform Transform { get; }
         NetworkObject NetworkObject { get; }
         RectTransformMover RectTransformMover { get; }
-        AnimationClip Attack { get; }
+        AnimationClip AttackAnimation { get; }
 
         void ChangeScale(PointF pointF, float time);
         void SetCardPositionToMousePosition();

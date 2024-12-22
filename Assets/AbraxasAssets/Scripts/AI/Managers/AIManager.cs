@@ -154,7 +154,7 @@ namespace Abraxas.AI.Managers
                     // Check if placing our card here can counter the threat
                     float engagementAdvantage = EvaluateEngagement(card, cell, enemyCard);
 
-                    totalAdvantage += engagementAdvantage + 5f; // High priority for countering dangerous threats
+                    totalAdvantage += engagementAdvantage + 10f; // High priority for countering dangerous threats
                     Debug.Log($"[AIManager] Countering dangerous threat from '{enemyCard.Title}' with card '{card.Title}'.");
                     counteredLethal = true;
                 }
@@ -209,7 +209,7 @@ namespace Abraxas.AI.Managers
             if (distanceToHomeRow <= enemyCard.StatBlock.Stats.SPD)
             {
                 int playerHP = _playerHealthManager.GetPlayerHealth(_playerManager.ActivePlayer).HP;
-                if (enemyCard.StatBlock.Stats.ATK * 4 >= playerHP)
+                if (enemyCard.StatBlock.Stats.ATK * 5 >= playerHP)
                 {
                     Debug.Log($"[AIManager] Enemy card '{enemyCard.Title}' is a very dangerous threat with {enemyCard.StatBlock.Stats.ATK} ATK and {distanceToHomeRow} distance to home row.");
                     return true;
