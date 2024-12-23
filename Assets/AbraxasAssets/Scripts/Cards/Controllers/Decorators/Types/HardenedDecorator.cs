@@ -3,7 +3,7 @@ using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using System.Collections;
 
-class HardenedDecorator : DefaultBehaviorDecorator
+class HardenedDecorator : CardDecorator
 {
     public HardenedDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
         : base(innerController, model, view) { }

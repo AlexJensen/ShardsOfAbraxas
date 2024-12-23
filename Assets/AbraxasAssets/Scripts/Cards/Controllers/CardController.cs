@@ -4,6 +4,9 @@ using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
 using Abraxas.Events;
 using Abraxas.Events.Managers;
+using Abraxas.GameStates;
+using Abraxas.Health.Managers;
+using Abraxas.Players.Managers;
 using Abraxas.StatBlocks.Controllers;
 using Abraxas.StatusEffects;
 using Abraxas.Stones;
@@ -12,6 +15,7 @@ using Abraxas.UI;
 using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Fields.Controllers;
+using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -37,10 +41,27 @@ namespace Abraxas.Cards.Controllers
         readonly DiContainer _container;
         readonly IEventManager _eventManager;
 
+        public IGameStateManager GameStateManager { get; private set; }
+
+        public IPlayerManager PlayerManager { get; private set; }
+
+        public IZoneManager ZoneManager { get; private set; }
+
+        public IPlayerHealthManager HealthManager { get; private set; }
+
         public CardController(DiContainer container, IEventManager eventManager)
         {
             _container = container;
             _eventManager = eventManager;
+        }
+
+        [Inject]
+        public void Construct(IGameStateManager gameState, IPlayerHealthManager healthManager, IZoneManager zoneManager, IPlayerManager playerManager)
+        {
+            GameStateManager = gameState;
+            HealthManager = healthManager;
+            ZoneManager = zoneManager;
+            PlayerManager = playerManager;
         }
 
         public void Initialize(ICardModel model, ICardView view)
@@ -49,7 +70,7 @@ namespace Abraxas.Cards.Controllers
             _view = view;
 
             var baseController = new BaseCardController(this, _model, _view);
-            _decorator = _container.Instantiate<DefaultBehaviorDecorator>(
+            _decorator = _container.Instantiate<CardDecorator>(
                 new object[] { baseController, _model, _view });
 
             // Register this as the event listener
@@ -128,6 +149,8 @@ namespace Abraxas.Cards.Controllers
         public bool EnablePreMovementRangedAttack { get; set; }
         public bool EnablePostMovementRangedAttack { get; set; }
         public bool HasAttacked { get; set; }
+
+       
         #endregion
 
         #region Methods
@@ -153,10 +176,8 @@ namespace Abraxas.Cards.Controllers
         private void RebuildDecoratorChain()
         {
             // Start from a fresh BaseCardController
-            var baseController = new BaseCardController(this, _model, _view);
+            var baseController = _container.Instantiate<BaseCardController>(new object[] { this, _model, _view });
             ICardControllerInternal chain = baseController;
-
-            chain = _container.Instantiate<DefaultBehaviorDecorator>(new object[] { chain, _model, _view });
 
             // Apply each status effect as a decorator
             foreach (var effect in _activeStatusEffects)

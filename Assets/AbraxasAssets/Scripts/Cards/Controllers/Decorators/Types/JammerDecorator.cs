@@ -2,7 +2,7 @@
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 
-class JammerDecorator : DefaultBehaviorDecorator
+class JammerDecorator : CardDecorator
 {
     public JammerDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
         : base(innerController, model, view) { }

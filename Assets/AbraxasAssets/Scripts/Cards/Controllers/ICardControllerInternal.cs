@@ -1,6 +1,10 @@
 ﻿using Abraxas.Events;
+using Abraxas.GameStates;
+using Abraxas.Health.Managers;
+using Abraxas.Players.Managers;
 using Abraxas.StatusEffects;
 using Abraxas.Zones.Fields.Controllers;
+using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Drawing;
 
@@ -33,6 +37,10 @@ namespace Abraxas.Cards.Controllers
         bool EnablePreMovementRangedAttack { get; set; }
         bool EnablePostMovementRangedAttack { get; set; }
         bool HasAttacked { get; set; }
+        IGameStateManager GameStateManager { get; }
+        IPlayerManager PlayerManager { get; }
+        IZoneManager ZoneManager { get; }
+        IPlayerHealthManager HealthManager { get; }
         #endregion
     }
 }

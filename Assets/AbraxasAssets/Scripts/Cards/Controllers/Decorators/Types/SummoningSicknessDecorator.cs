@@ -5,17 +5,26 @@ using Abraxas.GameStates;
 using Abraxas.StatusEffects.Types;
 using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
+using Zenject;
 
 namespace Abraxas.Cards.Controllers
 {
     /// <summary>
     /// A card with Summoning Sickness does not move or attack during combat. Summoning Sickness automatically expires at the end of the turn.
     /// </summary>
-    class SummoningSicknessDecorator : DefaultBehaviorDecorator
+    class SummoningSicknessDecorator : CardDecorator
     {
         #region Dependencies
+        IGameStateManager _gameStateManager;
         public SummoningSicknessDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
             : base(innerController, model, view) { }
+
+        [Inject]
+        public void Construct(IGameStateManager gameStateManager)
+        {
+            _gameStateManager = gameStateManager;
+        }
+
         #endregion
         #region Methods
 
@@ -39,7 +48,6 @@ namespace Abraxas.Cards.Controllers
             if (_gameStateManager.State is EndState)
             {
                 RequestRemoveStatusEffect<StatusEffect_SummoningSickness>();
-                _eventManager.RemoveListener(this as IGameEventListener<Event_GameStateEntered>);
             }
 
             yield return base.OnEventRaised(eventData);

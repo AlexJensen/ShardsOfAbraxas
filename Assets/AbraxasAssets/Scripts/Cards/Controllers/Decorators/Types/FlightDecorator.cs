@@ -7,7 +7,7 @@ using System.Collections;
 using System.Drawing;
 using Player = Abraxas.Players.Players;
 
-class FlightDecorator : DefaultBehaviorDecorator
+class FlightDecorator : CardDecorator
 {
     public FlightDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
         : base(innerController, model, view) { }

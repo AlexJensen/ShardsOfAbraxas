@@ -4,7 +4,7 @@ using Abraxas.Cards.Views;
 using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
 
-class AdvanceFireDecorator : DefaultBehaviorDecorator
+class AdvanceFireDecorator : CardDecorator
 {
     public AdvanceFireDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
         : base(innerController, model, view) { }

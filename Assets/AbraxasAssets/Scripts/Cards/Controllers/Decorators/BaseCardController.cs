@@ -1,27 +1,29 @@
 ﻿using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
+using Abraxas.Core;
 using Abraxas.Events;
-using Abraxas.Events.Managers;
 using Abraxas.GameStates;
 using Abraxas.Health.Managers;
+using Abraxas.Manas;
 using Abraxas.Players.Managers;
 using Abraxas.StatBlocks.Controllers;
 using Abraxas.StatusEffects;
+using Abraxas.StatusEffects.Types;
 using Abraxas.Stones;
 using Abraxas.Stones.Controllers;
 using Abraxas.UI;
 using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Fields.Controllers;
-using Abraxas.Zones.Fields.Managers;
+using Abraxas.Zones.Hands.Controllers;
 using Abraxas.Zones.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using UnityEngine;
-using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Controllers
@@ -38,40 +40,18 @@ namespace Abraxas.Cards.Controllers
         readonly ICardModel _model;
         readonly ICardView _view;
 
-        protected IPlayerManager _playerManager;
-        protected IGameStateManager _gameStateManager;
-        protected IZoneManager _zoneManager;
-        protected IEventManager _eventManager;
-        protected IPlayerHealthManager _healthManager;
-        protected IFieldManager _fieldManager;
-
         public BaseCardController(ICardControllerInternal controller, ICardModel model, ICardView view)
         {
             _controller = controller;
             _model = model;
             _view = view;
         }
-
-
-        [Inject]
-        public void Construct(
-            IPlayerManager playerManager,
-            IGameStateManager gameStateManager,
-            IZoneManager zoneManager,
-            IEventManager eventManager,
-            IPlayerHealthManager healthManager,
-            IFieldManager fieldManager)
-        {
-            _playerManager = playerManager;
-            _gameStateManager = gameStateManager;
-            _zoneManager = zoneManager;
-            _eventManager = eventManager;
-            _healthManager = healthManager;
-            _fieldManager = fieldManager;
-        }
         #endregion
 
+        List<ManaType> _lastManas = new();
+
         #region ICardController Properties
+        public List<ManaType> LastManas { get => _lastManas; set => _lastManas = value; }
         public List<IStoneController> Stones => _model.Stones;
         public string Title { get => _model.Title; set => _model.Title = value; }
         public Dictionary<StoneType, int> TotalCosts => _model.TotalCosts;
@@ -123,6 +103,14 @@ namespace Abraxas.Cards.Controllers
                 _controller.HasAttacked = value;
             }
         }
+
+        public IGameStateManager GameStateManager => Aggregator.GameStateManager;
+
+        public IPlayerManager PlayerManager => Aggregator.PlayerManager;
+
+        public IZoneManager ZoneManager => Aggregator.ZoneManager;
+
+        public IPlayerHealthManager HealthManager => Aggregator.HealthManager;
         #endregion
 
         #region Status Effects
@@ -145,35 +133,46 @@ namespace Abraxas.Cards.Controllers
         #region Core Methods
         public bool DeterminePlayability()
         {
-            return false;
-        }
+            if (Aggregator.Zone is not IHandController ||
+                !(Aggregator.GameStateManager.State is BeforeCombatState or AfterCombatState) ||
+                Aggregator.PlayerManager.ActivePlayer != Aggregator.Owner)
+            {
+                return false;
+            }
 
-        public bool CanBeAttackedRanged()
-        {
+            foreach (var _ in from pair in Aggregator.TotalCosts
+                              let manaPair = LastManas.FirstOrDefault(m => m.Type == pair.Key)
+                              where manaPair == null || pair.Value > manaPair.Amount
+                              select new { })
+            {
+                return false;
+            }
             return true;
         }
 
+        public bool CanBeAttackedRanged() => true;
+
         public IEnumerator Attack(ICardController opponent, bool ranged)
         {
-            if (HasAttacked) yield break;
-            if (opponent.Owner == Owner) yield break;
+            if (Aggregator.HasAttacked) yield break;
+            if (opponent.Owner == Aggregator.Owner) yield break;
 
-            yield return opponent.PlayAnimationClip(_view.AttackAnimation, StatBlock.Color, _playerManager.LocalPlayer == Player.Player2);
-            yield return DealDamage(opponent, StatBlock.Stats.ATK); 
-            HasAttacked = true;
+            yield return opponent.PlayAnimationClip(_view.AttackAnimation, Aggregator.StatBlock.Color, Aggregator.PlayerManager.LocalPlayer == Player.Player2);
+            yield return Aggregator.DealDamage(opponent, Aggregator.StatBlock.Stats.ATK); 
+            Aggregator.HasAttacked = true;
         }
 
         public IEnumerator CheckDeath()
         {
             if (StatBlock.Stats.DEF > 0 || Zone is not IFieldController) yield break;
-            yield return _zoneManager.MoveCardFromFieldToGraveyard(Aggregator, Owner);
+            yield return Aggregator.ZoneManager.MoveCardFromFieldToGraveyard(Aggregator, Owner);
         }
 
         public IEnumerator Combat(IFieldController field)
         {
-            HasAttacked = false;
-            EnablePreMovementRangedAttack = false;
-            EnablePostMovementRangedAttack = StatBlock.Stats.RNG > 0;
+            Aggregator.HasAttacked = false;
+            Aggregator.EnablePreMovementRangedAttack = false;
+            Aggregator.EnablePostMovementRangedAttack = Aggregator.StatBlock.Stats.RNG > 0;
             yield return Aggregator.PreMovementAction(field);
             yield return Aggregator.MoveAndHandleCollisions(field);
             yield return Aggregator.PostMovementAction(field);
@@ -205,17 +204,19 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator Fight(ICardController opponent)
         {
-            yield break;
+            yield return Utilities.WaitForCoroutines(
+                opponent.Attack(Aggregator, false),
+                Aggregator.Attack(opponent, false));
         }
 
         public virtual ICardController CheckRangedAttack(IFieldController field, Point movement)
         {
             if (field != Zone) return null;
             Point destination = new(
-                            Math.Clamp(Cell.FieldPosition.X + (StatBlock.Stats.RNG * Math.Sign(movement.X)), 0, field.FieldGrid[0].Count - 1),
-                            Cell.FieldPosition.Y);
+                            Math.Clamp(Aggregator.Cell.FieldPosition.X + (Aggregator.StatBlock.Stats.RNG * Math.Sign(movement.X)), 0, field.FieldGrid[0].Count - 1),
+                            Aggregator.Cell.FieldPosition.Y);
 
-            for (int i = Cell.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
+            for (int i = Aggregator.Cell.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
             {
                 if (i > field.FieldGrid[0].Count - 1 || i < 0) break;
                 if (field.FieldGrid[Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
@@ -237,7 +238,7 @@ namespace Abraxas.Cards.Controllers
         {
             if (doAttack)
             {
-                var target = Aggregator.CheckRangedAttack(field, new Point(Owner == Player.Player1 ? StatBlock.Stats.RNG : -StatBlock.Stats.RNG, 0));
+                var target = Aggregator.CheckRangedAttack(field, new Point(Aggregator.Owner == Player.Player1 ? Aggregator.StatBlock.Stats.RNG : -Aggregator.StatBlock.Stats.RNG, 0));
                 if (target != null)
                 {
                     yield return Aggregator.Attack(target, true);
@@ -252,6 +253,40 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator MoveAndHandleCollisions(IFieldController field)
         {
+            var movement = new Point(Aggregator.Owner == Player.Player1 ? Aggregator.StatBlock.Stats.SPD : -Aggregator.StatBlock.Stats.SPD, 0);
+            Point destination = new(
+                Math.Clamp(Aggregator.Cell.FieldPosition.X + movement.X, 0, field.FieldGrid[0].Count - 1),
+                Aggregator.Cell.FieldPosition.Y);
+
+            ICardController collided = null;
+            var fieldGrid = field.FieldGrid;
+
+            // Movement and collision detection
+            for (int i = Aggregator.Cell.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
+            {
+                if (fieldGrid[Aggregator.Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
+                destination.X = i - Math.Sign(movement.X);
+                collided = fieldGrid[Aggregator.Cell.FieldPosition.Y][i].GetCardAtIndex(0);
+                break;
+            }
+
+            // Move the card if necessary
+            if (destination != Aggregator.Cell.FieldPosition)
+            {
+                yield return field.MoveCardToCell(Aggregator, fieldGrid[destination.Y][destination.X]);
+            }
+
+            // Handle collision
+            if (collided != null)
+            {
+                yield return Aggregator.Fight(collided);
+            }
+            else if (fieldGrid[destination.Y][destination.X].Player != Owner && fieldGrid[destination.Y][destination.X].Player != Player.Neutral)
+            {
+                yield return Aggregator.PassHomeRow();
+            }
+
+
             yield break;
         }
 
@@ -262,9 +297,9 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator PassHomeRow()
         {
-            yield return _healthManager.ModifyPlayerHealth(Owner ==
-               Player.Player1 ? Player.Player2 : Player.Player1, -StatBlock.Stats.ATK);
-            yield return _zoneManager.MoveCardFromFieldToDeck(Aggregator, Owner, 0, true);
+            yield return Aggregator.HealthManager.ModifyPlayerHealth(Aggregator.Owner ==
+               Player.Player1 ? Player.Player2 : Player.Player1, -Aggregator.StatBlock.Stats.ATK);
+            yield return Aggregator.ZoneManager.MoveCardFromFieldToDeck(Aggregator, Aggregator.Owner, 0, true);
         }
 
         public IEnumerator PlayAnimationClip(AnimationClip clip, UnityEngine.Color color, bool flip)
@@ -287,7 +322,7 @@ namespace Abraxas.Cards.Controllers
 
         public void UpdatePlayabilityAndCostText()
         {
-           // Default: no-op
+            _view.UpdateCostTextWithManaTypes(LastManas, Aggregator.TotalCosts, Aggregator.DeterminePlayability(), Aggregator.Zone is IHandController);
         }
 
         public void OnDestroy()
@@ -299,28 +334,50 @@ namespace Abraxas.Cards.Controllers
         #region Events Handling (Base Does Nothing)
         public IEnumerator OnEventRaised(Event_ManaModified eventData)
         {
+            LastManas = eventData.Mana.ManaTypes;
+            Aggregator.UpdatePlayabilityAndCostText();
             yield break;
         }
 
         public IEnumerator OnEventRaised(Event_GameStateEntered eventData)
         {
+            if (LastManas != null)
+            {
+                Aggregator.UpdatePlayabilityAndCostText();
+            }
             yield break;
         }
 
         public IEnumerator OnEventRaised(Event_ActivePlayerChanged eventData)
         {
+            if (LastManas != null)
+            {
+                Aggregator.UpdatePlayabilityAndCostText();
+            }
             yield break;
         }
 
         public IEnumerator OnEventRaised(Event_CardChangedZones eventData)
         {
+            Aggregator.StatBlock.ShowSymbols = false;
+            // Apply summoning sickness when a card enters the field
+            if (Aggregator.Zone is IFieldController)
+            {
+                Aggregator.StatBlock.ShowSymbols = true;
+                RequestApplyStatusEffect(new StatusEffect_SummoningSickness());
+            }
+            if (LastManas != null)
+            {
+                Aggregator.UpdatePlayabilityAndCostText();
+            }
             yield break;
+            
         }
 
-        public bool ShouldReceiveEvent(Event_ManaModified eventData) => false;
-        public bool ShouldReceiveEvent(Event_CardChangedZones eventData) => false;
-        public bool ShouldReceiveEvent(Event_GameStateEntered eventData) => false;
-        public bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData) => false;
+        public bool ShouldReceiveEvent(Event_ManaModified eventData) => eventData.Mana.Player == Aggregator.Owner && eventData.Mana.ManaTypes != null;
+        public bool ShouldReceiveEvent(Event_CardChangedZones eventData) => eventData.Card.Equals(Aggregator);
+        public bool ShouldReceiveEvent(Event_GameStateEntered eventData) => true;
+        public bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData) => true;
         #endregion
     }
 }
