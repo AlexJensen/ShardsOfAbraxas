@@ -1,14 +1,16 @@
 ﻿using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
+using System.Collections;
 
 class JammerDecorator : CardDecorator
 {
     public JammerDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
         : base(innerController, model, view) { }
 
-    public override bool CanBeAttackedRanged()
+    public override IEnumerator PreCombat()
     {
-        return false;
+        yield return base.PreCombat();
+        CanBeAttackedRanged = false;
     }
 }

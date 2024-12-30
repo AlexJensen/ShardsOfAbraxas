@@ -2,7 +2,6 @@
 using Abraxas.Cards.Views;
 using Abraxas.Cells.Controllers;
 using Abraxas.Events;
-using Abraxas.Events.Managers;
 using Abraxas.GameStates;
 using Abraxas.Health.Managers;
 using Abraxas.Players.Managers;
@@ -14,12 +13,10 @@ using Abraxas.UI;
 using Abraxas.Unity.Interfaces;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Fields.Controllers;
-using Abraxas.Zones.Fields.Managers;
 using Abraxas.Zones.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using Zenject;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Cards.Controllers
@@ -56,6 +53,13 @@ namespace Abraxas.Cards.Controllers
 
         #region Properties
         public virtual ICardControllerInternal Aggregator => InnerController.Aggregator;
+        public IGameStateManager GameStateManager => InnerController.GameStateManager;
+
+        public IPlayerManager PlayerManager => InnerController.PlayerManager;
+
+        public IZoneManager ZoneManager => InnerController.ZoneManager;
+
+        public IPlayerHealthManager HealthManager => InnerController.HealthManager;
         public virtual IStatBlockController StatBlock => InnerController.StatBlock;
         public virtual List<IStoneController> Stones => InnerController.Stones;
         public virtual string Title { get => InnerController.Title; set => InnerController.Title = value; }
@@ -77,14 +81,8 @@ namespace Abraxas.Cards.Controllers
         #region Flags
         public bool EnablePreMovementRangedAttack { get => InnerController.EnablePreMovementRangedAttack; set => InnerController.EnablePreMovementRangedAttack = value; }
         public bool EnablePostMovementRangedAttack { get => InnerController.EnablePostMovementRangedAttack; set => InnerController.EnablePostMovementRangedAttack = value; }
-
-        public IGameStateManager GameStateManager => InnerController.GameStateManager;
-
-        public IPlayerManager PlayerManager => InnerController.PlayerManager;
-
-        public IZoneManager ZoneManager => InnerController.ZoneManager;
-
-        public IPlayerHealthManager HealthManager => InnerController.HealthManager;
+        public bool CanFight { get => _innerController.CanFight; set => _innerController.CanFight = value; }
+        public virtual bool CanBeAttackedRanged { get => _innerController.CanBeAttackedRanged; set => _innerController.CanBeAttackedRanged = value; }
         #endregion
 
         #region Methods
@@ -153,9 +151,9 @@ namespace Abraxas.Cards.Controllers
         /// <param name="source"></param>
         /// <param name="amount"></param>
         /// <returns></returns>
-        public virtual IEnumerator TakeDamage(int amount)
+        public virtual IEnumerator TakeDamage(ICardController source, int amount)
         {
-            yield return InnerController.TakeDamage(amount);
+            yield return InnerController.TakeDamage(source, amount);
         }
 
         /// <summary>
@@ -166,6 +164,11 @@ namespace Abraxas.Cards.Controllers
         {
 
             yield return InnerController.CheckDeath();
+        }
+
+        public virtual IEnumerator PreCombat()
+        {
+            return InnerController.PreCombat();
         }
 
         /// <summary>
@@ -247,8 +250,6 @@ namespace Abraxas.Cards.Controllers
         public virtual IEnumerator MoveToCell(ICellController cell, float moveCardTime) => InnerController.MoveToCell(cell, moveCardTime);
 
         public virtual void UpdatePlayabilityAndCostText() => InnerController.UpdatePlayabilityAndCostText();
-
-        public virtual bool CanBeAttackedRanged() => InnerController.CanBeAttackedRanged();
         #endregion
 
         #region Delegate Methods

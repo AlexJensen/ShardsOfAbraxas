@@ -1,7 +1,6 @@
 ﻿using Abraxas.Cards.Controllers;
 using Abraxas.Cards.Models;
 using Abraxas.Cards.Views;
-using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
 
 class AdvanceFireDecorator : CardDecorator
@@ -10,15 +9,10 @@ class AdvanceFireDecorator : CardDecorator
         : base(innerController, model, view) { }
 
 
-    public override IEnumerator PreMovementAction(IFieldController field)
+    public override IEnumerator PreCombat()
     {
+        yield return base.PreCombat();
         Aggregator.EnablePreMovementRangedAttack = true;
-        yield return base.PreMovementAction(field);
-    }
-
-    public override IEnumerator PostMovementAction(IFieldController field)
-    {
         Aggregator.EnablePostMovementRangedAttack = false;
-        return base.PostMovementAction(field);
     }
 }

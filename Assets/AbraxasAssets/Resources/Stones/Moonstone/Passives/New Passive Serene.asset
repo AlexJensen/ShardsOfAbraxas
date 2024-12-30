@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fea908170e9f3f64c96df70443100054, type: 3}
-  m_Name: New Passive Jammer
+  m_Script: {fileID: 11500000, guid: fb86a77127da27d4eb084f8711e8dbcd, type: 3}
+  m_Name: New Passive Serene
   m_EditorClassIdentifier: 
   _data:
     cost: 15
-    info: 'Jammer: This unit cannot be attacked by ranged attacks.'
-    stoneType: 1
+    info: 'Serene: This unit does not fight units it encounters while moving.'
+    stoneType: 5

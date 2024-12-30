@@ -5,7 +5,6 @@ using Abraxas.Players.Managers;
 using Abraxas.Zones.Controllers;
 using Abraxas.Zones.Fields.Models;
 using Abraxas.Zones.Fields.Views;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -32,6 +31,10 @@ namespace Abraxas.Zones.Fields.Controllers
         public IEnumerator StartCombat()
         {
             ICardController[] activeCards = Model.GetCardsForPlayer(_playerManager.ActivePlayer).ToArray();
+            for (int i = activeCards.Length - 1; i >= 0; i--)
+            {
+                yield return activeCards[i].PreCombat();
+            }
             for (int i = activeCards.Length - 1; i >= 0; i--)
             {
                 yield return activeCards[i].Combat(this);

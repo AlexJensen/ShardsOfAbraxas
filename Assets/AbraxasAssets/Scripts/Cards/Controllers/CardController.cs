@@ -149,8 +149,8 @@ namespace Abraxas.Cards.Controllers
         public bool EnablePreMovementRangedAttack { get; set; }
         public bool EnablePostMovementRangedAttack { get; set; }
         public bool HasAttacked { get; set; }
-
-       
+        public bool CanFight { get; set; }
+        public bool CanBeAttackedRanged { get; set; }
         #endregion
 
         #region Methods
@@ -197,6 +197,7 @@ namespace Abraxas.Cards.Controllers
         public IEnumerator Fight(ICardController opponent) => _decorator.Fight(opponent);
         public IEnumerator Attack(ICardController opponent, bool ranged) => _decorator.Attack(opponent, ranged);
         public IEnumerator CheckDeath() => _decorator.CheckDeath();
+        public IEnumerator PreCombat() => _decorator.PreCombat();
         public IEnumerator Combat(IFieldController field) => _decorator.Combat(field);
         public void ChangeScale(PointF pointF, float scaleCardToOverlayTime) => _decorator.ChangeScale(pointF, scaleCardToOverlayTime);
         public void SetToInitialScale() => _decorator.SetToInitialScale();
@@ -206,10 +207,10 @@ namespace Abraxas.Cards.Controllers
         public void UpdatePlayabilityAndCostText() => _decorator.UpdatePlayabilityAndCostText();
         public bool DeterminePlayability() => _decorator.DeterminePlayability();
         public IEnumerator PlayAnimationClip(UnityEngine.AnimationClip clip, UnityEngine.Color color, bool flip) => _decorator.PlayAnimationClip(clip, color, flip);
-        public bool CanBeAttackedRanged() => _decorator.CanBeAttackedRanged();
+       
         public IEnumerator MoveAndHandleCollisions(IFieldController field) => _decorator.MoveAndHandleCollisions(field);
         public IEnumerator DealDamage(ICardController opponent, int amount) => _decorator.DealDamage(opponent, amount);
-        public IEnumerator TakeDamage(int amount) => _decorator.TakeDamage(amount);
+        public IEnumerator TakeDamage(ICardController source, int amount) => _decorator.TakeDamage(source, amount);
 
         public IEnumerator PreMovementAction(IFieldController field)
         {

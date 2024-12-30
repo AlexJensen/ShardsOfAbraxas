@@ -33,6 +33,7 @@ namespace Abraxas.Cards.Controllers
         RectTransformMover RectTransformMover { get; }
         void ChangeScale(PointF pointF, float scaleCardToOverlayTime);
         IEnumerator CheckDeath();
+        IEnumerator PreCombat();
         IEnumerator Combat(IFieldController field);
         bool DeterminePlayability();
         IEnumerator Fight(ICardController opponent);
@@ -48,9 +49,8 @@ namespace Abraxas.Cards.Controllers
         bool RequestHasStatusEffect<T>() where T : IStatusEffect;
         void RequestRemoveStatusEffect<T>() where T : IStatusEffect;
         void OnDestroy();
-        bool CanBeAttackedRanged();
         IEnumerator MoveAndHandleCollisions(IFieldController field);
         IEnumerator DealDamage(ICardController opponent, int amount);
-        IEnumerator TakeDamage(int amount);
+        IEnumerator TakeDamage(ICardController source, int amount);
     }
 }

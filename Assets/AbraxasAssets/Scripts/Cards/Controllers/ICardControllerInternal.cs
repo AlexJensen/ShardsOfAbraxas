@@ -16,6 +16,10 @@ namespace Abraxas.Cards.Controllers
     internal interface ICardControllerInternal : ICardController
     {
         ICardControllerInternal Aggregator { get; }
+        IGameStateManager GameStateManager { get; }
+        IPlayerManager PlayerManager { get; }
+        IZoneManager ZoneManager { get; }
+        IPlayerHealthManager HealthManager { get; }
 
         void ApplyStatusEffect(IStatusEffect effect);
         bool HasStatusEffect<T>() where T : IStatusEffect;
@@ -36,11 +40,10 @@ namespace Abraxas.Cards.Controllers
         #region Flags
         bool EnablePreMovementRangedAttack { get; set; }
         bool EnablePostMovementRangedAttack { get; set; }
+        bool CanFight {  get; set; }
         bool HasAttacked { get; set; }
-        IGameStateManager GameStateManager { get; }
-        IPlayerManager PlayerManager { get; }
-        IZoneManager ZoneManager { get; }
-        IPlayerHealthManager HealthManager { get; }
+        bool CanBeAttackedRanged {  get; set; }
+
         #endregion
     }
 }

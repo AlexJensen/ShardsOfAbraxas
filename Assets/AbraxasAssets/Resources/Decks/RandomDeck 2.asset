@@ -1,285 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7696663953396097524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
-  m_Name: Model V
-  m_EditorClassIdentifier: 
-  _data:
-    Title: Model V
-    Owner: 0
-    OriginalOwner: 0
-    Stones:
-    - {fileID: 11400000, guid: 38c24847b37c9154e866bb60949b53f7, type: 2}
-    StatBlock:
-      Stats:
-        _ATK: 4
-        _DEF: 1
-        _SPD: 1
-        _RNG: 1
-      Cost: 23
-      StoneType: 5
---- !u!114 &-5704920430080088307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
-  m_Name: Model I
-  m_EditorClassIdentifier: 
-  _data:
-    Title: Model I
-    Owner: 0
-    OriginalOwner: 0
-    Stones:
-    - {fileID: 11400000, guid: c28ebc17d61f93840bd7c0b3fa166092, type: 2}
-    StatBlock:
-      Stats:
-        _ATK: 7
-        _DEF: 1
-        _SPD: 1
-        _RNG: 1
-      Cost: 29
-      StoneType: 0
---- !u!114 &-3825137391480908208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
-  m_Name: Model IX
-  m_EditorClassIdentifier: 
-  _data:
-    Title: Model IX
-    Owner: 0
-    OriginalOwner: 0
-    Stones:
-    - {fileID: 11400000, guid: fe75598b48a888d48a5aef1d7f41f047, type: 2}
-    StatBlock:
-      Stats:
-        _ATK: 2
-        _DEF: 7
-        _SPD: 0
-        _RNG: 2
-      Cost: 35
-      StoneType: 4
---- !u!114 &-2939298279737984835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
-  m_Name: Model XI
-  m_EditorClassIdentifier: 
-  _data:
-    Title: Model XI
-    Owner: 0
-    OriginalOwner: 0
-    Stones: []
-    StatBlock:
-      Stats:
-        _ATK: 10
-        _DEF: 10
-        _SPD: 2
-        _RNG: 2
-      Cost: 65
-      StoneType: 10
---- !u!114 &-2560844124504030391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
-  m_Name: Model X
-  m_EditorClassIdentifier: 
-  _data:
-    Title: Model X
-    Owner: 0
-    OriginalOwner: 0
-    Stones: []
-    StatBlock:
-      Stats:
-        _ATK: 1
-        _DEF: 4
-        _SPD: 3
-        _RNG: 0
-      Cost: 23
-      StoneType: 9
---- !u!114 &-1754066650952194656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
-  m_Name: Model VII
-  m_EditorClassIdentifier: 
-  _data:
-    Title: Model VII
-    Owner: 0
-    OriginalOwner: 0
-    Stones:
-    - {fileID: 11400000, guid: 971c7b3e4e3cb2f458361213c4ad5191, type: 2}
-    StatBlock:
-      Stats:
-        _ATK: 2
-        _DEF: 3
-        _SPD: 3
-        _RNG: 2
-      Cost: 39
-      StoneType: 7
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd0c8f3f862c408499dd66a647457715, type: 3}
-  m_Name: RandomDeck
-  m_EditorClassIdentifier: 
-  _cards:
-  - {fileID: -5704920430080088307}
-  - {fileID: -5704920430080088307}
-  - {fileID: -5704920430080088307}
-  - {fileID: -5704920430080088307}
-  - {fileID: -5704920430080088307}
-  - {fileID: 6500908642583764752}
-  - {fileID: 6500908642583764752}
-  - {fileID: 6500908642583764752}
-  - {fileID: 6500908642583764752}
-  - {fileID: 6500908642583764752}
-  - {fileID: 2533224578243990084}
-  - {fileID: 2533224578243990084}
-  - {fileID: 2533224578243990084}
-  - {fileID: 2533224578243990084}
-  - {fileID: 2533224578243990084}
-  - {fileID: 1858883431977963666}
-  - {fileID: 1858883431977963666}
-  - {fileID: 1858883431977963666}
-  - {fileID: 1858883431977963666}
-  - {fileID: 1858883431977963666}
-  - {fileID: -7696663953396097524}
-  - {fileID: -7696663953396097524}
-  - {fileID: -7696663953396097524}
-  - {fileID: -7696663953396097524}
-  - {fileID: -7696663953396097524}
-  - {fileID: 5729282536935317006}
-  - {fileID: 5729282536935317006}
-  - {fileID: 5729282536935317006}
-  - {fileID: 5729282536935317006}
-  - {fileID: 5729282536935317006}
-  - {fileID: -1754066650952194656}
-  - {fileID: -1754066650952194656}
-  - {fileID: -1754066650952194656}
-  - {fileID: -1754066650952194656}
-  - {fileID: -1754066650952194656}
-  - {fileID: 3586800799652528541}
-  - {fileID: 3586800799652528541}
-  - {fileID: 3586800799652528541}
-  - {fileID: 3586800799652528541}
-  - {fileID: 3586800799652528541}
-  - {fileID: -3825137391480908208}
-  - {fileID: -3825137391480908208}
-  - {fileID: -3825137391480908208}
-  - {fileID: -3825137391480908208}
-  - {fileID: -3825137391480908208}
-  - {fileID: -2560844124504030391}
-  - {fileID: -2560844124504030391}
-  - {fileID: -2560844124504030391}
-  - {fileID: -2560844124504030391}
-  - {fileID: -2560844124504030391}
-  - {fileID: -2939298279737984835}
-  - {fileID: -2939298279737984835}
-  - {fileID: -2939298279737984835}
-  - {fileID: -2939298279737984835}
-  - {fileID: -2939298279737984835}
-  - {fileID: 4870948117009075092}
-  - {fileID: 4870948117009075092}
-  - {fileID: 4870948117009075092}
-  - {fileID: 4870948117009075092}
-  - {fileID: 4870948117009075092}
---- !u!114 &1858883431977963666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
-  m_Name: Model IV
-  m_EditorClassIdentifier: 
-  _data:
-    Title: Model IV
-    Owner: 0
-    OriginalOwner: 0
-    Stones:
-    - {fileID: 11400000, guid: 97bf967f04c357248b46084ba1df58ef, type: 2}
-    StatBlock:
-      Stats:
-        _ATK: 4
-        _DEF: 5
-        _SPD: 4
-        _RNG: 2
-      Cost: 51
-      StoneType: 3
---- !u!114 &2533224578243990084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
-  m_Name: Model III
-  m_EditorClassIdentifier: 
-  _data:
-    Title: Model III
-    Owner: 0
-    OriginalOwner: 0
-    Stones:
-    - {fileID: 11400000, guid: 481bf4292a12c7045863092fb33f4c4f, type: 2}
-    StatBlock:
-      Stats:
-        _ATK: 3
-        _DEF: 4
-        _SPD: 3
-        _RNG: 2
-      Cost: 43
-      StoneType: 2
---- !u!114 &3586800799652528541
+--- !u!114 &-5936597682246636021
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -298,13 +19,63 @@ MonoBehaviour:
     Stones: []
     StatBlock:
       Stats:
-        _ATK: 2
-        _DEF: 4
+        _ATK: 4
+        _DEF: 3
         _SPD: 3
-        _RNG: 0
-      Cost: 25
+        _RNG: 2
+      Cost: 43
       StoneType: 8
---- !u!114 &4870948117009075092
+--- !u!114 &-5123863229598926322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: Model X
+  m_EditorClassIdentifier: 
+  _data:
+    Title: Model X
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        _ATK: 8
+        _DEF: 10
+        _SPD: 4
+        _RNG: 2
+      Cost: 69
+      StoneType: 5
+--- !u!114 &-4371624977806652646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: Model XI
+  m_EditorClassIdentifier: 
+  _data:
+    Title: Model XI
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        _ATK: 2
+        _DEF: 9
+        _SPD: 0
+        _RNG: 2
+      Cost: 39
+      StoneType: 8
+--- !u!114 &-3885087095862313936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -323,13 +94,186 @@ MonoBehaviour:
     Stones: []
     StatBlock:
       Stats:
+        _ATK: 2
+        _DEF: 3
+        _SPD: 1
+        _RNG: 1
+      Cost: 23
+      StoneType: 1
+--- !u!114 &-3415260643398036656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: Model VII
+  m_EditorClassIdentifier: 
+  _data:
+    Title: Model VII
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
         _ATK: 4
-        _DEF: 1
-        _SPD: 0
+        _DEF: 2
+        _SPD: 1
+        _RNG: 1
+      Cost: 25
+      StoneType: 8
+--- !u!114 &-2955293029034612585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: Model III
+  m_EditorClassIdentifier: 
+  _data:
+    Title: Model III
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        _ATK: 8
+        _DEF: 0
+        _SPD: 4
         _RNG: 2
-      Cost: 27
-      StoneType: 11
---- !u!114 &5729282536935317006
+      Cost: 49
+      StoneType: 5
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0c8f3f862c408499dd66a647457715, type: 3}
+  m_Name: RandomDeck 2
+  m_EditorClassIdentifier: 
+  _cards:
+  - {fileID: 3080703301529889969}
+  - {fileID: 3080703301529889969}
+  - {fileID: 3080703301529889969}
+  - {fileID: 3080703301529889969}
+  - {fileID: 3080703301529889969}
+  - {fileID: 6379315495548625749}
+  - {fileID: 6379315495548625749}
+  - {fileID: 6379315495548625749}
+  - {fileID: 6379315495548625749}
+  - {fileID: 6379315495548625749}
+  - {fileID: -2955293029034612585}
+  - {fileID: -2955293029034612585}
+  - {fileID: -2955293029034612585}
+  - {fileID: -2955293029034612585}
+  - {fileID: -2955293029034612585}
+  - {fileID: 3948338895541991871}
+  - {fileID: 3948338895541991871}
+  - {fileID: 3948338895541991871}
+  - {fileID: 3948338895541991871}
+  - {fileID: 3948338895541991871}
+  - {fileID: 7971750418601310683}
+  - {fileID: 7971750418601310683}
+  - {fileID: 7971750418601310683}
+  - {fileID: 7971750418601310683}
+  - {fileID: 7971750418601310683}
+  - {fileID: 3620296152889308079}
+  - {fileID: 3620296152889308079}
+  - {fileID: 3620296152889308079}
+  - {fileID: 3620296152889308079}
+  - {fileID: 3620296152889308079}
+  - {fileID: -3415260643398036656}
+  - {fileID: -3415260643398036656}
+  - {fileID: -3415260643398036656}
+  - {fileID: -3415260643398036656}
+  - {fileID: -3415260643398036656}
+  - {fileID: -5936597682246636021}
+  - {fileID: -5936597682246636021}
+  - {fileID: -5936597682246636021}
+  - {fileID: -5936597682246636021}
+  - {fileID: -5936597682246636021}
+  - {fileID: 1536237435063469146}
+  - {fileID: 1536237435063469146}
+  - {fileID: 1536237435063469146}
+  - {fileID: 1536237435063469146}
+  - {fileID: 1536237435063469146}
+  - {fileID: -5123863229598926322}
+  - {fileID: -5123863229598926322}
+  - {fileID: -5123863229598926322}
+  - {fileID: -5123863229598926322}
+  - {fileID: -5123863229598926322}
+  - {fileID: -4371624977806652646}
+  - {fileID: -4371624977806652646}
+  - {fileID: -4371624977806652646}
+  - {fileID: -4371624977806652646}
+  - {fileID: -4371624977806652646}
+  - {fileID: -3885087095862313936}
+  - {fileID: -3885087095862313936}
+  - {fileID: -3885087095862313936}
+  - {fileID: -3885087095862313936}
+  - {fileID: -3885087095862313936}
+--- !u!114 &1536237435063469146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: Model IX
+  m_EditorClassIdentifier: 
+  _data:
+    Title: Model IX
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        _ATK: 3
+        _DEF: 2
+        _SPD: 3
+        _RNG: 2
+      Cost: 39
+      StoneType: 1
+--- !u!114 &3080703301529889969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: Model I
+  m_EditorClassIdentifier: 
+  _data:
+    Title: Model I
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        _ATK: 1
+        _DEF: 10
+        _SPD: 2
+        _RNG: 1
+      Cost: 39
+      StoneType: 5
+--- !u!114 &3620296152889308079
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -345,17 +289,41 @@ MonoBehaviour:
     Title: Model VI
     Owner: 0
     OriginalOwner: 0
-    Stones:
-    - {fileID: 11400000, guid: 90741ce327859b149a9310492e935a8f, type: 2}
+    Stones: []
     StatBlock:
       Stats:
-        _ATK: 5
+        _ATK: 9
         _DEF: 10
-        _SPD: 2
+        _SPD: 1
+        _RNG: 1
+      Cost: 51
+      StoneType: 8
+--- !u!114 &3948338895541991871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: Model IV
+  m_EditorClassIdentifier: 
+  _data:
+    Title: Model IV
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        _ATK: 0
+        _DEF: 2
+        _SPD: 4
         _RNG: 0
-      Cost: 39
-      StoneType: 6
---- !u!114 &6500908642583764752
+      Cost: 21
+      StoneType: 5
+--- !u!114 &6379315495548625749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -371,13 +339,37 @@ MonoBehaviour:
     Title: Model II
     Owner: 0
     OriginalOwner: 0
-    Stones:
-    - {fileID: 11400000, guid: 0d09c9fed0492b54dbcd42a96f08b629, type: 2}
+    Stones: []
     StatBlock:
       Stats:
-        _ATK: 3
-        _DEF: 8
-        _SPD: 3
+        _ATK: 9
+        _DEF: 10
+        _SPD: 2
+        _RNG: 1
+      Cost: 55
+      StoneType: 1
+--- !u!114 &7971750418601310683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: Model V
+  m_EditorClassIdentifier: 
+  _data:
+    Title: Model V
+    Owner: 0
+    OriginalOwner: 0
+    Stones: []
+    StatBlock:
+      Stats:
+        _ATK: 4
+        _DEF: 0
+        _SPD: 1
         _RNG: 2
-      Cost: 51
+      Cost: 29
       StoneType: 1

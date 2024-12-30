@@ -36,13 +36,22 @@ namespace Abraxas.Cards.Controllers
     class BaseCardController : ICardControllerInternal
     {
         #region Dependencies
-        readonly ICardControllerInternal _controller;
+        readonly ICardControllerInternal _aggregator;
         readonly ICardModel _model;
         readonly ICardView _view;
 
+        public IGameStateManager GameStateManager => Aggregator.GameStateManager;
+
+        public IPlayerManager PlayerManager => Aggregator.PlayerManager;
+
+        public IZoneManager ZoneManager => Aggregator.ZoneManager;
+
+        public IPlayerHealthManager HealthManager => Aggregator.HealthManager;
+
+
         public BaseCardController(ICardControllerInternal controller, ICardModel model, ICardView view)
         {
-            _controller = controller;
+            _aggregator = controller;
             _model = model;
             _view = view;
         }
@@ -51,6 +60,7 @@ namespace Abraxas.Cards.Controllers
         List<ManaType> _lastManas = new();
 
         #region ICardController Properties
+
         public List<ManaType> LastManas { get => _lastManas; set => _lastManas = value; }
         public List<IStoneController> Stones => _model.Stones;
         public string Title { get => _model.Title; set => _model.Title = value; }
@@ -66,17 +76,17 @@ namespace Abraxas.Cards.Controllers
         public ITransformManipulator TransformManipulator => (ITransformManipulator)_view;
         public IImageManipulator ImageManipulator => (IImageManipulator)_view;
         public RectTransformMover RectTransformMover => _view.RectTransformMover;
-        public virtual ICardControllerInternal Aggregator => _controller;
+        public virtual ICardControllerInternal Aggregator => _aggregator;
 
         public bool EnablePreMovementRangedAttack
         {
             get
             {
-                return _controller.EnablePreMovementRangedAttack;
+                return _aggregator.EnablePreMovementRangedAttack;
             }
             set
             {
-                _controller.EnablePreMovementRangedAttack = value;
+                _aggregator.EnablePreMovementRangedAttack = value;
             }
         }
 
@@ -84,45 +94,44 @@ namespace Abraxas.Cards.Controllers
         {
             get
             {
-                return _controller.EnablePostMovementRangedAttack;
+                return _aggregator.EnablePostMovementRangedAttack;
             }
             set
             {
-                _controller.EnablePostMovementRangedAttack = value;
+                _aggregator.EnablePostMovementRangedAttack = value;
             }
         }
+
+        public bool CanBeAttackedRanged
+        {
+
+            get => _aggregator.CanBeAttackedRanged;
+            set => _aggregator.CanBeAttackedRanged = value;
+        }
+
 
         public bool HasAttacked
         {
-            get
-            {
-                return _controller.HasAttacked;
-            }
-            set
-            {
-                _controller.HasAttacked = value;
-            }
+            get => _aggregator.HasAttacked;
+            set => _aggregator.HasAttacked = value;
         }
 
-        public IGameStateManager GameStateManager => Aggregator.GameStateManager;
+        public bool CanFight { get => Aggregator.CanFight; set => Aggregator.CanFight = value; }
 
-        public IPlayerManager PlayerManager => Aggregator.PlayerManager;
 
-        public IZoneManager ZoneManager => Aggregator.ZoneManager;
-
-        public IPlayerHealthManager HealthManager => Aggregator.HealthManager;
+       
         #endregion
 
         #region Status Effects
         public void ApplyStatusEffect(IStatusEffect effect)
         {
-            _controller.ApplyStatusEffect(effect);
+            _aggregator.ApplyStatusEffect(effect);
         }
 
-        public bool HasStatusEffect<T>() where T : IStatusEffect => _controller.HasStatusEffect<T>();
+        public bool HasStatusEffect<T>() where T : IStatusEffect => _aggregator.HasStatusEffect<T>();
         public void RemoveStatusEffect<T>() where T : IStatusEffect
         {
-            _controller.RemoveStatusEffect<T>();
+            _aggregator.RemoveStatusEffect<T>();
         }
 
         public void RequestApplyStatusEffect(IStatusEffect effect) => ApplyStatusEffect(effect);
@@ -150,7 +159,7 @@ namespace Abraxas.Cards.Controllers
             return true;
         }
 
-        public bool CanBeAttackedRanged() => true;
+        
 
         public IEnumerator Attack(ICardController opponent, bool ranged)
         {
@@ -168,11 +177,18 @@ namespace Abraxas.Cards.Controllers
             yield return Aggregator.ZoneManager.MoveCardFromFieldToGraveyard(Aggregator, Owner);
         }
 
-        public IEnumerator Combat(IFieldController field)
+        public IEnumerator PreCombat()
         {
             Aggregator.HasAttacked = false;
+            Aggregator.CanBeAttackedRanged = true;
+            Aggregator.CanFight = true;
             Aggregator.EnablePreMovementRangedAttack = false;
             Aggregator.EnablePostMovementRangedAttack = Aggregator.StatBlock.Stats.RNG > 0;
+            yield break;
+        }
+
+        public IEnumerator Combat(IFieldController field)
+        {            
             yield return Aggregator.PreMovementAction(field);
             yield return Aggregator.MoveAndHandleCollisions(field);
             yield return Aggregator.PostMovementAction(field);
@@ -190,10 +206,10 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator DealDamage(ICardController opponent, int amount)
         {
-            yield return opponent.TakeDamage(amount);
+            yield return opponent.TakeDamage(this, amount);
         }
 
-        public IEnumerator TakeDamage(int amount)
+        public IEnumerator TakeDamage(ICardController source, int amount)
         {
             var stats = Aggregator.StatBlock.Stats;
             stats.DEF -= amount;
@@ -204,9 +220,12 @@ namespace Abraxas.Cards.Controllers
 
         public IEnumerator Fight(ICardController opponent)
         {
-            yield return Utilities.WaitForCoroutines(
-                opponent.Attack(Aggregator, false),
-                Aggregator.Attack(opponent, false));
+            if (CanFight)
+            {
+                yield return Utilities.WaitForCoroutines(
+                    opponent.Attack(Aggregator, false),
+                    Aggregator.Attack(opponent, false));
+            }
         }
 
         public virtual ICardController CheckRangedAttack(IFieldController field, Point movement)
@@ -221,8 +240,8 @@ namespace Abraxas.Cards.Controllers
                 if (i > field.FieldGrid[0].Count - 1 || i < 0) break;
                 if (field.FieldGrid[Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
                 destination.X = i - Math.Sign(movement.X);
-                var collided = field.FieldGrid[Cell.FieldPosition.Y][i].GetCardAtIndex(0);
-                if (collided.CanBeAttackedRanged())
+                var collided = field.FieldGrid[Cell.FieldPosition.Y][i].GetCardAtIndex(0) as ICardControllerInternal;
+                if (collided.CanBeAttackedRanged)
                 {
                     return collided;
                 }
@@ -331,7 +350,7 @@ namespace Abraxas.Cards.Controllers
         }
         #endregion
 
-        #region Events Handling (Base Does Nothing)
+        #region Events Handling
         public IEnumerator OnEventRaised(Event_ManaModified eventData)
         {
             LastManas = eventData.Mana.ManaTypes;
@@ -376,8 +395,8 @@ namespace Abraxas.Cards.Controllers
 
         public bool ShouldReceiveEvent(Event_ManaModified eventData) => eventData.Mana.Player == Aggregator.Owner && eventData.Mana.ManaTypes != null;
         public bool ShouldReceiveEvent(Event_CardChangedZones eventData) => eventData.Card.Equals(Aggregator);
-        public bool ShouldReceiveEvent(Event_GameStateEntered eventData) => true;
-        public bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData) => true;
+        public bool ShouldReceiveEvent(Event_GameStateEntered eventData) => Aggregator.Zone is IHandController;
+        public bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData) => Aggregator.Zone is IHandController;
         #endregion
     }
 }
