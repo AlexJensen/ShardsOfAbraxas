@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Abraxas.Core;
+using System.Collections;
 using Unity.Netcode;
 
 namespace Abraxas.Network.Managers
@@ -7,7 +8,7 @@ namespace Abraxas.Network.Managers
     /// <summary>
     /// NetworkedManager is a base class for all networked managers in the game.
     /// </summary>
-    public class NetworkedManager : NetworkBehaviour
+    public class NetworkedManager : NetworkBehaviour, IManager
     {
         #region Fields
         protected int clientAcknowledgments = 0;

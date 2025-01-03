@@ -10,6 +10,17 @@ namespace Abraxas.Stones.Targets
         [SerializeField]
         private string _expectedTypeName;
 
+        public virtual Type ResolveRuntimeType()
+        {
+            // default fallback to the T in TargetSO<T>, e.g. “object” or “ICardController”
+            var baseType = GetType().BaseType;
+            if (baseType != null && baseType.IsGenericType)
+            {
+                return baseType.GetGenericArguments()[0];
+            }
+            return typeof(object);
+        }
+
         public Type ExpectedType
         {
             get

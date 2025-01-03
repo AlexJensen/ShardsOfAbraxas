@@ -3,7 +3,6 @@ using Abraxas.Stones.Data;
 using System;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Abraxas.Stones.Targets
 {
@@ -58,7 +57,7 @@ namespace Abraxas.Stones.Targets
             {
                 if (GUILayout.Button("Set Target"))
                 {
-                    ShowSelectTypeMenu<TargetSOBase>(typeof(TargetSOBase), type => SetTarget(type, _targetProperty));
+                    ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _targetProperty));
                 }
             }
             else
@@ -82,18 +81,6 @@ namespace Abraxas.Stones.Targets
 
         private Type ResolveTargetType(TargetSOBase targetObject)
         {
-            // Similar logic as PropertyOfTargetEditor
-            // If targetObject is a TriggeringObjectSO: return triggeringObject.EventType or typeof(IEvent)
-            // If targetObject is PropertyOfTargetSO or TypeOfTargetSO or something that returns object, we try to deduce type from its structure
-
-            // For a TypeOfTargetSO, we'd just call Target again, but that might cause recursion if not careful.
-            // Instead, just reuse the logic from your existing code:
-            // If targetObject is Target_PropertyOfTargetSO:
-            //   resolve its target's type and property name
-            // If targetObject is TypeOfTargetSO:
-            //   resolve recursively but careful to avoid infinite loops.
-            // Otherwise, default to extracting the generic argument from the target's type.
-
             if (targetObject is Target_TriggeringObjectSO triggeringObject)
             {
                 return triggeringObject.EventType ?? typeof(IEvent);
@@ -112,16 +99,6 @@ namespace Abraxas.Stones.Targets
                 }
                 return null;
             }
-
-            //if (targetObject is TypeOfTargetSO typeOfTarget && typeOfTarget != (TypeOfTargetSO)target)
-            //{
-            //    // If we encounter another TypeOfTargetSO, resolve its target
-            //    if (typeOfTarget != null && typeOfTarget._targetObject != null)
-            //    {
-            //        return ResolveTargetType(typeOfTarget._targetObject);
-            //    }
-            //    return null;
-            //}
 
             // General case: Get the generic type argument of targetObject's parent class (TargetSO<T>)
             Type baseType = targetObject.GetType().BaseType;

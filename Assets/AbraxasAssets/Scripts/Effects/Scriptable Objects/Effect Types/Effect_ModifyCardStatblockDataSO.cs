@@ -42,7 +42,7 @@ namespace Abraxas.Stones.Types
 
             if (GUILayout.Button("Set Target"))
             {
-                ShowSelectTypeMenu<TargetSOBase>(typeof(TargetSOBase), type => SetTarget(type, _targetProperty));
+                ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _targetProperty));
             }
 
             if (_targetProperty.objectReferenceValue != null && GUILayout.Button("Remove Target"))

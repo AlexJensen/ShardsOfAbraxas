@@ -1,0 +1,241 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8432454155574141101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 246e55994a713b8409cdd94452d1d8db, type: 3}
+  m_Name: Target_ZoneTypeValueSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _target: 1
+--- !u!114 &-7206325535679316830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b76e8be690833da45b12a4ae208f09e2, type: 3}
+  m_Name: Condition_IsTargetEqualToTarget
+  m_EditorClassIdentifier: 
+  _firstTarget: {fileID: -1853304409721186387}
+  _secondTarget: {fileID: 5078744501513702282}
+--- !u!114 &-5557039072792331322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1a40d45ba622342a077288cbc9a68f, type: 3}
+  m_Name: Target_PropertyOfTargetSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _targetObject: {fileID: 4765040958029850991}
+  _propertyName: Stones
+--- !u!114 &-5394536892362245471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2df1fad39f9f74398c975922806fea, type: 3}
+  m_Name: Target_ThisCardSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+--- !u!114 &-4698554628879521907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b76e8be690833da45b12a4ae208f09e2, type: 3}
+  m_Name: Condition_IsTargetEqualToTarget
+  m_EditorClassIdentifier: 
+  _firstTarget: {fileID: -5557039072792331322}
+  _secondTarget: {fileID: -8432454155574141101}
+--- !u!114 &-3432421502866838254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2df1fad39f9f74398c975922806fea, type: 3}
+  m_Name: Target_ThisCardSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+--- !u!114 &-1853304409721186387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1a40d45ba622342a077288cbc9a68f, type: 3}
+  m_Name: Target_PropertyOfTargetSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _targetObject: {fileID: 692047029790794567}
+  _propertyName: State
+--- !u!114 &-274770445838903819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f64f7b13fa46cc4f8b8907c15914765, type: 3}
+  m_Name: Target_ManagerGetSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _managerTypeName: Abraxas.Players.Managers.PlayerManager, Abraxas.Runtime, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5b97918aec3e6c42947d32df1d7307c, type: 3}
+  m_Name: New Trigger
+  m_EditorClassIdentifier: 
+  ConnectionIndexes: 
+  _conditions:
+  - {fileID: -7206325535679316830}
+  - {fileID: 893532427984805628}
+  - {fileID: -4698554628879521907}
+  _eventListeners:
+  - {fileID: 8765897475975599902}
+  _data:
+    cost: 5
+    info: 'At the start of your turn:'
+    stoneType: 0
+--- !u!114 &692047029790794567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f64f7b13fa46cc4f8b8907c15914765, type: 3}
+  m_Name: Target_ManagerGetSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _managerTypeName: Abraxas.GameStates.Managers.GameStateManager, Abraxas.Runtime,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &893532427984805628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b76e8be690833da45b12a4ae208f09e2, type: 3}
+  m_Name: Condition_IsTargetEqualToTarget
+  m_EditorClassIdentifier: 
+  _firstTarget: {fileID: 8704918319958668395}
+  _secondTarget: {fileID: 7390519487196164128}
+--- !u!114 &4765040958029850991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1a40d45ba622342a077288cbc9a68f, type: 3}
+  m_Name: Target_PropertyOfTargetSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _targetObject: {fileID: -5394536892362245471}
+  _propertyName: Zone
+--- !u!114 &5078744501513702282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92531ef459952bc4aa4eafa0155ffdb4, type: 3}
+  m_Name: Target_StateValueSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _target: 0
+--- !u!114 &7390519487196164128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1a40d45ba622342a077288cbc9a68f, type: 3}
+  m_Name: Target_PropertyOfTargetSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _targetObject: {fileID: -274770445838903819}
+  _propertyName: ActivePlayer
+--- !u!114 &8704918319958668395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1a40d45ba622342a077288cbc9a68f, type: 3}
+  m_Name: Target_PropertyOfTargetSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _targetObject: {fileID: -3432421502866838254}
+  _propertyName: Owner
+--- !u!114 &8765897475975599902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1c1610bcb5c90947b2c93bca843f683, type: 3}
+  m_Name: Event_GameStateEnteredListener
+  m_EditorClassIdentifier: 
+  _isActive: 1
+  _eventTypeName: Abraxas.Events.Event_GameStateEntered, Abraxas.Runtime, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null

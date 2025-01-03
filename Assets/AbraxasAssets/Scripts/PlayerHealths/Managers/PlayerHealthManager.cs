@@ -31,6 +31,10 @@ namespace Abraxas.Health.Managers
         readonly List<IPlayerHealthController> _hps = new();
         #endregion
 
+        #region Properties
+        public List<IPlayerHealthController> PlayerHealths => _hps;
+        #endregion
+
         #region Methods
         public IEnumerator ModifyPlayerHealth(Player player, int amount)
         {

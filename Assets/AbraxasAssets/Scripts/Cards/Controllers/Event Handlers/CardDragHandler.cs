@@ -81,12 +81,12 @@ namespace Abraxas.Cards.Controllers
         {
             if (_handManager.CardDragging == _cardController && _cardController.DeterminePlayability())
             {
-                if (cell.CardsOnCell == 0 && cell.Player == _cardController.Owner && _manaManager.CanPurchaseCard(_cardController))
+                if (_cardController.IsCellAvailable(cell) && _manaManager.CanPurchaseCard(_cardController))
                 {
                     _handManager.CardDragging = null;
                     _gameManager.RequestPurchaseCardAndMoveFromHandToCell(_cardController, cell.FieldPosition);
                     yield break;
-                }
+                }                   
             }
             yield return ReturnFromOverlayToHand();
         }

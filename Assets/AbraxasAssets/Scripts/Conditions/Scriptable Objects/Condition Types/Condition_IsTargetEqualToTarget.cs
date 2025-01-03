@@ -29,8 +29,13 @@ namespace Abraxas.Stones.Conditions
         #region Methods
         public override bool IsMet()
         {
-            return _firstTarget.GetTarget().Equals(_secondTarget.GetTarget());
+            var firstVal = _firstTarget.GetTarget();
+            var secondVal = _secondTarget.GetTarget();
+
+            if (firstVal == null || secondVal == null) return false;
+            return firstVal.Equals(secondVal);
         }
+
 
         internal override void NetworkSerialize<T>(BufferSerializer<T> serializer)
         {
@@ -60,7 +65,7 @@ namespace Abraxas.Stones.Conditions
 
                 if (GUILayout.Button("Set First Target"))
                 {
-                    ShowSelectTypeMenu<TargetSOBase>(typeof(TargetSOBase), type => SetTarget(type, _firstTargetProperty));
+                    ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _firstTargetProperty));
                 }
 
                 if (_firstTargetProperty.objectReferenceValue != null && GUILayout.Button("Remove First Target"))
@@ -70,7 +75,7 @@ namespace Abraxas.Stones.Conditions
 
                 if (GUILayout.Button("Set Second Target"))
                 {
-                    ShowSelectTypeMenu<TargetSOBase>(typeof(TargetSOBase), type => SetTarget(type, _secondTargetProperty));
+                    ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _secondTargetProperty));
                 }
 
                 if (_secondTargetProperty.objectReferenceValue != null && GUILayout.Button("Remove Second Target"))

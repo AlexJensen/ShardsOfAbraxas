@@ -2,6 +2,7 @@
 using Abraxas.Stones.Data;
 using System;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Abraxas.Stones.Targets
     {
         public TargetSOBase _targetObject; // The target object whose property we want to access
         public string _propertyName; // The name of the property we want to access
+        string _expectedTypeName; // The expected type of the property we want to access
 
         public override object Target
         {
@@ -55,20 +57,36 @@ namespace Abraxas.Stones.Targets
 
         private Type ResolveTargetType(TargetSOBase targetObject)
         {
-            // Special handling for Target_TriggeringObject
-            if (targetObject is Target_TriggeringObjectSO triggeringObject)
-            {
-                return triggeringObject.EventType ?? typeof(IEvent); // Fallback to IEvent if type not found
-            }
-
-            // Handling for Target_PropertyOfTarget and other nested targets
             if (targetObject is Target_PropertyOfTargetSO nestedPropertyTarget)
             {
                 return ResolveTargetType(nestedPropertyTarget._targetObject).GetProperty(nestedPropertyTarget._propertyName).PropertyType;
             }
+            return targetObject.ResolveRuntimeType();
+        }
 
-            // General case
-            return targetObject.GetType().BaseType.GetGenericArguments()[0];
+        public void SetResolvedType(Type t)
+        {
+            // We store it in _expectedTypeName or a similar field
+            if (t == null)
+            {
+                _expectedTypeName = string.Empty;
+            }
+            else
+            {
+                _expectedTypeName = t.AssemblyQualifiedName;
+            }
+        }
+
+        public override Type ResolveRuntimeType()
+        {
+            // If we stored the discovered property type in _expectedTypeName:
+            if (!string.IsNullOrEmpty(_expectedTypeName))
+            {
+                var resolved = Type.GetType(_expectedTypeName);
+                if (resolved != null) return resolved;
+            }
+            // Otherwise fall back
+            return base.ResolveRuntimeType();
         }
     }
 
@@ -79,6 +97,7 @@ namespace Abraxas.Stones.Targets
         private SerializedProperty _targetProperty;
         private SerializedProperty _propertyNameProperty;
         private string[] _propertyNames;
+        private PropertyInfo[] _filteredProperties;
         private int _selectedPropertyIndex;
 
         protected void OnEnable()
@@ -96,7 +115,6 @@ namespace Abraxas.Stones.Targets
             EditorGUILayout.PropertyField(_targetProperty);
 
             var propertyTarget = (Target_PropertyOfTargetSO)target;
-            Type expectedType = propertyTarget.ExpectedType;
 
             if (_targetProperty.objectReferenceValue != null)
             {
@@ -109,6 +127,15 @@ namespace Abraxas.Stones.Targets
 
                     _selectedPropertyIndex = EditorGUILayout.Popup("Property", _selectedPropertyIndex, _propertyNames);
                     _propertyNameProperty.stringValue = _propertyNames[_selectedPropertyIndex];
+                    var chosenProperty = _filteredProperties[_selectedPropertyIndex];
+                    Type chosenPropertyType = chosenProperty.PropertyType;
+
+                    var targetPropObj = (Target_PropertyOfTargetSO)target;
+                    if (chosenPropertyType != null)
+                    {
+                        // Call a method on the SO that sets its “runtime type” for the next level
+                        targetPropObj.SetResolvedType(chosenPropertyType);
+                    }
                 }
 
                 if (GUILayout.Button("Remove Target"))
@@ -120,7 +147,8 @@ namespace Abraxas.Stones.Targets
             {
                 if (GUILayout.Button("Set Target"))
                 {
-                    ShowSelectTypeMenu<TargetSOBase>(typeof(object), type => SetTarget(type, _targetProperty, expectedType));
+                    Type expectedType = (target as TargetSOBase)?.ExpectedType;
+                    ShowSelectTypeMenu<TargetSOBase>(type => SetTarget(type, _targetProperty, expectedType));
                 }
             }
 
@@ -135,35 +163,33 @@ namespace Abraxas.Stones.Targets
                 if (targetObject != null)
                 {
                     Type targetType = ResolveTargetType(targetObject);
-                    var properties = targetType.GetProperties();
+                    const BindingFlags flags = BindingFlags.Instance
+                                      | BindingFlags.Public
+                                      | BindingFlags.NonPublic
+                                      | BindingFlags.FlattenHierarchy;
+                    var properties = targetType.GetProperties(flags);
                     Type expectedType = (target as TargetSOBase)?.ExpectedType;
                     if (expectedType != null)
                     {
                         properties = properties.Where(p => expectedType.IsAssignableFrom(p.PropertyType)).ToArray();
                     }
+                    _filteredProperties = properties;
                     _propertyNames = properties.Select(p => p.Name).ToArray();
                 }
             }
             else
             {
+                _filteredProperties = Array.Empty<PropertyInfo>();
                 _propertyNames = new string[0];
             }
         }
 
         private Type ResolveTargetType(TargetSOBase targetObject)
         {
-            if (targetObject is Target_TriggeringObjectSO triggeringObject)
-            {
-                return triggeringObject.EventType ?? typeof(IEvent);
-            }
-
-            if (targetObject is Target_PropertyOfTargetSO nestedPropertyTarget && nestedPropertyTarget._targetObject != null && !string.IsNullOrEmpty(nestedPropertyTarget._propertyName))
-            {
-                return ResolveTargetType(nestedPropertyTarget._targetObject).GetProperty(nestedPropertyTarget._propertyName).PropertyType;
-            }
-
-            return targetObject.GetType().BaseType.GetGenericArguments()[0];
+            return targetObject.ResolveRuntimeType();
         }
+
+        
     }
 #endif
 }

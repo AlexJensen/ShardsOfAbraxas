@@ -1,5 +1,6 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cells.Controllers;
+using Abraxas.Core;
 using Abraxas.Zones.Fields.Controllers;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Drawing;
 
 namespace Abraxas.Zones.Fields.Managers
 {
-    public interface IFieldManager
+    public interface IFieldManager : IManager
     {
         void RemoveCard(ICardController card);
         IEnumerator MoveCardToCell(ICardController card, Point fieldPosition);

@@ -31,7 +31,7 @@ namespace Abraxas.Cards.Controllers
     /// <summary>
     /// BaseCardController is the concrete component in the decorator pattern.
     /// It provides default, baseline implementations for all ICardController and ICardControllerInternal methods and operates as the outlet back to the card controller aggregator.
-    /// No delegation occurs here; decorators wrap around this to add or modify behavior. DefaultCardController is the first decorator in the chain and sits above this base class.
+    /// No delegation occurs here; decorators wrap around this to add or modify behavior. 
     /// </summary>
     class BaseCardController : ICardControllerInternal
     {
@@ -57,81 +57,80 @@ namespace Abraxas.Cards.Controllers
         }
         #endregion
 
-        List<ManaType> _lastManas = new();
-
-        #region ICardController Properties
-
-        public List<ManaType> LastManas { get => _lastManas; set => _lastManas = value; }
-        public List<IStoneController> Stones => _model.Stones;
-        public string Title { get => _model.Title; set => _model.Title = value; }
-        public Dictionary<StoneType, int> TotalCosts => _model.TotalCosts;
-        public IZoneController Zone { get => _model.Zone; set => _model.Zone = value; }
-        public IZoneController PreviousZone { get; set; } // Default: not used, can remain null
-        public bool Hidden { get => _model.Hidden; set => _model.Hidden = value; }
-        public Player Owner { get => _model.Owner; set => _model.Owner = value; }
-        public Player OriginalOwner { get => _model.OriginalOwner; set => _model.OriginalOwner = value; }
-        public ICellController Cell { get => _model.Cell; set => _model.Cell = value; }
-        public virtual IStatBlockController StatBlock => _model.StatBlock;
-
-        public ITransformManipulator TransformManipulator => (ITransformManipulator)_view;
-        public IImageManipulator ImageManipulator => (IImageManipulator)_view;
-        public RectTransformMover RectTransformMover => _view.RectTransformMover;
-        public virtual ICardControllerInternal Aggregator => _aggregator;
-
+        #region Flags
         public bool EnablePreMovementRangedAttack
         {
-            get
-            {
-                return _aggregator.EnablePreMovementRangedAttack;
-            }
-            set
-            {
-                _aggregator.EnablePreMovementRangedAttack = value;
-            }
+            get => Aggregator.EnablePreMovementRangedAttack;
+            set => Aggregator.EnablePreMovementRangedAttack = value;
         }
 
         public bool EnablePostMovementRangedAttack
         {
-            get
-            {
-                return _aggregator.EnablePostMovementRangedAttack;
-            }
-            set
-            {
-                _aggregator.EnablePostMovementRangedAttack = value;
-            }
+            get => Aggregator.EnablePostMovementRangedAttack;
+            set => Aggregator.EnablePostMovementRangedAttack = value;
         }
 
         public bool CanBeAttackedRanged
         {
 
-            get => _aggregator.CanBeAttackedRanged;
-            set => _aggregator.CanBeAttackedRanged = value;
+            get => Aggregator.CanBeAttackedRanged;
+            set => Aggregator.CanBeAttackedRanged = value;
         }
 
 
         public bool HasAttacked
         {
-            get => _aggregator.HasAttacked;
-            set => _aggregator.HasAttacked = value;
+            get => Aggregator.HasAttacked;
+            set => Aggregator.HasAttacked = value;
         }
 
-        public bool CanFight { get => Aggregator.CanFight; set => Aggregator.CanFight = value; }
+        public bool CanFight
+        {
+            get => Aggregator.CanFight;
+            set => Aggregator.CanFight = value;
+        }
 
+        public bool CanAlliedRangedAttacksShootThrough
+        {
+            get => Aggregator.CanAlliedRangedAttacksShootThrough;
+            set => Aggregator.CanAlliedRangedAttacksShootThrough = value;
+        }
 
-       
+        public bool CanPassHomeRow
+        {
+            get => Aggregator.CanPassHomeRow;
+            set => Aggregator.CanPassHomeRow = value;
+        }
+
+        #endregion
+
+        #region Properties
+        public List<ManaType> LastManas { get ; set; }
+        public IZoneController PreviousZone { get; set; }
+        public List<IStoneController> Stones => _model.Stones;
+        public string Title { get => _model.Title; set => _model.Title = value; }
+        public Dictionary<StoneType, int> TotalCosts => _model.TotalCosts;
+        public IZoneController Zone { get => _model.Zone; set => _model.Zone = value; }
+        public bool Hidden { get => _model.Hidden; set => _model.Hidden = value; }
+        public Player Owner { get => _model.Owner; set => _model.Owner = value; }
+        public Player OriginalOwner { get => _model.OriginalOwner; set => _model.OriginalOwner = value; }
+        public ICellController Cell { get => _model.Cell; set => _model.Cell = value; }
+        public virtual IStatBlockController StatBlock => _model.StatBlock;
+        public ITransformManipulator TransformManipulator => (ITransformManipulator)_view;
+        public IImageManipulator ImageManipulator => (IImageManipulator)_view;
+        public RectTransformMover RectTransformMover => _view.RectTransformMover;
+        public virtual ICardControllerInternal Aggregator => _aggregator;
         #endregion
 
         #region Status Effects
         public void ApplyStatusEffect(IStatusEffect effect)
         {
-            _aggregator.ApplyStatusEffect(effect);
+            Aggregator.ApplyStatusEffect(effect);
         }
-
-        public bool HasStatusEffect<T>() where T : IStatusEffect => _aggregator.HasStatusEffect<T>();
+        public bool HasStatusEffect<T>() where T : IStatusEffect => Aggregator.HasStatusEffect<T>();
         public void RemoveStatusEffect<T>() where T : IStatusEffect
         {
-            _aggregator.RemoveStatusEffect<T>();
+            Aggregator.RemoveStatusEffect<T>();
         }
 
         public void RequestApplyStatusEffect(IStatusEffect effect) => ApplyStatusEffect(effect);
@@ -139,7 +138,12 @@ namespace Abraxas.Cards.Controllers
         public void RequestRemoveStatusEffect<T>() where T : IStatusEffect => RemoveStatusEffect<T>();
         #endregion
 
-        #region Core Methods
+        #region Methods
+
+        /// <summary>
+        /// A card can only be played if the player is the active player, the game state is either of the two main phases, the card is in the player's hand, and the player has enough mana to pay the card's cost. 
+        /// Note this only checks if this specific card can be played, another check to see if there are any available open cells must also be made by the field manager to conclusively determine if the card can be played.
+        /// </summary>>
         public bool DeterminePlayability()
         {
             if (Aggregator.Zone is not IHandController ||
@@ -148,6 +152,8 @@ namespace Abraxas.Cards.Controllers
             {
                 return false;
             }
+
+            if (LastManas == null) return false;
 
             foreach (var _ in from pair in Aggregator.TotalCosts
                               let manaPair = LastManas.FirstOrDefault(m => m.Type == pair.Key)
@@ -159,8 +165,13 @@ namespace Abraxas.Cards.Controllers
             return true;
         }
 
-        
 
+        /// <summary>
+        /// A card attacks an opponent's card. Normally cards can only attack once per combat step, ranged or melee.
+        /// </summary>
+        /// <param name="opponent"></param>
+        /// <param name="ranged"></param>
+        /// <returns></returns>
         public IEnumerator Attack(ICardController opponent, bool ranged)
         {
             if (Aggregator.HasAttacked) yield break;
@@ -171,22 +182,37 @@ namespace Abraxas.Cards.Controllers
             Aggregator.HasAttacked = true;
         }
 
+        /// <summary>
+        /// A card is destroyed if its DEF is reduced to 0 or less while on the field. 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator CheckDeath()
         {
             if (StatBlock.Stats.DEF > 0 || Zone is not IFieldController) yield break;
             yield return Aggregator.ZoneManager.MoveCardFromFieldToGraveyard(Aggregator, Owner);
         }
 
+        /// <summary>
+        /// Default combat flags are set before combat begins.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator PreCombat()
         {
             Aggregator.HasAttacked = false;
             Aggregator.CanBeAttackedRanged = true;
+            Aggregator.CanAlliedRangedAttacksShootThrough = false;
             Aggregator.CanFight = true;
+            Aggregator.CanPassHomeRow = true;
             Aggregator.EnablePreMovementRangedAttack = false;
             Aggregator.EnablePostMovementRangedAttack = Aggregator.StatBlock.Stats.RNG > 0;
             yield break;
         }
 
+        /// <summary>
+        /// Combat is split into three phases: pre-movement, movement, and post-movement. Each phase can have different actions and effects applied to the card.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
         public IEnumerator Combat(IFieldController field)
         {            
             yield return Aggregator.PreMovementAction(field);
@@ -194,21 +220,43 @@ namespace Abraxas.Cards.Controllers
             yield return Aggregator.PostMovementAction(field);
         }
 
-        public virtual IEnumerator PreMovementAction(IFieldController field)
+        /// <summary>
+        /// Pre-movement actions are applied to the card before it moves on the field.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public IEnumerator PreMovementAction(IFieldController field)
         {
             yield return Aggregator.RangedAttack(field, Aggregator.EnablePreMovementRangedAttack);
         }
 
-        public virtual IEnumerator PostMovementAction(IFieldController field)
+        /// <summary>
+        /// After movement actions are applied to the card after it moves on the field.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public IEnumerator PostMovementAction(IFieldController field)
         {
             yield return Aggregator.RangedAttack(field, Aggregator.EnablePostMovementRangedAttack);
         }
 
+        /// <summary>
+        /// A card deals damage to an opponent's card.
+        /// </summary>
+        /// <param name="opponent"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public IEnumerator DealDamage(ICardController opponent, int amount)
         {
             yield return opponent.TakeDamage(this, amount);
         }
 
+        /// <summary>
+        /// A card takes damage from a source.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public IEnumerator TakeDamage(ICardController source, int amount)
         {
             var stats = Aggregator.StatBlock.Stats;
@@ -218,6 +266,11 @@ namespace Abraxas.Cards.Controllers
             yield return Aggregator.CheckDeath();
         }
 
+        /// <summary>
+        /// A card fights an opponent's card, each dealing damage to the other equal to its ATK value.
+        /// </summary>
+        /// <param name="opponent">Card to fight</param>
+        /// <returns></returns>
         public IEnumerator Fight(ICardController opponent)
         {
             if (CanFight)
@@ -228,7 +281,13 @@ namespace Abraxas.Cards.Controllers
             }
         }
 
-        public virtual ICardController CheckRangedAttack(IFieldController field, Point movement)
+        /// <summary>
+        /// Ranged attacks allow a card to attack an opponent's card from a distance. The card will attack the first enemy card it encounters within its range.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="movement"></param>
+        /// <returns></returns>
+        public ICardController CheckRangedAttack(IFieldController field, Point movement)
         {
             if (field != Zone) return null;
             Point destination = new(
@@ -241,19 +300,29 @@ namespace Abraxas.Cards.Controllers
                 if (field.FieldGrid[Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
                 destination.X = i - Math.Sign(movement.X);
                 var collided = field.FieldGrid[Cell.FieldPosition.Y][i].GetCardAtIndex(0) as ICardControllerInternal;
-                if (collided.CanBeAttackedRanged)
+                if (collided.Owner == Aggregator.Owner && collided.CanAlliedRangedAttacksShootThrough)
+                {
+                    continue;
+                }
+                else if (collided.CanBeAttackedRanged)
                 {
                     return collided;
                 }
-                else
-                {
+                else 
+                { 
                     return null;
                 }
             }
             return null;
         }
 
-        public virtual IEnumerator RangedAttack(IFieldController field, bool doAttack)
+        /// <summary>
+        /// Performs a ranged attack if able.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="doAttack"></param>
+        /// <returns></returns>
+        public IEnumerator RangedAttack(IFieldController field, bool doAttack)
         {
             if (doAttack)
             {
@@ -265,48 +334,139 @@ namespace Abraxas.Cards.Controllers
             }
         }
 
+
+        /// <summary>
+        /// A card moves forward on the field equal to its SPD value during combat 
+        /// and will fight enemy cards it comes in contact with during the movement.
+        /// </summary>
+        public IEnumerator MoveAndHandleCollisions(IFieldController field)
+        {
+            // 1. Calculate the desired destination.
+            var movement = Aggregator.GetMovementVector();
+            var destination = Aggregator.CalculateDestination(field, movement);
+
+            // 2. Check whether a collision occurs along the path and 
+            //    potentially adjust our final destination. 
+            ICardController collided = Aggregator.FindCollisionAlongPath(field, ref destination, movement);
+
+            // 3. Move the card to the destination cell (if needed).
+            yield return Aggregator.MoveToDestinationCell(field, destination);
+
+            // 4. After movement, handle either fighting a collided unit 
+            //    or, if no collision, possibly passing the home row.
+            yield return Aggregator.HandlePostMovementState(field, collided, destination);
+        }
+
+        /// <summary>
+        /// Computes the movement vector (speed and direction) based on SPD and ownership.
+        /// </summary>
+        public Point GetMovementVector()
+        {
+            int spd = (Owner == Player.Player1) ? StatBlock.Stats.SPD : -StatBlock.Stats.SPD;
+            return new Point(spd, 0);
+        }
+
+        /// <summary>
+        /// Given the movement vector, calculates the final intended X-position 
+        /// within the grid boundaries. 
+        /// </summary>
+        public Point CalculateDestination(IFieldController field, Point movement)
+        {
+            int gridWidth = field.FieldGrid[0].Count;
+            int currentX = Cell.FieldPosition.X;
+            int desiredX = currentX + movement.X;
+
+            // Clamp within the field boundaries
+            int clampedX = Mathf.Clamp(desiredX, 0, gridWidth - 1);
+
+            return new Point(clampedX, Cell.FieldPosition.Y);
+        }
+
+        /// <summary>
+        /// Looks for a collision along the path from our current position 
+        /// to the final desired destination. 
+        /// If a collision is found, updates 'destination' to the cell just before the collision
+        /// and returns the encountered card.
+        /// </summary>
+        public ICardController FindCollisionAlongPath(IFieldController field, ref Point destination, Point movement)
+        {
+            if (movement.X == 0) return null;
+
+            var fieldGrid = field.FieldGrid;
+            int step = Math.Sign(movement.X);
+
+            // Start one step ahead of our current X in the direction of movement
+            for (int i = Cell.FieldPosition.X + step; i != destination.X + step; i += step)
+            {
+                // Check if there's a card in the path
+                if (fieldGrid[Cell.FieldPosition.Y][i].CardsOnCell > 0)
+                {
+                    // Collided with a card at [Y][i]. 
+                    // Adjust the destination to just before the collision.
+                    destination.X = i - step;
+                    return fieldGrid[Cell.FieldPosition.Y][i].GetCardAtIndex(0);
+                }
+            }
+
+            return null; // No collision found
+        }
+
+        /// <summary>
+        /// Moves this card to the 'destination' cell if the card is not 
+        /// already in that position.
+        /// </summary>
+        public IEnumerator MoveToDestinationCell(IFieldController field, Point destination)
+        {
+            // If we didn't adjust the destination, or SPD == 0, or 
+            // we ended up with the same X, no actual move is needed.
+            if (destination.X == Aggregator.Cell.FieldPosition.X && destination.Y == Aggregator.Cell.FieldPosition.Y)
+                yield break;
+
+            // Otherwise, move to the newly computed cell
+            var targetCell = field.FieldGrid[destination.Y][destination.X];
+            yield return field.MoveCardToCell(Aggregator, targetCell);
+        }
+
+        /// <summary>
+        /// After movement, handle interactions such as fighting a collided unit 
+        /// or passing the home row if we are behind enemy lines.
+        /// </summary>
+        public IEnumerator HandlePostMovementState(IFieldController field, ICardController collided, Point destination)
+        {
+            if (collided != null)
+            {
+                // Fight the unit we collided with
+                yield return Aggregator.Fight(collided);
+            }
+            else
+            {
+                // If no collision, check if we ended up behind enemy lines
+                var destinationCell = field.FieldGrid[destination.Y][destination.X];
+                if (destinationCell.Player != Owner && destinationCell.Player != Player.Neutral)
+                {
+                    // Pass the home row if allowed
+                    yield return Aggregator.PassHomeRow();
+                }
+            }
+        }
+
+        /// <summary>
+        /// A card attacks the opponent's home row, dealing damage to the opponent and moving to the deck.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator PassHomeRow()
+        {
+            if (CanPassHomeRow)
+            {
+                yield return Aggregator.HealthManager.ModifyPlayerHealth(Aggregator.Owner ==
+                   Player.Player1 ? Player.Player2 : Player.Player1, -Aggregator.StatBlock.Stats.ATK);
+                yield return Aggregator.ZoneManager.MoveCardFromFieldToDeck(Aggregator, Aggregator.Owner, 0, true);
+            }
+        }
+
         public string GetCostText()
         {
             return _view.GetCostText();
-        }
-
-        public IEnumerator MoveAndHandleCollisions(IFieldController field)
-        {
-            var movement = new Point(Aggregator.Owner == Player.Player1 ? Aggregator.StatBlock.Stats.SPD : -Aggregator.StatBlock.Stats.SPD, 0);
-            Point destination = new(
-                Math.Clamp(Aggregator.Cell.FieldPosition.X + movement.X, 0, field.FieldGrid[0].Count - 1),
-                Aggregator.Cell.FieldPosition.Y);
-
-            ICardController collided = null;
-            var fieldGrid = field.FieldGrid;
-
-            // Movement and collision detection
-            for (int i = Aggregator.Cell.FieldPosition.X + Math.Sign(movement.X); i != destination.X + Math.Sign(movement.X); i += Math.Sign(movement.X))
-            {
-                if (fieldGrid[Aggregator.Cell.FieldPosition.Y][i].CardsOnCell <= 0) continue;
-                destination.X = i - Math.Sign(movement.X);
-                collided = fieldGrid[Aggregator.Cell.FieldPosition.Y][i].GetCardAtIndex(0);
-                break;
-            }
-
-            // Move the card if necessary
-            if (destination != Aggregator.Cell.FieldPosition)
-            {
-                yield return field.MoveCardToCell(Aggregator, fieldGrid[destination.Y][destination.X]);
-            }
-
-            // Handle collision
-            if (collided != null)
-            {
-                yield return Aggregator.Fight(collided);
-            }
-            else if (fieldGrid[destination.Y][destination.X].Player != Owner && fieldGrid[destination.Y][destination.X].Player != Player.Neutral)
-            {
-                yield return Aggregator.PassHomeRow();
-            }
-
-
-            yield break;
         }
 
         public IEnumerator MoveToCell(ICellController cell, float moveCardTime)
@@ -314,16 +474,8 @@ namespace Abraxas.Cards.Controllers
             yield return _view.MoveToCell(cell, moveCardTime);
         }
 
-        public IEnumerator PassHomeRow()
-        {
-            yield return Aggregator.HealthManager.ModifyPlayerHealth(Aggregator.Owner ==
-               Player.Player1 ? Player.Player2 : Player.Player1, -Aggregator.StatBlock.Stats.ATK);
-            yield return Aggregator.ZoneManager.MoveCardFromFieldToDeck(Aggregator, Aggregator.Owner, 0, true);
-        }
-
         public IEnumerator PlayAnimationClip(AnimationClip clip, UnityEngine.Color color, bool flip)
         {
-
             yield return _view.PlayAnimation(clip, color, flip);
         }
 
@@ -341,7 +493,10 @@ namespace Abraxas.Cards.Controllers
 
         public void UpdatePlayabilityAndCostText()
         {
-            _view.UpdateCostTextWithManaTypes(LastManas, Aggregator.TotalCosts, Aggregator.DeterminePlayability(), Aggregator.Zone is IHandController);
+            if (LastManas != null)
+            {
+                _view.UpdateCostTextWithManaTypes(LastManas, Aggregator.TotalCosts, Aggregator.DeterminePlayability(), Aggregator.Zone is IHandController);
+            }
         }
 
         public void OnDestroy()
@@ -389,14 +544,26 @@ namespace Abraxas.Cards.Controllers
             {
                 Aggregator.UpdatePlayabilityAndCostText();
             }
-            yield break;
-            
+            yield break;           
         }
 
         public bool ShouldReceiveEvent(Event_ManaModified eventData) => eventData.Mana.Player == Aggregator.Owner && eventData.Mana.ManaTypes != null;
         public bool ShouldReceiveEvent(Event_CardChangedZones eventData) => eventData.Card.Equals(Aggregator);
         public bool ShouldReceiveEvent(Event_GameStateEntered eventData) => Aggregator.Zone is IHandController;
         public bool ShouldReceiveEvent(Event_ActivePlayerChanged eventData) => Aggregator.Zone is IHandController;
+
+        public bool IsCellAvailable(ICellController cell)
+        {
+            if (cell.CardsOnCell == 1)
+            {
+               var occupant = cell.GetCardAtIndex(0);
+                if (occupant.RequestHasStatusEffect<StatusEffect_Bond>())
+                {
+                    return occupant.Owner == Aggregator.Owner;
+                }
+            }
+            return cell.CardsOnCell == 0 && cell.Player == Aggregator.Owner;
+        }
         #endregion
     }
 }

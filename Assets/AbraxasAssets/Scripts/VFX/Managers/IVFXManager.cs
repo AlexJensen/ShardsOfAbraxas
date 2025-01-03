@@ -1,6 +1,8 @@
-﻿namespace Abraxas.VFX.Managers
+﻿using Abraxas.Core;
+
+namespace Abraxas.VFX.Managers
 {
-    public interface IVFXManager
+    public interface IVFXManager : IManager
     {
         float CurrentFlickerOpacity { get; }
     }

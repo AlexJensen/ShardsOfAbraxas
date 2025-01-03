@@ -1,3 +1,4 @@
+using Abraxas.Events;
 using Abraxas.Stones.Conditions;
 using Abraxas.Stones.EventListeners;
 using Abraxas.Stones.Triggers;
@@ -8,7 +9,6 @@ using System.Reflection;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Abraxas.Stones.Data
 {
@@ -114,6 +114,7 @@ namespace Abraxas.Stones.Data
     }
 
 #if UNITY_EDITOR
+
     [CustomEditor(typeof(TriggerStoneSO))]
     public class TriggerStoneSOEditor : Editor
     {
@@ -142,26 +143,7 @@ namespace Abraxas.Stones.Data
 
             // Display ConnectionIndexes
             EditorGUILayout.LabelField("Connection Indexes", EditorStyles.boldLabel);
-            for (int i = 0; i < _connectionIndexesProperty.arraySize; i++)
-            {
-                var element = _connectionIndexesProperty.GetArrayElementAtIndex(i);
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(element, new GUIContent($"Index {i}"));
-                if (GUILayout.Button("Remove", GUILayout.Width(60)))
-                {
-                    _connectionIndexesProperty.DeleteArrayElementAtIndex(i);
-                    serializedObject.ApplyModifiedProperties();
-                    return;
-                }
-                EditorGUILayout.EndHorizontal();
-            }
-
-            if (GUILayout.Button("Add Connection Index"))
-            {
-                _connectionIndexesProperty.InsertArrayElementAtIndex(_connectionIndexesProperty.arraySize);
-                var newElement = _connectionIndexesProperty.GetArrayElementAtIndex(_connectionIndexesProperty.arraySize - 1);
-                newElement.intValue = 0;
-            }
+            DrawConnectionIndexes();
 
             EditorGUILayout.Space();
 
@@ -182,12 +164,44 @@ namespace Abraxas.Stones.Data
 
             if (GUILayout.Button("Add Event Listener"))
             {
-                ShowSelectScriptableObjectMenu("EventListeners", AddNewEventListener);
+                // Instead of scanning for subtypes of EventListenerSOBase,
+                // we do a special menu that scans for IEvent implementations.
+                ShowSelectEventTypeMenuForListeners();
             }
 
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// Draws the integer ConnectionIndexes array with Add/Remove controls.
+        /// </summary>
+        private void DrawConnectionIndexes()
+        {
+            for (int i = 0; i < _connectionIndexesProperty.arraySize; i++)
+            {
+                var element = _connectionIndexesProperty.GetArrayElementAtIndex(i);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(element, new GUIContent($"Index {i}"));
+                if (GUILayout.Button("Remove", GUILayout.Width(60)))
+                {
+                    _connectionIndexesProperty.DeleteArrayElementAtIndex(i);
+                    serializedObject.ApplyModifiedProperties();
+                    return;
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+
+            if (GUILayout.Button("Add Connection Index"))
+            {
+                _connectionIndexesProperty.InsertArrayElementAtIndex(_connectionIndexesProperty.arraySize);
+                var newElement = _connectionIndexesProperty.GetArrayElementAtIndex(_connectionIndexesProperty.arraySize - 1);
+                newElement.intValue = 0;
+            }
+        }
+
+        /// <summary>
+        /// Draw a list of ScriptableObjects (Conditions or EventListeners).
+        /// </summary>
         private void DrawScriptableObjectList(SerializedProperty listProperty, string label, TriggerStoneSO triggerSO)
         {
             for (int i = 0; i < listProperty.arraySize; i++)
@@ -217,19 +231,23 @@ namespace Abraxas.Stones.Data
             }
         }
 
+        /// <summary>
+        /// The old method that scans for ConditionSO or EventListenerSOBase, depending on category.
+        /// But now for "EventListeners," we will rely on a different approach (ShowSelectEventTypeMenuForListeners).
+        /// </summary>
         private void ShowSelectScriptableObjectMenu(string category, Action<Type> callback)
         {
             var menu = new GenericMenu();
-            var conditionBaseType = GetBaseTypeForCategory(category);
-            if (conditionBaseType == null)
+            var baseType = GetBaseTypeForCategory(category);
+            if (baseType == null)
             {
                 Debug.LogWarning($"No base type found for category {category}");
                 return;
             }
 
-            var derivedTypes = Assembly.GetAssembly(conditionBaseType)
+            var derivedTypes = Assembly.GetAssembly(baseType)
                                        .GetTypes()
-                                       .Where(t => t.IsSubclassOf(conditionBaseType) && !t.IsAbstract)
+                                       .Where(t => t.IsSubclassOf(baseType) && !t.IsAbstract)
                                        .ToList();
 
             if (derivedTypes.Count == 0)
@@ -252,9 +270,9 @@ namespace Abraxas.Stones.Data
         {
             if (category == "Conditions")
                 return typeof(ConditionSO);
-            else if (category == "EventListeners")
-                return typeof(EventListenerSOBase);
 
+            // We'll no longer handle "EventListeners" here
+            // because we do ShowSelectEventTypeMenuForListeners instead.
             return null;
         }
 
@@ -263,11 +281,9 @@ namespace Abraxas.Stones.Data
             AddNewScriptableObject(_conditionsProperty, type);
         }
 
-        private void AddNewEventListener(Type type)
-        {
-            AddNewScriptableObject(_eventListenersProperty, type);
-        }
-
+        /// <summary>
+        /// The old scriptable object creation logic, used for Conditions or for any non-generic type approach.
+        /// </summary>
         private void AddNewScriptableObject(SerializedProperty listProperty, Type type)
         {
             var triggerSO = (TriggerStoneSO)target;
@@ -283,6 +299,76 @@ namespace Abraxas.Stones.Data
 
             serializedObject.ApplyModifiedProperties();
         }
-    }
+
+        /// <summary>
+        /// Displays a menu of all concrete IEvent classes. Selecting one will create an EventListenerSO<TEvent>.
+        /// </summary>
+        private void ShowSelectEventTypeMenuForListeners()
+        {
+            var menu = new GenericMenu();
+
+            // Gather IEvent implementations
+            var eventTypes = GetAllConcreteIEventTypes();
+            if (eventTypes.Count == 0)
+            {
+                menu.AddDisabledItem(new GUIContent("No IEvent Implementations Found!"));
+            }
+            else
+            {
+                foreach (var evtType in eventTypes)
+                {
+                    // e.g. "Event_ActivePlayerChanged"
+                    menu.AddItem(new GUIContent(evtType.Name), false, () => CreateEventListenerForIEvent(evtType));
+                }
+            }
+
+            menu.ShowAsContext();
+        }
+
+        /// <summary>
+        /// Finds all non-abstract classes implementing IEvent across assemblies.
+        /// </summary>
+        private List<Type> GetAllConcreteIEventTypes()
+        {
+            var list = new List<Type>();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var asm in assemblies)
+            {
+                var found = asm.GetTypes()
+                    .Where(t => typeof(IEvent).IsAssignableFrom(t)
+                                && t.IsClass
+                                && !t.IsAbstract);
+                list.AddRange(found);
+            }
+            return list;
+        }
+
+        private void CreateEventListenerForIEvent(Type iEventType)
+        {
+            var triggerSO = (TriggerStoneSO)target;
+
+
+            var asset = CreateInstance<EventListenerSO>();
+            asset.name = iEventType.Name + "Listener"; 
+            asset.Initialize(iEventType);
+
+            AssetDatabase.AddObjectToAsset(asset, triggerSO);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(triggerSO));
+
+            var soObj = new SerializedObject(triggerSO);
+            var listenersProp = soObj.FindProperty("_eventListeners");
+
+            listenersProp.InsertArrayElementAtIndex(listenersProp.arraySize);
+            var newElem = listenersProp.GetArrayElementAtIndex(listenersProp.arraySize - 1);
+            newElem.objectReferenceValue = asset;
+
+            soObj.ApplyModifiedProperties();
+            EditorUtility.SetDirty(triggerSO);
+        }
+
+
 #endif
+
+    }
 }

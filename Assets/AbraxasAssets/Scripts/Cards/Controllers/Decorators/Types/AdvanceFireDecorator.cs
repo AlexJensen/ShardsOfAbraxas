@@ -12,7 +12,6 @@ class AdvanceFireDecorator : CardDecorator
     public override IEnumerator PreCombat()
     {
         yield return base.PreCombat();
-        Aggregator.EnablePreMovementRangedAttack = true;
-        Aggregator.EnablePostMovementRangedAttack = false;
+        EnablePreMovementRangedAttack = true;
     }
 }

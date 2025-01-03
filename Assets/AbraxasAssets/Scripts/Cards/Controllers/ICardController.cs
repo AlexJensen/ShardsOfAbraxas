@@ -52,5 +52,6 @@ namespace Abraxas.Cards.Controllers
         IEnumerator MoveAndHandleCollisions(IFieldController field);
         IEnumerator DealDamage(ICardController opponent, int amount);
         IEnumerator TakeDamage(ICardController source, int amount);
+        bool IsCellAvailable(ICellController cell);
     }
 }

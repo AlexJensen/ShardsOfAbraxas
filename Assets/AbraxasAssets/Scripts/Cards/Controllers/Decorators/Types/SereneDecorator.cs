@@ -8,10 +8,9 @@ class SereneDecorator : CardDecorator
     public SereneDecorator(ICardControllerInternal innerController, ICardModel model, ICardView view)
         : base(innerController, model, view) { }
 
-    public override IEnumerator Fight(ICardController opponent)
+    public override IEnumerator PreCombat()
     {
+        yield return base.PreCombat();
         CanFight = false;
-        yield return base.Fight(opponent);
     }
-
 }

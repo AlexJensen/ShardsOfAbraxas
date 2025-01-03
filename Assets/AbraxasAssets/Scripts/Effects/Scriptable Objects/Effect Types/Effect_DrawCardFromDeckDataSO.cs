@@ -43,11 +43,11 @@ namespace Abraxas.Stones.Types
 
             // Suppose we want to derive expectedType from the effect
             StoneSO effect = (StoneSO)target;
-            Type expectedType = GetExpectedTypeFromEffect(effect);
+
 
             if (GUILayout.Button("Set Target"))
             {
-                ShowSelectTypeMenu<TargetSOBase>(expectedType, t => SetTarget(t, _targetProperty, expectedType));
+                ShowSelectTypeMenu<TargetSOBase>(t => SetTarget(t, _targetProperty));
             }
 
             if (_targetProperty.objectReferenceValue != null && GUILayout.Button("Remove Target"))

@@ -1,10 +1,11 @@
 
+using Abraxas.Core;
 using System;
 using System.Collections;
 
 namespace Abraxas.Events.Managers
 {
-    public interface IEventManager
+    public interface IEventManager: IManager
     {
         void AddListener<T>(IGameEventListener<T> listener);
         IEnumerator RaiseEvent<T>(T eventData);

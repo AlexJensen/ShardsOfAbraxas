@@ -76,29 +76,40 @@ namespace Abraxas.AI.Managers
         private void PlayBestCard(List<ICardController> playableCards, ICellController[] availableCells)
         {
             float bestAdvantage = float.MinValue;
-            ICardController bestCard = null;
-            ICellController bestCell = null;
+
+            // We'll keep track of *all* (card, cell) pairs that tie for bestAdvantage
+            var bestMoves = new List<(ICardController card, ICellController cell)>();
 
             foreach (var card in playableCards)
             {
                 foreach (var cell in availableCells)
                 {
                     float advantage = EvaluateAdvantage(card, cell);
-
                     Debug.Log($"[AIManager] Evaluated advantage for card '{card.Title}' at cell ({cell.FieldPosition.X}, {cell.FieldPosition.Y}): {advantage}");
 
+                    // If we found a new strictly greater advantage, reset the list
                     if (advantage > bestAdvantage)
                     {
                         bestAdvantage = advantage;
-                        bestCard = card;
-                        bestCell = cell;
+                        bestMoves.Clear();
+                        bestMoves.Add((card, cell));
+                    }
+                    else if (Mathf.Approximately(advantage, bestAdvantage))
+                    {
+                        // If advantage ties with our current bestAdvantage, add it to the “tie” list
+                        bestMoves.Add((card, cell));
                     }
                 }
             }
 
-            if (bestCard != null && bestCell != null)
+            if (bestMoves.Count > 0)
             {
-                Debug.Log($"[AIManager] Chose to play card '{bestCard.Title}' at cell ({bestCell.FieldPosition.X}, {bestCell.FieldPosition.Y}) with advantage {bestAdvantage}");
+                // Randomly pick among all bestMoves (the “tie” list).
+                int choiceIndex = UnityEngine.Random.Range(0, bestMoves.Count);
+                var (bestCard, bestCell) = bestMoves[choiceIndex];
+
+                Debug.Log($"[AIManager] Among {bestMoves.Count} tied best moves, AI chose to play card '{bestCard.Title}' "
+                        + $"at cell ({bestCell.FieldPosition.X}, {bestCell.FieldPosition.Y}) with advantage {bestAdvantage}");
                 _gameManager.PurchaseCardAndMoveFromHandToCell(bestCard, bestCell.FieldPosition);
             }
             else

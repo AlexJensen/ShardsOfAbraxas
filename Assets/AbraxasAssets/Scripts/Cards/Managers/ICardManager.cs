@@ -1,9 +1,10 @@
 ﻿using Abraxas.Cards.Controllers;
+using Abraxas.Core;
 using System.Collections.Generic;
 
 namespace Abraxas.Cards.Managers
 {
-    public interface ICardManager
+    public interface ICardManager: IManager
     {
         List<ICardController> Cards { get; }
 

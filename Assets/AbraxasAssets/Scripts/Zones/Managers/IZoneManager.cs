@@ -1,11 +1,12 @@
 ﻿using Abraxas.Cards.Controllers;
+using Abraxas.Core;
 using System.Collections;
 using System.Drawing;
 using Player = Abraxas.Players.Players;
 
 namespace Abraxas.Zones.Managers
 {
-    public interface IZoneManager
+    public interface IZoneManager : IManager
     {
         #region Methods
         IEnumerator MoveCardFromFieldToDeck(ICardController card, Player player, int index = 0, bool reverse = false);

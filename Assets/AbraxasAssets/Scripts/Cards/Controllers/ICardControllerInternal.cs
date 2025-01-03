@@ -36,6 +36,11 @@ namespace Abraxas.Cards.Controllers
         IEnumerator PostMovementAction(IFieldController field);
         IEnumerator RangedAttack(IFieldController field, bool doAttack);
         ICardController CheckRangedAttack(IFieldController field, Point movement);
+        Point CalculateDestination(IFieldController field, Point movement);
+        ICardController FindCollisionAlongPath(IFieldController field, ref Point destination, Point movement);
+        Point GetMovementVector();
+        IEnumerator HandlePostMovementState(IFieldController field, ICardController collided, Point destination);
+        IEnumerator MoveToDestinationCell(IFieldController field, Point destination);
 
         #region Flags
         bool EnablePreMovementRangedAttack { get; set; }
@@ -43,6 +48,8 @@ namespace Abraxas.Cards.Controllers
         bool CanFight {  get; set; }
         bool HasAttacked { get; set; }
         bool CanBeAttackedRanged {  get; set; }
+        bool CanAlliedRangedAttacksShootThrough { get; set; }
+        bool CanPassHomeRow { get; set; }
 
         #endregion
     }

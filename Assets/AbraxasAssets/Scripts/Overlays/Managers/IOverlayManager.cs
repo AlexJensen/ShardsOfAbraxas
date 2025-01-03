@@ -1,4 +1,5 @@
 using Abraxas.Cards.Controllers;
+using Abraxas.Core;
 using UnityEngine;
 
 namespace Abraxas.Zones.Overlays.Managers
@@ -6,7 +7,7 @@ namespace Abraxas.Zones.Overlays.Managers
     /// <summary>
     /// IOverlayManager is an interface for managing overlays.
     /// </summary>
-    public interface IOverlayManager
+    public interface IOverlayManager : IManager
     {
         Transform Overlay { get; }
 

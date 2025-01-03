@@ -16,14 +16,15 @@ MonoBehaviour:
     Title: Model VIII
     Owner: 0
     OriginalOwner: 0
-    Stones: []
+    Stones:
+    - {fileID: 11400000, guid: 97bf967f04c357248b46084ba1df58ef, type: 2}
     StatBlock:
       Stats:
         _ATK: 4
-        _DEF: 3
-        _SPD: 3
+        _DEF: 4
+        _SPD: 4
         _RNG: 2
-      Cost: 43
+      Cost: 49
       StoneType: 8
 --- !u!114 &-5123863229598926322
 MonoBehaviour:
@@ -41,7 +42,8 @@ MonoBehaviour:
     Title: Model X
     Owner: 0
     OriginalOwner: 0
-    Stones: []
+    Stones:
+    - {fileID: 11400000, guid: b01d98b3ca81f60498aa5e327951f607, type: 2}
     StatBlock:
       Stats:
         _ATK: 8
@@ -116,15 +118,17 @@ MonoBehaviour:
     Title: Model VII
     Owner: 0
     OriginalOwner: 0
-    Stones: []
+    Stones:
+    - {fileID: 11400000, guid: b01d98b3ca81f60498aa5e327951f607, type: 2}
+    - {fileID: 11400000, guid: bf83f32ce7d4fac448e76ffceb5e2c3a, type: 2}
     StatBlock:
       Stats:
-        _ATK: 4
-        _DEF: 2
-        _SPD: 1
-        _RNG: 1
-      Cost: 25
-      StoneType: 8
+        _ATK: 10
+        _DEF: 10
+        _SPD: 2
+        _RNG: 0
+      Cost: 49
+      StoneType: 3
 --- !u!114 &-2955293029034612585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,12 +148,12 @@ MonoBehaviour:
     Stones: []
     StatBlock:
       Stats:
-        _ATK: 8
-        _DEF: 0
-        _SPD: 4
+        _ATK: 10
+        _DEF: 2
+        _SPD: 2
         _RNG: 2
       Cost: 49
-      StoneType: 5
+      StoneType: 6
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +243,8 @@ MonoBehaviour:
     Title: Model IX
     Owner: 0
     OriginalOwner: 0
-    Stones: []
+    Stones:
+    - {fileID: 11400000, guid: c28ebc17d61f93840bd7c0b3fa166092, type: 2}
     StatBlock:
       Stats:
         _ATK: 3
@@ -264,15 +269,17 @@ MonoBehaviour:
     Title: Model I
     Owner: 0
     OriginalOwner: 0
-    Stones: []
+    Stones:
+    - {fileID: 11400000, guid: a679a5e09c76c1848b97b096b266e257, type: 2}
+    - {fileID: 11400000, guid: 97bf967f04c357248b46084ba1df58ef, type: 2}
     StatBlock:
       Stats:
-        _ATK: 1
+        _ATK: 0
         _DEF: 10
-        _SPD: 2
-        _RNG: 1
-      Cost: 39
-      StoneType: 5
+        _SPD: 1
+        _RNG: 0
+      Cost: 25
+      StoneType: 4
 --- !u!114 &3620296152889308079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,15 +296,16 @@ MonoBehaviour:
     Title: Model VI
     Owner: 0
     OriginalOwner: 0
-    Stones: []
+    Stones:
+    - {fileID: 11400000, guid: 90741ce327859b149a9310492e935a8f, type: 2}
     StatBlock:
       Stats:
-        _ATK: 9
-        _DEF: 10
+        _ATK: 1
+        _DEF: 1
         _SPD: 1
-        _RNG: 1
-      Cost: 51
-      StoneType: 8
+        _RNG: 2
+      Cost: 25
+      StoneType: 7
 --- !u!114 &3948338895541991871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,15 +322,17 @@ MonoBehaviour:
     Title: Model IV
     Owner: 0
     OriginalOwner: 0
-    Stones: []
+    Stones:
+    - {fileID: 11400000, guid: a679a5e09c76c1848b97b096b266e257, type: 2}
+    - {fileID: 11400000, guid: b01d98b3ca81f60498aa5e327951f607, type: 2}
     StatBlock:
       Stats:
-        _ATK: 0
-        _DEF: 2
-        _SPD: 4
+        _ATK: 1
+        _DEF: 6
+        _SPD: 1
         _RNG: 0
-      Cost: 21
-      StoneType: 5
+      Cost: 19
+      StoneType: 4
 --- !u!114 &6379315495548625749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,12 +352,12 @@ MonoBehaviour:
     Stones: []
     StatBlock:
       Stats:
-        _ATK: 9
-        _DEF: 10
+        _ATK: 10
+        _DEF: 1
         _SPD: 2
-        _RNG: 1
-      Cost: 55
-      StoneType: 1
+        _RNG: 2
+      Cost: 47
+      StoneType: 10
 --- !u!114 &7971750418601310683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,12 +374,14 @@ MonoBehaviour:
     Title: Model V
     Owner: 0
     OriginalOwner: 0
-    Stones: []
+    Stones:
+    - {fileID: 11400000, guid: c28ebc17d61f93840bd7c0b3fa166092, type: 2}
+    - {fileID: 11400000, guid: a679a5e09c76c1848b97b096b266e257, type: 2}
     StatBlock:
       Stats:
-        _ATK: 4
-        _DEF: 0
+        _ATK: 2
+        _DEF: 8
         _SPD: 1
         _RNG: 2
-      Cost: 29
+      Cost: 41
       StoneType: 1

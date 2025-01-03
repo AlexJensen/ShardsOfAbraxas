@@ -150,7 +150,9 @@ namespace Abraxas.Cards.Controllers
         public bool EnablePostMovementRangedAttack { get; set; }
         public bool HasAttacked { get; set; }
         public bool CanFight { get; set; }
+        public bool CanPassHomeRow { get; set; }
         public bool CanBeAttackedRanged { get; set; }
+        public bool CanAlliedRangedAttacksShootThrough { get; set; }
         #endregion
 
         #region Methods
@@ -230,6 +232,36 @@ namespace Abraxas.Cards.Controllers
         public ICardController CheckRangedAttack(IFieldController field, Point movement)
         {
             return _decorator.CheckRangedAttack(field, movement);
+        }
+
+        public Point CalculateDestination(IFieldController field, Point movement)
+        {
+            return _decorator.CalculateDestination(field, movement);
+        }
+
+        public ICardController FindCollisionAlongPath(IFieldController field, ref Point destination, Point movement)
+        {
+            return _decorator.FindCollisionAlongPath(field, ref destination, movement);
+        }
+
+        public Point GetMovementVector()
+        {
+            return _decorator.GetMovementVector();
+        }
+
+        public IEnumerator HandlePostMovementState(IFieldController field, ICardController collided, Point destination)
+        {
+            return _decorator.HandlePostMovementState(field, collided, destination);
+        }
+
+        public IEnumerator MoveToDestinationCell(IFieldController field, Point destination)
+        {
+            return _decorator.MoveToDestinationCell(field, destination);
+        }
+
+        public bool IsCellAvailable(ICellController cell)
+        {
+            return _decorator.IsCellAvailable(cell);
         }
         #endregion
     }

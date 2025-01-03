@@ -1,9 +1,10 @@
-using Abraxas.Events;
+using Abraxas.Cards.Controllers;
 using Abraxas.Manas;
 using Abraxas.Stones.Conditions;
 using Abraxas.Stones.Controllers;
 using Abraxas.Stones.Data;
 using Abraxas.Stones.EventListeners;
+using Abraxas.Stones.Models;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +16,28 @@ namespace Abraxas.Stones.Triggers
     {
         #region Dependencies
         IManaManager _manaManager;
+        DiContainer _container;
 
         [Inject]
         public void Construct(IManaManager manaManager, DiContainer container)
         {
             _manaManager = manaManager;
+            _container = container;
+
+            
+        }
+
+        public override void Initialize(IStoneModel model, ICardController card)
+        {
+            base.Initialize(model, card);
 
             // Register event listeners dynamically
             var triggerStoneSO = Model.StoneSO as TriggerStoneSO;
             if (triggerStoneSO != null)
             {
-                foreach (var eventListener in triggerStoneSO.EventListeners.OfType<EventListenerSO<IEvent>>())
+                foreach (var eventListener in triggerStoneSO.EventListeners.OfType<EventListenerSO>())
                 {
-                    container.Inject(eventListener);
+                    _container.Inject(eventListener);
                     eventListener.InitializeListener();
                 }
             }

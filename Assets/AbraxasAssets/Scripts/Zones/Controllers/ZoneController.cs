@@ -49,6 +49,8 @@ namespace Abraxas.Zones.Controllers
         public int TotalCardsInZone => _model.CardList.Count;
         protected IZoneView View => _view;
         protected IZoneModel Model => _model;
+
+        public ZoneType ZoneType => _model.Type;
         #endregion
 
         #region Methods

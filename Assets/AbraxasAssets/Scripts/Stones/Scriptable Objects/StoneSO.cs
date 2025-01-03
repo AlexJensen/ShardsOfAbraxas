@@ -24,7 +24,7 @@ namespace Abraxas.Stones.Data
     [CustomEditor(typeof(StoneSO), true)]
     public class StoneSOEditor : Editor
     {
-        protected void ShowSelectTypeMenu<T>(Type expectedType, Action<Type> onSelected)
+        protected void ShowSelectTypeMenu<T>(Action<Type> onSelected)
         {
             var menu = new GenericMenu();
             var types = Assembly.GetAssembly(typeof(T))
@@ -33,7 +33,7 @@ namespace Abraxas.Stones.Data
                     .ToList();
             foreach (var type in types)
             {
-                if (CanProduceType(type, expectedType))
+                //if (CanProduceType(type, expectedType))
                 {
                     var typeName = type.Name;
                     if (type.IsGenericTypeDefinition)
@@ -49,25 +49,6 @@ namespace Abraxas.Stones.Data
             }
             menu.ShowAsContext();
         }
-        private bool CanProduceType(Type targetType, Type expectedType)
-        {
-            var baseType = targetType.BaseType;
-            if (baseType != null && baseType.IsGenericType)
-            {
-                var returnType = baseType.GetGenericArguments()[0];
-
-                // If returnType is object, treat it as a wildcard and allow selection
-                if (returnType == typeof(object))
-                {
-                    return true;
-                }
-
-                return expectedType == null || expectedType.IsAssignableFrom(returnType);
-            }
-
-            return expectedType == null;
-        }
-
 
         protected void SetTarget(Type type, SerializedProperty property, Type expectedType = null)
         {
@@ -109,23 +90,6 @@ namespace Abraxas.Stones.Data
             }
         }
 
-        protected virtual Type GetExpectedTypeFromEffect(StoneSO target)
-        {
-            Type effectType = target.ControllerType;
-
-            // Check if effectType implements ITargetable<>
-            var iTargetableInterface = effectType.GetInterfaces()
-            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ITargetable<>));
-
-            if (iTargetableInterface != null)
-            {
-                Type expectedType = iTargetableInterface.GetGenericArguments()[0];
-                // Now you know the expectedType that the effect wants.
-                return expectedType;
-            }
-            return null;
-        }
-
         protected void RemoveTarget(SerializedProperty property)
         {
             if (property.objectReferenceValue != null)
@@ -133,14 +97,60 @@ namespace Abraxas.Stones.Data
                 var target = property.objectReferenceValue as ScriptableObject;
                 if (target != null)
                 {
-                    Undo.RecordObject(target, "Remove Target");
-                    AssetDatabase.RemoveObjectFromAsset(target);
-                    DestroyImmediate(target, true);
-                    AssetDatabase.SaveAssets();
+                    RecursiveRemoveObject(target);
                 }
                 property.objectReferenceValue = null;
                 serializedObject.ApplyModifiedProperties();
             }
+        }
+
+        private void RecursiveRemoveObject(ScriptableObject so)
+        {
+            if (so == null) return;
+
+            // Mark for Undo
+            Undo.RecordObject(so, "Remove SO");
+
+            // 1) Use reflection to find any ScriptableObject fields
+            var soType = so.GetType();
+
+            // We'll consider both single fields and lists
+            var bindingFlags = BindingFlags.Public | BindingFlags.NonPublic |
+                               BindingFlags.Instance | BindingFlags.DeclaredOnly;
+
+            // For each field in the object:
+            foreach (var field in soType.GetFields(bindingFlags))
+            {
+                // Only proceed if it’s not a primitive type, etc.
+                if (typeof(ScriptableObject).IsAssignableFrom(field.FieldType))
+                {
+                    // Single ScriptableObject field
+                    var childSO = field.GetValue(so) as ScriptableObject;
+                    if (childSO != null)
+                    {
+                        RecursiveRemoveObject(childSO);
+                    }
+                }
+                else if (typeof(System.Collections.IList).IsAssignableFrom(field.FieldType))
+                {
+                    if (field.GetValue(so) is not System.Collections.IList listObj) continue;
+
+                    // Iterate each item
+                    foreach (var item in listObj)
+                    {
+                        if (item is ScriptableObject child)
+                        {
+                            RecursiveRemoveObject(child);
+                        }
+                    }
+                }
+                // else: other field type => ignore
+            }
+
+            // 2) Finally, remove this object from the asset
+            AssetDatabase.RemoveObjectFromAsset(so);
+            DestroyImmediate(so, true);
+            AssetDatabase.SaveAssets();
         }
 
         protected void ShowSelectEventTypeMenu(SerializedProperty property)

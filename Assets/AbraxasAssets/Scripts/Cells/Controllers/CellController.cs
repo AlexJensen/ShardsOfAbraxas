@@ -2,6 +2,7 @@
 using Abraxas.Cards.Controllers;
 using Abraxas.Cells.Models;
 using Abraxas.Cells.Views;
+using Abraxas.StatusEffects.Types;
 using System.Drawing;
 using UnityEngine;
 using Zenject;
@@ -72,7 +73,14 @@ namespace Abraxas.Cells.Controllers
 
         public bool IsOpen(Player player)
         {
-            return _model.Player == player && _model.CardsOnCell == 0;
+            if (_model.Player != player) return false;
+            if (_model.CardsOnCell == 1)
+            {
+                var occupant = _model.GetCardAtIndex(0);
+                if (occupant.Owner != player) return false;
+                return occupant.RequestHasStatusEffect<StatusEffect_Bond>();
+            }
+            return _model.CardsOnCell == 0;
         }
         #endregion
     }

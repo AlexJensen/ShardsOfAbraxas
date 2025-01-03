@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0c8f3f862c408499dd66a647457715, type: 3}
+  m_Name: Bonded Troopers
+  m_EditorClassIdentifier: 
+  _cards:
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 8447169423912824747}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+  - {fileID: 5326121275896181322}
+--- !u!114 &5326121275896181322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: II
+  m_EditorClassIdentifier: 
+  _data:
+    Title: II
+    Owner: 0
+    OriginalOwner: 0
+    Stones:
+    - {fileID: 11400000, guid: 97bf967f04c357248b46084ba1df58ef, type: 2}
+    - {fileID: 11400000, guid: a679a5e09c76c1848b97b096b266e257, type: 2}
+    StatBlock:
+      Stats:
+        _ATK: 8
+        _DEF: 8
+        _SPD: 4
+        _RNG: 1
+      Cost: 49
+      StoneType: 10
+--- !u!114 &8447169423912824747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9b375cf0881e24ebb3b90486e507ab, type: 3}
+  m_Name: I
+  m_EditorClassIdentifier: 
+  _data:
+    Title: I
+    Owner: 0
+    OriginalOwner: 0
+    Stones:
+    - {fileID: 11400000, guid: bf83f32ce7d4fac448e76ffceb5e2c3a, type: 2}
+    StatBlock:
+      Stats:
+        _ATK: 4
+        _DEF: 4
+        _SPD: 1
+        _RNG: 2
+      Cost: 28
+      StoneType: 0

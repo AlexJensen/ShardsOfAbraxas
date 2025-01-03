@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4645970613610386512
+--- !u!114 &-6598822826810862351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,10 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 246e55994a713b8409cdd94452d1d8db, type: 3}
-  m_Name: Target_ZoneTypeValueSO
+  m_Script: {fileID: 11500000, guid: 8a2df1fad39f9f74398c975922806fea, type: 3}
+  m_Name: Target_ThisCardSO
   m_EditorClassIdentifier: 
-  _target: 0
+  _expectedTypeName: 
+--- !u!114 &-1385639784677146973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1a40d45ba622342a077288cbc9a68f, type: 3}
+  m_Name: Target_PropertyOfTargetSO
+  m_EditorClassIdentifier: 
+  _expectedTypeName: 
+  _targetObject: {fileID: 0}
+  _propertyName: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22,32 +37,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5b97918aec3e6c42947d32df1d7307c, type: 3}
-  m_Name: Garnet StartOfTurn
-  m_EditorClassIdentifier: 
-  ConnectionIndexes: 
-  _conditions:
-  - {fileID: 1388827357177558895}
-  _eventListeners: []
-  _data:
-    cost: 4
-    info: 'At the start of your turn, if this unit is on the field:'
-    stoneType: 0
---- !u!114 &1388827357177558895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b76e8be690833da45b12a4ae208f09e2, type: 3}
-  m_Name: Condition_IsTargetEqualToTarget
+  m_Name: New Condition_Is Target Equal To Target
   m_EditorClassIdentifier: 
-  _firstTarget: {fileID: 7740443207948345681}
-  _secondTarget: {fileID: -4645970613610386512}
---- !u!114 &7740443207948345681
+  _firstTarget: {fileID: 9122506826991943671}
+  _secondTarget: {fileID: 0}
+--- !u!114 &9122506826991943671
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56,7 +51,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c3a617606facd74092edecf2d1d2253, type: 3}
-  m_Name: TypeOfTargetSO
+  m_Script: {fileID: 11500000, guid: ba1a40d45ba622342a077288cbc9a68f, type: 3}
+  m_Name: Target_PropertyOfTargetSO
   m_EditorClassIdentifier: 
-  _targetObject: {fileID: 0}
+  _expectedTypeName: 
+  _targetObject: {fileID: -1385639784677146973}
+  _propertyName: 
